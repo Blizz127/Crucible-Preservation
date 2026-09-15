@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.log
+.venv/
+.env
+
+# Local game assets and diagnostic output
+/snapshots/
+/captures/
+*.pak
+*.pcap
+*.pcapng
