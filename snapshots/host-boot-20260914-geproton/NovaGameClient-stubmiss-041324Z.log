@@ -1,0 +1,426 @@
+[09-15-2026:04:13:19.185621-GMT] NovaNet::Watchdog::UpdateThread(): Watchdog:Thread Logger (1) HealthChecks has been *Registered*
+[09-15-2026:04:13:19.185785-GMT] NovaNet::Watchdog::UpdateThread(): Watchdog:Thread Watchdog (2) HealthChecks has been *Registered*
+[09-15-2026:04:13:19.185790-GMT] NovaNet::Watchdog::SuppressHealthChecks(): Watchdog:Thread Watchdog (2) HealthChecks has been suppressed
+[09-15-2026:04:13:19.233702-GMT] Info(): executableVersion: 5.3.1515.1132017
+[09-15-2026:04:13:19.235998-GMT] Info(): Using C:/users/steamuser/AppData/Local/AGS/Crucible/cache folder for asset cache.
+[09-15-2026:04:13:19.237047-GMT] Info(): Loading system configuration from system_windows_pc.cfg...
+[09-15-2026:04:13:19.237052-GMT] Info(): GameDir: NvGameSDK
+[09-15-2026:04:13:19.538240-GMT] Info(): Total number of logical processors: 24
+[09-15-2026:04:13:19.538249-GMT] Info(): Number of available logical processors: 24
+[09-15-2026:04:13:19.542466-GMT] Info(): Total number of system cores: 24
+[09-15-2026:04:13:19.542468-GMT] Info(): Number of cores available to process: 24
+[09-15-2026:04:13:19.542482-GMT] Info():  
+[09-15-2026:04:13:19.542484-GMT] Info(): Processor 0:
+[09-15-2026:04:13:19.542487-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542487-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542489-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542491-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542492-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542494-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542496-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542496-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542498-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542500-GMT] Info():  
+[09-15-2026:04:13:19.542502-GMT] Info(): Processor 1:
+[09-15-2026:04:13:19.542502-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542504-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542506-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542506-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542513-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542515-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542515-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542517-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542519-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542520-GMT] Info():  
+[09-15-2026:04:13:19.542521-GMT] Info(): Processor 2:
+[09-15-2026:04:13:19.542523-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542525-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542526-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542527-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542529-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542529-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542531-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542533-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542534-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542535-GMT] Info():  
+[09-15-2026:04:13:19.542537-GMT] Info(): Processor 3:
+[09-15-2026:04:13:19.542539-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542539-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542541-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542543-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542543-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542545-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542547-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542547-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542549-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542550-GMT] Info():  
+[09-15-2026:04:13:19.542551-GMT] Info(): Processor 4:
+[09-15-2026:04:13:19.542553-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542555-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542556-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542557-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542559-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542560-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542561-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542562-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542564-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542564-GMT] Info():  
+[09-15-2026:04:13:19.542566-GMT] Info(): Processor 5:
+[09-15-2026:04:13:19.542568-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542570-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542570-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542572-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542575-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542575-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542577-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542580-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542580-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542582-GMT] Info():  
+[09-15-2026:04:13:19.542584-GMT] Info(): Processor 6:
+[09-15-2026:04:13:19.542584-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542586-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542588-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542590-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542590-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542592-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542602-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542602-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542604-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542606-GMT] Info():  
+[09-15-2026:04:13:19.542606-GMT] Info(): Processor 7:
+[09-15-2026:04:13:19.542608-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542610-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542612-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542612-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542614-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542615-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542616-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542618-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542619-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542620-GMT] Info():  
+[09-15-2026:04:13:19.542622-GMT] Info(): Processor 8:
+[09-15-2026:04:13:19.542624-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542624-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542626-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542628-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542629-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542630-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542631-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542633-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542633-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542635-GMT] Info():  
+[09-15-2026:04:13:19.542637-GMT] Info(): Processor 9:
+[09-15-2026:04:13:19.542637-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542639-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542641-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542642-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542643-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542646-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542648-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542648-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542650-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542652-GMT] Info():  
+[09-15-2026:04:13:19.542652-GMT] Info(): Processor 10:
+[09-15-2026:04:13:19.542654-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542656-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542656-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542658-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542660-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542662-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542662-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542664-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542665-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542666-GMT] Info():  
+[09-15-2026:04:13:19.542668-GMT] Info(): Processor 11:
+[09-15-2026:04:13:19.542669-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542670-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542672-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542673-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542674-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542675-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542677-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542679-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542679-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542681-GMT] Info():  
+[09-15-2026:04:13:19.542683-GMT] Info(): Processor 12:
+[09-15-2026:04:13:19.542683-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542685-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542687-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542687-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542689-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542690-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542692-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542692-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542694-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542695-GMT] Info():  
+[09-15-2026:04:13:19.542696-GMT] Info(): Processor 13:
+[09-15-2026:04:13:19.542698-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542699-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542700-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542701-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542703-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542704-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542707-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542708-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542710-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542711-GMT] Info():  
+[09-15-2026:04:13:19.542712-GMT] Info(): Processor 14:
+[09-15-2026:04:13:19.542714-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542715-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542717-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542719-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542719-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542721-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542722-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542724-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542724-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542743-GMT] Info():  
+[09-15-2026:04:13:19.542745-GMT] Info(): Processor 15:
+[09-15-2026:04:13:19.542745-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542747-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542749-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542750-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542751-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542753-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542753-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542755-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542757-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542758-GMT] Info():  
+[09-15-2026:04:13:19.542759-GMT] Info(): Processor 16:
+[09-15-2026:04:13:19.542761-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542762-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542763-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542764-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542766-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542767-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542774-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542775-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542777-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542777-GMT] Info():  
+[09-15-2026:04:13:19.542779-GMT] Info(): Processor 17:
+[09-15-2026:04:13:19.542781-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542781-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542783-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542785-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542785-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542787-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542790-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542791-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542792-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542794-GMT] Info():  
+[09-15-2026:04:13:19.542795-GMT] Info(): Processor 18:
+[09-15-2026:04:13:19.542796-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542798-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542799-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542800-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542801-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542803-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542803-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542805-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542807-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542809-GMT] Info():  
+[09-15-2026:04:13:19.542809-GMT] Info(): Processor 19:
+[09-15-2026:04:13:19.542811-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542813-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542813-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542815-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542816-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542817-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542818-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542820-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542821-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542822-GMT] Info():  
+[09-15-2026:04:13:19.542824-GMT] Info(): Processor 20:
+[09-15-2026:04:13:19.542826-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542826-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542828-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542830-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542830-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542832-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542834-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542836-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542838-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542840-GMT] Info():  
+[09-15-2026:04:13:19.542842-GMT] Info(): Processor 21:
+[09-15-2026:04:13:19.542842-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542844-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542846-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542846-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542848-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542850-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542850-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542853-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542855-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542855-GMT] Info():  
+[09-15-2026:04:13:19.542857-GMT] Info(): Processor 22:
+[09-15-2026:04:13:19.542859-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542860-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542861-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542863-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542864-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542865-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542866-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542868-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542869-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542870-GMT] Info():  
+[09-15-2026:04:13:19.542872-GMT] Info(): Processor 23:
+[09-15-2026:04:13:19.542872-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:04:13:19.542874-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:04:13:19.542876-GMT] Info():   FPU: On-Chip
+[09-15-2026:04:13:19.542877-GMT] Info():   3DNow!: not present
+[09-15-2026:04:13:19.542878-GMT] Info():   MMX: not present
+[09-15-2026:04:13:19.542879-GMT] Info():   SSE: present
+[09-15-2026:04:13:19.542881-GMT] Info():   SSE2: present
+[09-15-2026:04:13:19.542882-GMT] Info():   SSE3: present
+[09-15-2026:04:13:19.542883-GMT] Info():   Serial number not present or disabled
+[09-15-2026:04:13:19.542885-GMT] Info():  
+[09-15-2026:04:13:19.753600-GMT] Info(): Logging video adapters:
+[09-15-2026:04:13:20.076257-GMT] Info(): - NVIDIA GeForce RTX 5070 Ti Laptop GPU (vendor = 0x10de, device = 0x2f58)
+[09-15-2026:04:13:20.076265-GMT] Info():   - Adapter index: 0
+[09-15-2026:04:13:20.076267-GMT] Info():   - Dedicated video memory: 12227 MB
+[09-15-2026:04:13:20.076268-GMT] Info():   - Feature level: DX11 (SM 5.0)
+[09-15-2026:04:13:20.076271-GMT] Info():   - Displays connected: yes
+[09-15-2026:04:13:20.076272-GMT] Info():   - Suitable rendering device: yes
+[09-15-2026:04:13:20.152732-GMT] Info(): - Intel(R) Graphics (ARL) (vendor = 0x8086, device = 0x7d67)
+[09-15-2026:04:13:20.152738-GMT] Info():   - Adapter index: 1
+[09-15-2026:04:13:20.152741-GMT] Info():   - Dedicated video memory: 512 MB
+[09-15-2026:04:13:20.152742-GMT] Info():   - Feature level: DX11 (SM 5.0)
+[09-15-2026:04:13:20.152746-GMT] Info():   - Displays connected: no
+[09-15-2026:04:13:20.152749-GMT] Info():   - Suitable rendering device: no
+[09-15-2026:04:13:20.190065-GMT] Info(): Stream Engine Initialization
+[09-15-2026:04:13:20.190715-GMT] Info(): Physics initialization
+[09-15-2026:04:13:20.191200-GMT] Info(): Renderer initialization
+[09-15-2026:04:13:20.217564-GMT] Info(): Logging video adapters:
+[09-15-2026:04:13:20.403456-GMT] Info(): - NVIDIA GeForce RTX 5070 Ti Laptop GPU (vendor = 0x10de, device = 0x2f58)
+[09-15-2026:04:13:20.403464-GMT] Info():   - Adapter index: 0
+[09-15-2026:04:13:20.403467-GMT] Info():   - Dedicated video memory: 12227 MB
+[09-15-2026:04:13:20.403468-GMT] Info():   - Feature level: DX11 (SM 5.0)
+[09-15-2026:04:13:20.403471-GMT] Info():   - Displays connected: yes
+[09-15-2026:04:13:20.403474-GMT] Info():   - Suitable rendering device: yes
+[09-15-2026:04:13:20.491811-GMT] Info(): - Intel(R) Graphics (ARL) (vendor = 0x8086, device = 0x7d67)
+[09-15-2026:04:13:20.491817-GMT] Info():   - Adapter index: 1
+[09-15-2026:04:13:20.491820-GMT] Info():   - Dedicated video memory: 512 MB
+[09-15-2026:04:13:20.491822-GMT] Info():   - Feature level: DX11 (SM 5.0)
+[09-15-2026:04:13:20.491823-GMT] Info():   - Displays connected: no
+[09-15-2026:04:13:20.491826-GMT] Info():   - Suitable rendering device: no
+[09-15-2026:04:13:23.160060-GMT] Info(): Font initialization
+[09-15-2026:04:13:23.683606-GMT] Info(): Time initialization
+[09-15-2026:04:13:23.683625-GMT] Info(): Input initialization
+[09-15-2026:04:13:23.683887-GMT] Info(): UI system initialization
+[09-15-2026:04:13:23.684079-GMT] Info(): Initializing AI System
+[09-15-2026:04:13:23.684084-GMT] Info(): The deprecated CryAISystem was not created, if you depend on it please enable the CryLegacy Gem
+[09-15-2026:04:13:23.684104-GMT] Info(): Initializing Animation System
+[09-15-2026:04:13:23.684272-GMT] Info(): Initializing 3D Engine
+[09-15-2026:04:13:23.685978-GMT] Info(): Initializing Gems System
+[09-15-2026:04:13:23.691072-GMT] Info(): Script System Initialization
+[09-15-2026:04:13:23.691388-GMT] Info(): Entity system initialization
+[09-15-2026:04:13:23.692031-GMT] Info(): Network initialization
+[09-15-2026:04:13:23.692345-GMT] Info(): Initializing additional systems
+[09-15-2026:04:13:23.692352-GMT] Info(): Dynamic Response System initialization
+[09-15-2026:04:13:23.692354-GMT] Info(): No Dynamic Response System was loaded from a module, the system will use the NULL DynamicResponseSystem.
+[09-15-2026:04:13:24.766611-GMT] Warning(): [Warning][BakedName] Failed to load BakedName asset(s) for 'AwarenessGainDisableReason'
+[09-15-2026:04:13:24.767496-GMT] Warning(): [Warning][BakedName] Duplicate name 'Emote' found for MovementConfigValue
+[09-15-2026:04:13:24.800076-GMT] Info(): CGameObjectSystem::LoadSerializationOrderFile() - Cannot find 'Scripts/GameObjectSerializationOrder.xml'. sorting disabled.
+[09-15-2026:04:13:24.802365-GMT] Info(): Login into GameSparks requires GS API key, GS API access, GS API secret, and GS region
+[09-15-2026:04:13:24.804867-GMT] NovaNet::NovaEACGameClient::LoadEAC(): EAC Client failed to start
+[09-15-2026:04:13:24.806042-GMT] NovaNet::Watchdog::UpdateThread(): Watchdog:Thread TcpClientManager (3) HealthChecks has been *Registered*
+[09-15-2026:04:13:24.815041-GMT] NovaNet::PacketHandlerMetrics::SetPacketToStringFunction(): Register PacketGroup Id:0, total number of Packet Groups : 1
+[09-15-2026:04:13:24.819365-GMT] MatchPhaseComponent::Common::Common(): MatchPhase Entity created
+[09-15-2026:04:13:25.017952-GMT] NovaNet::ClientEntityManager::OnSystemEvent(): Removing all entities for level unload
+[09-15-2026:04:13:25.022455-GMT] NovaNet::ClientEntityManager::OnSystemEvent(): Removing all entities for level unload
+[09-15-2026:04:13:29.887749-GMT] Warning(): [Warning][BakedName] Unrecognized EntityResourceType 'megadrone_beam_charge' in stream 'assets/creature/common_creature.resourcesdata' will result in mismatched values between client and server. Remove references or add to 'entityresourcetype.names'.
+[09-15-2026:04:13:30.945119-GMT] Info(): [Info][ClientHouseKeeping] LogRejoinData from 'Clear()'
+[09-15-2026:04:13:30.945123-GMT] Info(): [Info][ClientHouseKeeping]   m_hasValidRejoinData = 0
+[09-15-2026:04:13:30.945125-GMT] Info(): [Info][ClientHouseKeeping]   m_hubIp = ''
+[09-15-2026:04:13:30.945127-GMT] Info(): [Info][ClientHouseKeeping]   m_hubPort = 0
+[09-15-2026:04:13:30.945129-GMT] Info(): [Info][ClientHouseKeeping]   m_sessionId = ''
+[09-15-2026:04:13:30.945132-GMT] Info(): [Info][ClientHouseKeeping]   m_timePointUntilCanRejoinInMicroSecs = 0
+[09-15-2026:04:13:30.945136-GMT] Info(): [Info][ClientHouseKeeping]   m_gameMode = 'Invalid'
+[09-15-2026:04:13:30.969596-GMT] Info(): [Info][ClientHouseKeeping] LogRejoinData from 'Clear()'
+[09-15-2026:04:13:30.969601-GMT] Info(): [Info][ClientHouseKeeping]   m_hasValidRejoinData = 0
+[09-15-2026:04:13:30.969607-GMT] Info(): [Info][ClientHouseKeeping]   m_hubIp = ''
+[09-15-2026:04:13:30.969610-GMT] Info(): [Info][ClientHouseKeeping]   m_hubPort = 0
+[09-15-2026:04:13:30.969612-GMT] Info(): [Info][ClientHouseKeeping]   m_sessionId = ''
+[09-15-2026:04:13:30.969616-GMT] Info(): [Info][ClientHouseKeeping]   m_timePointUntilCanRejoinInMicroSecs = 0
+[09-15-2026:04:13:30.969622-GMT] Info(): [Info][ClientHouseKeeping]   m_gameMode = 'Invalid'
+[09-15-2026:04:13:31.409653-GMT] Warning(): [Warning][BakedName] Unrecognized EntityFlagValue 'AICombatTarget' in stream 'cdl/creatures/creature_onspawn_anchor.cdl' will result in mismatched values between client and server. Remove references or add to 'entityflagvalue.names'.
+[09-15-2026:04:13:31.409665-GMT] Warning(): [Warning][BakedName] Unrecognized GameModeType 'HORDE' in stream 'cdl/creatures/creature_onspawn_anchor.cdl' will result in mismatched values between client and server. Remove references or add to 'gamemodetype.names'.
+[09-15-2026:04:13:33.618029-GMT] Warning(): [Warning][BakedName] Unrecognized EntityTypeValue 'MegaDroneCampAnchor' in stream 'cdl/creatures/camp_megadrone_onspawn.cdl' will result in mismatched values between client and server. Remove references or add to 'entitytypevalue.names'.
+[09-15-2026:04:13:34.196915-GMT] Warning(): [Warning][BakedName] Unrecognized EntityFlagValue 'SentryBeacons' in stream 'cdl/gameplay/interaction/sentrybeacon_heartbeat.cdl' will result in mismatched values between client and server. Remove references or add to 'entityflagvalue.names'.
+[09-15-2026:04:13:34.244439-GMT] Warning(): [Warning][BakedName] Unrecognized EntityFlagValue 'MegadroneGathering' in stream 'cdl/planetaryevents/event_major_megadronegathering.cdl' will result in mismatched values between client and server. Remove references or add to 'entityflagvalue.names'.
+[09-15-2026:04:13:34.352631-GMT] Info(): No configs found for: stage
+[09-15-2026:04:13:34.528840-GMT] Info(): [Info][ClientHouseKeeping] LogRejoinData from 'Clear()'
+[09-15-2026:04:13:34.528844-GMT] Info(): [Info][ClientHouseKeeping]   m_hasValidRejoinData = 0
+[09-15-2026:04:13:34.528846-GMT] Info(): [Info][ClientHouseKeeping]   m_hubIp = ''
+[09-15-2026:04:13:34.528848-GMT] Info(): [Info][ClientHouseKeeping]   m_hubPort = 0
+[09-15-2026:04:13:34.528850-GMT] Info(): [Info][ClientHouseKeeping]   m_sessionId = ''
+[09-15-2026:04:13:34.528853-GMT] Info(): [Info][ClientHouseKeeping]   m_timePointUntilCanRejoinInMicroSecs = 0
+[09-15-2026:04:13:34.528857-GMT] Info(): [Info][ClientHouseKeeping]   m_gameMode = 'Invalid'
+[09-15-2026:04:13:34.528940-GMT] Info(): [Info][ClientHouseKeeping] LogRejoinData from 'LoadRejoinDataFromDisk()'
+[09-15-2026:04:13:34.528942-GMT] Info(): [Info][ClientHouseKeeping]   m_hasValidRejoinData = 0
+[09-15-2026:04:13:34.528944-GMT] Info(): [Info][ClientHouseKeeping]   m_hubIp = ''
+[09-15-2026:04:13:34.528945-GMT] Info(): [Info][ClientHouseKeeping]   m_hubPort = 0
+[09-15-2026:04:13:34.528947-GMT] Info(): [Info][ClientHouseKeeping]   m_sessionId = ''
+[09-15-2026:04:13:34.528949-GMT] Info(): [Info][ClientHouseKeeping]   m_timePointUntilCanRejoinInMicroSecs = 0
+[09-15-2026:04:13:34.528951-GMT] Info(): [Info][ClientHouseKeeping]   m_gameMode = 'Invalid'
+[09-15-2026:04:13:34.907763-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'actionQuickCommsMoveToPing' to value ''
+[09-15-2026:04:13:34.907875-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'actionUiVoiceMuteAll' to value ''
+[09-15-2026:04:13:34.907878-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'actionUiVoiceMuteSelf' to value ''
+[09-15-2026:04:13:34.907903-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'allianceBreakHoldDuration' to value ''
+[09-15-2026:04:13:34.907918-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'crouchActionTrigger' to value 'Toggle'
+[09-15-2026:04:13:34.907965-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'mouseLookEnabled' to value ''
+[09-15-2026:04:13:34.907984-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'sprintActionTrigger' to value 'Toggle'
+[09-15-2026:04:13:34.907991-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'useQuickCommsGestures' to value ''
+[09-15-2026:04:13:34.911726-GMT] Info(): [Info][UI] Initializing Coherent UI GT ver. 2.9.4.0
+[09-15-2026:04:13:34.911731-GMT] Info(): [Info][UI] Coherent Renoir library initialized!
+[09-15-2026:04:13:34.979753-GMT] Info():   Window resolution: 1680x1050x32 (Windowed)
+[09-15-2026:04:13:34.979756-GMT] Info():   Render resolution: 1680x1050
+[09-15-2026:04:13:35.361475-GMT] Info(): [CruciComms] Initializing Vivox Connection!
+[09-15-2026:04:13:35.564966-GMT] Info(): [CruciComms] Vivox instance initialized successfully.
+[09-15-2026:04:13:35.565172-GMT] Warning(): [Warning][Analytics] Could not connect to Live Services! Emitting metrics to log.
+[09-15-2026:04:13:35.578125-GMT] Warning(): [Warning][UI] Unable to load font face from file: C:\windows\Fonts\msyhbd.ttf
+[09-15-2026:04:13:35.578130-GMT] Warning(): [Warning][UI] Unable to load font face from file: C:\windows\Fonts\simsun.ttc
+[09-15-2026:04:13:36.119763-GMT] Info(): [Info][LiveAPI] ServicesRequestWrapper: Sending request class Crucible::LivePlatform::PlayerAuthorizer::CrucibleLivePlayerAuthorizerCall : {3E9F64FF-04D7-46BC-BCB3-33389BE91768} attempt 1/3
+[09-15-2026:04:13:36.119779-GMT] Info(): [Info][LiveAPI] Adding request {3E9F64FF-04D7-46BC-BCB3-33389BE91768}.
+[09-15-2026:04:13:36.120128-GMT] Info(): [Info][LiveAPI] Applying update for request {3E9F64FF-04D7-46BC-BCB3-33389BE91768}.
+[09-15-2026:04:13:36.124986-GMT] Warning(): [AWS] WinHttpSyncHttpClient - Send request failed: 
+[09-15-2026:04:13:36.129931-GMT] Error(): [Error][LiveAPI] Request<struct CrucibleLivePlayerAuthorizerService::ClientAPI::CrucibleLivePlayerAuthorizerResponse> {3E9F64FF-04D7-46BC-BCB3-33389BE91768} failed: An unknown error occured while making the request.
+[09-15-2026:04:13:36.131777-GMT] Info(): [Info][LiveAPI] Applying update for request {3E9F64FF-04D7-46BC-BCB3-33389BE91768}.
+[09-15-2026:04:13:36.148077-GMT] Error(): [Error][PlayerAuthorizer] Error authenticating player with PlayerAuthorizer. Reason: An unknown error occured while making the request.
+[09-15-2026:04:13:36.148091-GMT] Info(): [Info][LiveAPI] ServicesRequestWrapper: Sending request class Crucible::LivePlatform::PlayerAuthorizer::CrucibleLivePlayerAuthorizerCall : {3357E4FF-2E87-41F5-92EA-95DCAE98ADB1} attempt 2/3
+[09-15-2026:04:13:36.148104-GMT] Info(): [Info][LiveAPI] Adding request {3357E4FF-2E87-41F5-92EA-95DCAE98ADB1}.
+[09-15-2026:04:13:36.148126-GMT] Info(): [Info][LiveAPI] Applying update for request {3357E4FF-2E87-41F5-92EA-95DCAE98ADB1}.
+[09-15-2026:04:13:36.150814-GMT] Warning(): [AWS] WinHttpSyncHttpClient - Send request failed: 
+[09-15-2026:04:13:36.162634-GMT] Error(): [Error][LiveAPI] Request<struct CrucibleLivePlayerAuthorizerService::ClientAPI::CrucibleLivePlayerAuthorizerResponse> {3357E4FF-2E87-41F5-92EA-95DCAE98ADB1} failed: An unknown error occured while making the request.
+[09-15-2026:04:13:36.164614-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:13421: Crucible UI :: jenkins-crucible_hotfix-crucible_hotfix-ui-259
+[09-15-2026:04:13:36.164623-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:82958: PASSES: []
+[09-15-2026:04:13:36.164626-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"bootup":"locale"}
+[09-15-2026:04:13:36.164701-GMT] Info(): [Info][LiveAPI] Applying update for request {3357E4FF-2E87-41F5-92EA-95DCAE98ADB1}.
+[09-15-2026:04:13:36.183657-GMT] Error(): [Error][PlayerAuthorizer] Error authenticating player with PlayerAuthorizer. Reason: An unknown error occured while making the request.
+[09-15-2026:04:13:36.183669-GMT] Info(): [Info][LiveAPI] ServicesRequestWrapper: Sending request class Crucible::LivePlatform::PlayerAuthorizer::CrucibleLivePlayerAuthorizerCall : {77E4FC5F-312B-429C-B225-84AB16566479} attempt 3/3
+[09-15-2026:04:13:36.183682-GMT] Info(): [Info][LiveAPI] Adding request {77E4FC5F-312B-429C-B225-84AB16566479}.
+[09-15-2026:04:13:36.183701-GMT] Info(): [Info][LiveAPI] Applying update for request {77E4FC5F-312B-429C-B225-84AB16566479}.
+[09-15-2026:04:13:36.186493-GMT] Warning(): [AWS] WinHttpSyncHttpClient - Send request failed: 
+[09-15-2026:04:13:36.196289-GMT] Error(): [Error][LiveAPI] Request<struct CrucibleLivePlayerAuthorizerService::ClientAPI::CrucibleLivePlayerAuthorizerResponse> {77E4FC5F-312B-429C-B225-84AB16566479} failed: An unknown error occured while making the request.
+[09-15-2026:04:13:36.198385-GMT] Info(): [Info][ClientHouseKeeping] Rejoin.get found and invalid session to rejoin.  Sending empty data to UI.
+[09-15-2026:04:13:36.198395-GMT] Warning(): [Warning][UI] Failed to open connection. No endpoint named 'vendor.get'
+[09-15-2026:04:13:36.198517-GMT] Info(): [Info][LiveAPI] Applying update for request {77E4FC5F-312B-429C-B225-84AB16566479}.
+[09-15-2026:04:13:36.273830-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"bootup":{"environment":{"lan":"checking","booted":"checking"}}}
+[09-15-2026:04:13:36.305270-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"bootup":{"environment":{"lan":"done","booted":"checking"}}}
+[09-15-2026:04:13:36.305276-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"intros":"warning"}
+[09-15-2026:04:13:36.432906-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\menu\pages\intros\img\warning-sign.svg
+[09-15-2026:04:13:36.445966-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\menu\pages\intros\img\warning-sign.svg
+[09-15-2026:04:13:41.318775-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"intros":"logos"}
+[09-15-2026:04:13:41.450002-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\logos\lumberyard.svg
+[09-15-2026:04:13:41.450034-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\logos\relentless-studios.svg
+[09-15-2026:04:13:41.450043-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\logos\amazon-games.svg
+[09-15-2026:04:13:41.450050-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\logos\aws-game-tech.svg
+[09-15-2026:04:13:41.461017-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\logos\amazon-games.svg
+[09-15-2026:04:13:41.461067-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\logos\aws-game-tech.svg
+[09-15-2026:04:13:41.461079-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\logos\lumberyard.svg
+[09-15-2026:04:13:41.461090-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\logos\relentless-studios.svg
+[09-15-2026:04:13:42.205316-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"servicesBootup":"login"}
+[09-15-2026:04:13:42.360571-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\logos-sprite.svg
+[09-15-2026:04:13:42.360598-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\logos-sprite.svg
+[09-15-2026:04:13:42.374779-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\logos-sprite.svg
+[09-15-2026:04:13:42.374809-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\logos-sprite.svg

@@ -1,0 +1,156 @@
+### GameSparks / auth surface
+Attempting to connect to %s:%d with player info: [GameSparksId = %s, NovaNetUserId = (%u : 0x%08x), PlayerSessionId = %s]
+Auth Tokens request timed out! Cannot authenticate to GameSparks.
+auto __cdecl Crucible::Social::SocialAppComponent::GetGamesparksIDAndStartRequestFlow::<lambda_78847003e21cdaa7fd8ee7acf3c37c87>::operator ()(const class AZStd::basic_string<char,struct AZStd::char_traits<char>,class AZStd::allocator>) const
+.?AV?$sp_ms_deleter@UGameSparksConfig@LivePlatform@Crucible@@@Internal@AZStd@@
+.?AV?$sp_ms_deleter@VGameSparksSDKWrapper@LivePlatform@Crucible@@@Internal@AZStd@@
+.?AVBaseCallbacksPtr@GSRequest@Core@GameSparks@@
+.?AVGSData@Core@GameSparks@@
+.?AVGSObject@Core@GameSparks@@
+.?AVGSRequest@Core@GameSparks@@
+.?AVGSRequestData@Core@GameSparks@@
+.?AVIGSData@Core@GameSparks@@
+BEGIN_GAMESPARKS_RECONNECT
+bool __cdecl Crucible::LivePlatform::GameSparksSDKMessageParser::ValidateAndSet(const class AZExtensions::Value &,const char *,class AZStd::basic_string<char,struct AZStd::char_traits<char>,class AZStd::allocator> *)
+bool __cdecl Crucible::LivePlatform::GameSparksSDKMessageParser::ValidateAndSet(const class AZExtensions::Value &,const char *,int *)
+bool __cdecl Crucible::LivePlatform::GameSparksSDKMessageParser::ValidateMessageContentHasMember(const class AZExtensions::Value &,const char *)
+bool __cdecl Crucible::LivePlatform::GameSparksSDKMessageParser::ValidateScriptMessageHasData(const class GameSparks::Api::Messages::ScriptMessage &)
+bool __cdecl Crucible::LivePlatform::GameSparksSDKMessageParser::ValidateScriptMessageHasDataMember(const class GameSparks::Api::Messages::ScriptMessage &,const char *)
+bool __cdecl Crucible::LivePlatform::GameSparksSDKMessageParser::ValidateScriptMessageHasExtCode(const class GameSparks::Api::Messages::ScriptMessage &)
+Cannot parse GameSparks message: Expected body data, but none was provided in the message.
+Cannot parse GameSparks message: Expected content key %s to be Int, but it was not.
+Cannot parse GameSparks message: Expected content key %s to be String, but it was not.
+Cannot parse GameSparks message: Expected data to contain key %s, but none was provided in the message.
+Cannot parse GameSparks message: Expected serialized content to be an object, but it was not: %s
+Cannot parse GameSparks message: Expected serialized content to contain key %s, but none was provided.
+Cannot parse GameSparks message: missing ExtCode
+Cannot parse GameSparks message: No ExtCode provided on ScriptMessage.
+__cdecl Crucible::LivePlatform::IGameSparksMessage::IGameSparksMessage(class AZExtensions::Value)
+class AZStd::shared_ptr<struct Crucible::LivePlatform::IGameSparksMessage> __cdecl Crucible::LivePlatform::GameSparksSDKMessageParser::ParseScriptMessage(const class GameSparks::Api::Messages::ScriptMessage &)
+const class AZStd::basic_string<char,struct AZStd::char_traits<char>,class AZStd::allocator> &__cdecl Crucible::LivePlatform::IGameSparksNotificationListenerAppComponent::GetPlayerGameSparksId(void) const
+Crucible.ReinitGameSparks
+crucible_UsePreviewGameSparks
+d:\workspace\crucible_hotfix\crucible_hotfix-build-release\dev\Code\NovaNet\Game\NovaGameClient\GameDll\Component\Crucible\LivePlatform\GameSparksImpl\GameSparksSDKMessageParser.cpp
+d:\workspace\crucible_hotfix\crucible_hotfix-build-release\dev\Code\NovaNet\Game\NovaGameClient\GameDll\Component/Crucible/LivePlatform/GameSparksMessages.h
+d:\workspace\crucible_hotfix\crucible_hotfix-build-release\dev\Code\NovaNet\Game\NovaGameClient\GameDll\Component\Crucible\LivePlatform\GameSparksNotificationListenerAppComponent.cpp
+d:\workspace\crucible_hotfix\crucible_hotfix-build-release\dev\Code\NovaNet\Game\NovaGameClient\GameDll\Component\Crucible\LivePlatform\GameSparksWrapper.cpp
+d:\workspace\crucible_hotfix\crucible_hotfix-build-release\dev\code\novanet\game\novagameclient\gamedll\component\crucible\liveplatform\GameSparksWrapper.h
+d:\workspace\crucible_hotfix\crucible_hotfix-build-release\dev\Code\NovaNet\Game\NovaGameClient\GameDll\Crucible\Systems\LivePlatform\GameSparksNotificationListenerSystemImpl.cpp
+E:\crucible_mainline\3rdParty\AwsGameSparks\code\src\mbedtls\ssl_cli.c
+E:\crucible_mainline\3rdParty\AwsGameSparks\code\src\mbedtls\ssl_srv.c
+E:\crucible_mainline\3rdParty\AwsGameSparks\code\src\mbedtls\ssl_tls.c
+GameFound message missing game session ID (Or this is a legacy GameSparks message) %s
+GameFound message missing ip address (Or this is a legacy GameSparks message) %s
+GameFound message missing player session ID (Or this is a legacy GameSparks message) %s
+GameFound message missing port (Or this is a legacy GameSparks message) %s
+gamesparks
+gamesparks_
+\GameSparks\
+GameSparks API Key, Access Key, Secret Key, Region, Auth Token, and entitlementId is required to reinitialize GameSparks.
+gamesparks.authtoken
+GameSparksAvailable 
+GameSparks connected and Auth Tokens present. Attempting to retrieve AWS-credentials.
+gamesparks_creds
+GAMESPARKS_DISCONNECT
+gamesparksId
+gameSparksId
+GameSparksId
+GameSparksNotificationListenerAppComponent
+GameSparksNotificationListenerSystem
+GameSparks notification listener was AUTHENTICATED, but had no auth request or it was not in SUCCESS state! Cannot retrieve player ID.
+gameSparksPlayerId
+Gamesparks retry timer exceeded; now trying again
+[GAMESPARKS] %s
+GameSparks SDK C++ 1.1.14
+gamesparks.userid
+gameSparksUserId
+GameSparks Websocket auth request succeeded, but connection is not authenticated! Disconnecting...
+GetPlayerGameSparksId() called while in state %d, will return an empty string since the Id is not yet ready to use.
+If non-zero, passes 'preview' flag to GameSparks init. Otherwise passes 'live'
+If true, Crucible will used the Persona based PlayerAuthorizer flow instead of Gamesparks to authenticate players
+IGameSparksAuthDataProvider
+IGameSparksRequest
+Login into GameSparks requires GS API key, GS API access, GS API secret, and GS region
+P2P message missing message (Or this is a legacy GameSparks message) %s
+P2P message missing target player ID (Or this is a legacy GameSparks message) %s
+PartyStatus message missing action (Or this is a legacy GameSparks message) %s
+PartyStatus message missing party ID (Or this is a legacy GameSparks message) %s
+PartyStatus message missing sender ID (Or this is a legacy GameSparks message) %s
+PartyStatus message missing target player ID (Or this is a legacy GameSparks message) %s
+Received GameSparks message: type %s
+Received new connection url from gamesparks backend. Establishing new connection now.
+Re-initializes the GameSparks Client.
+Resetting GameSparks!
+.service.gamesparks.
+Set credentials required to initialize GameSparks.
+Starting GameSparks refresh task
+Unsupported ScriptMessage type %s parsed as UnknownMessage. Make sure the ShortCode in GameSparks matches the model.
+void __cdecl Crucible::LivePlatform::GameSparksConfig::DebugMsg(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const
+void __cdecl Crucible::LivePlatform::GameSparksNotificationListenerAppComponent::OnLwaFetchComplete(const class AZStd::basic_string<char,struct AZStd::char_traits<char>,class AZStd::allocator> &,const class AZStd::basic_string<char,struct AZStd::char_traits<char>,class AZStd::allocator> &)
+void __cdecl Crucible::LivePlatform::GameSparksNotificationListenerAppComponent::ReinitializeGameSparks(void)
+void __cdecl Crucible::LivePlatform::GameSparksNotificationListenerAppComponent::StartAwsCredentialsFetch(void)
+void __cdecl Crucible::LivePlatform::GameSparksNotificationListenerAppComponent::StartGameSparksRefreshTask(unsigned __int64)
+void __cdecl Crucible::LivePlatform::GameSparksNotificationListenerSystemImpl::UpdateGameSparks(class Crucible::LivePlatform::IGameSparksNotificationListenerAppComponent &,float)
+void __cdecl Crucible::LivePlatform::GameSparksNotificationListenerSystem::SystemEntry(const class Crucible::ComponentTupleContainer<class AZ::Component> &,float,bool) const
+void __cdecl Crucible::LivePlatform::GameSparksWrapper::SubmitRequest(class AZStd::shared_ptr<class Crucible::LivePlatform::IGameSparksRequest>)
+void __cdecl Crucible::LivePlatform::HandleAwsCredentialsResponseFailure(class Crucible::LivePlatform::IGameSparksNotificationListenerAppComponent &,class AZStd::shared_ptr<class Crucible::LivePlatform::AWSCredentialsRequest>)
+void __cdecl Crucible::Social::SocialAppComponent::GetGamesparksIDAndStartRequestFlow(unsigned __int64,class AZStd::basic_string<char,struct AZStd::char_traits<char>,class AZStd::allocator>)
+WAITING_FOR_GAMESPARKS_PARAMS
+WebSocket message parsing failed, content could not be read (Or this is a legacy GameSparks message)
+WebSocket message parsing failed, could not determine message type (Or this is a legacy GameSparks message)
+WebSocket message parsing failed, no content found (Or this is a legacy GameSparks message)
+### Cloud regions / AWS markers
+.amazonaws.com
+A parent identity was from cognito which is different from the anonymous identity. Swapping that out now.
+cognito-identity
+eu-west-1
+eu-west-2
+execute-api
+execute-api/aws4_request
+Expiry expired on cognito credentials attempting to pull new credentials.
+Failed to pull credentials from cognito. Error: 
+http://s3.amazonaws.com/doc/2006-03-01/
+s3.amazonaws.com
+s3-fips-us-gov-west-1.amazonaws.com
+s3.%s.amazonaws.com
+s3-us-gov-west-1.amazonaws.com
+Successfully obtained cognito credentials
+us-east-1
+us-east-2
+### Live-service API surface
+CrucibleLiveAuthService
+CrucibleLiveChallengeService
+CrucibleLiveCharacterLevelService
+CrucibleLiveEntitlementService
+CrucibleLiveGameConfigService
+CrucibleLiveMatchmakingService
+CrucibleLiveOfferService
+CrucibleLivePartyService
+CrucibleLivePlayerAuthorizerService
+CrucibleLivePlayerDataService
+CrucibleLivePlayerIdentityService
+### NovaNet connect strings
+Attempting to connect to %s:%d with player info: [GameSparksId = %s, NovaNetUserId = (%u : 0x%08x), PlayerSessionId = %s]
+InvalidGameLiftPlayerSessionId
+PlayerSessionId
+### wss/url format strings
+Current size of tracker: %d, Current size of overshields: %d. Removing overshield id: %s. This should only occur during a rewind. Current Issue Tracking this occurring outside of rewinds: https://jira.agscollab.com/browse/VIPERS-23498
+Editing data here will not work yet.  If you want to edit this component, please see https://wiki.agscollab.com/display/VIP/Global+Component+Spawner for more information
+https://
+https://api.twitch.tv/kraken/
+https://crucible.sp.backtrace.io:8443/
+https://crucible.sp.backtrace.io:8443/post?format=json&token=d28661e1ffedb698dc7d0acf8d92594e294d4db05ae6c9ee67c137c279edfbc8
+https://docs.aws.amazon.com/lumberyard/latest/userguide/component-audio-proxy.html
+https://docs.aws.amazon.com/lumberyard/latest/userguide/component-network-binding.html
+https://docs.aws.amazon.com/lumberyard/latest/userguide/component-physics-character.html
+https://docs.aws.amazon.com/lumberyard/latest/userguide/component-physics-ragdoll.html
+https://docs.aws.amazon.com/lumberyard/latest/userguide/component-simple-state.html
+https://docs.aws.amazon.com/lumberyard/latest/userguide/component-ui-canvas-asset-ref.html
+https://docs.aws.amazon.com/lumberyard/latest/userguide/component-ui-canvas-on-mesh.html
+https://docs.aws.amazon.com/lumberyard/latest/userguide/component-ui-canvas-proxy-ref.html
+https://%s/servers?channel=%s
+https://%s/servers?cluster=group
+https://www.digicert.com/CPS0
+Location: https://%s:%d%s%s%s
+System '%s' is missing required app component '%s'.  Systems cannot start until this app component is added.  See https://wiki.agscollab.com/display/VIP/App+Components for more information regarding adding an app component.
+wss://

@@ -1,0 +1,30 @@
+
+--- tls stub start 2026-09-14T23:33:57.404623 ---
+[2026-09-14T23:34:23.051] --- TLS accept from ('127.0.0.1', 53292) ---
+[2026-09-14T23:34:23.092] --- TLS accept from ('127.0.0.1', 53306) ---
+[2026-09-14T23:34:23.123] --- TLS accept from ('127.0.0.1', 53318) ---
+
+--- tls stub start 2026-09-14T23:36:32.078030 ---
+[2026-09-14T23:36:59.951] --- TLS accept from ('127.0.0.1', 52848) ---
+[2026-09-14T23:36:59.997] --- TLS accept from ('127.0.0.1', 52854) ---
+[2026-09-14T23:37:00.027] --- TLS accept from ('127.0.0.1', 52858) ---
+
+--- tls stub start 2026-09-14T23:38:05.970377 ---
+
+--- tls stub start 2026-09-14T23:44:51.573871 ---
+[2026-09-14T23:45:20.425] --- TLS accept from ('127.0.0.1', 43658) ---
+[2026-09-14T23:45:20.486] === POST /prod/authorizePlayer from ('127.0.0.1', 43658) ===
+[2026-09-14T23:45:20.487]   H accept: application/json
+[2026-09-14T23:45:20.487]   H accept-charset: utf-8
+[2026-09-14T23:45:20.487]   H content-length: 500
+[2026-09-14T23:45:20.487]   H content-type: application/json
+[2026-09-14T23:45:20.487]   H host: x8evjomsd1.execute-api.us-west-2.amazonaws.com
+[2026-09-14T23:45:20.487]   H user-agent: /CloudCanvas_AwsApiJob
+[2026-09-14T23:45:20.487]   H Connection: Keep-Alive
+[2026-09-14T23:45:20.487]   H Pragma: no-cache
+[2026-09-14T23:45:20.487]   H Cache-Control: no-cache
+[2026-09-14T23:45:20.487]   body_len=500
+[2026-09-14T23:45:20.487]   body_json={
+  "personaSteamSessionTicket": "14000000037e0576d55e40d619859e0001001001acc9a86a1800000001000000020000007a7f45befaca8c195fb6830a16000000b2000000320000000400000019859e0001001001d82110009663876b0f00a8c0000000007cafa86afc5ec46a01004e630500000000009c7de9792efff4c774911d7df9d4a14d26a92afbea827a311ac9b35047c2f31e785548eb700b6c136468368946b0f884fcdf208c63c2795af42b608c68c05f5d19f7835fac619a79c86b423681a9fc4d6a7b744b15ffc2807f2a201d686515cc7ac409384653cd3cf4020e978366c9e28e4f43a48afe61c126a80129ef9263fa"
+}
+[2026-09-14T23:45:20.487]   -> 200 application/json b'{}'

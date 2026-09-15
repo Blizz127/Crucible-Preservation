@@ -1,0 +1,532 @@
+[09-15-2026:12:57:03.806511-GMT] NovaNet::Watchdog::UpdateThread(): Watchdog:Thread Logger (1) HealthChecks has been *Registered*
+[09-15-2026:12:57:03.806611-GMT] NovaNet::Watchdog::UpdateThread(): Watchdog:Thread Watchdog (2) HealthChecks has been *Registered*
+[09-15-2026:12:57:03.806615-GMT] NovaNet::Watchdog::SuppressHealthChecks(): Watchdog:Thread Watchdog (2) HealthChecks has been suppressed
+[09-15-2026:12:57:03.867896-GMT] Info(): executableVersion: 5.3.1515.1132017
+[09-15-2026:12:57:03.869261-GMT] Info(): Using C:/users/steamuser/AppData/Local/AGS/Crucible/cache folder for asset cache.
+[09-15-2026:12:57:03.870299-GMT] Info(): Loading system configuration from system_windows_pc.cfg...
+[09-15-2026:12:57:03.870304-GMT] Info(): GameDir: NvGameSDK
+[09-15-2026:12:57:04.116502-GMT] Info(): Total number of logical processors: 24
+[09-15-2026:12:57:04.116510-GMT] Info(): Number of available logical processors: 24
+[09-15-2026:12:57:04.120644-GMT] Info(): Total number of system cores: 24
+[09-15-2026:12:57:04.120646-GMT] Info(): Number of cores available to process: 24
+[09-15-2026:12:57:04.120656-GMT] Info():  
+[09-15-2026:12:57:04.120692-GMT] Info(): Processor 0:
+[09-15-2026:12:57:04.120694-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120695-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120697-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120699-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120699-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120702-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120704-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120705-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120707-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120709-GMT] Info():  
+[09-15-2026:12:57:04.120710-GMT] Info(): Processor 1:
+[09-15-2026:12:57:04.120710-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120713-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120714-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120715-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120717-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120719-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120719-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120721-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120723-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120724-GMT] Info():  
+[09-15-2026:12:57:04.120726-GMT] Info(): Processor 2:
+[09-15-2026:12:57:04.120728-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120729-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120729-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120732-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120733-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120734-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120736-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120738-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120739-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120740-GMT] Info():  
+[09-15-2026:12:57:04.120742-GMT] Info(): Processor 3:
+[09-15-2026:12:57:04.120744-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120744-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120747-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120748-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120748-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120751-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120753-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120753-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120755-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120757-GMT] Info():  
+[09-15-2026:12:57:04.120758-GMT] Info(): Processor 4:
+[09-15-2026:12:57:04.120761-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120763-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120765-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120765-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120769-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120771-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120771-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120773-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120776-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120776-GMT] Info():  
+[09-15-2026:12:57:04.120778-GMT] Info(): Processor 5:
+[09-15-2026:12:57:04.120780-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120781-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120782-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120784-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120785-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120786-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120788-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120790-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120790-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120792-GMT] Info():  
+[09-15-2026:12:57:04.120794-GMT] Info(): Processor 6:
+[09-15-2026:12:57:04.120795-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120797-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120799-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120800-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120800-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120803-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120804-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120804-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120806-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120808-GMT] Info():  
+[09-15-2026:12:57:04.120809-GMT] Info(): Processor 7:
+[09-15-2026:12:57:04.120811-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120813-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120814-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120815-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120817-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120818-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120818-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120820-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120822-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120822-GMT] Info():  
+[09-15-2026:12:57:04.120824-GMT] Info(): Processor 8:
+[09-15-2026:12:57:04.120828-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120828-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120830-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120832-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120833-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120833-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120835-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120837-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120837-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120839-GMT] Info():  
+[09-15-2026:12:57:04.120842-GMT] Info(): Processor 9:
+[09-15-2026:12:57:04.120842-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120844-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120846-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120848-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120848-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120850-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120852-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120852-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120854-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120856-GMT] Info():  
+[09-15-2026:12:57:04.120856-GMT] Info(): Processor 10:
+[09-15-2026:12:57:04.120858-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120860-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120861-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120863-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120865-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120866-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120866-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120869-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120870-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120870-GMT] Info():  
+[09-15-2026:12:57:04.120873-GMT] Info(): Processor 11:
+[09-15-2026:12:57:04.120875-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120875-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120877-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120879-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120880-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120881-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120884-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120885-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120886-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120887-GMT] Info():  
+[09-15-2026:12:57:04.120889-GMT] Info(): Processor 12:
+[09-15-2026:12:57:04.120889-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120893-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120896-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120896-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120898-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120900-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120901-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120902-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120904-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120905-GMT] Info():  
+[09-15-2026:12:57:04.120906-GMT] Info(): Processor 13:
+[09-15-2026:12:57:04.120908-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120910-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120910-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120913-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120915-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120915-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120917-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120919-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120920-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120921-GMT] Info():  
+[09-15-2026:12:57:04.120923-GMT] Info(): Processor 14:
+[09-15-2026:12:57:04.120925-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120925-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120927-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120929-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120930-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120931-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120933-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120935-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120935-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120937-GMT] Info():  
+[09-15-2026:12:57:04.120939-GMT] Info(): Processor 15:
+[09-15-2026:12:57:04.120939-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120942-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120944-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120944-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120947-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120949-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120949-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120951-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120954-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120955-GMT] Info():  
+[09-15-2026:12:57:04.120956-GMT] Info(): Processor 16:
+[09-15-2026:12:57:04.120958-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120961-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120962-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120964-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120967-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120967-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120969-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120971-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120972-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120973-GMT] Info():  
+[09-15-2026:12:57:04.120975-GMT] Info(): Processor 17:
+[09-15-2026:12:57:04.120977-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120977-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120979-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120981-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120982-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.120984-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.120986-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.120986-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.120988-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.120991-GMT] Info():  
+[09-15-2026:12:57:04.120992-GMT] Info(): Processor 18:
+[09-15-2026:12:57:04.120993-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.120995-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.120997-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.120997-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.120999-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.121002-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.121002-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.121004-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.121006-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.121008-GMT] Info():  
+[09-15-2026:12:57:04.121008-GMT] Info(): Processor 19:
+[09-15-2026:12:57:04.121011-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.121012-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.121013-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.121015-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.121017-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.121017-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.121019-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.121022-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.121022-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.121024-GMT] Info():  
+[09-15-2026:12:57:04.121026-GMT] Info(): Processor 20:
+[09-15-2026:12:57:04.121028-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.121028-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.121032-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.121034-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.121034-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.121037-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.121039-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.121040-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.121042-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.121044-GMT] Info():  
+[09-15-2026:12:57:04.121046-GMT] Info(): Processor 21:
+[09-15-2026:12:57:04.121046-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.121049-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.121050-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.121050-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.121053-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.121055-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.121055-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.121057-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.121059-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.121059-GMT] Info():  
+[09-15-2026:12:57:04.121061-GMT] Info(): Processor 22:
+[09-15-2026:12:57:04.121064-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.121065-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.121065-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.121068-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.121069-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.121069-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.121072-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.121074-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.121074-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.121077-GMT] Info():  
+[09-15-2026:12:57:04.121079-GMT] Info(): Processor 23:
+[09-15-2026:12:57:04.121079-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-15-2026:12:57:04.121081-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-15-2026:12:57:04.121083-GMT] Info():   FPU: On-Chip
+[09-15-2026:12:57:04.121085-GMT] Info():   3DNow!: not present
+[09-15-2026:12:57:04.121085-GMT] Info():   MMX: not present
+[09-15-2026:12:57:04.121088-GMT] Info():   SSE: present
+[09-15-2026:12:57:04.121090-GMT] Info():   SSE2: present
+[09-15-2026:12:57:04.121090-GMT] Info():   SSE3: present
+[09-15-2026:12:57:04.121092-GMT] Info():   Serial number not present or disabled
+[09-15-2026:12:57:04.121094-GMT] Info():  
+[09-15-2026:12:57:04.232701-GMT] Info(): Logging video adapters:
+[09-15-2026:12:57:04.483938-GMT] Info(): - NVIDIA GeForce RTX 5070 Ti Laptop GPU (vendor = 0x10de, device = 0x2f58)
+[09-15-2026:12:57:04.483950-GMT] Info():   - Adapter index: 0
+[09-15-2026:12:57:04.483955-GMT] Info():   - Dedicated video memory: 12227 MB
+[09-15-2026:12:57:04.483957-GMT] Info():   - Feature level: DX11 (SM 5.0)
+[09-15-2026:12:57:04.483963-GMT] Info():   - Displays connected: yes
+[09-15-2026:12:57:04.483968-GMT] Info():   - Suitable rendering device: yes
+[09-15-2026:12:57:04.563847-GMT] Info(): - Intel(R) Graphics (ARL) (vendor = 0x8086, device = 0x7d67)
+[09-15-2026:12:57:04.563853-GMT] Info():   - Adapter index: 1
+[09-15-2026:12:57:04.563856-GMT] Info():   - Dedicated video memory: 512 MB
+[09-15-2026:12:57:04.563857-GMT] Info():   - Feature level: DX11 (SM 5.0)
+[09-15-2026:12:57:04.563859-GMT] Info():   - Displays connected: no
+[09-15-2026:12:57:04.563862-GMT] Info():   - Suitable rendering device: no
+[09-15-2026:12:57:04.576859-GMT] Info(): Stream Engine Initialization
+[09-15-2026:12:57:04.577414-GMT] Info(): Physics initialization
+[09-15-2026:12:57:04.577757-GMT] Info(): Renderer initialization
+[09-15-2026:12:57:04.599100-GMT] Info(): Logging video adapters:
+[09-15-2026:12:57:04.788867-GMT] Info(): - NVIDIA GeForce RTX 5070 Ti Laptop GPU (vendor = 0x10de, device = 0x2f58)
+[09-15-2026:12:57:04.788872-GMT] Info():   - Adapter index: 0
+[09-15-2026:12:57:04.788874-GMT] Info():   - Dedicated video memory: 12227 MB
+[09-15-2026:12:57:04.788875-GMT] Info():   - Feature level: DX11 (SM 5.0)
+[09-15-2026:12:57:04.788878-GMT] Info():   - Displays connected: yes
+[09-15-2026:12:57:04.788880-GMT] Info():   - Suitable rendering device: yes
+[09-15-2026:12:57:04.867246-GMT] Info(): - Intel(R) Graphics (ARL) (vendor = 0x8086, device = 0x7d67)
+[09-15-2026:12:57:04.867252-GMT] Info():   - Adapter index: 1
+[09-15-2026:12:57:04.867254-GMT] Info():   - Dedicated video memory: 512 MB
+[09-15-2026:12:57:04.867256-GMT] Info():   - Feature level: DX11 (SM 5.0)
+[09-15-2026:12:57:04.867257-GMT] Info():   - Displays connected: no
+[09-15-2026:12:57:04.867259-GMT] Info():   - Suitable rendering device: no
+[09-15-2026:12:57:06.947782-GMT] Info(): Font initialization
+[09-15-2026:12:57:07.420223-GMT] Info(): Time initialization
+[09-15-2026:12:57:07.420241-GMT] Info(): Input initialization
+[09-15-2026:12:57:07.420447-GMT] Info(): UI system initialization
+[09-15-2026:12:57:07.420767-GMT] Info(): Initializing AI System
+[09-15-2026:12:57:07.420778-GMT] Info(): The deprecated CryAISystem was not created, if you depend on it please enable the CryLegacy Gem
+[09-15-2026:12:57:07.420800-GMT] Info(): Initializing Animation System
+[09-15-2026:12:57:07.420908-GMT] Info(): Initializing 3D Engine
+[09-15-2026:12:57:07.423199-GMT] Info(): Initializing Gems System
+[09-15-2026:12:57:07.428610-GMT] Info(): Script System Initialization
+[09-15-2026:12:57:07.428859-GMT] Info(): Entity system initialization
+[09-15-2026:12:57:07.429319-GMT] Info(): Network initialization
+[09-15-2026:12:57:07.429651-GMT] Info(): Initializing additional systems
+[09-15-2026:12:57:07.429654-GMT] Info(): Dynamic Response System initialization
+[09-15-2026:12:57:07.429655-GMT] Info(): No Dynamic Response System was loaded from a module, the system will use the NULL DynamicResponseSystem.
+[09-15-2026:12:57:08.110079-GMT] Warning(): [Warning][BakedName] Failed to load BakedName asset(s) for 'AwarenessGainDisableReason'
+[09-15-2026:12:57:08.110786-GMT] Warning(): [Warning][BakedName] Duplicate name 'Emote' found for MovementConfigValue
+[09-15-2026:12:57:08.131855-GMT] Info(): CGameObjectSystem::LoadSerializationOrderFile() - Cannot find 'Scripts/GameObjectSerializationOrder.xml'. sorting disabled.
+[09-15-2026:12:57:08.142146-GMT] NovaNet::NovaEACGameClient::LoadEAC(): EAC Client failed to start
+[09-15-2026:12:57:08.142831-GMT] NovaNet::Watchdog::UpdateThread(): Watchdog:Thread TcpClientManager (3) HealthChecks has been *Registered*
+[09-15-2026:12:57:08.156578-GMT] NovaNet::PacketHandlerMetrics::SetPacketToStringFunction(): Register PacketGroup Id:0, total number of Packet Groups : 1
+[09-15-2026:12:57:08.161095-GMT] MatchPhaseComponent::Common::Common(): MatchPhase Entity created
+[09-15-2026:12:57:08.299228-GMT] NovaNet::ClientEntityManager::OnSystemEvent(): Removing all entities for level unload
+[09-15-2026:12:57:08.302350-GMT] NovaNet::ClientEntityManager::OnSystemEvent(): Removing all entities for level unload
+[09-15-2026:12:57:11.817366-GMT] Warning(): [Warning][BakedName] Unrecognized EntityResourceType 'megadrone_beam_charge' in stream 'assets/creature/common_creature.resourcesdata' will result in mismatched values between client and server. Remove references or add to 'entityresourcetype.names'.
+[09-15-2026:12:57:12.696038-GMT] Info(): [Info][ClientHouseKeeping] LogRejoinData from 'Clear()'
+[09-15-2026:12:57:12.696043-GMT] Info(): [Info][ClientHouseKeeping]   m_hasValidRejoinData = 0
+[09-15-2026:12:57:12.696045-GMT] Info(): [Info][ClientHouseKeeping]   m_hubIp = ''
+[09-15-2026:12:57:12.696049-GMT] Info(): [Info][ClientHouseKeeping]   m_hubPort = 0
+[09-15-2026:12:57:12.696051-GMT] Info(): [Info][ClientHouseKeeping]   m_sessionId = ''
+[09-15-2026:12:57:12.696054-GMT] Info(): [Info][ClientHouseKeeping]   m_timePointUntilCanRejoinInMicroSecs = 0
+[09-15-2026:12:57:12.696059-GMT] Info(): [Info][ClientHouseKeeping]   m_gameMode = 'Invalid'
+[09-15-2026:12:57:12.750923-GMT] Info(): [Info][ClientHouseKeeping] LogRejoinData from 'Clear()'
+[09-15-2026:12:57:12.750928-GMT] Info(): [Info][ClientHouseKeeping]   m_hasValidRejoinData = 0
+[09-15-2026:12:57:12.750930-GMT] Info(): [Info][ClientHouseKeeping]   m_hubIp = ''
+[09-15-2026:12:57:12.750932-GMT] Info(): [Info][ClientHouseKeeping]   m_hubPort = 0
+[09-15-2026:12:57:12.750933-GMT] Info(): [Info][ClientHouseKeeping]   m_sessionId = ''
+[09-15-2026:12:57:12.750936-GMT] Info(): [Info][ClientHouseKeeping]   m_timePointUntilCanRejoinInMicroSecs = 0
+[09-15-2026:12:57:12.750941-GMT] Info(): [Info][ClientHouseKeeping]   m_gameMode = 'Invalid'
+[09-15-2026:12:57:13.042448-GMT] Warning(): [Warning][BakedName] Unrecognized EntityFlagValue 'AICombatTarget' in stream 'cdl/creatures/creature_onspawn_anchor.cdl' will result in mismatched values between client and server. Remove references or add to 'entityflagvalue.names'.
+[09-15-2026:12:57:13.042458-GMT] Warning(): [Warning][BakedName] Unrecognized GameModeType 'HORDE' in stream 'cdl/creatures/creature_onspawn_anchor.cdl' will result in mismatched values between client and server. Remove references or add to 'gamemodetype.names'.
+[09-15-2026:12:57:14.357436-GMT] Warning(): [Warning][BakedName] Unrecognized EntityTypeValue 'MegaDroneCampAnchor' in stream 'cdl/creatures/camp_megadrone_onspawn.cdl' will result in mismatched values between client and server. Remove references or add to 'entitytypevalue.names'.
+[09-15-2026:12:57:14.792566-GMT] Warning(): [Warning][BakedName] Unrecognized EntityFlagValue 'SentryBeacons' in stream 'cdl/gameplay/interaction/sentrybeacon_heartbeat.cdl' will result in mismatched values between client and server. Remove references or add to 'entityflagvalue.names'.
+[09-15-2026:12:57:14.826169-GMT] Warning(): [Warning][BakedName] Unrecognized EntityFlagValue 'MegadroneGathering' in stream 'cdl/planetaryevents/event_major_megadronegathering.cdl' will result in mismatched values between client and server. Remove references or add to 'entityflagvalue.names'.
+[09-15-2026:12:57:14.911312-GMT] Info(): No configs found for: stage
+[09-15-2026:12:57:15.037233-GMT] Info(): [Info][ClientHouseKeeping] LogRejoinData from 'Clear()'
+[09-15-2026:12:57:15.037237-GMT] Info(): [Info][ClientHouseKeeping]   m_hasValidRejoinData = 0
+[09-15-2026:12:57:15.037238-GMT] Info(): [Info][ClientHouseKeeping]   m_hubIp = ''
+[09-15-2026:12:57:15.037240-GMT] Info(): [Info][ClientHouseKeeping]   m_hubPort = 0
+[09-15-2026:12:57:15.037241-GMT] Info(): [Info][ClientHouseKeeping]   m_sessionId = ''
+[09-15-2026:12:57:15.037243-GMT] Info(): [Info][ClientHouseKeeping]   m_timePointUntilCanRejoinInMicroSecs = 0
+[09-15-2026:12:57:15.037246-GMT] Info(): [Info][ClientHouseKeeping]   m_gameMode = 'Invalid'
+[09-15-2026:12:57:15.037317-GMT] Info(): [Info][ClientHouseKeeping] LogRejoinData from 'LoadRejoinDataFromDisk()'
+[09-15-2026:12:57:15.037318-GMT] Info(): [Info][ClientHouseKeeping]   m_hasValidRejoinData = 0
+[09-15-2026:12:57:15.037319-GMT] Info(): [Info][ClientHouseKeeping]   m_hubIp = ''
+[09-15-2026:12:57:15.037321-GMT] Info(): [Info][ClientHouseKeeping]   m_hubPort = 0
+[09-15-2026:12:57:15.037322-GMT] Info(): [Info][ClientHouseKeeping]   m_sessionId = ''
+[09-15-2026:12:57:15.037324-GMT] Info(): [Info][ClientHouseKeeping]   m_timePointUntilCanRejoinInMicroSecs = 0
+[09-15-2026:12:57:15.037325-GMT] Info(): [Info][ClientHouseKeeping]   m_gameMode = 'Invalid'
+[09-15-2026:12:57:15.417633-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'actionQuickCommsMoveToPing' to value ''
+[09-15-2026:12:57:15.417738-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'actionUiVoiceMuteAll' to value ''
+[09-15-2026:12:57:15.417741-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'actionUiVoiceMuteSelf' to value ''
+[09-15-2026:12:57:15.417774-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'allianceBreakHoldDuration' to value ''
+[09-15-2026:12:57:15.417794-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'crouchActionTrigger' to value 'Toggle'
+[09-15-2026:12:57:15.417852-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'mouseLookEnabled' to value ''
+[09-15-2026:12:57:15.417872-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'sprintActionTrigger' to value 'Toggle'
+[09-15-2026:12:57:15.417880-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'useQuickCommsGestures' to value ''
+[09-15-2026:12:57:15.421295-GMT] Info(): [Info][UI] Initializing Coherent UI GT ver. 2.9.4.0
+[09-15-2026:12:57:15.421306-GMT] Info(): [Info][UI] Coherent Renoir library initialized!
+[09-15-2026:12:57:15.484725-GMT] Info():   Window resolution: 1680x1050x32 (Windowed)
+[09-15-2026:12:57:15.484728-GMT] Info():   Render resolution: 1680x1050
+[09-15-2026:12:57:15.846187-GMT] Info(): [CruciComms] Initializing Vivox Connection!
+[09-15-2026:12:57:16.049478-GMT] Info(): [CruciComms] Vivox instance initialized successfully.
+[09-15-2026:12:57:16.049674-GMT] Warning(): [Warning][Analytics] Could not connect to Live Services! Emitting metrics to log.
+[09-15-2026:12:57:16.054730-GMT] Warning(): [Warning][UI] Unable to load font face from file: C:\windows\Fonts\msyhbd.ttf
+[09-15-2026:12:57:16.054735-GMT] Warning(): [Warning][UI] Unable to load font face from file: C:\windows\Fonts\simsun.ttc
+[09-15-2026:12:57:16.546347-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:13421: Crucible UI :: jenkins-crucible_hotfix-crucible_hotfix-ui-259
+[09-15-2026:12:57:16.546353-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:82958: PASSES: []
+[09-15-2026:12:57:16.546357-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"bootup":"locale"}
+[09-15-2026:12:57:16.546361-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:1 GET:http://127.0.0.1:18876/CrucibleLiveCharacterLevelService/characterxp 
+[09-15-2026:12:57:16.546364-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:2 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/entitlements 
+[09-15-2026:12:57:16.546366-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:3 POST:http://127.0.0.1:18876/CrucibleLiveOfferService/getuserinfo {"body":{}}
+[09-15-2026:12:57:16.546368-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:4 POST:http://127.0.0.1:18876/CrucibleLiveOfferService/offers/list {"body":{}}
+[09-15-2026:12:57:16.546370-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:5 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/seasons 
+[09-15-2026:12:57:16.546373-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:6 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-challenge-stars 
+[09-15-2026:12:57:16.578112-GMT] Info(): [Info][ClientHouseKeeping] Rejoin.get found and invalid session to rejoin.  Sending empty data to UI.
+[09-15-2026:12:57:16.578125-GMT] Warning(): [Warning][UI] Failed to open connection. No endpoint named 'vendor.get'
+[09-15-2026:12:57:16.578217-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:1 GET:http://127.0.0.1:18876/CrucibleLiveCharacterLevelService/characterxp {"xp":[]}
+[09-15-2026:12:57:16.578221-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:2 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/entitlements {"data":"[]"}
+[09-15-2026:12:57:16.578223-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:3 POST:http://127.0.0.1:18876/CrucibleLiveOfferService/getuserinfo {"purchasingInfo":{"currency":{"credits":2500}}}
+[09-15-2026:12:57:16.578230-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:4 POST:http://127.0.0.1:18876/CrucibleLiveOfferService/offers/list {"offers":[{"offerId":"credits_pack_500","type":"CURRENCY","providerName":"STEAM","entitlements":[{"entitlementId":"currency_credits","amount":500}],"metadata":["credits","pack_small"],"price":{"amount":499,"currency":"USD"}},{"offerId":"credits_pack_1000","type":"CURRENCY","providerName":"STEAM","entitlements":[{"entitlementId":"currency_credits","amount":1000}],"metadata":["credits","pack_medium"],"price":{"amount":999,"currency":"USD"}},{"offerId":"credits_pack_2500","type":"CURRENCY","providerName":"STEAM","entitlements":[{"entitlementId":"currency_credits","amount":2500}],"metadata":["credits","pack_large"],"price":{"amount":1999,"currency":"USD"}},{"offerId":"battlepass_s1_pass","type":"BATTLEPASS","providerName":"STEAM","entitlements":[{"entitlementId":"battlepass_s1_premium","amount":1}],"metadata":["battlepass","season1"],"price":{"amount":1000,"currency":"credits"}}]}
+[09-15-2026:12:57:16.578234-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:82958: PASSES: [{"offerId":"battlepass_s1_pass","type":"BATTLEPASS","providerName":"STEAM","entitlements":[{"entitlementId":"battlepass_s1_premium","amount":1}],"metadata":["battlepass","season1"],"price":{"amount":1000,"currency":"credits"},"tags":{}}]
+[09-15-2026:12:57:16.578237-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:7 POST:http://127.0.0.1:18876/CrucibleLiveEntitlementService/entitlements/list {"body":{}}
+[09-15-2026:12:57:16.593640-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-15-2026:12:57:16.593645-GMT] Error(): [Error][UI] ConsoleAPI :1:11: Error: 404: Not Found for http://127.0.0.1:18876/CrucibleLiveSystemMessages/gamemodes.json
+[09-15-2026:12:57:16.593655-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:5 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/seasons {"data":"[{\"StartDate\": \"2026-08-03T00:00:00.000Z\", \"EndDate\": \"2027-02-01T00:00:00.000Z\", \"Currency\": \"currency_battlepassxp\", \"Entitlement\": \"battlepass_s1\", \"SeasonId\": \"crucible-season1\", \"Name\": \"Season 1\"}]"}
+[09-15-2026:12:57:16.593663-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:6 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-challenge-stars {"data":"{\"crucible-season1\": [{\"ChallengeId\": \"s1_w1_collect_essence\", \"ProgressionId\": \"prog_s1_w1_collect_essence\", \"Count\": 3000, \"Permanence\": \"Weekly\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 2}, {\"ChallengeId\": \"s1_w1_deal_damage\", \"ProgressionId\": \"prog_s1_w1_deal_damage\", \"Count\": 5000, \"Permanence\": \"Weekly\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 2}, {\"ChallengeId\": \"s1_w1_win_games\", \"ProgressionId\": \"prog_s1_w1_win_games\", \"Count\": 3, \"Permanence\": \"Weekly\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 2}, {\"ChallengeId\": \"s1_w2_collect_essence\", \"ProgressionId\": \"prog_s1_w2_collect_essence\", \"Count\": 3000, \"Permanence\": \"Weekly\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 1, \"St
+[09-15-2026:12:57:16.593678-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:7 POST:http://127.0.0.1:18876/CrucibleLiveEntitlementService/entitlements/list {"entitlementQuantities":[{"entitlementId":"currency_battlepassxp","amount":23,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"currency_battlepasskeys","amount":3,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"currency_credits","amount":2500,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0000_world_cruciblelogo","amount":1,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0014_world_flagbannersilhouette","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0019_world_hivesilhouette","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0012_world_enemykilllogo","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"ent
+[09-15-2026:12:57:16.593684-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:8 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/dailyChallenges 
+[09-15-2026:12:57:16.593687-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:9 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars 
+[09-15-2026:12:57:16.593690-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:10 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars 
+[09-15-2026:12:57:16.637127-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:8 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/dailyChallenges {"challenges":["daily_play_matches","daily_deal_damage_to_players","daily_earn_essence"],"rerollsLeft":3}
+[09-15-2026:12:57:16.637141-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:9 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars {"data":"{\"daily_play_matches\": {\"ChallengeId\": \"daily_play_matches\", \"ProgressionId\": \"prog_daily_play_matches\", \"Count\": 2, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_deal_damage_to_players\": {\"ChallengeId\": \"daily_deal_damage_to_players\", \"ProgressionId\": \"prog_daily_deal_damage_to_players\", \"Count\": 2500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_earn_essence\": {\"ChallengeId\": \"daily_earn_essence\", \"ProgressionId\": \"prog_daily_earn_essence\", \"Count\": 1500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_defeat_players\": {\"ChallengeId\": \"daily_defeat_players\", \"ProgressionId\": \"prog_daily_defeat_players\", 
+[09-15-2026:12:57:16.637148-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:10 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars {"data":"{\"daily_play_matches\": {\"ChallengeId\": \"daily_play_matches\", \"ProgressionId\": \"prog_daily_play_matches\", \"Count\": 2, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_deal_damage_to_players\": {\"ChallengeId\": \"daily_deal_damage_to_players\", \"ProgressionId\": \"prog_daily_deal_damage_to_players\", \"Count\": 2500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_earn_essence\": {\"ChallengeId\": \"daily_earn_essence\", \"ProgressionId\": \"prog_daily_earn_essence\", \"Count\": 1500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_defeat_players\": {\"ChallengeId\": \"daily_defeat_players\", \"ProgressionId\": \"prog_daily_defeat_players\",
+[09-15-2026:12:57:16.637154-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:11 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars 
+[09-15-2026:12:57:16.637160-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:12 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/challenges {"body":{"progressionIds":["prog_s1_w1_collect_essence","prog_s1_w1_deal_damage","prog_s1_w1_win_games","prog_s1_w2_collect_essence","prog_s1_w2_defeat_enemy_hunters","prog_s1_w2_win_games","prog_s1_w3_collect_essence","prog_s1_w3_gain_essence","prog_s1_w3_win_games","prog_s1_w4_collect_essence","prog_s1_w4_deal_damage","prog_s1_w4_win_games","prog_s1_w5_collect_essence","prog_s1_w5_gain_levels","prog_s1_w5_win_games","prog_s1_w6_collect_essence","prog_s1_w6_gain_levels","prog_s1_w6_win_games","prog_s1_w7_collect_essence","prog_s1_w7_gain_levels","prog_s1_w7_win_games","prog_s1_w8_collect_essence","prog_s1_w8_gain_levels","prog_s1_w8_win_games","prog_s1_w9_collect_essence","prog_s1_w9_gain_levels","prog_s1_w9_win_games","prog_s1_w10_collect_essence","prog_s1_w10_gain_levels","prog_s1_w10_win_games","prog_s1_w11_collect_essence","prog_s1_w11_gain_levels","prog_s1_w11_win_games","prog_s
+[09-15-2026:12:57:16.668432-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:11 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars {"data":"{\"daily_play_matches\": {\"ChallengeId\": \"daily_play_matches\", \"ProgressionId\": \"prog_daily_play_matches\", \"Count\": 2, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_deal_damage_to_players\": {\"ChallengeId\": \"daily_deal_damage_to_players\", \"ProgressionId\": \"prog_daily_deal_damage_to_players\", \"Count\": 2500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_earn_essence\": {\"ChallengeId\": \"daily_earn_essence\", \"ProgressionId\": \"prog_daily_earn_essence\", \"Count\": 1500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_defeat_players\": {\"ChallengeId\": \"daily_defeat_players\", \"ProgressionId\": \"prog_daily_defeat_players\",
+[09-15-2026:12:57:16.668442-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:13 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/challenges {"body":{"progressionIds":["prog_daily_play_matches","prog_daily_deal_damage_to_players","prog_daily_earn_essence","prog_s1_w1_collect_essence","prog_s1_w1_deal_damage","prog_s1_w1_win_games","prog_s1_w2_collect_essence","prog_s1_w2_defeat_enemy_hunters","prog_s1_w2_win_games","prog_s1_w3_collect_essence","prog_s1_w3_gain_essence","prog_s1_w3_win_games","prog_s1_w4_collect_essence","prog_s1_w4_deal_damage","prog_s1_w4_win_games","prog_s1_w5_collect_essence","prog_s1_w5_gain_levels","prog_s1_w5_win_games","prog_s1_w6_collect_essence","prog_s1_w6_gain_levels","prog_s1_w6_win_games","prog_s1_w7_collect_essence","prog_s1_w7_gain_levels","prog_s1_w7_win_games","prog_s1_w8_collect_essence","prog_s1_w8_gain_levels","prog_s1_w8_win_games","prog_s1_w9_collect_essence","prog_s1_w9_gain_levels","prog_s1_w9_win_games","prog_s1_w10_collect_essence","prog_s1_w10_gain_levels","prog_s1_w10_win_games"
+[09-15-2026:12:57:16.668447-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"bootup":{"environment":{"lan":"checking","booted":"checking"}}}
+[09-15-2026:12:57:16.699505-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"bootup":{"environment":{"booted":"done","lan":"checking"}}}
+[09-15-2026:12:57:16.746827-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"matchmaking":"lan","content":{"home":{"general":"lobby"}},"overlay":"hidden","connection":"hidden"}}
+[09-15-2026:12:57:16.762237-GMT] Info(): [Info][Skinning] Setting mesh asset {C29A9585-F0A6-5F62-BA0F-E31FBA50D93E}:d3ff8946 for entity 'marine_character':356482285565
+[09-15-2026:12:57:16.762488-GMT] Info(): [Info][Skinning] Actor for entity 'marine_character':356482285565 has been created
+[09-15-2026:12:57:16.762806-GMT] Info(): [Info][Skinning] Setting material animations/characters/player/marine/character/marine_actor.mtl for entity 'marine_character':356482285565
+[09-15-2026:12:57:17.052589-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:14 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-achievements 
+[09-15-2026:12:57:17.052594-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:15 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-battlepass-tier-entitlements 
+[09-15-2026:12:57:17.052643-GMT] Info(): [Info][LiveAPI] ServicesRequestWrapper: Sending request class Crucible::LivePlatform::PlayerAuthorizer::CrucibleLivePlayerAuthorizerCall : {7DED315E-DAC2-4E63-A1A8-CDBDF1309BB6} attempt 1/3
+[09-15-2026:12:57:17.052653-GMT] Info(): [Info][LiveAPI] Adding request {7DED315E-DAC2-4E63-A1A8-CDBDF1309BB6}.
+[09-15-2026:12:57:17.053026-GMT] Info(): [Info][LiveAPI] Applying update for request {7DED315E-DAC2-4E63-A1A8-CDBDF1309BB6}.
+[09-15-2026:12:57:17.084247-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\menu-sprite.svg
+[09-15-2026:12:57:17.084276-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\menu\shared\img\currency_credits.svg
+[09-15-2026:12:57:17.084291-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\unknown.svg
+[09-15-2026:12:57:17.084327-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\icons\locked-icon.svg
+[09-15-2026:12:57:17.084335-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\icons\challenge-swap-icon.svg
+[09-15-2026:12:57:17.084347-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\menu\shared\img\battlepass\free-large.svg
+[09-15-2026:12:57:17.084355-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\menu\shared\img\battlepass\premium-large.svg
+[09-15-2026:12:57:17.098359-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\menu\shared\img\battlepass\free-large.svg
+[09-15-2026:12:57:17.098395-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\menu\shared\img\battlepass\premium-large.svg
+[09-15-2026:12:57:17.098411-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\menu\shared\img\currency_credits.svg
+[09-15-2026:12:57:17.098434-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\icons\challenge-swap-icon.svg
+[09-15-2026:12:57:17.098466-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\icons\locked-icon.svg
+[09-15-2026:12:57:17.100489-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-15-2026:12:57:17.100495-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/layout.js:9:1834: Error: 404: Not Found for http://127.0.0.1:18876/CrucibleLiveSystemMessages/motd.json
+[09-15-2026:12:57:17.100498-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:14 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-achievements {"data":"{}"}
+[09-15-2026:12:57:17.115504-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\unknown.svg
+[09-15-2026:12:57:17.115523-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\menu-sprite.svg
+[09-15-2026:12:57:17.124023-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:15 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-battlepass-tier-entitlements {"data":"{\"tiers\": [{\"ChallengeId\": \"BATTLEPASS_S1_FREE_TIER_01\", \"Count\": 0, \"Entitlements\": [{\"entitlementId\": \"icon_0000_world_cruciblelogo\", \"category\": \"accounticon\"}]}, {\"ChallengeId\": \"BATTLEPASS_S1_PAID_TIER_01\", \"Count\": 0, \"Entitlements\": [{\"entitlementId\": \"commando_t1_default_02\", \"category\": \"skin\"}]}, {\"ChallengeId\": \"BATTLEPASS_S1_FREE_TIER_02\", \"Count\": 10, \"Entitlements\": [{\"entitlementId\": \"currency_battlepasskey\", \"category\": \"currency\"}]}, {\"ChallengeId\": \"BATTLEPASS_S1_PAID_TIER_02\", \"Count\": 10, \"Entitlements\": [{\"entitlementId\": \"currency_battlepasskey\", \"category\": \"currency\"}]}, {\"ChallengeId\": \"BATTLEPASS_S1_FREE_TIER_03\", \"Count\": 20, \"Entitlements\": [{\"entitlementId\": \"icon_0005_world_cosmicstorm\", \"category\": \"accounticon\"}]}, {\"Challenge
+[09-15-2026:12:57:17.130644-GMT] Info(): [Info][LiveAPI] Applying update for request {7DED315E-DAC2-4E63-A1A8-CDBDF1309BB6}.
+[09-15-2026:12:57:17.625756-GMT] Warning(): [AWS] AWSErrorMarshaller - Encountered AWSError 'MissingAuthenticationToken': Request is missing Authentication Token
+[09-15-2026:12:57:17.625774-GMT] Warning(): [AWS] AWSClient - If the signature check failed. This could be because of a time skew. Attempting to adjust the signer.
+[09-15-2026:12:57:17.929730-GMT] Warning(): [AWS] AWSErrorMarshaller - Encountered AWSError 'NoSuchBucket': The specified bucket does not exist
+[09-15-2026:12:57:17.929742-GMT] Warning(): [AWS] AWSClient - If the signature check failed. This could be because of a time skew. Attempting to adjust the signer.
+[09-15-2026:12:57:17.929822-GMT] Info(): No configs found for: CrucibleLiveWebSocketUrl
+[09-15-2026:12:57:17.930475-GMT] Info(): No configs found for: stage
+[09-15-2026:12:57:17.930475-GMT] PersonaUIWebsocket::LogicalConnectionStateDisconnected::RunJobs(): Websocket: connecting
+[09-15-2026:12:57:17.930499-GMT] Info(): No configs found for: region
+[09-15-2026:12:57:17.930500-GMT] Info(): No configs found for: analyticsKinesisStreamName
+[09-15-2026:12:57:17.930534-GMT] PersonaUIWebsocket::UriBuilder::Build(): URI Error: Could not parse URL from configuration, doesn't start with WSS://? : 
+[09-15-2026:12:57:17.930538-GMT] PersonaUIWebsocket::WebsocketSession::RunInternal(): websocket session ended with error: 
+[09-15-2026:12:57:17.985224-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:12 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/challenges {"runningTotals":[{"progressionId":"prog_s1_w1_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w1_deal_damage","runningTotal":2350},{"progressionId":"prog_s1_w1_win_games","runningTotal":0},{"progressionId":"prog_s1_w2_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w2_defeat_enemy_hunters","runningTotal":0},{"progressionId":"prog_s1_w2_win_games","runningTotal":0},{"progressionId":"prog_s1_w3_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w3_gain_essence","runningTotal":0},{"progressionId":"prog_s1_w3_win_games","runningTotal":0},{"progressionId":"prog_s1_w4_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w4_deal_damage","runningTotal":0},{"progressionId":"prog_s1_w4_win_games","runningTotal":0},{"progressionId":"prog_s1_w5_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w5_gain_levels","runningTotal":0},{"progression
+[09-15-2026:12:57:17.985233-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:13 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/challenges {"runningTotals":[{"progressionId":"prog_daily_play_matches","runningTotal":1},{"progressionId":"prog_daily_deal_damage_to_players","runningTotal":1130},{"progressionId":"prog_daily_earn_essence","runningTotal":640},{"progressionId":"prog_s1_w1_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w1_deal_damage","runningTotal":2350},{"progressionId":"prog_s1_w1_win_games","runningTotal":0},{"progressionId":"prog_s1_w2_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w2_defeat_enemy_hunters","runningTotal":0},{"progressionId":"prog_s1_w2_win_games","runningTotal":0},{"progressionId":"prog_s1_w3_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w3_gain_essence","runningTotal":0},{"progressionId":"prog_s1_w3_win_games","runningTotal":0},{"progressionId":"prog_s1_w4_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w4_deal_damage","runningTotal":
+[09-15-2026:12:57:20.747151-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:16 POST:https://kinesis.us-east-1.amazonaws.com {"body":{"Records":[{"Data":"eyJhcHAuc2Vzc2lvbi4xIjp7ImlkIjoiVU5TRVRfU0VTU0lPTklEIiwiY3VycmVudF9kdXJhdGlvbiI6MjY0fSwiYXBwLmluZm8uMSI6eyJpZCI6IlVOU0VUX0FQUExJQ0FUSU9OX0lEIiwidmVyc2lvbiI6IlVOU0VUX1ZFUlNJT04iLCJzdGFnZSI6IlVOU0VUX1NUQUdFIn0sImV2ZW50LmluZm8uMSI6eyJ0eXBlIjoiY3VzdG9tLm1lbnVWaWV3LjEiLCJ0cmFjZV9pZCI6ImN1c3RvbS5tZW51Vmlldy4xIiwic291cmNlIjoiQ3J1Y2libGUiLCJpZCI6IjkxZmQ0ZTlkLWI1NWMtNDgyMC05ODQzLWQyNTM3YzRkMDNlMi0wIiwiY3JlYXRlZCI6IjIwMjYtMDktMTVUMTI6NTc6MTYuNzI5WiIsInN1Ym1pdHRlZCI6IjIwMjYtMDktMTVUMTI6NTc6MjAuNzMxWiJ9LCJjdXN0b20ubWVudUxvYWQuMSI6eyJkZXN0aW5hdGlvbiI6ImxvYmJ5Iiwic291cmNlIjoiVU5TRVRfUEFHRSJ9LCJjdXN0b20ucGxheWVySUQuMSI6eyJnc0lEIjoiVU5TRVRfR0FNRVNQQVJLU0lEIn19","PartitionKey":"test"},{"Data":"eyJhcHAuaW5mby4xIjp7ImlkIjoiVU5TRVRfQVBQTElDQVRJT05fSUQiLCJ2ZXJzaW9uIjoiVU5TRVRfVkVSU0lPTiIsInN0YWdlIjoiVU5TRVRfU1RBR0UifSwiYXBwLnNlc3Npb24uMSI6eyJpZCI6IlVOU0VUX1NFU1NJT05JRCIsImN1cnJlbnRfZHVyYXRpb24iOjU2M
+[09-15-2026:12:57:21.091926-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-15-2026:12:57:21.547665-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-15-2026:12:57:22.425493-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-15-2026:12:57:22.934790-GMT] PersonaUIWebsocket::LogicalConnectionStateDisconnected::RunJobs(): Websocket: connecting
+[09-15-2026:12:57:22.934856-GMT] PersonaUIWebsocket::UriBuilder::Build(): URI Error: Could not parse URL from configuration, doesn't start with WSS://? : 
+[09-15-2026:12:57:22.934860-GMT] PersonaUIWebsocket::WebsocketSession::RunInternal(): websocket session ended with error: 
+[09-15-2026:12:57:24.543503-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-15-2026:12:57:27.939786-GMT] PersonaUIWebsocket::LogicalConnectionStateDisconnected::RunJobs(): Websocket: connecting
+[09-15-2026:12:57:27.939850-GMT] PersonaUIWebsocket::UriBuilder::Build(): URI Error: Could not parse URL from configuration, doesn't start with WSS://? : 
+[09-15-2026:12:57:27.939853-GMT] PersonaUIWebsocket::WebsocketSession::RunInternal(): websocket session ended with error: 
+[09-15-2026:12:57:30.462750-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-15-2026:12:57:30.462759-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29116: SVCSERR:16 POST:https://kinesis.us-east-1.amazonaws.com Error: 400: Bad Request for https://kinesis.us-east-1.amazonaws.com
+[09-15-2026:12:57:30.664405-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:17 POST:https://kinesis.us-east-1.amazonaws.com {"body":{"Records":[{"Data":"eyJhcHAuc2Vzc2lvbi4xIjp7ImlkIjoiVU5TRVRfU0VTU0lPTklEIiwiY3VycmVudF9kdXJhdGlvbiI6MjY0fSwiYXBwLmluZm8uMSI6eyJpZCI6IlVOU0VUX0FQUExJQ0FUSU9OX0lEIiwidmVyc2lvbiI6IlVOU0VUX1ZFUlNJT04iLCJzdGFnZSI6IlVOU0VUX1NUQUdFIn0sImV2ZW50LmluZm8uMSI6eyJ0eXBlIjoiY3VzdG9tLm1lbnVWaWV3LjEiLCJ0cmFjZV9pZCI6ImN1c3RvbS5tZW51Vmlldy4xIiwic291cmNlIjoiQ3J1Y2libGUiLCJpZCI6IjkxZmQ0ZTlkLWI1NWMtNDgyMC05ODQzLWQyNTM3YzRkMDNlMi0wIiwiY3JlYXRlZCI6IjIwMjYtMDktMTVUMTI6NTc6MTYuNzI5WiIsInN1Ym1pdHRlZCI6IjIwMjYtMDktMTVUMTI6NTc6MjAuNzMxWiJ9LCJjdXN0b20ubWVudUxvYWQuMSI6eyJkZXN0aW5hdGlvbiI6ImxvYmJ5Iiwic291cmNlIjoiVU5TRVRfUEFHRSJ9LCJjdXN0b20ucGxheWVySUQuMSI6eyJnc0lEIjoiVU5TRVRfR0FNRVNQQVJLU0lEIn19","PartitionKey":"test"},{"Data":"eyJhcHAuaW5mby4xIjp7ImlkIjoiVU5TRVRfQVBQTElDQVRJT05fSUQiLCJ2ZXJzaW9uIjoiVU5TRVRfVkVSU0lPTiIsInN0YWdlIjoiVU5TRVRfU1RBR0UifSwiYXBwLnNlc3Npb24uMSI6eyJpZCI6IlVOU0VUX1NFU1NJT05JRCIsImN1cnJlbnRfZHVyYXRpb24iOjU2M
+[09-15-2026:12:57:30.931047-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-15-2026:12:57:31.402367-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-15-2026:12:57:32.280329-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-15-2026:12:57:32.944789-GMT] PersonaUIWebsocket::LogicalConnectionStateDisconnected::RunJobs(): Websocket: connecting
+[09-15-2026:12:57:32.944868-GMT] PersonaUIWebsocket::UriBuilder::Build(): URI Error: Could not parse URL from configuration, doesn't start with WSS://? : 
+[09-15-2026:12:57:32.944872-GMT] PersonaUIWebsocket::WebsocketSession::RunInternal(): websocket session ended with error: 
+[09-15-2026:12:57:32.971958-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"overlay":"hidden","matchmaking":"lan","connection":{"disconnected":"modal"},"content":{"home":{"general":"lobby"}}}}
+[09-15-2026:12:57:33.097278-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\components\modal\img\modal-bg.svg
+[09-15-2026:12:57:33.097313-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\disconnected.svg
+[09-15-2026:12:57:33.111033-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\components\modal\img\modal-bg.svg
+[09-15-2026:12:57:33.111066-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\disconnected.svg
+[09-15-2026:12:57:33.976556-GMT] Warning(): [AWS] WinHttpSyncHttpClient - Send request failed: â.
+[09-15-2026:12:57:34.352222-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-15-2026:12:57:34.947836-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"connection":{"disconnected":"modal"},"matchmaking":"lan","overlay":"hidden","content":{"home":{"general":"lobby"}}}}
+[09-15-2026:12:57:34.947841-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:18 POST:http://127.0.0.1:18876/CrucibleLivePartyService/status/NOT_READY {"body":{"status":"NOT_READY"}}
+[09-15-2026:12:57:35.010659-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-15-2026:12:57:35.263727-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-15-2026:12:57:35.920229-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-15-2026:12:57:35.952602-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/menu.js:13:17102: SET NOT READY
+[09-15-2026:12:57:35.967738-GMT] Info(): [Info][Meta] Crucible client application is quitting normally.

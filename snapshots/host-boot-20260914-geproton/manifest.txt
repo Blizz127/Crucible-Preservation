@@ -1,0 +1,5 @@
+date=2026-09-14T22:38CDT run by user on host (not sandbox)
+proton=GE-Proton (user switched from Proton Experimental)
+game=build 5685572, exe md5 04a844e3f1fed404c6938b8ec4a2f877
+result=boots to login; PlayerAuthorizer 3/3 attempts fail fast via WinHttpSyncHttpClient
+log=NovaGameClient-20260915T033814Z.log (frozen at login screen, no retry loop)
