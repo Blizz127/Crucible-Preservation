@@ -13,6 +13,32 @@ rules, client patched only where unavoidable).
 > gameplay still needs a community server. Practice Arena mode entry was
 > unblocked last — see `docs/09-practice-arena.md`.
 
+## Scope and legal
+
+This repository contains **no game assets** — no binaries, pak contents,
+textures, audio, locale bundles or extracted game code. It ships tooling,
+findings and captured logs. The `snapshots/` manifests record the file names,
+sizes and hashes of a retail install; they do not contain the files themselves.
+
+- You must **own Crucible on Steam** (AppID `1057240`). Nothing here helps you
+  obtain it, and no copy-protection is bypassed to run it.
+- Patching is applied to **your own local copy**, for interoperability with a
+  local backend standing in for services Amazon shut down in 2020 (GameSparks
+  was sunset in 2022). The goal is a clean-room reimplementation — our own
+  server speaking the client's protocol.
+- Everything is **local only**: the revived endpoints are `127.0.0.1`. Nothing
+  here targets live infrastructure, and the original endpoints are dead
+  (`NXDOMAIN`).
+- **Do not redistribute patched paks or any extracted game content.**
+- **No anti-cheat component has been modified or removed.** `docs/02` records
+  the EAC question as an open design decision for a future LAN mode; no such
+  change exists in this repository.
+
+Not affiliated with or endorsed by Amazon Game Studios or Amazon.com, Inc.
+"Crucible" and related marks belong to their respective owners. Code and
+documentation here are MIT licensed (see `LICENSE`) — that covers this
+repository's original work, not any third-party game content.
+
 ## Layout
 
 - `docs/01-recon.md` — what the client actually is (engine, gems, backend
