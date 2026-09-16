@@ -25,18 +25,39 @@ rejected (docs/08: TLSV1_ALERT_INTERNAL_ERROR) until it is installed. This
 generates a self-signed cert claiming 127.0.0.1; install it as a trusted root
 with tools/install_test_ca.py.
 
+Cert trust is only half the story - the engine ALSO pins the match server's
+cert, so net_SslEnablePinning must be 0 in user.cfg or the handshake aborts
+regardless of what cert is served. See docs/10-match-server-tls.md.
+
 Usage (on the host, game not running):
   1. python3 server/match_stub.py          # generates the cert on first run
   2. python3 tools/install_test_ca.py      # installs it into the prefix root store
   3. launch, PLAY -> pick a mode -> READY
   4. read server/match_stub.log
+
+Packet-name probing
+-------------------
+The client logs every packet it RECEIVES as
+  [Debug_DispatchPackets] %s: Received packet %s
+once the ReportTag is enabled in user.cfg:
+  Crucible.ReportTagRequiredFilters +Debug_DispatchPackets
+
+Because this stub otherwise sends nothing, that log has nothing to report. Set
+  CRUCIBLE_PROBE_IDS=5,6,7,8,9,10,11,12
+to have the stub reply to the client's opening frame with one frame per id.
+The client then names each type in its own log, which is the only way to
+resolve the id -> name mapping.
+
+  CRUCIBLE_PROBE_IDS=5 python3 server/match_stub.py     # single id
 """
 import datetime
 import os
 import socket
 import ssl
+import struct
 import subprocess
 import threading
+import time
 
 HOST = "127.0.0.1"
 PORT = int(os.environ.get("CRUCIBLE_MATCH_PORT", "18877"))
@@ -88,6 +109,43 @@ def drain(tls, addr, label):
         log("      asc: %r" % (data[:512],))
 
 
+def build_probe(pid, payload=b""):
+    """One NovaNet frame: u16 BE packet id, u16 BE payload length, payload.
+
+    Framing inferred from the client's own opening frame
+    (docs/10-match-server-tls.md): a 4-byte header whose length field is
+    exactly len(frame) - 4.
+    """
+    return struct.pack(">HH", pid, len(payload)) + payload
+
+
+def probe(tls, first_frame):
+    """Send one frame per id in CRUCIBLE_PROBE_IDS, spaced out.
+
+    The client's dispatcher logs `[Debug_DispatchPackets] %s: Received packet
+    %s` for anything it receives, so a probe makes it name the packet type -
+    which is the only way to learn the id -> name mapping. Unknown ids hit
+    its own assert instead, so either outcome is informative.
+    """
+    spec = os.environ.get("CRUCIBLE_PROBE_IDS", "").strip()
+    if not spec:
+        return
+    ids = [int(x) for x in spec.replace(" ", "").split(",") if x]
+
+    # Echo the payload the client itself sent, so the shape stays plausible
+    # for whichever id we pretend to be a reply to.
+    payload = first_frame[4:] if len(first_frame) > 4 else b""
+    for pid in ids:
+        frame = build_probe(pid, payload)
+        try:
+            tls.sendall(frame)
+        except (ssl.SSLError, OSError) as e:
+            log("  probe id %d send failed: %r" % (pid, e))
+            return
+        log("  probe -> id %-2d len %-3d bytes: %s" % (pid, len(payload), frame.hex()))
+        time.sleep(0.5)
+
+
 def handle(conn, addr, ctx):
     try:
         conn.settimeout(60)
@@ -105,7 +163,20 @@ def handle(conn, addr, ctx):
                 addr, tls.version(), tls.cipher()[0],
                 tls.selected_alpn_protocol(), getattr(tls, "server_hostname", None)))
             tls.settimeout(30)
-            drain(tls, addr, "app")
+            # Take the client's opening frame first, then optionally probe.
+            try:
+                first = tls.recv(8192)
+            except (ssl.SSLError, OSError) as e:
+                log("  no opening frame: %r" % (e,))
+                return
+            if not first:
+                log("  peer closed before sending anything")
+                return
+            log("  app <- %d bytes" % len(first))
+            log("      hex: %s" % first[:1024].hex())
+            log("      asc: %r" % (first[:512],))
+            probe(tls, first)
+            drain(tls, addr, "after-probe")
         finally:
             try:
                 tls.close()
