@@ -161,6 +161,13 @@ def hub_reply(frame, srv_seq):
         spec = os.environ.get("CRUCIBLE_ACCEPT_DATA", "0100")
         if spec == "auto":
             data = frame[11:]  # verbatim game bytes, ack byte included (01)
+        elif spec == "auto2":
+            # userid-preserving Accept: flag 00 + inbound userid + status 01.
+            # Rationale (docs/10): base wire looks like 5 bytes (flag + userid;
+            # client cvars send exactly that with no type fields), so the
+            # Accept's uint8 must follow the userid. `00 uid 00` (run A) and
+            # `01 uid 00` (run 2) both failed; value 01 is the untried half.
+            data = b"\x00" + bytes(frame[12:16]) + b"\x01"
         else:
             data = bytes.fromhex(spec)
         return build_frame(ACCEPT_ID, srv_seq, data)
