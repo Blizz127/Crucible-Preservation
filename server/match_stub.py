@@ -90,7 +90,28 @@ def ensure_cert():
     log("generated self-signed cert for 127.0.0.1 (%s)" % CRT)
 
 
-def drain(tls, addr, label):
+def make_reply(data, mode):
+    """Build a reply for one received frame, or None to stay silent.
+
+    The client sends id 14 once per second and every one times out as
+    `TcpClientManager::DispatchPendingCallbacks(): Timing out requestid N`, so
+    each is a request awaiting a response. Two cheap hypotheses:
+
+      echo - send the frame back unchanged
+      ack  - same id and payload, but the trailing flag byte forced to 0x00.
+             Observed trailing bytes: id 5 -> 0x01, id 14 -> 0x01, id 8 -> 0x00,
+             which is consistent with 0x01 = request, 0x00 = response.
+    """
+    if mode == "echo":
+        return data
+    if mode == "ack":
+        if len(data) < 5:
+            return None
+        return data[:-1] + b"\x00"
+    return None
+
+
+def drain(tls, addr, label, reply=None):
     """Read until the peer closes, logging every chunk. The whole point: we do
     not know the framing, so we record bytes rather than parse them."""
     total = 0
@@ -107,6 +128,15 @@ def drain(tls, addr, label):
         log("  %s <- %d bytes (total %d)" % (label, len(data), total))
         log("      hex: %s" % data[:1024].hex())
         log("      asc: %r" % (data[:512],))
+        if reply:
+            out = make_reply(data, reply)
+            if out is not None:
+                try:
+                    tls.sendall(out)
+                    log("      reply(%s) -> %s" % (reply, out.hex()))
+                except (ssl.SSLError, OSError) as e:
+                    log("      reply(%s) failed: %r" % (reply, e))
+                    return total
 
 
 def build_probe(pid, payload=b""):
@@ -176,7 +206,10 @@ def handle(conn, addr, ctx):
             log("      hex: %s" % first[:1024].hex())
             log("      asc: %r" % (first[:512],))
             probe(tls, first)
-            drain(tls, addr, "after-probe")
+            reply = os.environ.get("CRUCIBLE_REPLY", "").strip() or None
+            if reply:
+                log("  reply mode: %s (applies to every frame from here)" % reply)
+            drain(tls, addr, "after-probe", reply=reply)
         finally:
             try:
                 tls.close()
