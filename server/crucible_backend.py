@@ -237,6 +237,22 @@ def handle_sysmsgs(path):
         return D.gamemodes_payload()
     if path == "/motd.json":
         return {"messages": []}
+    # /betaschedule.json is DELIBERATELY left unhandled (404). It looks like a
+    # missing route - primary-modes.js polls it every 60s and logs an error each
+    # time - but answering it BREAKS the mode-select screen.
+    #
+    # Why: the mode card's update does
+    #     ({noticeText, scheduleText} = n)      // n = the beta-schedule value
+    # and the store is fed `n[locale]`. A 404 leaves that store at its initial
+    # `false`, and destructuring `false` is legal (both keys come out
+    # undefined). Return a JSON object with no entry for the active locale and
+    # the store becomes `undefined`, so the destructuring throws
+    # "TypeError: Right side of assignment cannot be destructured" inside
+    # Svelte's update - which soft-locks the UI: cards paint, clicks do nothing.
+    #
+    # Verified the hard way 2026-09-16. To handle this route safely the payload
+    # would have to carry an entry for EVERY locale the client can request;
+    # a partial map reintroduces the crash. The 404's log noise is cosmetic.
     return None
 
 

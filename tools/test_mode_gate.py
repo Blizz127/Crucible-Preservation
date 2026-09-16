@@ -107,6 +107,14 @@ def route(path):
     raise AssertionError("no route for %s" % path)
 
 
+def route_opt(path):
+    """route(), but None when the backend intentionally has no handler."""
+    try:
+        return route(path)
+    except AssertionError:
+        return None
+
+
 def main():
     failures = []
 
@@ -152,6 +160,21 @@ def main():
     else:
         failures.append("regression guard: {\"messages\": []} should throw "
                         "on missing .modes")
+
+    # 6. betaschedule.json must stay UNHANDLED (404).
+    #    It looks like a missing route, and the client logs an error for it
+    #    every 60s - but answering it SOFT-LOCKS the mode-select screen. The
+    #    mode card destructures the value:
+    #        ({noticeText, scheduleText} = n)
+    #    with the store fed `n[locale]`. A 404 leaves that store at its initial
+    #    `false`, and destructuring `false` is legal. A JSON object with no
+    #    entry for the active locale makes it `undefined`, which throws
+    #    "Right side of assignment cannot be destructured" inside Svelte's
+    #    update - modes render, clicks do nothing. Cost a live run on
+    #    2026-09-16. Do not re-add it without a payload covering EVERY locale.
+    if route_opt("/CrucibleLiveSystemMessages/betaschedule.json") is not None:
+        failures.append("betaschedule.json is handled again - this soft-locks "
+                        "the mode-select UI (see crucible_backend comment)")
 
     if failures:
         print("FAIL")
