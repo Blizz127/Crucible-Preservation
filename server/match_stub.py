@@ -94,16 +94,19 @@ FLAG_OFFSET = 11  # payload byte 7; see the layout note below
 CONNECT_ID = 5
 ACCEPT_ID = 6
 
-# Transport layout, reverse-engineered 2026-09-16 from two live runs plus the
+# Transport layout, reverse-engineered 2026-09-16 from live runs plus the
 # client log (see docs/10-match-server-tls.md "What the wire actually is"):
 #   header: u16 BE packet id, u16 BE body length
 #   body:   5 constant magic bytes 01 00 05 00 00, u16 BE counter, data bytes
-# The counter is a per-frame sequence number (observed up to 0x0184 = 388).
-# The client's TcpClientManager logs "Timing out requestid N" for unanswered
-# reliable frames, and N tracks the counter: timeouts ran 3..78 while counters
-# ran 01..5e, with req 1 (Connect, answered by our counter-01 Accept) and req 2
-# (cvars, unreliable) never firing. So a response MUST carry the request's
-# counter back. Plain echo preserves it; fabricated frames must set it.
+# Revised model (run of 17:41, hub mode v1): the counter is a per-SENDER
+# sequence number, and data[0] of server->client frames is a cumulative ack
+# of the client sequence. Evidence: client heartbeats (id 14) always carry
+# data 01 even at client counter 0x91 — exactly one server frame (our Accept,
+# server seq 01) ever counted; our v1 echoes reused CLIENT counters (03, 04,
+# ...) with stale ack 01, leaving a server-seq gap at 02, and every heartbeat
+# timed out. So server frames need their OWN sequence (01, 02, 03, ...) and
+# data[0] = the client counter being acked. A game response (Accept) is
+# matched to its request the same way: ack byte == request counter.
 MAGIC = b"\x01\x00\x05\x00\x00"
 
 
@@ -130,20 +133,22 @@ def build_frame(pid, counter, data):
     return pid.to_bytes(2, "big") + len(body).to_bytes(2, "big") + body
 
 
-def hub_reply(frame):
+def hub_reply(frame, srv_seq):
     """Per-frame response for CRUCIBLE_REPLY=hub.
 
-    - id 5 (Connect) -> id 6 (Accept) with the SAME counter and data bytes
-      from CRUCIBLE_ACCEPT_DATA (hex, default "0100": base byte 01 as in the
-      Connect, plus the Accept's uint8 status 00). One shot per run: the
-      client sends Connect once, so the payload only gets one chance; the env
-      knob lets later runs vary it without code changes.
-    - id 14 (heartbeat) -> verbatim echo (counter preserved), iff
-      CRUCIBLE_HB=echo (default). Tests the counter-echo transport theory:
-      timeouts should stop.
-    - id 8 (cvars) -> silent by default (its request never times out, so no
-      pressure; avoids feeding our bytes into cvar sync). Set
-      CRUCIBLE_CVARS=echo to probe it.
+    srv_seq is OUR next server sequence number (caller increments per send).
+    Every response acks the inbound frame: data[0] = inbound counter & 0xff.
+
+    - id 5 (Connect) -> id 6 (Accept), acking counter 01. Game payload comes
+      from CRUCIBLE_ACCEPT_DATA: hex bytes, or "auto" for a verbatim echo of
+      the Connect's own data (id flipped, data untouched — never tested; the
+      old accept mode always cleared data[0]). Default "0100". One shot per
+      run: the client sends Connect once.
+    - id 14 (heartbeat) -> id 14 with 1-byte data = ack, iff
+      CRUCIBLE_HB=ack (default). Tests the cumulative-ack theory: timeouts
+      should stop. CRUCIBLE_HB=echo keeps the old (poisoned, gap-creating)
+      verbatim echo for comparison; anything else is silent.
+    - id 8 (cvars) -> silent by default. CRUCIBLE_CVARS=echo to probe it.
     """
     if len(frame) < 4:
         return None
@@ -151,12 +156,20 @@ def hub_reply(frame):
     ctr = frame_counter(frame)
     if ctr is None:
         return None
+    ack = ctr & 0xFF
     if pid == CONNECT_ID:
-        data = bytes.fromhex(os.environ.get("CRUCIBLE_ACCEPT_DATA", "0100"))
-        return build_frame(ACCEPT_ID, ctr, data)
+        spec = os.environ.get("CRUCIBLE_ACCEPT_DATA", "0100")
+        if spec == "auto":
+            data = frame[11:]  # verbatim game bytes, ack byte included (01)
+        else:
+            data = bytes.fromhex(spec)
+        return build_frame(ACCEPT_ID, srv_seq, data)
     if pid == 14:
-        if os.environ.get("CRUCIBLE_HB", "echo") == "echo":
+        mode = os.environ.get("CRUCIBLE_HB", "ack")
+        if mode == "echo":
             return frame
+        if mode == "ack":
+            return build_frame(14, srv_seq, bytes([ack]))
         return None
     if pid == 8:
         if os.environ.get("CRUCIBLE_CVARS", "silent") == "echo":
@@ -213,9 +226,12 @@ def make_reply(data, mode):
     return None
 
 
-def drain(tls, addr, label, reply=None):
+def drain(tls, addr, label, reply=None, srv_seq=None):
     """Read until the peer closes, logging every chunk. The whole point: we do
-    not know the framing, so we record bytes rather than parse them."""
+    not know the framing, so we record bytes rather than parse them.
+
+    srv_seq is a one-element list holding our next server sequence number
+    (hub mode); sequences are per-connection."""
     total = 0
     pending = b""
     while True:
@@ -233,7 +249,7 @@ def drain(tls, addr, label, reply=None):
         log("      asc: %r" % (data[:512],))
         if reply == "hub":
             # Frame-aware: split by header length so coalesced recvs still
-            # get one response per frame, each with its own counter.
+            # get one response per frame, each with its own server seq.
             pending += data
             while True:
                 frame, pending = split_frame(pending)
@@ -243,11 +259,13 @@ def drain(tls, addr, label, reply=None):
                 log("      frame id %-2d ctr %s datalen %d" % (
                     pid, frame_counter(frame),
                     max(0, len(frame) - 11)))
-                out = hub_reply(frame)
+                out = hub_reply(frame, srv_seq[0])
                 if out is not None:
+                    srv_seq[0] += 1
                     try:
                         tls.sendall(out)
-                        log("      reply(hub) -> %s" % out.hex())
+                        log("      reply(hub srv %d) -> %s"
+                            % (srv_seq[0] - 1, out.hex()))
                     except (ssl.SSLError, OSError) as e:
                         log("      reply(hub) failed: %r" % (e,))
                         return total
@@ -334,11 +352,15 @@ def handle(conn, addr, ctx):
             # hit its own 30s read timeout, closed, and the client logged
             # "disconnected from the hub due to RemoteHostClosedConnection".
             reply = os.environ.get("CRUCIBLE_REPLY", "").strip() or None
+            srv_seq = [1]  # our server sequence for this connection (hub)
             if reply:
                 log("  reply mode: %s" % reply)
                 if reply == "hub":
                     frame, _ = split_frame(first)
-                    out = hub_reply(frame) if frame is not None else None
+                    out = hub_reply(frame, srv_seq[0]) \
+                        if frame is not None else None
+                    if out is not None:
+                        srv_seq[0] += 1
                 else:
                     out = make_reply(first, reply)
                 if out is not None:
@@ -351,7 +373,8 @@ def handle(conn, addr, ctx):
                             % (reply, e))
                         return
             probe(tls, first)
-            drain(tls, addr, "after-probe", reply=reply)
+            drain(tls, addr, "after-probe", reply=reply,
+                  srv_seq=srv_seq if reply == "hub" else None)
         finally:
             try:
                 tls.close()
