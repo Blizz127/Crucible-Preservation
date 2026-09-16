@@ -124,11 +124,92 @@ Reply to the opening frame. Options in order of cost:
 3. Blind-reply experiments against the stub, watching how the client's state
    machine reacts. Cheapest to try, weakest evidence.
 
+## The packet layer: a dump exists, and so does the dispatch table
+
+Chasing option 1 above turned up more than a dump.
+
+**A conditional packet log.** `Debug_DispatchPackets` gates a logger whose
+format string names the packet:
+
+```
+[Debug_DispatchPackets] %s: Received packet %s
+```
+
+It is group-based, not a boolean — the executable carries five messages of the
+form *"Can only log <X> if a valid group is set"*, one per channel
+(`packets`, `rpcs`, `network properties`, `slice instances`, `slice
+properties`). `NovaNet_Packets` appears as a string and is a strong candidate
+for the group name to pass. Untested.
+
+There is also an assert that names unknown types, which is useful as a probe:
+
+```
+NV_NETWORKASSERT: ClientNetworkAgent DispatchPacket *Unknown* packetType:%u, id:%u ConnectionId:%u
+```
+
+**The dispatch table.** `NovaGameClientPackets::DispatchPacket` (rva
+`0xe24300`) reads the packet type from the header and switches on it:
+
+```
+movzx eax, ax
+add   eax, -5          ; ids below 5 are not dispatched here
+cmp   eax, 7
+ja    <unknown>
+jmp   qword ptr [table]  ; jump table at rva 0xe25a04, 8 entries
+```
+
+so **packet ids 5..12** are handled, which matches the eight packet type names
+present in the binary:
+
+| id | handler rva |
+|---|---|
+| 5 | `0xe24374` |
+| 6 | `0xe2455a` |
+| 7 | `0xe24824` |
+| 8 | `0xe24a5f` |
+| 9 | `0xe24c8d` |
+| 10 | `0xe24e99` |
+| 11 | `0xe25291` |
+| 12 | `0xe255f7` |
+
+and the eight types (with their enum constants):
+
+| name | enum |
+|---|---|
+| Connect | `EPackets_Connect` |
+| Accept | `EPackets_Accept` |
+| ClientMigration | `EPackets_ClientMigration` |
+| SyncConnectionCvars | `EPackets_SyncConnectionCvars` |
+| SyncConsole | `EPackets_SyncConsole` |
+| ServerConsoleCommand | `EPackets_ServerConsoleCommand` |
+| EntityUpdates | `EPackets_EntityUpdates` |
+| EntityRpcs | `EPackets_EntityRpcs` |
+
+The client's opening frame carries id **5**. The natural reading is
+`Connect` -> server replies `Accept`, but **the id-to-name order is NOT
+confirmed** and should not be treated as known:
+
+- the `EPackets_*` strings were recovered with `strings | sort`, which
+  alphabetises them, destroying declaration order;
+- the name strings have exactly one code reference each, in a per-type static
+  initialiser — there is no array of names to index;
+- the name strings visible in the blob near the dispatcher (`Connect`,
+  `Accept`, `EntityUpdates`, ...) are packed by the linker, not in declaration
+  order.
+
+Confirm before building on it: set `Debug_DispatchPackets`, send the client's
+frame, and read the name the logger prints.
+
+`EPackets_START` and `EPackets_MAX` are sentinels, not types.
+
 ## Open items
 
 - **`certs/cacert.pem` pak change is unverified.** It is not what fixed this,
   and on the evidence above it should not be needed. Test by restoring
   `gamedata.pak.pre-cacert` and reconnecting; if the handshake still succeeds,
   drop `tools/patch_cacert.py` and keep the trust store untouched.
+- Which group name `Debug_DispatchPackets` expects (`NovaNet_Packets`?), and
+  whether it is settable from `user.cfg` at all.
+- The id-to-name mapping for ids 5..12 (see caveat above).
 - `PlayerSessionId` is empty in the connect line. May matter for the handshake.
 - `EAC Client failed to start` is logged every run. Not currently blocking.
