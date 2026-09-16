@@ -1,0 +1,146 @@
+[09-16-2026:20:26:11.386243-GMT] NovaNet::Watchdog::UpdateThread(): Watchdog:Thread Watchdog (1) HealthChecks has been *Registered*
+[09-16-2026:20:26:11.386247-GMT] NovaNet::Watchdog::SuppressHealthChecks(): Watchdog:Thread Watchdog (1) HealthChecks has been suppressed
+[09-16-2026:20:26:11.396177-GMT] NovaNet::Watchdog::UpdateThread(): Watchdog:Thread Logger (2) HealthChecks has been *Registered*
+[09-16-2026:20:26:17.439260-GMT] NovaNet::NovaEACGameClient::LoadEAC(): EAC Client failed to start
+[09-16-2026:20:26:17.439749-GMT] NovaNet::Watchdog::UpdateThread(): Watchdog:Thread TcpClientManager (3) HealthChecks has been *Registered*
+[09-16-2026:20:26:17.452110-GMT] NovaNet::PacketHandlerMetrics::SetPacketToStringFunction(): Register PacketGroup Id:0, total number of Packet Groups : 1
+[09-16-2026:20:26:17.711171-GMT] NovaNet::ClientEntityManager::OnSystemEvent(): Removing all entities for level unload
+[09-16-2026:20:26:17.720628-GMT] NovaNet::ClientEntityManager::OnSystemEvent(): Removing all entities for level unload
+[09-16-2026:20:26:28.804522-GMT] Warning(): [Warning][BakedName] Unrecognized EntityFlagValue 'SentryBeacons' in stream 'cdl/gameplay/interaction/sentrybeacon_heartbeat.cdl' will result in mismatched values between client and server. Remove references or add to 'entityflagvalue.names'.
+[09-16-2026:20:26:31.253735-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"matchmaking":"lan","content":{"home":{"general":"lobby"}},"overlay":"hidden","connection":"hidden"}}
+[09-16-2026:20:26:34.149397-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"content":{"home":{"general":"mode"}},"matchmaking":"lan","overlay":"hidden","connection":"hidden"}}
+promiseReactionJob@[native code]
+[09-16-2026:20:26:35.381209-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"content":{"home":{"general":"lobby"}},"matchmaking":"lan","overlay":"hidden","connection":"hidden"}}
+promiseReactionJob@[native code]
+[09-16-2026:20:26:36.375423-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"content":{"loadout":"other"},"matchmaking":"lan","overlay":"hidden","connection":"hidden"}}
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+[09-16-2026:20:26:38.473473-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"content":{"home":{"general":"lobby"}},"matchmaking":"lan","overlay":"hidden","connection":"hidden"}}
+[09-16-2026:20:26:38.473483-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"matchmaking":"lan","overlay":"hidden","connection":"hidden","content":{"home":{"general":"lobby"}}}}
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+[09-16-2026:20:26:39.614205-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"matchmaking":"lan","overlay":"hidden","connection":"hidden","content":{"home":{"general":"lobby"}}}}
+[09-16-2026:20:26:39.662262-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"overlay":"connecting","matchmaking":"lan","connection":"hidden","content":{"home":{"general":"lobby"}}}}
+[09-16-2026:20:26:39.694118-GMT] Info(): [Info][Matchmaking] MatchServer.Connect running LAN, grabbing a new playerId 172966378
+[09-16-2026:20:26:39.694137-GMT] Info(): [Info][Matchmaking] Attempting to connect to 127.0.0.1:18877 with player info: [GameSparksId = 172966378, NovaNetUserId = (701223293 : 0x29cbd17d), PlayerSessionId = ]
+[09-16-2026:20:26:39.694142-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from Disconnected to ConnectingToGameRegistry
+[09-16-2026:20:26:39.694148-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToGameRegistry to ConnectingToHub
+[09-16-2026:20:26:39.694151-GMT] NovaNet::NovaGameServiceClient::SetLoggedInUserDetails(): SetLoggedInUserDetails with userId (701223293 : 0x29cbd17d) and userName 172966378
+[09-16-2026:20:26:39.694153-GMT] NovaNet::NovaGameServiceClient::ClientConnect(): User 172966378(701223293) is connecting to the NovaGameHub at: 127.0.0.1:18877
+[09-16-2026:20:26:39.774029-GMT] ValidateCertificateCallback(): OpenSSL preverification failed with (18: self signed certificate)
+[09-16-2026:20:26:39.774031-GMT] ValidateCertificateCallback(): net_SslAllowSelfSigned is *enabled*, clearing X509 certificate validation failure
+[09-16-2026:20:26:39.774054-GMT] ValidateCertificateCallback(): Certificate validation passed
+[09-16-2026:20:26:39.774078-GMT] ValidateCertificateCallback(): Certificate validation passed
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+	promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+	promiseReactionJob@[native code]
+[09-16-2026:20:27:09.843448-GMT] NovaNet::TcpClientManager::DispatchPendingCallbacks(): Timing out requestid 1
+[09-16-2026:20:27:09.843452-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToHub to Disconnecting
+[09-16-2026:20:27:09.843453-GMT] NovaNet::NovaGameClient::SetClientGameState(): Removing all entities after client disconnection
+[09-16-2026:20:27:09.843462-GMT] NovaNet::ClientNetworkAgent::DisconnectFromServerShard(): ClientNetworkAgent::DisconnectFromGameServers() invoked
+[09-16-2026:20:27:09.843465-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from Disconnecting to Disconnected
+[09-16-2026:20:27:09.843470-GMT] NovaNet::NovaGameServiceClient::OnDisconnect(): Client has been disconnected from the hub due to RemoteHostClosedConnection
+[09-16-2026:20:27:09.859755-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"overlay":"errormodal","matchmaking":{"error":"idle"},"connection":"hidden","content":{"home":{"general":"lobby"}}}}
+promiseReactionJob@[native code]
+	promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]
+promiseReactionJob@[native code]

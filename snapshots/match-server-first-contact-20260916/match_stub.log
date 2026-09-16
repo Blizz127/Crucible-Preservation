@@ -1,0 +1,40 @@
+[2026-09-16T14:12:35.186] listening on 127.0.0.1:18877 (TLS, log: /var/home/blizz/Projects/Crucible Revival/server/match_stub.log)
+[2026-09-16T14:12:35.186] expect: matchserver.connect {type:'lan'} after PLAY -> mode -> READY
+[2026-09-16T14:33:13.651] --- TCP accept from ('127.0.0.1', 57674) ---
+[2026-09-16T14:33:13.652]   SNI presented: None
+[2026-09-16T14:33:13.699] TLS handshake FAILED from ('127.0.0.1', 57674): SSLError(1, '[SSL: TLSV1_ALERT_INTERNAL_ERROR] tlsv1 alert internal error (_ssl.c:1082)')
+[2026-09-16T14:33:13.700]   -> cert not trusted yet? run tools/install_test_ca.py
+[2026-09-16T14:33:13.700] --- connection from ('127.0.0.1', 57674) closed ---
+[2026-09-16T14:33:23.063] --- TCP accept from ('127.0.0.1', 39166) ---
+[2026-09-16T14:33:23.064]   SNI presented: None
+[2026-09-16T14:33:23.113] TLS handshake FAILED from ('127.0.0.1', 39166): SSLError(1, '[SSL: TLSV1_ALERT_INTERNAL_ERROR] tlsv1 alert internal error (_ssl.c:1082)')
+[2026-09-16T14:33:23.113]   -> cert not trusted yet? run tools/install_test_ca.py
+[2026-09-16T14:33:23.113] --- connection from ('127.0.0.1', 39166) closed ---
+[2026-09-16T15:23:30.797] --- TCP accept from ('127.0.0.1', 47694) ---
+[2026-09-16T15:23:30.799]   SNI presented: None
+[2026-09-16T15:23:30.844] TLS handshake FAILED from ('127.0.0.1', 47694): SSLError(1, '[SSL: TLSV1_ALERT_INTERNAL_ERROR] tlsv1 alert internal error (_ssl.c:1082)')
+[2026-09-16T15:23:30.844]   -> cert not trusted yet? run tools/install_test_ca.py
+[2026-09-16T15:23:30.844] --- connection from ('127.0.0.1', 47694) closed ---
+[2026-09-16T15:23:46.772] --- TCP accept from ('127.0.0.1', 52564) ---
+[2026-09-16T15:23:46.773]   SNI presented: None
+[2026-09-16T15:23:46.819] TLS handshake FAILED from ('127.0.0.1', 52564): SSLError(1, '[SSL: TLSV1_ALERT_INTERNAL_ERROR] tlsv1 alert internal error (_ssl.c:1082)')
+[2026-09-16T15:23:46.819]   -> cert not trusted yet? run tools/install_test_ca.py
+[2026-09-16T15:23:46.819] --- connection from ('127.0.0.1', 52564) closed ---
+[2026-09-16T15:23:54.534] --- TCP accept from ('127.0.0.1', 43134) ---
+[2026-09-16T15:23:54.535]   SNI presented: None
+[2026-09-16T15:23:54.581] TLS handshake FAILED from ('127.0.0.1', 43134): SSLError(1, '[SSL: TLSV1_ALERT_INTERNAL_ERROR] tlsv1 alert internal error (_ssl.c:1082)')
+[2026-09-16T15:23:54.581]   -> cert not trusted yet? run tools/install_test_ca.py
+[2026-09-16T15:23:54.581] --- connection from ('127.0.0.1', 43134) closed ---
+[2026-09-16T15:24:01.193] --- TCP accept from ('127.0.0.1', 44544) ---
+[2026-09-16T15:24:01.194]   SNI presented: None
+[2026-09-16T15:24:01.241] TLS handshake FAILED from ('127.0.0.1', 44544): SSLError(1, '[SSL: TLSV1_ALERT_INTERNAL_ERROR] tlsv1 alert internal error (_ssl.c:1082)')
+[2026-09-16T15:24:01.242]   -> cert not trusted yet? run tools/install_test_ca.py
+[2026-09-16T15:24:01.242] --- connection from ('127.0.0.1', 44544) closed ---
+[2026-09-16T15:26:39.728] --- TCP accept from ('127.0.0.1', 44158) ---
+[2026-09-16T15:26:39.729]   SNI presented: None
+[2026-09-16T15:26:39.774] TLS handshake OK from ('127.0.0.1', 44158): TLSv1.3 TLS_AES_256_GCM_SHA384 alpn=None sni=None
+[2026-09-16T15:26:39.775]   app <- 17 bytes (total 17)
+[2026-09-16T15:26:39.775]       hex: 0005000d010005000000010129cbd17d00
+[2026-09-16T15:26:39.775]       asc: b'\x00\x05\x00\r\x01\x00\x05\x00\x00\x00\x01\x01)\xcb\xd1}\x00'
+[2026-09-16T15:27:09.804]   app read error after 17 bytes: TimeoutError('The read operation timed out')
+[2026-09-16T15:27:09.804] --- connection from ('127.0.0.1', 44158) closed ---
