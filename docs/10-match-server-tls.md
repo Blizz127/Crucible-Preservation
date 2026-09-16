@@ -202,16 +202,74 @@ identifies the message; the fields inside it do not follow from this table.
 
 `EPackets_START` and `EPackets_MAX` are sentinels, not types.
 
+## What the client actually needs: a nonce handshake
+
+Three reply strategies were tried against a live client, all negative:
+
+| strategy | what was sent | result |
+|---|---|---|
+| `ack` | the client's frame echoed back | 101 timeouts, no progress |
+| probes | ids 5..12 once each, on connect | no visible effect |
+| `accept` | id 6, Connect payload, marker cleared | 624 timeouts, no progress |
+
+With `accept` the client **did not complain at all** — no deserialize error, no
+`*Unknown* packetType` assert. The Accept was swallowed silently, which means it
+was either never dispatched or failed a check that does not log by default.
+
+The check is a **nonce**. These strings sit in the executable:
+
+```
+nonce mismatch
+nonce not returned
+NonceRejected
+```
+
+and the client log had already said so, in a line that was easy to read past:
+
+```
+[Debug_ClientConnect] ClientNetworkAgent::OnConnectTimeout() Connected to game
+hub, but server shard nonce may have timed out, requesting new nonce
+```
+
+So the hub handshake is a nonce challenge/response, and a fabricated Accept
+carrying no valid nonce cannot satisfy it. That is why every strategy failed
+identically: none of them included a nonce.
+
+### The heartbeat also needs answering
+
+Across the last run the client sent:
+
+```
+639 x id 14   (heartbeat, ~1/s)
+ 43 x id  8   (SyncConnectionCvars)
+  1 x id  5   (Connect)
+```
+
+against **624 `Timing out requestid N`** lines — near one per heartbeat. So every
+heartbeat is a pending request awaiting a reply. `accept` mode is silent on id
+14 by design, which is wrong: the heartbeat needs an answer too. Its reply is
+presumably a core packet (`ECorePackets_*`), not one of the 5..12 game ids,
+since heartbeat is itself outside that range.
+
 ## Open items
 
+- **Payload structures, including the nonce.** This is the blocker and it is a
+  real reverse-engineering task, not a one-run fix. The id-to-name map is
+  settled; every field inside every message is not. Recovery paths, in order:
+  the AZ reflection/serialisation data for the packet classes (the dispatcher is
+  generated code — `bintemp/gen/novagamecommon/.../NovaGameClient_AutoPacketDispatcher.inl`),
+  or disassembling the id-6 deserializer and reading off its field accesses.
+- The heartbeat's reply packet id and payload (core packet space).
+- Whether `SyncConnectionCvars` (id 8) also requires a reply; the client sends
+  it repeatedly, which usually means retrying an unanswered request.
 - **`certs/cacert.pem` pak change is unverified.** It is not what fixed this,
   and on the evidence above it should not be needed. Test by restoring
   `gamedata.pak.pre-cacert` and reconnecting; if the handshake still succeeds,
   drop `tools/patch_cacert.py` and keep the trust store untouched.
-- Which group name `Debug_DispatchPackets` expects (`NovaNet_Packets`?), and
-  whether it is settable from `user.cfg` at all.
-- Each packet's payload structure. The id-to-name map is now settled; the
-  fields inside each message are not, and the `accept` reply mode currently
-  just reuses the Connect payload with the id and marker changed.
-- `PlayerSessionId` is empty in the connect line. May matter for the handshake.
+- Which group name `Debug_DispatchPackets` expects, and whether it is settable
+  from `user.cfg` at all. Neither `Crucible.ReportTagRequiredFilters
+  +Debug_DispatchPackets` nor `Debug_DispatchPackets 1` produced any packet log,
+  and neither produced an error either.
+- `PlayerSessionId` is empty in the connect line. May matter for the handshake
+  (and for the nonce).
 - `EAC Client failed to start` is logged every run. Not currently blocking.
