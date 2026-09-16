@@ -202,54 +202,56 @@ identifies the message; the fields inside it do not follow from this table.
 
 `EPackets_START` and `EPackets_MAX` are sentinels, not types.
 
-## What the client actually needs: a nonce handshake
+## What the wire actually is (2026-09-16, evening session)
 
-Three reply strategies were tried against a live client, all negative:
-
-| strategy | what was sent | result |
-|---|---|---|
-| `ack` | the client's frame echoed back | 101 timeouts, no progress |
-| probes | ids 5..12 once each, on connect | no visible effect |
-| `accept` | id 6, Connect payload, marker cleared | 624 timeouts, no progress |
-
-With `accept` the client **did not complain at all** — no deserialize error, no
-`*Unknown* packetType` assert. The Accept was swallowed silently, which means it
-was either never dispatched or failed a check that does not log by default.
-
-The check is a **nonce**. These strings sit in the executable:
+Client-log line that reframes everything:
 
 ```
-nonce mismatch
-nonce not returned
-NonceRejected
+NovaNet::NovaGameServiceClient::ClientConnect(): User 267778957(3330213815)
+  is connecting to the NovaGameHub at: 127.0.0.1:18877
+NovaGameHubClient::ClientManager::Connect(): ... Sending connect request ...
 ```
 
-and the client log had already said so, in a line that was easy to read past:
+The stub is the **NovaGameHub**, not the shard. Corrections to the section
+above: `nonce mismatch` / `nonce not returned` are OpenSSL timestamp strings,
+not the game handshake — false lead. The real nonce flow is hub-level
+(`NovaGameHubClient::GetServerShardAddress` returns `ConnectionNonce` +
+`PreSharedKey` + `ServerShardAddr` + `GameInstanceId`) and logs under the
+`[Debug_Nonce]` tag (`Received connect nonce and pre-shared key`, ...),
+now enabled in `user.cfg` via RequiredFilters.
+
+Frame layout (verified: counter runs 00 01 .. 01 84 = 388, heartbeats 1/s,
+cvars every ~15s; Connect data carries the NovaNetUserId from the log,
+`c67f07b7` = 3330213815):
 
 ```
-[Debug_ClientConnect] ClientNetworkAgent::OnConnectTimeout() Connected to game
-hub, but server shard nonce may have timed out, requesting new nonce
+header: u16 BE id, u16 BE body length
+body:   01 00 05 00 00 (magic) | u16 BE counter | data
+  id  5 data: 01 <userid4> 00      (Connect, once)
+  id  8 data: 00 <userid4>         (SyncConnectionCvars, ~every 15 s)
+  id 14 data: 01                   (heartbeat, 1/s)
 ```
 
-So the hub handshake is a nonce challenge/response, and a fabricated Accept
-carrying no valid nonce cannot satisfy it. That is why every strategy failed
-identically: none of them included a nonce.
+Transport model: `Timing out requestid N` (TcpClientManager) tracks the
+counter. Timeouts ran 3..78 against counters 01..5e; req 1 never fired because
+our Accept echoed counter 01 back (a response = a frame carrying the
+request's counter), req 2 is the unreliable cvars frame. Corollaries:
 
-### The heartbeat also needs answering
+- Probes "triggered heartbeating" because probe payloads reused the client's
+  body bytes, counter 01 included — they acked req 1 by accident.
+- The old `accept` mode failed on **content**, not transport: Accept
+  deserialises as base Packet + one `uint8_t` (disasm of `0xe25eb0`; the byte
+  lands at struct+0x608 and is stored to connection+0x408 with no comparison,
+  so *any* successfully-deserialised Accept advances — the gate is purely
+  deserialisation). Six Connect-payload bytes are not a valid Accept body.
+- The client sends Connect exactly once per run and never resends it, so each
+  Accept payload variant gets **one shot per game restart**.
 
-Across the last run the client sent:
-
-```
-639 x id 14   (heartbeat, ~1/s)
- 43 x id  8   (SyncConnectionCvars)
-  1 x id  5   (Connect)
-```
-
-against **624 `Timing out requestid N`** lines — near one per heartbeat. So every
-heartbeat is a pending request awaiting a reply. `accept` mode is silent on id
-14 by design, which is wrong: the heartbeat needs an answer too. Its reply is
-presumably a core packet (`ECorePackets_*`), not one of the 5..12 game ids,
-since heartbeat is itself outside that range.
+`server/match_stub.py` `CRUCIBLE_REPLY=hub` implements this: Connect -> Accept
+(id 6, same counter, data from `CRUCIBLE_ACCEPT_DATA`, default `0100`);
+heartbeat -> echo iff `CRUCIBLE_HB=echo` (default, tests the counter theory —
+timeouts should stop); cvars -> silent iff `CRUCIBLE_CVARS=silent` (default).
+Accept fuzz order: `0100`, verbatim Connect data, `00`, `0000`.
 
 ## Open items
 

@@ -94,6 +94,76 @@ FLAG_OFFSET = 11  # payload byte 7; see the layout note below
 CONNECT_ID = 5
 ACCEPT_ID = 6
 
+# Transport layout, reverse-engineered 2026-09-16 from two live runs plus the
+# client log (see docs/10-match-server-tls.md "What the wire actually is"):
+#   header: u16 BE packet id, u16 BE body length
+#   body:   5 constant magic bytes 01 00 05 00 00, u16 BE counter, data bytes
+# The counter is a per-frame sequence number (observed up to 0x0184 = 388).
+# The client's TcpClientManager logs "Timing out requestid N" for unanswered
+# reliable frames, and N tracks the counter: timeouts ran 3..78 while counters
+# ran 01..5e, with req 1 (Connect, answered by our counter-01 Accept) and req 2
+# (cvars, unreliable) never firing. So a response MUST carry the request's
+# counter back. Plain echo preserves it; fabricated frames must set it.
+MAGIC = b"\x01\x00\x05\x00\x00"
+
+
+def split_frame(buf):
+    """Split one frame off buf. Returns (frame, rest) or (None, buf)."""
+    if len(buf) < 4:
+        return None, buf
+    paylen = int.from_bytes(buf[2:4], "big")
+    if len(buf) < 4 + paylen:
+        return None, buf
+    return bytes(buf[:4 + paylen]), bytes(buf[4 + paylen:])
+
+
+def frame_counter(frame):
+    """The u16 BE counter at body offset 5 (frame offset 9)."""
+    if len(frame) < 11:
+        return None
+    return int.from_bytes(frame[9:11], "big")
+
+
+def build_frame(pid, counter, data):
+    """One frame with explicit counter and data bytes."""
+    body = MAGIC + counter.to_bytes(2, "big") + data
+    return pid.to_bytes(2, "big") + len(body).to_bytes(2, "big") + body
+
+
+def hub_reply(frame):
+    """Per-frame response for CRUCIBLE_REPLY=hub.
+
+    - id 5 (Connect) -> id 6 (Accept) with the SAME counter and data bytes
+      from CRUCIBLE_ACCEPT_DATA (hex, default "0100": base byte 01 as in the
+      Connect, plus the Accept's uint8 status 00). One shot per run: the
+      client sends Connect once, so the payload only gets one chance; the env
+      knob lets later runs vary it without code changes.
+    - id 14 (heartbeat) -> verbatim echo (counter preserved), iff
+      CRUCIBLE_HB=echo (default). Tests the counter-echo transport theory:
+      timeouts should stop.
+    - id 8 (cvars) -> silent by default (its request never times out, so no
+      pressure; avoids feeding our bytes into cvar sync). Set
+      CRUCIBLE_CVARS=echo to probe it.
+    """
+    if len(frame) < 4:
+        return None
+    pid = int.from_bytes(frame[0:2], "big")
+    ctr = frame_counter(frame)
+    if ctr is None:
+        return None
+    if pid == CONNECT_ID:
+        data = bytes.fromhex(os.environ.get("CRUCIBLE_ACCEPT_DATA", "0100"))
+        return build_frame(ACCEPT_ID, ctr, data)
+    if pid == 14:
+        if os.environ.get("CRUCIBLE_HB", "echo") == "echo":
+            return frame
+        return None
+    if pid == 8:
+        if os.environ.get("CRUCIBLE_CVARS", "silent") == "echo":
+            return frame
+        return None
+    return None
+
 
 def make_reply(data, mode):
     """Build a reply for one received frame, or None to stay silent.
@@ -147,6 +217,7 @@ def drain(tls, addr, label, reply=None):
     """Read until the peer closes, logging every chunk. The whole point: we do
     not know the framing, so we record bytes rather than parse them."""
     total = 0
+    pending = b""
     while True:
         try:
             data = tls.recv(8192)
@@ -160,7 +231,27 @@ def drain(tls, addr, label, reply=None):
         log("  %s <- %d bytes (total %d)" % (label, len(data), total))
         log("      hex: %s" % data[:1024].hex())
         log("      asc: %r" % (data[:512],))
-        if reply:
+        if reply == "hub":
+            # Frame-aware: split by header length so coalesced recvs still
+            # get one response per frame, each with its own counter.
+            pending += data
+            while True:
+                frame, pending = split_frame(pending)
+                if frame is None:
+                    break
+                pid = int.from_bytes(frame[0:2], "big")
+                log("      frame id %-2d ctr %s datalen %d" % (
+                    pid, frame_counter(frame),
+                    max(0, len(frame) - 11)))
+                out = hub_reply(frame)
+                if out is not None:
+                    try:
+                        tls.sendall(out)
+                        log("      reply(hub) -> %s" % out.hex())
+                    except (ssl.SSLError, OSError) as e:
+                        log("      reply(hub) failed: %r" % (e,))
+                        return total
+        elif reply:
             out = make_reply(data, reply)
             if out is not None:
                 try:
@@ -245,7 +336,11 @@ def handle(conn, addr, ctx):
             reply = os.environ.get("CRUCIBLE_REPLY", "").strip() or None
             if reply:
                 log("  reply mode: %s" % reply)
-                out = make_reply(first, reply)
+                if reply == "hub":
+                    frame, _ = split_frame(first)
+                    out = hub_reply(frame) if frame is not None else None
+                else:
+                    out = make_reply(first, reply)
                 if out is not None:
                     try:
                         tls.sendall(out)
