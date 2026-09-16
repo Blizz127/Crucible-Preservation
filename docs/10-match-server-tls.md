@@ -158,47 +158,47 @@ ja    <unknown>
 jmp   qword ptr [table]  ; jump table at rva 0xe25a04, 8 entries
 ```
 
-so **packet ids 5..12** are handled, which matches the eight packet type names
-present in the binary:
+so **packet ids 5..12** are handled. Each case loads **its own name string** for
+that log line, so the id-to-name mapping can be read straight out of the case
+bodies — nothing is inferred:
 
-| id | handler rva |
-|---|---|
-| 5 | `0xe24374` |
-| 6 | `0xe2455a` |
-| 7 | `0xe24824` |
-| 8 | `0xe24a5f` |
-| 9 | `0xe24c8d` |
-| 10 | `0xe24e99` |
-| 11 | `0xe25291` |
-| 12 | `0xe255f7` |
+| id | name | handler rva |
+|---|---|---|
+| 5 | **Connect** | `0xe24374` |
+| 6 | **Accept** | `0xe2455a` |
+| 7 | SyncConsole | `0xe24824` |
+| 8 | SyncConnectionCvars | `0xe24a5f` |
+| 9 | ServerConsoleCommand | `0xe24c8d` |
+| 10 | EntityUpdates | `0xe24e99` |
+| 11 | EntityRpcs | `0xe25291` |
+| 12 | ClientMigration | `0xe255f7` |
 
-and the eight types (with their enum constants):
+Each case does, e.g. for id 6:
 
-| name | enum |
-|---|---|
-| Connect | `EPackets_Connect` |
-| Accept | `EPackets_Accept` |
-| ClientMigration | `EPackets_ClientMigration` |
-| SyncConnectionCvars | `EPackets_SyncConnectionCvars` |
-| SyncConsole | `EPackets_SyncConsole` |
-| ServerConsoleCommand | `EPackets_ServerConsoleCommand` |
-| EntityUpdates | `EPackets_EntityUpdates` |
-| EntityRpcs | `EPackets_EntityRpcs` |
+```
+0xe245b4 lea rax, [rip + 0x597d035]  ; "Accept"
+0xe245cc lea r8,  [rip + 0x597cfbd]  ; "[Debug_DispatchPackets] %s: Received packet %s"
+```
 
-The client's opening frame carries id **5**. The natural reading is
-`Connect` -> server replies `Accept`, but **the id-to-name order is NOT
-confirmed** and should not be treated as known:
+**This mapping is now confirmed, and it corrected an earlier guess.** The
+enum names were originally recovered with `strings | sort`, which alphabetises
+and destroys declaration order; guessing 5..12 in that order got five of the
+eight wrong (`SyncConsole` is 7, not 9, and `ClientMigration` is 12, not 7).
+The dispatcher's own strings are authoritative; the enum strings are not.
 
-- the `EPackets_*` strings were recovered with `strings | sort`, which
-  alphabetises them, destroying declaration order;
-- the name strings have exactly one code reference each, in a per-type static
-  initialiser — there is no array of names to index;
-- the name strings visible in the blob near the dispatcher (`Connect`,
-  `Accept`, `EntityUpdates`, ...) are packed by the linker, not in declaration
-  order.
+Consequences worth noting:
 
-Confirm before building on it: set `Debug_DispatchPackets`, send the client's
-frame, and read the name the logger prints.
+- The client's opening frame is id 5 = **Connect**, so the server's reply is
+  **Accept = id 6**. That is what `server/match_stub.py`'s `accept` reply mode
+  sends.
+- The client also sends **id 8 = SyncConnectionCvars** during a session, which
+  fits: connection cvar sync happens after connect. The server presumably has
+  to answer that too.
+- `EntityUpdates` (10) and `EntityRpcs` (11) are the gameplay replication
+  channels; `ClientMigration` (12) is last, which is why the range ends there.
+
+What is still **not** known is each packet's payload structure. The id alone
+identifies the message; the fields inside it do not follow from this table.
 
 `EPackets_START` and `EPackets_MAX` are sentinels, not types.
 
@@ -210,6 +210,8 @@ frame, and read the name the logger prints.
   drop `tools/patch_cacert.py` and keep the trust store untouched.
 - Which group name `Debug_DispatchPackets` expects (`NovaNet_Packets`?), and
   whether it is settable from `user.cfg` at all.
-- The id-to-name mapping for ids 5..12 (see caveat above).
+- Each packet's payload structure. The id-to-name map is now settled; the
+  fields inside each message are not, and the `accept` reply mode currently
+  just reuses the Connect payload with the id and marker changed.
 - `PlayerSessionId` is empty in the connect line. May matter for the handshake.
 - `EAC Client failed to start` is logged every run. Not currently blocking.
