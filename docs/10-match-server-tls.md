@@ -275,3 +275,16 @@ Accept fuzz order: `0100`, verbatim Connect data, `00`, `0000`.
 - `PlayerSessionId` is empty in the connect line. May matter for the handshake
   (and for the nonce).
 - `EAC Client failed to start` is logged every run. Not currently blocking.
+
+### Revision (run of 17:41, hub v1): server sequence + cumulative ack
+
+v1 hub echoes did **not** stop timeouts (3..129; heartbeat data stuck at `01`
+even at client counter 0x91). Revised model: the counter is a **per-sender**
+sequence, and server->client data[0] is a **cumulative ack** of the client
+sequence. v1 echoes reused client counters (gap at server seq 02, stale ack
+01) and were ignored. v2 (`c76a264`): the stub keeps its own server seq (01,
+02, ...) and acks each inbound frame (data[0] = inbound counter). Heartbeat
+reply is `ack` by default; `CRUCIBLE_ACCEPT_DATA=auto` echoes the Connect's
+data bytes verbatim with only the id flipped (never tested — the old accept
+mode always cleared data[0]). Fuzz order now: `auto`, `00`, `0000`
+(`0100` failed to advance).
