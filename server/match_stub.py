@@ -91,6 +91,8 @@ def ensure_cert():
 
 
 FLAG_OFFSET = 11  # payload byte 7; see the layout note below
+CONNECT_ID = 5
+ACCEPT_ID = 6
 
 
 def make_reply(data, mode):
@@ -104,17 +106,25 @@ def make_reply(data, mode):
 
     i.e. a constant 6-byte prefix, a 1-byte counter, then a 1-byte marker at
     payload offset 7 (frame offset 11), then optional data. The marker is 0x01
-    on every frame that the client subsequently reports as a pending request
-    ('Timing out requestid N') and 0x00 on the id-8 frame. So 0x01 reads as
-    "expects an answer".
+    on every frame the client later reports as a pending request ('Timing out
+    requestid N') and 0x00 on the id-8 frame.
 
-    Two hypotheses, selectable with CRUCIBLE_REPLY:
-      echo - send the frame back unchanged
-      ack  - same frame with that marker cleared to 0x00
+    Modes:
+      echo   - send the frame back unchanged
+      ack    - same frame with the marker cleared to 0x00
+      accept - answer a Connect (id 5) with an Accept (id 6)
 
-    NOTE the marker is NOT the last byte. It is at frame offset 11; on the id-8
-    frame the last four bytes are the uid, so clearing the trailing byte would
-    corrupt it. The first version of this got that wrong.
+    Why 'accept' exists: echoing the Connect back (what 'ack' does) did NOT
+    stop the timeouts - 101 of them over ~2 minutes. The client is not waiting
+    for its own packet back, it is waiting for the server's reply. The id space
+    says which reply: the executable carries exactly eight EPackets_ names
+    (Connect, Accept, ClientMigration, SyncConnectionCvars, SyncConsole,
+    ServerConsoleCommand, EntityUpdates, EntityRpcs) and the dispatcher has
+    exactly eight cases, ids 5..12. The client opens with 5, so 5 is Connect
+    and 6 is Accept. See docs/10-match-server-tls.md for the caveat on ordering.
+
+    NOTE the marker is NOT the last byte. On the id-8 frame the last four bytes
+    are the uid, so clearing the trailing byte would corrupt it.
     """
     if mode == "echo":
         return data
@@ -122,6 +132,14 @@ def make_reply(data, mode):
         if len(data) <= FLAG_OFFSET:
             return None
         return data[:FLAG_OFFSET] + b"\x00" + data[FLAG_OFFSET + 1:]
+    if mode == "accept":
+        if len(data) < 4 or int.from_bytes(data[0:2], "big") != CONNECT_ID:
+            return None
+        out = bytearray(data)
+        out[0:2] = ACCEPT_ID.to_bytes(2, "big")
+        if len(out) > FLAG_OFFSET:
+            out[FLAG_OFFSET] = 0x00
+        return bytes(out)
     return None
 
 
