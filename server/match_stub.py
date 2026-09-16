@@ -90,24 +90,38 @@ def ensure_cert():
     log("generated self-signed cert for 127.0.0.1 (%s)" % CRT)
 
 
+FLAG_OFFSET = 11  # payload byte 7; see the layout note below
+
+
 def make_reply(data, mode):
     """Build a reply for one received frame, or None to stay silent.
 
-    The client sends id 14 once per second and every one times out as
-    `TcpClientManager::DispatchPendingCallbacks(): Timing out requestid N`, so
-    each is a request awaiting a response. Two cheap hypotheses:
+    Observed frames (header is 4 bytes: u16 id, u16 payload length):
 
+      id 14, 12B:  01000500 0000 <ctr> 01
+      id  8, 16B:  01000500 0000 <ctr> 00 <uid4>
+      id  5, 17B:  01000500 0000 01    01 <uid4> 00
+
+    i.e. a constant 6-byte prefix, a 1-byte counter, then a 1-byte marker at
+    payload offset 7 (frame offset 11), then optional data. The marker is 0x01
+    on every frame that the client subsequently reports as a pending request
+    ('Timing out requestid N') and 0x00 on the id-8 frame. So 0x01 reads as
+    "expects an answer".
+
+    Two hypotheses, selectable with CRUCIBLE_REPLY:
       echo - send the frame back unchanged
-      ack  - same id and payload, but the trailing flag byte forced to 0x00.
-             Observed trailing bytes: id 5 -> 0x01, id 14 -> 0x01, id 8 -> 0x00,
-             which is consistent with 0x01 = request, 0x00 = response.
+      ack  - same frame with that marker cleared to 0x00
+
+    NOTE the marker is NOT the last byte. It is at frame offset 11; on the id-8
+    frame the last four bytes are the uid, so clearing the trailing byte would
+    corrupt it. The first version of this got that wrong.
     """
     if mode == "echo":
         return data
     if mode == "ack":
-        if len(data) < 5:
+        if len(data) <= FLAG_OFFSET:
             return None
-        return data[:-1] + b"\x00"
+        return data[:FLAG_OFFSET] + b"\x00" + data[FLAG_OFFSET + 1:]
     return None
 
 
@@ -205,10 +219,25 @@ def handle(conn, addr, ctx):
             log("  app <- %d bytes" % len(first))
             log("      hex: %s" % first[:1024].hex())
             log("      asc: %r" % (first[:512],))
-            probe(tls, first)
+            # Resolve reply mode BEFORE anything else: the opening frame needs
+            # an answer too. It is sometimes the only frame the client sends
+            # (observed 2026-09-16 15:48) - without this the stub sat silent,
+            # hit its own 30s read timeout, closed, and the client logged
+            # "disconnected from the hub due to RemoteHostClosedConnection".
             reply = os.environ.get("CRUCIBLE_REPLY", "").strip() or None
             if reply:
-                log("  reply mode: %s (applies to every frame from here)" % reply)
+                log("  reply mode: %s" % reply)
+                out = make_reply(first, reply)
+                if out is not None:
+                    try:
+                        tls.sendall(out)
+                        log("      reply(%s) to opening frame -> %s"
+                            % (reply, out.hex()))
+                    except (ssl.SSLError, OSError) as e:
+                        log("      reply(%s) to opening frame failed: %r"
+                            % (reply, e))
+                        return
+            probe(tls, first)
             drain(tls, addr, "after-probe", reply=reply)
         finally:
             try:
