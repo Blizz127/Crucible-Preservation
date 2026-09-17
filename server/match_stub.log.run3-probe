@@ -1,0 +1,909 @@
+[2026-09-17T15:21:33.649] listening on 127.0.0.1:18877 (TLS, log: /var/home/blizz/Projects/Crucible Revival/server/match_stub.log)
+[2026-09-17T15:21:33.649] expect: matchserver.connect {type:'lan'} after PLAY -> mode -> READY
+[2026-09-17T15:40:36.126] --- TCP accept from ('127.0.0.1', 49456) ---
+[2026-09-17T15:40:36.127]   SNI presented: None
+[2026-09-17T15:40:36.173] TLS handshake OK from ('127.0.0.1', 49456): TLSv1.3 TLS_AES_256_GCM_SHA384 alpn=None sni=None
+[2026-09-17T15:40:36.173]   app <- 17 bytes
+[2026-09-17T15:40:36.173]       hex: 0005000d0100050000000101e4ae070100
+[2026-09-17T15:40:36.173]       asc: b'\x00\x05\x00\r\x01\x00\x05\x00\x00\x00\x01\x01\xe4\xae\x07\x01\x00'
+[2026-09-17T15:40:36.173]   reply mode: hubrpc
+[2026-09-17T15:40:36.173]       hub Connect::Request               id 5  req 1     wants_resp 1 payload e4ae070100
+[2026-09-17T15:40:36.174]       reply(hubrpc) to opening frame -> 0006001001000500000001000000000000000000
+[2026-09-17T15:40:36.222]   after-probe <- 16 bytes (total 16)
+[2026-09-17T15:40:36.223]       hex: 0008000c0100050000000200e4ae0701
+[2026-09-17T15:40:36.223]       asc: b'\x00\x08\x00\x0c\x01\x00\x05\x00\x00\x00\x02\x00\xe4\xae\x07\x01'
+[2026-09-17T15:40:36.223]       hub Heartbeat::Request             id 8  req 2     wants_resp 0 payload e4ae0701
+[2026-09-17T15:40:37.119]   after-probe <- 12 bytes (total 28)
+[2026-09-17T15:40:37.119]       hex: 000e00080100050000000301
+[2026-09-17T15:40:37.119]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x03\x01'
+[2026-09-17T15:40:37.119]       hub GetUserStatus::Request         id 14 req 3     wants_resp 1 payload -
+[2026-09-17T15:40:37.120]       PROBE req 3     variant 3: body tag = msg id
+[2026-09-17T15:40:37.120]       reply(hubrpc) -> 000f001401000f0000000300000000000000000000000101
+[2026-09-17T15:40:38.119]   after-probe <- 12 bytes (total 40)
+[2026-09-17T15:40:38.119]       hex: 000e00080100050000000401
+[2026-09-17T15:40:38.119]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x04\x01'
+[2026-09-17T15:40:38.120]       hub GetUserStatus::Request         id 14 req 4     wants_resp 1 payload -
+[2026-09-17T15:40:38.120]       PROBE req 4     variant 4: version byte = 0
+[2026-09-17T15:40:38.120]       reply(hubrpc) -> 000f00140000050000000400000000000000000000000101
+[2026-09-17T15:40:39.119]   after-probe <- 12 bytes (total 52)
+[2026-09-17T15:40:39.119]       hex: 000e00080100050000000501
+[2026-09-17T15:40:39.119]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x05\x01'
+[2026-09-17T15:40:39.119]       hub GetUserStatus::Request         id 14 req 5     wants_resp 1 payload -
+[2026-09-17T15:40:39.119]       PROBE req 5     variant 5: payload = Result byte only
+[2026-09-17T15:40:39.119]       reply(hubrpc) -> 000f0009010005000000050000
+[2026-09-17T15:40:40.119]   after-probe <- 12 bytes (total 64)
+[2026-09-17T15:40:40.119]       hex: 000e00080100050000000601
+[2026-09-17T15:40:40.119]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x06\x01'
+[2026-09-17T15:40:40.119]       hub GetUserStatus::Request         id 14 req 6     wants_resp 1 payload -
+[2026-09-17T15:40:40.120]       PROBE req 6     variant 6: payload empty
+[2026-09-17T15:40:40.120]       reply(hubrpc) -> 000f00080100050000000600
+[2026-09-17T15:40:41.167]   after-probe <- 12 bytes (total 76)
+[2026-09-17T15:40:41.167]       hex: 000e00080100050000000701
+[2026-09-17T15:40:41.167]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x07\x01'
+[2026-09-17T15:40:41.167]       hub GetUserStatus::Request         id 14 req 7     wants_resp 1 payload -
+[2026-09-17T15:40:41.167]       PROBE req 7     variant 7: hh=1 and tag = msg id
+[2026-09-17T15:40:41.167]       reply(hubrpc) -> 000f001401000f0000000701000000000000000000000101
+[2026-09-17T15:40:42.166]   after-probe <- 12 bytes (total 88)
+[2026-09-17T15:40:42.166]       hex: 000e00080100050000000801
+[2026-09-17T15:40:42.166]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x08\x01'
+[2026-09-17T15:40:42.166]       hub GetUserStatus::Request         id 14 req 8     wants_resp 1 payload -
+[2026-09-17T15:40:42.166]       PROBE req 8     variant 8: header id 16 (Error), Result only
+[2026-09-17T15:40:42.166]       reply(hubrpc) -> 00100009010005000000080000
+[2026-09-17T15:40:43.164]   after-probe <- 12 bytes (total 100)
+[2026-09-17T15:40:43.164]       hex: 000e00080100050000000901
+[2026-09-17T15:40:43.165]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\t\x01'
+[2026-09-17T15:40:43.165]       hub GetUserStatus::Request         id 14 req 9     wants_resp 1 payload -
+[2026-09-17T15:40:43.165]       PROBE req 9     variant 9: header id 9 (Heartbeat::Success)
+[2026-09-17T15:40:43.165]       reply(hubrpc) -> 00090009010005000000090000
+[2026-09-17T15:40:44.165]   after-probe <- 12 bytes (total 112)
+[2026-09-17T15:40:44.165]       hex: 000e00080100050000000a01
+[2026-09-17T15:40:44.165]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\n\x01'
+[2026-09-17T15:40:44.165]       hub GetUserStatus::Request         id 14 req 10    wants_resp 1 payload -
+[2026-09-17T15:40:44.165]       PROBE req 10    variant 10: UserStatus.UserId = the caller's id
+[2026-09-17T15:40:44.165]       reply(hubrpc) -> 000f00140100050000000a0000e4ae070100000000000101
+[2026-09-17T15:40:45.165]   after-probe <- 12 bytes (total 124)
+[2026-09-17T15:40:45.165]       hex: 000e00080100050000000b01
+[2026-09-17T15:40:45.165]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x0b\x01'
+[2026-09-17T15:40:45.165]       hub GetUserStatus::Request         id 14 req 11    wants_resp 1 payload -
+[2026-09-17T15:40:45.166]       PROBE req 11    variant 11: GameState = Connecting
+[2026-09-17T15:40:45.166]       reply(hubrpc) -> 000f00140100050000000b00000000000000000000000100
+[2026-09-17T15:40:46.162]   after-probe <- 12 bytes (total 136)
+[2026-09-17T15:40:46.162]       hex: 000e00080100050000000c01
+[2026-09-17T15:40:46.162]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x0c\x01'
+[2026-09-17T15:40:46.163]       hub GetUserStatus::Request         id 14 req 12    wants_resp 1 payload -
+[2026-09-17T15:40:46.163]       PROBE req 12    variant 0: baseline hdr15 ver1 tag0005 hh0
+[2026-09-17T15:40:46.163]       reply(hubrpc) -> 000f00140100050000000c00000000000000000000000101
+[2026-09-17T15:40:47.162]   after-probe <- 12 bytes (total 148)
+[2026-09-17T15:40:47.162]       hex: 000e00080100050000000d01
+[2026-09-17T15:40:47.162]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\r\x01'
+[2026-09-17T15:40:47.162]       hub GetUserStatus::Request         id 14 req 13    wants_resp 1 payload -
+[2026-09-17T15:40:47.162]       PROBE req 13    variant 1: has_handler=1
+[2026-09-17T15:40:47.162]       reply(hubrpc) -> 000f00140100050000000d01000000000000000000000101
+[2026-09-17T15:40:48.160]   after-probe <- 12 bytes (total 160)
+[2026-09-17T15:40:48.160]       hex: 000e00080100050000000e01
+[2026-09-17T15:40:48.160]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x0e\x01'
+[2026-09-17T15:40:48.160]       hub GetUserStatus::Request         id 14 req 14    wants_resp 1 payload -
+[2026-09-17T15:40:48.160]       PROBE req 14    variant 2: header id = the request id (14)
+[2026-09-17T15:40:48.160]       reply(hubrpc) -> 000e00140100050000000e00000000000000000000000101
+[2026-09-17T15:40:49.209]   after-probe <- 12 bytes (total 172)
+[2026-09-17T15:40:49.209]       hex: 000e00080100050000000f01
+[2026-09-17T15:40:49.209]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x0f\x01'
+[2026-09-17T15:40:49.209]       hub GetUserStatus::Request         id 14 req 15    wants_resp 1 payload -
+[2026-09-17T15:40:49.210]       PROBE req 15    variant 3: body tag = msg id
+[2026-09-17T15:40:49.210]       reply(hubrpc) -> 000f001401000f0000000f00000000000000000000000101
+[2026-09-17T15:40:50.208]   after-probe <- 12 bytes (total 184)
+[2026-09-17T15:40:50.209]       hex: 000e00080100050000001001
+[2026-09-17T15:40:50.209]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x10\x01'
+[2026-09-17T15:40:50.209]       hub GetUserStatus::Request         id 14 req 16    wants_resp 1 payload -
+[2026-09-17T15:40:50.209]       PROBE req 16    variant 4: version byte = 0
+[2026-09-17T15:40:50.209]       reply(hubrpc) -> 000f00140000050000001000000000000000000000000101
+[2026-09-17T15:40:51.208]   after-probe <- 12 bytes (total 196)
+[2026-09-17T15:40:51.208]       hex: 000e00080100050000001101
+[2026-09-17T15:40:51.208]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x11\x01'
+[2026-09-17T15:40:51.208]       hub GetUserStatus::Request         id 14 req 17    wants_resp 1 payload -
+[2026-09-17T15:40:51.208]       PROBE req 17    variant 5: payload = Result byte only
+[2026-09-17T15:40:51.208]       reply(hubrpc) -> 000f0009010005000000110000
+[2026-09-17T15:40:51.258]   after-probe <- 16 bytes (total 212)
+[2026-09-17T15:40:51.259]       hex: 0008000c0100050000001200e4ae0701
+[2026-09-17T15:40:51.259]       asc: b'\x00\x08\x00\x0c\x01\x00\x05\x00\x00\x00\x12\x00\xe4\xae\x07\x01'
+[2026-09-17T15:40:51.259]       hub Heartbeat::Request             id 8  req 18    wants_resp 0 payload e4ae0701
+[2026-09-17T15:40:52.206]   after-probe <- 12 bytes (total 224)
+[2026-09-17T15:40:52.207]       hex: 000e00080100050000001301
+[2026-09-17T15:40:52.207]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x13\x01'
+[2026-09-17T15:40:52.207]       hub GetUserStatus::Request         id 14 req 19    wants_resp 1 payload -
+[2026-09-17T15:40:52.207]       PROBE req 19    variant 7: hh=1 and tag = msg id
+[2026-09-17T15:40:52.207]       reply(hubrpc) -> 000f001401000f0000001301000000000000000000000101
+[2026-09-17T15:40:53.205]   after-probe <- 12 bytes (total 236)
+[2026-09-17T15:40:53.206]       hex: 000e00080100050000001401
+[2026-09-17T15:40:53.206]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x14\x01'
+[2026-09-17T15:40:53.206]       hub GetUserStatus::Request         id 14 req 20    wants_resp 1 payload -
+[2026-09-17T15:40:53.206]       PROBE req 20    variant 8: header id 16 (Error), Result only
+[2026-09-17T15:40:53.206]       reply(hubrpc) -> 00100009010005000000140000
+[2026-09-17T15:40:54.206]   after-probe <- 12 bytes (total 248)
+[2026-09-17T15:40:54.206]       hex: 000e00080100050000001501
+[2026-09-17T15:40:54.206]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x15\x01'
+[2026-09-17T15:40:54.206]       hub GetUserStatus::Request         id 14 req 21    wants_resp 1 payload -
+[2026-09-17T15:40:54.206]       PROBE req 21    variant 9: header id 9 (Heartbeat::Success)
+[2026-09-17T15:40:54.206]       reply(hubrpc) -> 00090009010005000000150000
+[2026-09-17T15:40:55.204]   after-probe <- 12 bytes (total 260)
+[2026-09-17T15:40:55.204]       hex: 000e00080100050000001601
+[2026-09-17T15:40:55.204]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x16\x01'
+[2026-09-17T15:40:55.205]       hub GetUserStatus::Request         id 14 req 22    wants_resp 1 payload -
+[2026-09-17T15:40:55.205]       PROBE req 22    variant 10: UserStatus.UserId = the caller's id
+[2026-09-17T15:40:55.205]       reply(hubrpc) -> 000f0014010005000000160000e4ae070100000000000101
+[2026-09-17T15:40:56.203]   after-probe <- 12 bytes (total 272)
+[2026-09-17T15:40:56.203]       hex: 000e00080100050000001701
+[2026-09-17T15:40:56.203]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x17\x01'
+[2026-09-17T15:40:56.203]       hub GetUserStatus::Request         id 14 req 23    wants_resp 1 payload -
+[2026-09-17T15:40:56.203]       PROBE req 23    variant 11: GameState = Connecting
+[2026-09-17T15:40:56.203]       reply(hubrpc) -> 000f00140100050000001700000000000000000000000100
+[2026-09-17T15:40:57.252]   after-probe <- 12 bytes (total 284)
+[2026-09-17T15:40:57.252]       hex: 000e00080100050000001801
+[2026-09-17T15:40:57.253]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x18\x01'
+[2026-09-17T15:40:57.253]       hub GetUserStatus::Request         id 14 req 24    wants_resp 1 payload -
+[2026-09-17T15:40:57.253]       PROBE req 24    variant 0: baseline hdr15 ver1 tag0005 hh0
+[2026-09-17T15:40:57.253]       reply(hubrpc) -> 000f00140100050000001800000000000000000000000101
+[2026-09-17T15:40:58.251]   after-probe <- 12 bytes (total 296)
+[2026-09-17T15:40:58.251]       hex: 000e00080100050000001901
+[2026-09-17T15:40:58.251]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x19\x01'
+[2026-09-17T15:40:58.251]       hub GetUserStatus::Request         id 14 req 25    wants_resp 1 payload -
+[2026-09-17T15:40:58.251]       PROBE req 25    variant 1: has_handler=1
+[2026-09-17T15:40:58.251]       reply(hubrpc) -> 000f00140100050000001901000000000000000000000101
+[2026-09-17T15:40:59.250]   after-probe <- 12 bytes (total 308)
+[2026-09-17T15:40:59.251]       hex: 000e00080100050000001a01
+[2026-09-17T15:40:59.251]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x1a\x01'
+[2026-09-17T15:40:59.251]       hub GetUserStatus::Request         id 14 req 26    wants_resp 1 payload -
+[2026-09-17T15:40:59.251]       PROBE req 26    variant 2: header id = the request id (14)
+[2026-09-17T15:40:59.251]       reply(hubrpc) -> 000e00140100050000001a00000000000000000000000101
+[2026-09-17T15:41:00.249]   after-probe <- 12 bytes (total 320)
+[2026-09-17T15:41:00.250]       hex: 000e00080100050000001b01
+[2026-09-17T15:41:00.250]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x1b\x01'
+[2026-09-17T15:41:00.250]       hub GetUserStatus::Request         id 14 req 27    wants_resp 1 payload -
+[2026-09-17T15:41:00.250]       PROBE req 27    variant 3: body tag = msg id
+[2026-09-17T15:41:00.250]       reply(hubrpc) -> 000f001401000f0000001b00000000000000000000000101
+[2026-09-17T15:41:01.250]   after-probe <- 12 bytes (total 332)
+[2026-09-17T15:41:01.250]       hex: 000e00080100050000001c01
+[2026-09-17T15:41:01.250]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x1c\x01'
+[2026-09-17T15:41:01.250]       hub GetUserStatus::Request         id 14 req 28    wants_resp 1 payload -
+[2026-09-17T15:41:01.250]       PROBE req 28    variant 4: version byte = 0
+[2026-09-17T15:41:01.250]       reply(hubrpc) -> 000f00140000050000001c00000000000000000000000101
+[2026-09-17T15:41:02.248]   after-probe <- 12 bytes (total 344)
+[2026-09-17T15:41:02.249]       hex: 000e00080100050000001d01
+[2026-09-17T15:41:02.249]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x1d\x01'
+[2026-09-17T15:41:02.249]       hub GetUserStatus::Request         id 14 req 29    wants_resp 1 payload -
+[2026-09-17T15:41:02.249]       PROBE req 29    variant 5: payload = Result byte only
+[2026-09-17T15:41:02.249]       reply(hubrpc) -> 000f00090100050000001d0000
+[2026-09-17T15:41:03.249]   after-probe <- 12 bytes (total 356)
+[2026-09-17T15:41:03.249]       hex: 000e00080100050000001e01
+[2026-09-17T15:41:03.249]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x1e\x01'
+[2026-09-17T15:41:03.249]       hub GetUserStatus::Request         id 14 req 30    wants_resp 1 payload -
+[2026-09-17T15:41:03.249]       PROBE req 30    variant 6: payload empty
+[2026-09-17T15:41:03.250]       reply(hubrpc) -> 000f00080100050000001e00
+[2026-09-17T15:41:04.296]   after-probe <- 12 bytes (total 368)
+[2026-09-17T15:41:04.297]       hex: 000e00080100050000001f01
+[2026-09-17T15:41:04.297]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x1f\x01'
+[2026-09-17T15:41:04.297]       hub GetUserStatus::Request         id 14 req 31    wants_resp 1 payload -
+[2026-09-17T15:41:04.297]       PROBE req 31    variant 7: hh=1 and tag = msg id
+[2026-09-17T15:41:04.297]       reply(hubrpc) -> 000f001401000f0000001f01000000000000000000000101
+[2026-09-17T15:41:05.297]   after-probe <- 12 bytes (total 380)
+[2026-09-17T15:41:05.297]       hex: 000e00080100050000002001
+[2026-09-17T15:41:05.298]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00 \x01'
+[2026-09-17T15:41:05.298]       hub GetUserStatus::Request         id 14 req 32    wants_resp 1 payload -
+[2026-09-17T15:41:05.298]       PROBE req 32    variant 8: header id 16 (Error), Result only
+[2026-09-17T15:41:05.298]       reply(hubrpc) -> 00100009010005000000200000
+[2026-09-17T15:41:06.297]   after-probe <- 12 bytes (total 392)
+[2026-09-17T15:41:06.297]       hex: 000e00080100050000002101
+[2026-09-17T15:41:06.297]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00!\x01'
+[2026-09-17T15:41:06.297]       hub GetUserStatus::Request         id 14 req 33    wants_resp 1 payload -
+[2026-09-17T15:41:06.297]       PROBE req 33    variant 9: header id 9 (Heartbeat::Success)
+[2026-09-17T15:41:06.297]       reply(hubrpc) -> 00090009010005000000210000
+[2026-09-17T15:41:06.297]   after-probe <- 16 bytes (total 408)
+[2026-09-17T15:41:06.297]       hex: 0008000c0100050000002200e4ae0701
+[2026-09-17T15:41:06.297]       asc: b'\x00\x08\x00\x0c\x01\x00\x05\x00\x00\x00"\x00\xe4\xae\x07\x01'
+[2026-09-17T15:41:06.297]       hub Heartbeat::Request             id 8  req 34    wants_resp 0 payload e4ae0701
+[2026-09-17T15:41:07.295]   after-probe <- 12 bytes (total 420)
+[2026-09-17T15:41:07.296]       hex: 000e00080100050000002301
+[2026-09-17T15:41:07.296]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00#\x01'
+[2026-09-17T15:41:07.296]       hub GetUserStatus::Request         id 14 req 35    wants_resp 1 payload -
+[2026-09-17T15:41:07.296]       PROBE req 35    variant 11: GameState = Connecting
+[2026-09-17T15:41:07.296]       reply(hubrpc) -> 000f00140100050000002300000000000000000000000100
+[2026-09-17T15:41:08.293]   after-probe <- 12 bytes (total 432)
+[2026-09-17T15:41:08.294]       hex: 000e00080100050000002401
+[2026-09-17T15:41:08.294]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00$\x01'
+[2026-09-17T15:41:08.294]       hub GetUserStatus::Request         id 14 req 36    wants_resp 1 payload -
+[2026-09-17T15:41:08.294]       PROBE req 36    variant 0: baseline hdr15 ver1 tag0005 hh0
+[2026-09-17T15:41:08.294]       reply(hubrpc) -> 000f00140100050000002400000000000000000000000101
+[2026-09-17T15:41:09.293]   after-probe <- 12 bytes (total 444)
+[2026-09-17T15:41:09.293]       hex: 000e00080100050000002501
+[2026-09-17T15:41:09.293]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00%\x01'
+[2026-09-17T15:41:09.293]       hub GetUserStatus::Request         id 14 req 37    wants_resp 1 payload -
+[2026-09-17T15:41:09.293]       PROBE req 37    variant 1: has_handler=1
+[2026-09-17T15:41:09.293]       reply(hubrpc) -> 000f00140100050000002501000000000000000000000101
+[2026-09-17T15:41:10.292]   after-probe <- 12 bytes (total 456)
+[2026-09-17T15:41:10.293]       hex: 000e00080100050000002601
+[2026-09-17T15:41:10.293]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00&\x01'
+[2026-09-17T15:41:10.293]       hub GetUserStatus::Request         id 14 req 38    wants_resp 1 payload -
+[2026-09-17T15:41:10.293]       PROBE req 38    variant 2: header id = the request id (14)
+[2026-09-17T15:41:10.293]       reply(hubrpc) -> 000e00140100050000002600000000000000000000000101
+[2026-09-17T15:41:11.290]   after-probe <- 12 bytes (total 468)
+[2026-09-17T15:41:11.291]       hex: 000e00080100050000002701
+[2026-09-17T15:41:11.291]       asc: b"\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00'\x01"
+[2026-09-17T15:41:11.291]       hub GetUserStatus::Request         id 14 req 39    wants_resp 1 payload -
+[2026-09-17T15:41:11.291]       PROBE req 39    variant 3: body tag = msg id
+[2026-09-17T15:41:11.291]       reply(hubrpc) -> 000f001401000f0000002700000000000000000000000101
+[2026-09-17T15:41:12.291]   after-probe <- 12 bytes (total 480)
+[2026-09-17T15:41:12.291]       hex: 000e00080100050000002801
+[2026-09-17T15:41:12.291]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00(\x01'
+[2026-09-17T15:41:12.291]       hub GetUserStatus::Request         id 14 req 40    wants_resp 1 payload -
+[2026-09-17T15:41:12.291]       PROBE req 40    variant 4: version byte = 0
+[2026-09-17T15:41:12.291]       reply(hubrpc) -> 000f00140000050000002800000000000000000000000101
+[2026-09-17T15:41:13.338]   after-probe <- 12 bytes (total 492)
+[2026-09-17T15:41:13.338]       hex: 000e00080100050000002901
+[2026-09-17T15:41:13.338]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00)\x01'
+[2026-09-17T15:41:13.338]       hub GetUserStatus::Request         id 14 req 41    wants_resp 1 payload -
+[2026-09-17T15:41:13.339]       PROBE req 41    variant 5: payload = Result byte only
+[2026-09-17T15:41:13.339]       reply(hubrpc) -> 000f0009010005000000290000
+[2026-09-17T15:41:14.338]   after-probe <- 12 bytes (total 504)
+[2026-09-17T15:41:14.338]       hex: 000e00080100050000002a01
+[2026-09-17T15:41:14.338]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00*\x01'
+[2026-09-17T15:41:14.338]       hub GetUserStatus::Request         id 14 req 42    wants_resp 1 payload -
+[2026-09-17T15:41:14.338]       PROBE req 42    variant 6: payload empty
+[2026-09-17T15:41:14.338]       reply(hubrpc) -> 000f00080100050000002a00
+[2026-09-17T15:41:15.335]   after-probe <- 12 bytes (total 516)
+[2026-09-17T15:41:15.336]       hex: 000e00080100050000002b01
+[2026-09-17T15:41:15.336]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00+\x01'
+[2026-09-17T15:41:15.336]       hub GetUserStatus::Request         id 14 req 43    wants_resp 1 payload -
+[2026-09-17T15:41:15.336]       PROBE req 43    variant 7: hh=1 and tag = msg id
+[2026-09-17T15:41:15.336]       reply(hubrpc) -> 000f001401000f0000002b01000000000000000000000101
+[2026-09-17T15:41:16.335]   after-probe <- 12 bytes (total 528)
+[2026-09-17T15:41:16.335]       hex: 000e00080100050000002c01
+[2026-09-17T15:41:16.335]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00,\x01'
+[2026-09-17T15:41:16.335]       hub GetUserStatus::Request         id 14 req 44    wants_resp 1 payload -
+[2026-09-17T15:41:16.335]       PROBE req 44    variant 8: header id 16 (Error), Result only
+[2026-09-17T15:41:16.335]       reply(hubrpc) -> 001000090100050000002c0000
+[2026-09-17T15:41:17.333]   after-probe <- 12 bytes (total 540)
+[2026-09-17T15:41:17.333]       hex: 000e00080100050000002d01
+[2026-09-17T15:41:17.333]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00-\x01'
+[2026-09-17T15:41:17.333]       hub GetUserStatus::Request         id 14 req 45    wants_resp 1 payload -
+[2026-09-17T15:41:17.333]       PROBE req 45    variant 9: header id 9 (Heartbeat::Success)
+[2026-09-17T15:41:17.333]       reply(hubrpc) -> 000900090100050000002d0000
+[2026-09-17T15:41:18.332]   after-probe <- 12 bytes (total 552)
+[2026-09-17T15:41:18.332]       hex: 000e00080100050000002e01
+[2026-09-17T15:41:18.332]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00.\x01'
+[2026-09-17T15:41:18.332]       hub GetUserStatus::Request         id 14 req 46    wants_resp 1 payload -
+[2026-09-17T15:41:18.332]       PROBE req 46    variant 10: UserStatus.UserId = the caller's id
+[2026-09-17T15:41:18.332]       reply(hubrpc) -> 000f00140100050000002e0000e4ae070100000000000101
+[2026-09-17T15:41:19.331]   after-probe <- 12 bytes (total 564)
+[2026-09-17T15:41:19.331]       hex: 000e00080100050000002f01
+[2026-09-17T15:41:19.331]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00/\x01'
+[2026-09-17T15:41:19.331]       hub GetUserStatus::Request         id 14 req 47    wants_resp 1 payload -
+[2026-09-17T15:41:19.331]       PROBE req 47    variant 11: GameState = Connecting
+[2026-09-17T15:41:19.331]       reply(hubrpc) -> 000f00140100050000002f00000000000000000000000100
+[2026-09-17T15:41:20.379]   after-probe <- 12 bytes (total 576)
+[2026-09-17T15:41:20.379]       hex: 000e00080100050000003001
+[2026-09-17T15:41:20.379]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x000\x01'
+[2026-09-17T15:41:20.379]       hub GetUserStatus::Request         id 14 req 48    wants_resp 1 payload -
+[2026-09-17T15:41:20.379]       PROBE req 48    variant 0: baseline hdr15 ver1 tag0005 hh0
+[2026-09-17T15:41:20.379]       reply(hubrpc) -> 000f00140100050000003000000000000000000000000101
+[2026-09-17T15:41:21.327]   after-probe <- 16 bytes (total 592)
+[2026-09-17T15:41:21.328]       hex: 0008000c0100050000003100e4ae0701
+[2026-09-17T15:41:21.328]       asc: b'\x00\x08\x00\x0c\x01\x00\x05\x00\x00\x001\x00\xe4\xae\x07\x01'
+[2026-09-17T15:41:21.328]       hub Heartbeat::Request             id 8  req 49    wants_resp 0 payload e4ae0701
+[2026-09-17T15:41:21.376]   after-probe <- 12 bytes (total 604)
+[2026-09-17T15:41:21.376]       hex: 000e00080100050000003201
+[2026-09-17T15:41:21.376]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x002\x01'
+[2026-09-17T15:41:21.376]       hub GetUserStatus::Request         id 14 req 50    wants_resp 1 payload -
+[2026-09-17T15:41:21.377]       PROBE req 50    variant 2: header id = the request id (14)
+[2026-09-17T15:41:21.377]       reply(hubrpc) -> 000e00140100050000003200000000000000000000000101
+[2026-09-17T15:41:22.375]   after-probe <- 12 bytes (total 616)
+[2026-09-17T15:41:22.375]       hex: 000e00080100050000003301
+[2026-09-17T15:41:22.375]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x003\x01'
+[2026-09-17T15:41:22.376]       hub GetUserStatus::Request         id 14 req 51    wants_resp 1 payload -
+[2026-09-17T15:41:22.376]       PROBE req 51    variant 3: body tag = msg id
+[2026-09-17T15:41:22.376]       reply(hubrpc) -> 000f001401000f0000003300000000000000000000000101
+[2026-09-17T15:41:23.374]   after-probe <- 12 bytes (total 628)
+[2026-09-17T15:41:23.374]       hex: 000e00080100050000003401
+[2026-09-17T15:41:23.375]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x004\x01'
+[2026-09-17T15:41:23.375]       hub GetUserStatus::Request         id 14 req 52    wants_resp 1 payload -
+[2026-09-17T15:41:23.375]       PROBE req 52    variant 4: version byte = 0
+[2026-09-17T15:41:23.375]       reply(hubrpc) -> 000f00140000050000003400000000000000000000000101
+[2026-09-17T15:41:24.372]   after-probe <- 12 bytes (total 640)
+[2026-09-17T15:41:24.372]       hex: 000e00080100050000003501
+[2026-09-17T15:41:24.372]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x005\x01'
+[2026-09-17T15:41:24.373]       hub GetUserStatus::Request         id 14 req 53    wants_resp 1 payload -
+[2026-09-17T15:41:24.373]       PROBE req 53    variant 5: payload = Result byte only
+[2026-09-17T15:41:24.373]       reply(hubrpc) -> 000f0009010005000000350000
+[2026-09-17T15:41:25.372]   after-probe <- 12 bytes (total 652)
+[2026-09-17T15:41:25.372]       hex: 000e00080100050000003601
+[2026-09-17T15:41:25.372]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x006\x01'
+[2026-09-17T15:41:25.372]       hub GetUserStatus::Request         id 14 req 54    wants_resp 1 payload -
+[2026-09-17T15:41:25.372]       PROBE req 54    variant 6: payload empty
+[2026-09-17T15:41:25.372]       reply(hubrpc) -> 000f00080100050000003600
+[2026-09-17T15:41:26.371]   after-probe <- 12 bytes (total 664)
+[2026-09-17T15:41:26.371]       hex: 000e00080100050000003701
+[2026-09-17T15:41:26.371]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x007\x01'
+[2026-09-17T15:41:26.371]       hub GetUserStatus::Request         id 14 req 55    wants_resp 1 payload -
+[2026-09-17T15:41:26.371]       PROBE req 55    variant 7: hh=1 and tag = msg id
+[2026-09-17T15:41:26.371]       reply(hubrpc) -> 000f001401000f0000003701000000000000000000000101
+[2026-09-17T15:41:27.420]   after-probe <- 12 bytes (total 676)
+[2026-09-17T15:41:27.420]       hex: 000e00080100050000003801
+[2026-09-17T15:41:27.420]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x008\x01'
+[2026-09-17T15:41:27.420]       hub GetUserStatus::Request         id 14 req 56    wants_resp 1 payload -
+[2026-09-17T15:41:27.420]       PROBE req 56    variant 8: header id 16 (Error), Result only
+[2026-09-17T15:41:27.420]       reply(hubrpc) -> 00100009010005000000380000
+[2026-09-17T15:41:28.419]   after-probe <- 12 bytes (total 688)
+[2026-09-17T15:41:28.419]       hex: 000e00080100050000003901
+[2026-09-17T15:41:28.419]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x009\x01'
+[2026-09-17T15:41:28.420]       hub GetUserStatus::Request         id 14 req 57    wants_resp 1 payload -
+[2026-09-17T15:41:28.420]       PROBE req 57    variant 9: header id 9 (Heartbeat::Success)
+[2026-09-17T15:41:28.420]       reply(hubrpc) -> 00090009010005000000390000
+[2026-09-17T15:41:29.420]   after-probe <- 12 bytes (total 700)
+[2026-09-17T15:41:29.420]       hex: 000e00080100050000003a01
+[2026-09-17T15:41:29.420]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00:\x01'
+[2026-09-17T15:41:29.420]       hub GetUserStatus::Request         id 14 req 58    wants_resp 1 payload -
+[2026-09-17T15:41:29.420]       PROBE req 58    variant 10: UserStatus.UserId = the caller's id
+[2026-09-17T15:41:29.420]       reply(hubrpc) -> 000f00140100050000003a0000e4ae070100000000000101
+[2026-09-17T15:41:30.417]   after-probe <- 12 bytes (total 712)
+[2026-09-17T15:41:30.417]       hex: 000e00080100050000003b01
+[2026-09-17T15:41:30.417]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00;\x01'
+[2026-09-17T15:41:30.417]       hub GetUserStatus::Request         id 14 req 59    wants_resp 1 payload -
+[2026-09-17T15:41:30.417]       PROBE req 59    variant 11: GameState = Connecting
+[2026-09-17T15:41:30.417]       reply(hubrpc) -> 000f00140100050000003b00000000000000000000000100
+[2026-09-17T15:41:31.416]   after-probe <- 12 bytes (total 724)
+[2026-09-17T15:41:31.416]       hex: 000e00080100050000003c01
+[2026-09-17T15:41:31.416]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00<\x01'
+[2026-09-17T15:41:31.416]       hub GetUserStatus::Request         id 14 req 60    wants_resp 1 payload -
+[2026-09-17T15:41:31.416]       PROBE req 60    variant 0: baseline hdr15 ver1 tag0005 hh0
+[2026-09-17T15:41:31.416]       reply(hubrpc) -> 000f00140100050000003c00000000000000000000000101
+[2026-09-17T15:41:32.416]   after-probe <- 12 bytes (total 736)
+[2026-09-17T15:41:32.416]       hex: 000e00080100050000003d01
+[2026-09-17T15:41:32.416]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00=\x01'
+[2026-09-17T15:41:32.417]       hub GetUserStatus::Request         id 14 req 61    wants_resp 1 payload -
+[2026-09-17T15:41:32.417]       PROBE req 61    variant 1: has_handler=1
+[2026-09-17T15:41:32.417]       reply(hubrpc) -> 000f00140100050000003d01000000000000000000000101
+[2026-09-17T15:41:33.415]   after-probe <- 12 bytes (total 748)
+[2026-09-17T15:41:33.415]       hex: 000e00080100050000003e01
+[2026-09-17T15:41:33.415]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00>\x01'
+[2026-09-17T15:41:33.415]       hub GetUserStatus::Request         id 14 req 62    wants_resp 1 payload -
+[2026-09-17T15:41:33.415]       PROBE req 62    variant 2: header id = the request id (14)
+[2026-09-17T15:41:33.416]       reply(hubrpc) -> 000e00140100050000003e00000000000000000000000101
+[2026-09-17T15:41:34.413]   after-probe <- 12 bytes (total 760)
+[2026-09-17T15:41:34.413]       hex: 000e00080100050000003f01
+[2026-09-17T15:41:34.413]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00?\x01'
+[2026-09-17T15:41:34.413]       hub GetUserStatus::Request         id 14 req 63    wants_resp 1 payload -
+[2026-09-17T15:41:34.413]       PROBE req 63    variant 3: body tag = msg id
+[2026-09-17T15:41:34.413]       reply(hubrpc) -> 000f001401000f0000003f00000000000000000000000101
+[2026-09-17T15:41:35.463]   after-probe <- 12 bytes (total 772)
+[2026-09-17T15:41:35.464]       hex: 000e00080100050000004001
+[2026-09-17T15:41:35.464]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00@\x01'
+[2026-09-17T15:41:35.464]       hub GetUserStatus::Request         id 14 req 64    wants_resp 1 payload -
+[2026-09-17T15:41:35.464]       PROBE req 64    variant 4: version byte = 0
+[2026-09-17T15:41:35.464]       reply(hubrpc) -> 000f00140000050000004000000000000000000000000101
+[2026-09-17T15:41:36.362]   after-probe <- 16 bytes (total 788)
+[2026-09-17T15:41:36.362]       hex: 0008000c0100050000004100e4ae0701
+[2026-09-17T15:41:36.362]       asc: b'\x00\x08\x00\x0c\x01\x00\x05\x00\x00\x00A\x00\xe4\xae\x07\x01'
+[2026-09-17T15:41:36.362]       hub Heartbeat::Request             id 8  req 65    wants_resp 0 payload e4ae0701
+[2026-09-17T15:41:36.461]   after-probe <- 12 bytes (total 800)
+[2026-09-17T15:41:36.461]       hex: 000e00080100050000004201
+[2026-09-17T15:41:36.461]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00B\x01'
+[2026-09-17T15:41:36.461]       hub GetUserStatus::Request         id 14 req 66    wants_resp 1 payload -
+[2026-09-17T15:41:36.461]       PROBE req 66    variant 6: payload empty
+[2026-09-17T15:41:36.462]       reply(hubrpc) -> 000f00080100050000004200
+[2026-09-17T15:41:37.460]   after-probe <- 12 bytes (total 812)
+[2026-09-17T15:41:37.460]       hex: 000e00080100050000004301
+[2026-09-17T15:41:37.460]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00C\x01'
+[2026-09-17T15:41:37.460]       hub GetUserStatus::Request         id 14 req 67    wants_resp 1 payload -
+[2026-09-17T15:41:37.460]       PROBE req 67    variant 7: hh=1 and tag = msg id
+[2026-09-17T15:41:37.461]       reply(hubrpc) -> 000f001401000f0000004301000000000000000000000101
+[2026-09-17T15:41:38.460]   after-probe <- 12 bytes (total 824)
+[2026-09-17T15:41:38.460]       hex: 000e00080100050000004401
+[2026-09-17T15:41:38.460]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00D\x01'
+[2026-09-17T15:41:38.460]       hub GetUserStatus::Request         id 14 req 68    wants_resp 1 payload -
+[2026-09-17T15:41:38.460]       PROBE req 68    variant 8: header id 16 (Error), Result only
+[2026-09-17T15:41:38.460]       reply(hubrpc) -> 00100009010005000000440000
+[2026-09-17T15:41:39.457]   after-probe <- 12 bytes (total 836)
+[2026-09-17T15:41:39.458]       hex: 000e00080100050000004501
+[2026-09-17T15:41:39.458]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00E\x01'
+[2026-09-17T15:41:39.458]       hub GetUserStatus::Request         id 14 req 69    wants_resp 1 payload -
+[2026-09-17T15:41:39.458]       PROBE req 69    variant 9: header id 9 (Heartbeat::Success)
+[2026-09-17T15:41:39.458]       reply(hubrpc) -> 00090009010005000000450000
+[2026-09-17T15:41:40.457]   after-probe <- 12 bytes (total 848)
+[2026-09-17T15:41:40.457]       hex: 000e00080100050000004601
+[2026-09-17T15:41:40.457]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00F\x01'
+[2026-09-17T15:41:40.457]       hub GetUserStatus::Request         id 14 req 70    wants_resp 1 payload -
+[2026-09-17T15:41:40.457]       PROBE req 70    variant 10: UserStatus.UserId = the caller's id
+[2026-09-17T15:41:40.458]       reply(hubrpc) -> 000f0014010005000000460000e4ae070100000000000101
+[2026-09-17T15:41:41.456]   after-probe <- 12 bytes (total 860)
+[2026-09-17T15:41:41.456]       hex: 000e00080100050000004701
+[2026-09-17T15:41:41.456]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00G\x01'
+[2026-09-17T15:41:41.456]       hub GetUserStatus::Request         id 14 req 71    wants_resp 1 payload -
+[2026-09-17T15:41:41.456]       PROBE req 71    variant 11: GameState = Connecting
+[2026-09-17T15:41:41.456]       reply(hubrpc) -> 000f00140100050000004700000000000000000000000100
+[2026-09-17T15:41:42.455]   after-probe <- 12 bytes (total 872)
+[2026-09-17T15:41:42.455]       hex: 000e00080100050000004801
+[2026-09-17T15:41:42.455]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00H\x01'
+[2026-09-17T15:41:42.455]       hub GetUserStatus::Request         id 14 req 72    wants_resp 1 payload -
+[2026-09-17T15:41:42.455]       PROBE req 72    variant 0: baseline hdr15 ver1 tag0005 hh0
+[2026-09-17T15:41:42.455]       reply(hubrpc) -> 000f00140100050000004800000000000000000000000101
+[2026-09-17T15:41:43.503]   after-probe <- 12 bytes (total 884)
+[2026-09-17T15:41:43.503]       hex: 000e00080100050000004901
+[2026-09-17T15:41:43.503]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00I\x01'
+[2026-09-17T15:41:43.503]       hub GetUserStatus::Request         id 14 req 73    wants_resp 1 payload -
+[2026-09-17T15:41:43.504]       PROBE req 73    variant 1: has_handler=1
+[2026-09-17T15:41:43.504]       reply(hubrpc) -> 000f00140100050000004901000000000000000000000101
+[2026-09-17T15:41:44.504]   after-probe <- 12 bytes (total 896)
+[2026-09-17T15:41:44.504]       hex: 000e00080100050000004a01
+[2026-09-17T15:41:44.504]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00J\x01'
+[2026-09-17T15:41:44.504]       hub GetUserStatus::Request         id 14 req 74    wants_resp 1 payload -
+[2026-09-17T15:41:44.504]       PROBE req 74    variant 2: header id = the request id (14)
+[2026-09-17T15:41:44.505]       reply(hubrpc) -> 000e00140100050000004a00000000000000000000000101
+[2026-09-17T15:41:45.503]   after-probe <- 12 bytes (total 908)
+[2026-09-17T15:41:45.503]       hex: 000e00080100050000004b01
+[2026-09-17T15:41:45.503]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00K\x01'
+[2026-09-17T15:41:45.503]       hub GetUserStatus::Request         id 14 req 75    wants_resp 1 payload -
+[2026-09-17T15:41:45.503]       PROBE req 75    variant 3: body tag = msg id
+[2026-09-17T15:41:45.503]       reply(hubrpc) -> 000f001401000f0000004b00000000000000000000000101
+[2026-09-17T15:41:46.502]   after-probe <- 12 bytes (total 920)
+[2026-09-17T15:41:46.502]       hex: 000e00080100050000004c01
+[2026-09-17T15:41:46.502]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00L\x01'
+[2026-09-17T15:41:46.502]       hub GetUserStatus::Request         id 14 req 76    wants_resp 1 payload -
+[2026-09-17T15:41:46.503]       PROBE req 76    variant 4: version byte = 0
+[2026-09-17T15:41:46.503]       reply(hubrpc) -> 000f00140000050000004c00000000000000000000000101
+[2026-09-17T15:41:47.500]   after-probe <- 12 bytes (total 932)
+[2026-09-17T15:41:47.501]       hex: 000e00080100050000004d01
+[2026-09-17T15:41:47.501]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00M\x01'
+[2026-09-17T15:41:47.501]       hub GetUserStatus::Request         id 14 req 77    wants_resp 1 payload -
+[2026-09-17T15:41:47.501]       PROBE req 77    variant 5: payload = Result byte only
+[2026-09-17T15:41:47.501]       reply(hubrpc) -> 000f00090100050000004d0000
+[2026-09-17T15:41:48.499]   after-probe <- 12 bytes (total 944)
+[2026-09-17T15:41:48.499]       hex: 000e00080100050000004e01
+[2026-09-17T15:41:48.500]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00N\x01'
+[2026-09-17T15:41:48.500]       hub GetUserStatus::Request         id 14 req 78    wants_resp 1 payload -
+[2026-09-17T15:41:48.500]       PROBE req 78    variant 6: payload empty
+[2026-09-17T15:41:48.500]       reply(hubrpc) -> 000f00080100050000004e00
+[2026-09-17T15:41:49.499]   after-probe <- 12 bytes (total 956)
+[2026-09-17T15:41:49.500]       hex: 000e00080100050000004f01
+[2026-09-17T15:41:49.500]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00O\x01'
+[2026-09-17T15:41:49.500]       hub GetUserStatus::Request         id 14 req 79    wants_resp 1 payload -
+[2026-09-17T15:41:49.500]       PROBE req 79    variant 7: hh=1 and tag = msg id
+[2026-09-17T15:41:49.500]       reply(hubrpc) -> 000f001401000f0000004f01000000000000000000000101
+[2026-09-17T15:41:50.548]   after-probe <- 12 bytes (total 968)
+[2026-09-17T15:41:50.548]       hex: 000e00080100050000005001
+[2026-09-17T15:41:50.548]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00P\x01'
+[2026-09-17T15:41:50.548]       hub GetUserStatus::Request         id 14 req 80    wants_resp 1 payload -
+[2026-09-17T15:41:50.549]       PROBE req 80    variant 8: header id 16 (Error), Result only
+[2026-09-17T15:41:50.549]       reply(hubrpc) -> 00100009010005000000500000
+[2026-09-17T15:41:51.397]   after-probe <- 16 bytes (total 984)
+[2026-09-17T15:41:51.398]       hex: 0008000c0100050000005100e4ae0701
+[2026-09-17T15:41:51.398]       asc: b'\x00\x08\x00\x0c\x01\x00\x05\x00\x00\x00Q\x00\xe4\xae\x07\x01'
+[2026-09-17T15:41:51.398]       hub Heartbeat::Request             id 8  req 81    wants_resp 0 payload e4ae0701
+[2026-09-17T15:41:51.548]   after-probe <- 12 bytes (total 996)
+[2026-09-17T15:41:51.548]       hex: 000e00080100050000005201
+[2026-09-17T15:41:51.548]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00R\x01'
+[2026-09-17T15:41:51.548]       hub GetUserStatus::Request         id 14 req 82    wants_resp 1 payload -
+[2026-09-17T15:41:51.548]       PROBE req 82    variant 10: UserStatus.UserId = the caller's id
+[2026-09-17T15:41:51.548]       reply(hubrpc) -> 000f0014010005000000520000e4ae070100000000000101
+[2026-09-17T15:41:52.546]   after-probe <- 12 bytes (total 1008)
+[2026-09-17T15:41:52.546]       hex: 000e00080100050000005301
+[2026-09-17T15:41:52.546]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00S\x01'
+[2026-09-17T15:41:52.546]       hub GetUserStatus::Request         id 14 req 83    wants_resp 1 payload -
+[2026-09-17T15:41:52.546]       PROBE req 83    variant 11: GameState = Connecting
+[2026-09-17T15:41:52.546]       reply(hubrpc) -> 000f00140100050000005300000000000000000000000100
+[2026-09-17T15:41:53.545]   after-probe <- 12 bytes (total 1020)
+[2026-09-17T15:41:53.545]       hex: 000e00080100050000005401
+[2026-09-17T15:41:53.545]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00T\x01'
+[2026-09-17T15:41:53.545]       hub GetUserStatus::Request         id 14 req 84    wants_resp 1 payload -
+[2026-09-17T15:41:53.545]       PROBE req 84    variant 0: baseline hdr15 ver1 tag0005 hh0
+[2026-09-17T15:41:53.545]       reply(hubrpc) -> 000f00140100050000005400000000000000000000000101
+[2026-09-17T15:41:54.545]   after-probe <- 12 bytes (total 1032)
+[2026-09-17T15:41:54.545]       hex: 000e00080100050000005501
+[2026-09-17T15:41:54.545]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00U\x01'
+[2026-09-17T15:41:54.546]       hub GetUserStatus::Request         id 14 req 85    wants_resp 1 payload -
+[2026-09-17T15:41:54.546]       PROBE req 85    variant 1: has_handler=1
+[2026-09-17T15:41:54.546]       reply(hubrpc) -> 000f00140100050000005501000000000000000000000101
+[2026-09-17T15:41:55.543]   after-probe <- 12 bytes (total 1044)
+[2026-09-17T15:41:55.544]       hex: 000e00080100050000005601
+[2026-09-17T15:41:55.544]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00V\x01'
+[2026-09-17T15:41:55.544]       hub GetUserStatus::Request         id 14 req 86    wants_resp 1 payload -
+[2026-09-17T15:41:55.544]       PROBE req 86    variant 2: header id = the request id (14)
+[2026-09-17T15:41:55.544]       reply(hubrpc) -> 000e00140100050000005600000000000000000000000101
+[2026-09-17T15:41:56.543]   after-probe <- 12 bytes (total 1056)
+[2026-09-17T15:41:56.543]       hex: 000e00080100050000005701
+[2026-09-17T15:41:56.543]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00W\x01'
+[2026-09-17T15:41:56.543]       hub GetUserStatus::Request         id 14 req 87    wants_resp 1 payload -
+[2026-09-17T15:41:56.543]       PROBE req 87    variant 3: body tag = msg id
+[2026-09-17T15:41:56.543]       reply(hubrpc) -> 000f001401000f0000005700000000000000000000000101
+[2026-09-17T15:41:57.542]   after-probe <- 12 bytes (total 1068)
+[2026-09-17T15:41:57.542]       hex: 000e00080100050000005801
+[2026-09-17T15:41:57.542]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00X\x01'
+[2026-09-17T15:41:57.542]       hub GetUserStatus::Request         id 14 req 88    wants_resp 1 payload -
+[2026-09-17T15:41:57.542]       PROBE req 88    variant 4: version byte = 0
+[2026-09-17T15:41:57.542]       reply(hubrpc) -> 000f00140000050000005800000000000000000000000101
+[2026-09-17T15:41:58.591]   after-probe <- 12 bytes (total 1080)
+[2026-09-17T15:41:58.591]       hex: 000e00080100050000005901
+[2026-09-17T15:41:58.591]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00Y\x01'
+[2026-09-17T15:41:58.591]       hub GetUserStatus::Request         id 14 req 89    wants_resp 1 payload -
+[2026-09-17T15:41:58.591]       PROBE req 89    variant 5: payload = Result byte only
+[2026-09-17T15:41:58.591]       reply(hubrpc) -> 000f0009010005000000590000
+[2026-09-17T15:41:59.590]   after-probe <- 12 bytes (total 1092)
+[2026-09-17T15:41:59.590]       hex: 000e00080100050000005a01
+[2026-09-17T15:41:59.590]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00Z\x01'
+[2026-09-17T15:41:59.590]       hub GetUserStatus::Request         id 14 req 90    wants_resp 1 payload -
+[2026-09-17T15:41:59.590]       PROBE req 90    variant 6: payload empty
+[2026-09-17T15:41:59.590]       reply(hubrpc) -> 000f00080100050000005a00
+[2026-09-17T15:42:00.590]   after-probe <- 12 bytes (total 1104)
+[2026-09-17T15:42:00.590]       hex: 000e00080100050000005b01
+[2026-09-17T15:42:00.590]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00[\x01'
+[2026-09-17T15:42:00.590]       hub GetUserStatus::Request         id 14 req 91    wants_resp 1 payload -
+[2026-09-17T15:42:00.590]       PROBE req 91    variant 7: hh=1 and tag = msg id
+[2026-09-17T15:42:00.590]       reply(hubrpc) -> 000f001401000f0000005b01000000000000000000000101
+[2026-09-17T15:42:01.589]   after-probe <- 12 bytes (total 1116)
+[2026-09-17T15:42:01.589]       hex: 000e00080100050000005c01
+[2026-09-17T15:42:01.589]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\\\x01'
+[2026-09-17T15:42:01.589]       hub GetUserStatus::Request         id 14 req 92    wants_resp 1 payload -
+[2026-09-17T15:42:01.589]       PROBE req 92    variant 8: header id 16 (Error), Result only
+[2026-09-17T15:42:01.589]       reply(hubrpc) -> 001000090100050000005c0000
+[2026-09-17T15:42:02.587]   after-probe <- 12 bytes (total 1128)
+[2026-09-17T15:42:02.588]       hex: 000e00080100050000005d01
+[2026-09-17T15:42:02.588]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00]\x01'
+[2026-09-17T15:42:02.588]       hub GetUserStatus::Request         id 14 req 93    wants_resp 1 payload -
+[2026-09-17T15:42:02.588]       PROBE req 93    variant 9: header id 9 (Heartbeat::Success)
+[2026-09-17T15:42:02.588]       reply(hubrpc) -> 000900090100050000005d0000
+[2026-09-17T15:42:03.587]   after-probe <- 12 bytes (total 1140)
+[2026-09-17T15:42:03.587]       hex: 000e00080100050000005e01
+[2026-09-17T15:42:03.587]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00^\x01'
+[2026-09-17T15:42:03.587]       hub GetUserStatus::Request         id 14 req 94    wants_resp 1 payload -
+[2026-09-17T15:42:03.587]       PROBE req 94    variant 10: UserStatus.UserId = the caller's id
+[2026-09-17T15:42:03.587]       reply(hubrpc) -> 000f00140100050000005e0000e4ae070100000000000101
+[2026-09-17T15:42:04.586]   after-probe <- 12 bytes (total 1152)
+[2026-09-17T15:42:04.586]       hex: 000e00080100050000005f01
+[2026-09-17T15:42:04.586]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00_\x01'
+[2026-09-17T15:42:04.586]       hub GetUserStatus::Request         id 14 req 95    wants_resp 1 payload -
+[2026-09-17T15:42:04.586]       PROBE req 95    variant 11: GameState = Connecting
+[2026-09-17T15:42:04.586]       reply(hubrpc) -> 000f00140100050000005f00000000000000000000000100
+[2026-09-17T15:42:05.634]   after-probe <- 12 bytes (total 1164)
+[2026-09-17T15:42:05.634]       hex: 000e00080100050000006001
+[2026-09-17T15:42:05.634]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00`\x01'
+[2026-09-17T15:42:05.634]       hub GetUserStatus::Request         id 14 req 96    wants_resp 1 payload -
+[2026-09-17T15:42:05.634]       PROBE req 96    variant 0: baseline hdr15 ver1 tag0005 hh0
+[2026-09-17T15:42:05.634]       reply(hubrpc) -> 000f00140100050000006000000000000000000000000101
+[2026-09-17T15:42:06.433]   after-probe <- 16 bytes (total 1180)
+[2026-09-17T15:42:06.433]       hex: 0008000c0100050000006100e4ae0701
+[2026-09-17T15:42:06.433]       asc: b'\x00\x08\x00\x0c\x01\x00\x05\x00\x00\x00a\x00\xe4\xae\x07\x01'
+[2026-09-17T15:42:06.434]       hub Heartbeat::Request             id 8  req 97    wants_resp 0 payload e4ae0701
+[2026-09-17T15:42:06.633]   after-probe <- 12 bytes (total 1192)
+[2026-09-17T15:42:06.633]       hex: 000e00080100050000006201
+[2026-09-17T15:42:06.633]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00b\x01'
+[2026-09-17T15:42:06.633]       hub GetUserStatus::Request         id 14 req 98    wants_resp 1 payload -
+[2026-09-17T15:42:06.633]       PROBE req 98    variant 2: header id = the request id (14)
+[2026-09-17T15:42:06.633]       reply(hubrpc) -> 000e00140100050000006200000000000000000000000101
+[2026-09-17T15:42:07.632]   after-probe <- 12 bytes (total 1204)
+[2026-09-17T15:42:07.632]       hex: 000e00080100050000006301
+[2026-09-17T15:42:07.632]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00c\x01'
+[2026-09-17T15:42:07.632]       hub GetUserStatus::Request         id 14 req 99    wants_resp 1 payload -
+[2026-09-17T15:42:07.632]       PROBE req 99    variant 3: body tag = msg id
+[2026-09-17T15:42:07.632]       reply(hubrpc) -> 000f001401000f0000006300000000000000000000000101
+[2026-09-17T15:42:08.630]   after-probe <- 12 bytes (total 1216)
+[2026-09-17T15:42:08.630]       hex: 000e00080100050000006401
+[2026-09-17T15:42:08.630]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00d\x01'
+[2026-09-17T15:42:08.630]       hub GetUserStatus::Request         id 14 req 100   wants_resp 1 payload -
+[2026-09-17T15:42:08.630]       PROBE req 100   variant 4: version byte = 0
+[2026-09-17T15:42:08.630]       reply(hubrpc) -> 000f00140000050000006400000000000000000000000101
+[2026-09-17T15:42:09.630]   after-probe <- 12 bytes (total 1228)
+[2026-09-17T15:42:09.631]       hex: 000e00080100050000006501
+[2026-09-17T15:42:09.631]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00e\x01'
+[2026-09-17T15:42:09.631]       hub GetUserStatus::Request         id 14 req 101   wants_resp 1 payload -
+[2026-09-17T15:42:09.631]       PROBE req 101   variant 5: payload = Result byte only
+[2026-09-17T15:42:09.631]       reply(hubrpc) -> 000f0009010005000000650000
+[2026-09-17T15:42:10.630]   after-probe <- 12 bytes (total 1240)
+[2026-09-17T15:42:10.630]       hex: 000e00080100050000006601
+[2026-09-17T15:42:10.630]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00f\x01'
+[2026-09-17T15:42:10.630]       hub GetUserStatus::Request         id 14 req 102   wants_resp 1 payload -
+[2026-09-17T15:42:10.630]       PROBE req 102   variant 6: payload empty
+[2026-09-17T15:42:10.630]       reply(hubrpc) -> 000f00080100050000006600
+[2026-09-17T15:42:11.628]   after-probe <- 12 bytes (total 1252)
+[2026-09-17T15:42:11.629]       hex: 000e00080100050000006701
+[2026-09-17T15:42:11.629]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00g\x01'
+[2026-09-17T15:42:11.629]       hub GetUserStatus::Request         id 14 req 103   wants_resp 1 payload -
+[2026-09-17T15:42:11.629]       PROBE req 103   variant 7: hh=1 and tag = msg id
+[2026-09-17T15:42:11.629]       reply(hubrpc) -> 000f001401000f0000006701000000000000000000000101
+[2026-09-17T15:42:12.628]   after-probe <- 12 bytes (total 1264)
+[2026-09-17T15:42:12.629]       hex: 000e00080100050000006801
+[2026-09-17T15:42:12.629]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00h\x01'
+[2026-09-17T15:42:12.629]       hub GetUserStatus::Request         id 14 req 104   wants_resp 1 payload -
+[2026-09-17T15:42:12.629]       PROBE req 104   variant 8: header id 16 (Error), Result only
+[2026-09-17T15:42:12.629]       reply(hubrpc) -> 00100009010005000000680000
+[2026-09-17T15:42:13.677]   after-probe <- 12 bytes (total 1276)
+[2026-09-17T15:42:13.677]       hex: 000e00080100050000006901
+[2026-09-17T15:42:13.677]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00i\x01'
+[2026-09-17T15:42:13.677]       hub GetUserStatus::Request         id 14 req 105   wants_resp 1 payload -
+[2026-09-17T15:42:13.677]       PROBE req 105   variant 9: header id 9 (Heartbeat::Success)
+[2026-09-17T15:42:13.677]       reply(hubrpc) -> 00090009010005000000690000
+[2026-09-17T15:42:14.674]   after-probe <- 12 bytes (total 1288)
+[2026-09-17T15:42:14.674]       hex: 000e00080100050000006a01
+[2026-09-17T15:42:14.674]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00j\x01'
+[2026-09-17T15:42:14.674]       hub GetUserStatus::Request         id 14 req 106   wants_resp 1 payload -
+[2026-09-17T15:42:14.675]       PROBE req 106   variant 10: UserStatus.UserId = the caller's id
+[2026-09-17T15:42:14.675]       reply(hubrpc) -> 000f00140100050000006a0000e4ae070100000000000101
+[2026-09-17T15:42:15.673]   after-probe <- 12 bytes (total 1300)
+[2026-09-17T15:42:15.674]       hex: 000e00080100050000006b01
+[2026-09-17T15:42:15.674]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00k\x01'
+[2026-09-17T15:42:15.674]       hub GetUserStatus::Request         id 14 req 107   wants_resp 1 payload -
+[2026-09-17T15:42:15.674]       PROBE req 107   variant 11: GameState = Connecting
+[2026-09-17T15:42:15.674]       reply(hubrpc) -> 000f00140100050000006b00000000000000000000000100
+[2026-09-17T15:42:16.674]   after-probe <- 12 bytes (total 1312)
+[2026-09-17T15:42:16.674]       hex: 000e00080100050000006c01
+[2026-09-17T15:42:16.674]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00l\x01'
+[2026-09-17T15:42:16.674]       hub GetUserStatus::Request         id 14 req 108   wants_resp 1 payload -
+[2026-09-17T15:42:16.674]       PROBE req 108   variant 0: baseline hdr15 ver1 tag0005 hh0
+[2026-09-17T15:42:16.674]       reply(hubrpc) -> 000f00140100050000006c00000000000000000000000101
+[2026-09-17T15:42:17.674]   after-probe <- 12 bytes (total 1324)
+[2026-09-17T15:42:17.674]       hex: 000e00080100050000006d01
+[2026-09-17T15:42:17.674]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00m\x01'
+[2026-09-17T15:42:17.674]       hub GetUserStatus::Request         id 14 req 109   wants_resp 1 payload -
+[2026-09-17T15:42:17.674]       PROBE req 109   variant 1: has_handler=1
+[2026-09-17T15:42:17.674]       reply(hubrpc) -> 000f00140100050000006d01000000000000000000000101
+[2026-09-17T15:42:18.672]   after-probe <- 12 bytes (total 1336)
+[2026-09-17T15:42:18.673]       hex: 000e00080100050000006e01
+[2026-09-17T15:42:18.673]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00n\x01'
+[2026-09-17T15:42:18.673]       hub GetUserStatus::Request         id 14 req 110   wants_resp 1 payload -
+[2026-09-17T15:42:18.673]       PROBE req 110   variant 2: header id = the request id (14)
+[2026-09-17T15:42:18.673]       reply(hubrpc) -> 000e00140100050000006e00000000000000000000000101
+[2026-09-17T15:42:19.671]   after-probe <- 12 bytes (total 1348)
+[2026-09-17T15:42:19.671]       hex: 000e00080100050000006f01
+[2026-09-17T15:42:19.671]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00o\x01'
+[2026-09-17T15:42:19.671]       hub GetUserStatus::Request         id 14 req 111   wants_resp 1 payload -
+[2026-09-17T15:42:19.672]       PROBE req 111   variant 3: body tag = msg id
+[2026-09-17T15:42:19.672]       reply(hubrpc) -> 000f001401000f0000006f00000000000000000000000101
+[2026-09-17T15:42:20.671]   after-probe <- 12 bytes (total 1360)
+[2026-09-17T15:42:20.672]       hex: 000e00080100050000007001
+[2026-09-17T15:42:20.672]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00p\x01'
+[2026-09-17T15:42:20.672]       hub GetUserStatus::Request         id 14 req 112   wants_resp 1 payload -
+[2026-09-17T15:42:20.672]       PROBE req 112   variant 4: version byte = 0
+[2026-09-17T15:42:20.672]       reply(hubrpc) -> 000f00140000050000007000000000000000000000000101
+[2026-09-17T15:42:21.471]   after-probe <- 16 bytes (total 1376)
+[2026-09-17T15:42:21.472]       hex: 0008000c0100050000007100e4ae0701
+[2026-09-17T15:42:21.472]       asc: b'\x00\x08\x00\x0c\x01\x00\x05\x00\x00\x00q\x00\xe4\xae\x07\x01'
+[2026-09-17T15:42:21.472]       hub Heartbeat::Request             id 8  req 113   wants_resp 0 payload e4ae0701
+[2026-09-17T15:42:21.721]   after-probe <- 12 bytes (total 1388)
+[2026-09-17T15:42:21.721]       hex: 000e00080100050000007201
+[2026-09-17T15:42:21.721]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00r\x01'
+[2026-09-17T15:42:21.722]       hub GetUserStatus::Request         id 14 req 114   wants_resp 1 payload -
+[2026-09-17T15:42:21.722]       PROBE req 114   variant 6: payload empty
+[2026-09-17T15:42:21.722]       reply(hubrpc) -> 000f00080100050000007200
+[2026-09-17T15:42:22.719]   after-probe <- 12 bytes (total 1400)
+[2026-09-17T15:42:22.719]       hex: 000e00080100050000007301
+[2026-09-17T15:42:22.719]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00s\x01'
+[2026-09-17T15:42:22.719]       hub GetUserStatus::Request         id 14 req 115   wants_resp 1 payload -
+[2026-09-17T15:42:22.719]       PROBE req 115   variant 7: hh=1 and tag = msg id
+[2026-09-17T15:42:22.719]       reply(hubrpc) -> 000f001401000f0000007301000000000000000000000101
+[2026-09-17T15:42:23.718]   after-probe <- 12 bytes (total 1412)
+[2026-09-17T15:42:23.719]       hex: 000e00080100050000007401
+[2026-09-17T15:42:23.719]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00t\x01'
+[2026-09-17T15:42:23.719]       hub GetUserStatus::Request         id 14 req 116   wants_resp 1 payload -
+[2026-09-17T15:42:23.719]       PROBE req 116   variant 8: header id 16 (Error), Result only
+[2026-09-17T15:42:23.719]       reply(hubrpc) -> 00100009010005000000740000
+[2026-09-17T15:42:24.718]   after-probe <- 12 bytes (total 1424)
+[2026-09-17T15:42:24.719]       hex: 000e00080100050000007501
+[2026-09-17T15:42:24.719]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00u\x01'
+[2026-09-17T15:42:24.719]       hub GetUserStatus::Request         id 14 req 117   wants_resp 1 payload -
+[2026-09-17T15:42:24.719]       PROBE req 117   variant 9: header id 9 (Heartbeat::Success)
+[2026-09-17T15:42:24.719]       reply(hubrpc) -> 00090009010005000000750000
+[2026-09-17T15:42:25.718]   after-probe <- 12 bytes (total 1436)
+[2026-09-17T15:42:25.718]       hex: 000e00080100050000007601
+[2026-09-17T15:42:25.718]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00v\x01'
+[2026-09-17T15:42:25.718]       hub GetUserStatus::Request         id 14 req 118   wants_resp 1 payload -
+[2026-09-17T15:42:25.718]       PROBE req 118   variant 10: UserStatus.UserId = the caller's id
+[2026-09-17T15:42:25.718]       reply(hubrpc) -> 000f0014010005000000760000e4ae070100000000000101
+[2026-09-17T15:42:26.714]   after-probe <- 12 bytes (total 1448)
+[2026-09-17T15:42:26.715]       hex: 000e00080100050000007701
+[2026-09-17T15:42:26.715]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00w\x01'
+[2026-09-17T15:42:26.715]       hub GetUserStatus::Request         id 14 req 119   wants_resp 1 payload -
+[2026-09-17T15:42:26.715]       PROBE req 119   variant 11: GameState = Connecting
+[2026-09-17T15:42:26.715]       reply(hubrpc) -> 000f00140100050000007700000000000000000000000100
+[2026-09-17T15:42:27.714]   after-probe <- 12 bytes (total 1460)
+[2026-09-17T15:42:27.714]       hex: 000e00080100050000007801
+[2026-09-17T15:42:27.714]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00x\x01'
+[2026-09-17T15:42:27.714]       hub GetUserStatus::Request         id 14 req 120   wants_resp 1 payload -
+[2026-09-17T15:42:27.714]       PROBE req 120   variant 0: baseline hdr15 ver1 tag0005 hh0
+[2026-09-17T15:42:27.714]       reply(hubrpc) -> 000f00140100050000007800000000000000000000000101
+[2026-09-17T15:42:28.714]   after-probe <- 12 bytes (total 1472)
+[2026-09-17T15:42:28.714]       hex: 000e00080100050000007901
+[2026-09-17T15:42:28.714]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00y\x01'
+[2026-09-17T15:42:28.714]       hub GetUserStatus::Request         id 14 req 121   wants_resp 1 payload -
+[2026-09-17T15:42:28.714]       PROBE req 121   variant 1: has_handler=1
+[2026-09-17T15:42:28.714]       reply(hubrpc) -> 000f00140100050000007901000000000000000000000101
+[2026-09-17T15:42:29.763]   after-probe <- 12 bytes (total 1484)
+[2026-09-17T15:42:29.764]       hex: 000e00080100050000007a01
+[2026-09-17T15:42:29.764]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00z\x01'
+[2026-09-17T15:42:29.764]       hub GetUserStatus::Request         id 14 req 122   wants_resp 1 payload -
+[2026-09-17T15:42:29.764]       PROBE req 122   variant 2: header id = the request id (14)
+[2026-09-17T15:42:29.764]       reply(hubrpc) -> 000e00140100050000007a00000000000000000000000101
+[2026-09-17T15:42:30.761]   after-probe <- 12 bytes (total 1496)
+[2026-09-17T15:42:30.761]       hex: 000e00080100050000007b01
+[2026-09-17T15:42:30.761]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00{\x01'
+[2026-09-17T15:42:30.761]       hub GetUserStatus::Request         id 14 req 123   wants_resp 1 payload -
+[2026-09-17T15:42:30.761]       PROBE req 123   variant 3: body tag = msg id
+[2026-09-17T15:42:30.761]       reply(hubrpc) -> 000f001401000f0000007b00000000000000000000000101
+[2026-09-17T15:42:31.760]   after-probe <- 12 bytes (total 1508)
+[2026-09-17T15:42:31.760]       hex: 000e00080100050000007c01
+[2026-09-17T15:42:31.760]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00|\x01'
+[2026-09-17T15:42:31.760]       hub GetUserStatus::Request         id 14 req 124   wants_resp 1 payload -
+[2026-09-17T15:42:31.760]       PROBE req 124   variant 4: version byte = 0
+[2026-09-17T15:42:31.760]       reply(hubrpc) -> 000f00140000050000007c00000000000000000000000101
+[2026-09-17T15:42:32.759]   after-probe <- 12 bytes (total 1520)
+[2026-09-17T15:42:32.760]       hex: 000e00080100050000007d01
+[2026-09-17T15:42:32.760]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00}\x01'
+[2026-09-17T15:42:32.760]       hub GetUserStatus::Request         id 14 req 125   wants_resp 1 payload -
+[2026-09-17T15:42:32.760]       PROBE req 125   variant 5: payload = Result byte only
+[2026-09-17T15:42:32.760]       reply(hubrpc) -> 000f00090100050000007d0000
+[2026-09-17T15:42:33.758]   after-probe <- 12 bytes (total 1532)
+[2026-09-17T15:42:33.759]       hex: 000e00080100050000007e01
+[2026-09-17T15:42:33.759]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00~\x01'
+[2026-09-17T15:42:33.759]       hub GetUserStatus::Request         id 14 req 126   wants_resp 1 payload -
+[2026-09-17T15:42:33.759]       PROBE req 126   variant 6: payload empty
+[2026-09-17T15:42:33.759]       reply(hubrpc) -> 000f00080100050000007e00
+[2026-09-17T15:42:34.757]   after-probe <- 12 bytes (total 1544)
+[2026-09-17T15:42:34.758]       hex: 000e00080100050000007f01
+[2026-09-17T15:42:34.758]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x7f\x01'
+[2026-09-17T15:42:34.758]       hub GetUserStatus::Request         id 14 req 127   wants_resp 1 payload -
+[2026-09-17T15:42:34.758]       PROBE req 127   variant 7: hh=1 and tag = msg id
+[2026-09-17T15:42:34.758]       reply(hubrpc) -> 000f001401000f0000007f01000000000000000000000101
+[2026-09-17T15:42:35.755]   after-probe <- 12 bytes (total 1556)
+[2026-09-17T15:42:35.756]       hex: 000e00080100050000008001
+[2026-09-17T15:42:35.756]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x80\x01'
+[2026-09-17T15:42:35.756]       hub GetUserStatus::Request         id 14 req 128   wants_resp 1 payload -
+[2026-09-17T15:42:35.756]       PROBE req 128   variant 8: header id 16 (Error), Result only
+[2026-09-17T15:42:35.756]       reply(hubrpc) -> 00100009010005000000800000
+[2026-09-17T15:42:36.505]   after-probe <- 16 bytes (total 1572)
+[2026-09-17T15:42:36.505]       hex: 0008000c0100050000008100e4ae0701
+[2026-09-17T15:42:36.505]       asc: b'\x00\x08\x00\x0c\x01\x00\x05\x00\x00\x00\x81\x00\xe4\xae\x07\x01'
+[2026-09-17T15:42:36.505]       hub Heartbeat::Request             id 8  req 129   wants_resp 0 payload e4ae0701
+[2026-09-17T15:42:36.754]   after-probe <- 12 bytes (total 1584)
+[2026-09-17T15:42:36.754]       hex: 000e00080100050000008201
+[2026-09-17T15:42:36.754]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x82\x01'
+[2026-09-17T15:42:36.755]       hub GetUserStatus::Request         id 14 req 130   wants_resp 1 payload -
+[2026-09-17T15:42:36.755]       PROBE req 130   variant 10: UserStatus.UserId = the caller's id
+[2026-09-17T15:42:36.755]       reply(hubrpc) -> 000f0014010005000000820000e4ae070100000000000101
+[2026-09-17T15:42:37.803]   after-probe <- 12 bytes (total 1596)
+[2026-09-17T15:42:37.803]       hex: 000e00080100050000008301
+[2026-09-17T15:42:37.803]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x83\x01'
+[2026-09-17T15:42:37.803]       hub GetUserStatus::Request         id 14 req 131   wants_resp 1 payload -
+[2026-09-17T15:42:37.803]       PROBE req 131   variant 11: GameState = Connecting
+[2026-09-17T15:42:37.803]       reply(hubrpc) -> 000f00140100050000008300000000000000000000000100
+[2026-09-17T15:42:38.801]   after-probe <- 12 bytes (total 1608)
+[2026-09-17T15:42:38.802]       hex: 000e00080100050000008401
+[2026-09-17T15:42:38.802]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x84\x01'
+[2026-09-17T15:42:38.802]       hub GetUserStatus::Request         id 14 req 132   wants_resp 1 payload -
+[2026-09-17T15:42:38.802]       PROBE req 132   variant 0: baseline hdr15 ver1 tag0005 hh0
+[2026-09-17T15:42:38.802]       reply(hubrpc) -> 000f00140100050000008400000000000000000000000101
+[2026-09-17T15:42:39.800]   after-probe <- 12 bytes (total 1620)
+[2026-09-17T15:42:39.800]       hex: 000e00080100050000008501
+[2026-09-17T15:42:39.800]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x85\x01'
+[2026-09-17T15:42:39.800]       hub GetUserStatus::Request         id 14 req 133   wants_resp 1 payload -
+[2026-09-17T15:42:39.800]       PROBE req 133   variant 1: has_handler=1
+[2026-09-17T15:42:39.800]       reply(hubrpc) -> 000f00140100050000008501000000000000000000000101
+[2026-09-17T15:42:40.797]   after-probe <- 12 bytes (total 1632)
+[2026-09-17T15:42:40.798]       hex: 000e00080100050000008601
+[2026-09-17T15:42:40.798]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x86\x01'
+[2026-09-17T15:42:40.798]       hub GetUserStatus::Request         id 14 req 134   wants_resp 1 payload -
+[2026-09-17T15:42:40.798]       PROBE req 134   variant 2: header id = the request id (14)
+[2026-09-17T15:42:40.798]       reply(hubrpc) -> 000e00140100050000008600000000000000000000000101
+[2026-09-17T15:42:41.796]   after-probe <- 12 bytes (total 1644)
+[2026-09-17T15:42:41.796]       hex: 000e00080100050000008701
+[2026-09-17T15:42:41.796]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x87\x01'
+[2026-09-17T15:42:41.796]       hub GetUserStatus::Request         id 14 req 135   wants_resp 1 payload -
+[2026-09-17T15:42:41.796]       PROBE req 135   variant 3: body tag = msg id
+[2026-09-17T15:42:41.796]       reply(hubrpc) -> 000f001401000f0000008700000000000000000000000101
+[2026-09-17T15:42:42.796]   after-probe <- 12 bytes (total 1656)
+[2026-09-17T15:42:42.796]       hex: 000e00080100050000008801
+[2026-09-17T15:42:42.796]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x88\x01'
+[2026-09-17T15:42:42.796]       hub GetUserStatus::Request         id 14 req 136   wants_resp 1 payload -
+[2026-09-17T15:42:42.797]       PROBE req 136   variant 4: version byte = 0
+[2026-09-17T15:42:42.797]       reply(hubrpc) -> 000f00140000050000008800000000000000000000000101
+[2026-09-17T15:42:43.795]   after-probe <- 12 bytes (total 1668)
+[2026-09-17T15:42:43.795]       hex: 000e00080100050000008901
+[2026-09-17T15:42:43.795]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x89\x01'
+[2026-09-17T15:42:43.795]       hub GetUserStatus::Request         id 14 req 137   wants_resp 1 payload -
+[2026-09-17T15:42:43.795]       PROBE req 137   variant 5: payload = Result byte only
+[2026-09-17T15:42:43.796]       reply(hubrpc) -> 000f0009010005000000890000
+[2026-09-17T15:42:44.845]   after-probe <- 12 bytes (total 1680)
+[2026-09-17T15:42:44.845]       hex: 000e00080100050000008a01
+[2026-09-17T15:42:44.846]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x8a\x01'
+[2026-09-17T15:42:44.846]       hub GetUserStatus::Request         id 14 req 138   wants_resp 1 payload -
+[2026-09-17T15:42:44.846]       PROBE req 138   variant 6: payload empty
+[2026-09-17T15:42:44.846]       reply(hubrpc) -> 000f00080100050000008a00
+[2026-09-17T15:42:45.844]   after-probe <- 12 bytes (total 1692)
+[2026-09-17T15:42:45.844]       hex: 000e00080100050000008b01
+[2026-09-17T15:42:45.844]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x8b\x01'
+[2026-09-17T15:42:45.844]       hub GetUserStatus::Request         id 14 req 139   wants_resp 1 payload -
+[2026-09-17T15:42:45.845]       PROBE req 139   variant 7: hh=1 and tag = msg id
+[2026-09-17T15:42:45.845]       reply(hubrpc) -> 000f001401000f0000008b01000000000000000000000101
+[2026-09-17T15:42:46.844]   after-probe <- 12 bytes (total 1704)
+[2026-09-17T15:42:46.845]       hex: 000e00080100050000008c01
+[2026-09-17T15:42:46.845]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x8c\x01'
+[2026-09-17T15:42:46.845]       hub GetUserStatus::Request         id 14 req 140   wants_resp 1 payload -
+[2026-09-17T15:42:46.845]       PROBE req 140   variant 8: header id 16 (Error), Result only
+[2026-09-17T15:42:46.845]       reply(hubrpc) -> 001000090100050000008c0000
+[2026-09-17T15:42:47.844]   after-probe <- 12 bytes (total 1716)
+[2026-09-17T15:42:47.844]       hex: 000e00080100050000008d01
+[2026-09-17T15:42:47.844]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x8d\x01'
+[2026-09-17T15:42:47.844]       hub GetUserStatus::Request         id 14 req 141   wants_resp 1 payload -
+[2026-09-17T15:42:47.844]       PROBE req 141   variant 9: header id 9 (Heartbeat::Success)
+[2026-09-17T15:42:47.844]       reply(hubrpc) -> 000900090100050000008d0000
+[2026-09-17T15:42:48.842]   after-probe <- 12 bytes (total 1728)
+[2026-09-17T15:42:48.843]       hex: 000e00080100050000008e01
+[2026-09-17T15:42:48.843]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x8e\x01'
+[2026-09-17T15:42:48.843]       hub GetUserStatus::Request         id 14 req 142   wants_resp 1 payload -
+[2026-09-17T15:42:48.843]       PROBE req 142   variant 10: UserStatus.UserId = the caller's id
+[2026-09-17T15:42:48.843]       reply(hubrpc) -> 000f00140100050000008e0000e4ae070100000000000101
+[2026-09-17T15:42:49.840]   after-probe <- 12 bytes (total 1740)
+[2026-09-17T15:42:49.840]       hex: 000e00080100050000008f01
+[2026-09-17T15:42:49.840]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x8f\x01'
+[2026-09-17T15:42:49.840]       hub GetUserStatus::Request         id 14 req 143   wants_resp 1 payload -
+[2026-09-17T15:42:49.840]       PROBE req 143   variant 11: GameState = Connecting
+[2026-09-17T15:42:49.840]       reply(hubrpc) -> 000f00140100050000008f00000000000000000000000100
+[2026-09-17T15:42:50.839]   after-probe <- 12 bytes (total 1752)
+[2026-09-17T15:42:50.839]       hex: 000e00080100050000009001
+[2026-09-17T15:42:50.839]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x90\x01'
+[2026-09-17T15:42:50.839]       hub GetUserStatus::Request         id 14 req 144   wants_resp 1 payload -
+[2026-09-17T15:42:50.839]       PROBE req 144   variant 0: baseline hdr15 ver1 tag0005 hh0
+[2026-09-17T15:42:50.839]       reply(hubrpc) -> 000f00140100050000009000000000000000000000000101
+[2026-09-17T15:42:51.537]   after-probe <- 16 bytes (total 1768)
+[2026-09-17T15:42:51.538]       hex: 0008000c0100050000009100e4ae0701
+[2026-09-17T15:42:51.538]       asc: b'\x00\x08\x00\x0c\x01\x00\x05\x00\x00\x00\x91\x00\xe4\xae\x07\x01'
+[2026-09-17T15:42:51.538]       hub Heartbeat::Request             id 8  req 145   wants_resp 0 payload e4ae0701
+[2026-09-17T15:42:51.837]   after-probe <- 12 bytes (total 1780)
+[2026-09-17T15:42:51.837]       hex: 000e00080100050000009201
+[2026-09-17T15:42:51.837]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x92\x01'
+[2026-09-17T15:42:51.837]       hub GetUserStatus::Request         id 14 req 146   wants_resp 1 payload -
+[2026-09-17T15:42:51.837]       PROBE req 146   variant 2: header id = the request id (14)
+[2026-09-17T15:42:51.837]       reply(hubrpc) -> 000e00140100050000009200000000000000000000000101
+[2026-09-17T15:42:52.885]   after-probe <- 12 bytes (total 1792)
+[2026-09-17T15:42:52.885]       hex: 000e00080100050000009301
+[2026-09-17T15:42:52.885]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x93\x01'
+[2026-09-17T15:42:52.885]       hub GetUserStatus::Request         id 14 req 147   wants_resp 1 payload -
+[2026-09-17T15:42:52.885]       PROBE req 147   variant 3: body tag = msg id
+[2026-09-17T15:42:52.885]       reply(hubrpc) -> 000f001401000f0000009300000000000000000000000101
+[2026-09-17T15:42:53.884]   after-probe <- 12 bytes (total 1804)
+[2026-09-17T15:42:53.884]       hex: 000e00080100050000009401
+[2026-09-17T15:42:53.884]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x94\x01'
+[2026-09-17T15:42:53.884]       hub GetUserStatus::Request         id 14 req 148   wants_resp 1 payload -
+[2026-09-17T15:42:53.884]       PROBE req 148   variant 4: version byte = 0
+[2026-09-17T15:42:53.885]       reply(hubrpc) -> 000f00140000050000009400000000000000000000000101
+[2026-09-17T15:42:54.884]   after-probe <- 12 bytes (total 1816)
+[2026-09-17T15:42:54.884]       hex: 000e00080100050000009501
+[2026-09-17T15:42:54.884]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x95\x01'
+[2026-09-17T15:42:54.885]       hub GetUserStatus::Request         id 14 req 149   wants_resp 1 payload -
+[2026-09-17T15:42:54.885]       PROBE req 149   variant 5: payload = Result byte only
+[2026-09-17T15:42:54.885]       reply(hubrpc) -> 000f0009010005000000950000
+[2026-09-17T15:42:55.883]   after-probe <- 12 bytes (total 1828)
+[2026-09-17T15:42:55.883]       hex: 000e00080100050000009601
+[2026-09-17T15:42:55.883]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x96\x01'
+[2026-09-17T15:42:55.883]       hub GetUserStatus::Request         id 14 req 150   wants_resp 1 payload -
+[2026-09-17T15:42:55.883]       PROBE req 150   variant 6: payload empty
+[2026-09-17T15:42:55.883]       reply(hubrpc) -> 000f00080100050000009600
+[2026-09-17T15:42:56.883]   after-probe <- 12 bytes (total 1840)
+[2026-09-17T15:42:56.883]       hex: 000e00080100050000009701
+[2026-09-17T15:42:56.883]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x97\x01'
+[2026-09-17T15:42:56.883]       hub GetUserStatus::Request         id 14 req 151   wants_resp 1 payload -
+[2026-09-17T15:42:56.883]       PROBE req 151   variant 7: hh=1 and tag = msg id
+[2026-09-17T15:42:56.883]       reply(hubrpc) -> 000f001401000f0000009701000000000000000000000101
+[2026-09-17T15:42:57.882]   after-probe <- 12 bytes (total 1852)
+[2026-09-17T15:42:57.882]       hex: 000e00080100050000009801
+[2026-09-17T15:42:57.882]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x98\x01'
+[2026-09-17T15:42:57.882]       hub GetUserStatus::Request         id 14 req 152   wants_resp 1 payload -
+[2026-09-17T15:42:57.882]       PROBE req 152   variant 8: header id 16 (Error), Result only
+[2026-09-17T15:42:57.882]       reply(hubrpc) -> 00100009010005000000980000
+[2026-09-17T15:42:58.882]   after-probe <- 12 bytes (total 1864)
+[2026-09-17T15:42:58.882]       hex: 000e00080100050000009901
+[2026-09-17T15:42:58.882]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x99\x01'
+[2026-09-17T15:42:58.882]       hub GetUserStatus::Request         id 14 req 153   wants_resp 1 payload -
+[2026-09-17T15:42:58.882]       PROBE req 153   variant 9: header id 9 (Heartbeat::Success)
+[2026-09-17T15:42:58.882]       reply(hubrpc) -> 00090009010005000000990000
+[2026-09-17T15:42:59.932]   after-probe <- 12 bytes (total 1876)
+[2026-09-17T15:42:59.932]       hex: 000e00080100050000009a01
+[2026-09-17T15:42:59.932]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x9a\x01'
+[2026-09-17T15:42:59.932]       hub GetUserStatus::Request         id 14 req 154   wants_resp 1 payload -
+[2026-09-17T15:42:59.932]       PROBE req 154   variant 10: UserStatus.UserId = the caller's id
+[2026-09-17T15:42:59.932]       reply(hubrpc) -> 000f00140100050000009a0000e4ae070100000000000101

@@ -67,8 +67,9 @@ def main():
     check("live id-14 HasHandler is 1", ms.parse_hub(us_live)[2], 1)
     check("live id-14 payload is empty", ms.parse_hub(us_live)[3], b"")
 
-    # Connect::Success with the defaults: Result(1) + two empty strings(1+1)
-    # + Session(u8 shard 1 + empty host 1 + u16 port 2) + bool(1) = 8.
+    # Connect::Success with the defaults: Result(1) + LevelName + GameRules
+    # + Session(u8 shard 1 + empty host 1 + u16 port 2) + bool(1). The level
+    # and rules are real values now, so the strings carry their u8 length.
     for key in ("CRUCIBLE_HUB_LEVEL", "CRUCIBLE_HUB_RULES",
                 "CRUCIBLE_HUB_SHARD_HOST", "CRUCIBLE_HUB_SHARD_PORT",
                 "CRUCIBLE_HUB_SHARD_ID", "CRUCIBLE_HUB_DEBUGCOMPS"):
@@ -80,7 +81,14 @@ def main():
     # Proven on the wire: a response with HasHandler=0 is silently dropped.
     check("responses set HasHandler", _out_wants, 1)
     check("Connect::Success payload", out_payload,
-          bytes.fromhex("00" "00" "00" "00" "00" "0000" "00"))
+          b"\x00"
+          + bytes([len(ms.HUB_DEFAULT_LEVEL)]) + ms.HUB_DEFAULT_LEVEL.encode()
+          + bytes([len(ms.HUB_DEFAULT_RULES)]) + ms.HUB_DEFAULT_RULES.encode()
+          + bytes.fromhex("00" "00" "0000" "00"))
+    check("the default level is one that ships in levels.pak",
+          ms.HUB_DEFAULT_LEVEL in ms.HUB_LEVELS, True)
+    check("the default rules name is a real EGameRules value",
+          ms.HUB_DEFAULT_RULES in ms.HUB_GAMERULES, True)
 
     # Range compression is what sizes a field, not the C++ type. EResult is a
     # 32-bit enum declared 0..13, so it is one byte; UserId is a full-range
@@ -138,11 +146,16 @@ def main():
     os.environ["CRUCIBLE_HUB_SHARD_PORT"] = "18878"
     sa_id, _r, _w, sa_payload = ms.parse_hub(ms.hubrpc_reply(sa))
     check("shard address answered when asked", sa_id, ms.HUB_SHARDADDR_OK)
-    check("shard address payload length", len(sa_payload), 70)
+    # 1 Result + 4 Session(empty host) + 1 GameInstanceId + 32 nonce + 64 psk.
+    # The two vectors have DIFFERENT element counts (4 and 8); assuming both
+    # were 4 left every reply 32 bytes short and the client dropped them all.
+    check("shard address payload length", len(sa_payload), 102)
+    check("ConnectionNonce is 4 x u64", ms.HUB_NONCE_WORDS * 8, 32)
+    check("PreSharedKey is 8 x u64", ms.HUB_PSK_WORDS * 8, 64)
     check("port is u16 BE at offset 3",
           sa_payload[3:5], bytes.fromhex("49be"))
-    check("nonce and psk are 4 x u64 each",
-          sa_payload[6:], b"\x00" * 64)
+    check("nonce and psk are zeroed by default",
+          sa_payload[6:], b"\x00" * 96)
     for key in ("CRUCIBLE_HUB_SHARDADDR", "CRUCIBLE_HUB_SHARD_HOST",
                 "CRUCIBLE_HUB_SHARD_PORT"):
         del os.environ[key]

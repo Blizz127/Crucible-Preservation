@@ -75,7 +75,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CADIR = os.path.join(HERE, ".crucible-test-ca")
 CRT = os.path.join(CADIR, "match.crt")
 KEY = os.path.join(CADIR, "match.key")
-LOG = os.path.join(HERE, "match_stub.log")
+LOG = os.environ.get("CRUCIBLE_LOG") or os.path.join(HERE, "match_stub.log")
 _lock = threading.Lock()
 
 
@@ -153,6 +153,18 @@ HUB_BODY_TAG = b"\x00\x05"
 # want to echo it back.
 HUB_LAST_UID = [0]
 
+# Levels shipped in levels.pak: april2018, HotH_02, mainmenu, practicearena,
+# tutorial_02, tutorial_03. practicearena is the smallest combat sandbox and
+# the one docs/08 saw referenced as `+map practicearena`.
+HUB_LEVELS = ("april2018", "HotH_02", "mainmenu", "practicearena",
+              "tutorial_02", "tutorial_03")
+HUB_DEFAULT_LEVEL = "practicearena"
+# NovaNet::EGameRules has exactly two values, registered at rva 0x4c01ad4:
+# BaseGameRules = 0, CombatGameRules = 1. The field is a string, so the client
+# maps the name back to the enum.
+HUB_GAMERULES = ("BaseGameRules", "CombatGameRules")
+HUB_DEFAULT_RULES = "CombatGameRules"
+
 HUB_CONNECT_REQ = 5
 HUB_CONNECT_OK = 6
 HUB_CONNECT_ERR = 7
@@ -160,6 +172,11 @@ HUB_HEARTBEAT_REQ = 8
 HUB_HEARTBEAT_OK = 9
 HUB_SHARDADDR_REQ = 11
 HUB_SHARDADDR_OK = 12
+HUB_SHARDADDR_ERR = 13
+# Element counts of the two fixed-size vectors in
+# GetServerShardAddress::Success, read off their serialiser loops.
+HUB_NONCE_WORDS = 4   # rva 0x3187460: cmp edi, 4
+HUB_PSK_WORDS = 8     # rva 0x3187780: cmp edi, 8
 HUB_USERSTATUS_REQ = 14
 HUB_USERSTATUS_OK = 15
 HUB_METRICS_REQ = 17
@@ -292,8 +309,8 @@ def connect_success():
       bool ShouldLoadDebugComponents }
     """
     return (ranged_uint(ERESULT_SUCCESS, 0, ERESULT_MAX)
-            + hub_str(os.environ.get("CRUCIBLE_HUB_LEVEL", ""))
-            + hub_str(os.environ.get("CRUCIBLE_HUB_RULES", ""))
+            + hub_str(os.environ.get("CRUCIBLE_HUB_LEVEL", HUB_DEFAULT_LEVEL))
+            + hub_str(os.environ.get("CRUCIBLE_HUB_RULES", HUB_DEFAULT_RULES))
             + hub_session(int(os.environ.get("CRUCIBLE_HUB_SHARD_ID", "0")),
                           os.environ.get("CRUCIBLE_HUB_SHARD_HOST", ""),
                           int(os.environ.get("CRUCIBLE_HUB_SHARD_PORT", "0")))
@@ -322,18 +339,26 @@ def shard_address_success():
     """GetServerShardAddress::Success payload (serialiser rva 0x3186460).
 
     { u8 Result, Session ServerShardAddr, str GameInstanceId,
-      u64[4] ConnectionNonce, u64[4] PreSharedKey }
+      u64[4] ConnectionNonce, u64[8] PreSharedKey }
 
-    Both trailing vectors are SerializableFixedSizeVector with a hard count of
-    4 (`cmp edi, 4` at rva 0x3187460) and no length prefix, so they are 32
-    bytes each. This is the message that hands the client a shard to connect
-    to, and the one that carries the nonce and pre-shared key docs/10 was
-    chasing.
+    The two vectors are NOT the same length: the element loop in the
+    ConnectionNonce serialiser is `cmp edi, 4` (rva 0x3187460) and the one in
+    PreSharedKey is `cmp edi, 8` (rva 0x3187780). Assuming both were 4 made
+    every reply 32 bytes short, which is why a dozen otherwise-correct payload
+    shapes were all dropped. Neither vector has a count prefix on the wire.
+
+    With empty strings the payload is 1 + 4 + 1 + 32 + 64 = 102 bytes.
     """
-    nonce = bytes.fromhex(os.environ.get("CRUCIBLE_HUB_NONCE", "00" * 32))
-    psk = bytes.fromhex(os.environ.get("CRUCIBLE_HUB_PSK", "00" * 32))
-    if len(nonce) != 32 or len(psk) != 32:
-        raise ValueError("ConnectionNonce and PreSharedKey are 4 x u64 = 32 bytes")
+    nonce = bytes.fromhex(os.environ.get("CRUCIBLE_HUB_NONCE",
+                                         "00" * (8 * HUB_NONCE_WORDS)))
+    psk = bytes.fromhex(os.environ.get("CRUCIBLE_HUB_PSK",
+                                       "00" * (8 * HUB_PSK_WORDS)))
+    if len(nonce) != 8 * HUB_NONCE_WORDS:
+        raise ValueError("ConnectionNonce is %d x u64 = %d bytes"
+                         % (HUB_NONCE_WORDS, 8 * HUB_NONCE_WORDS))
+    if len(psk) != 8 * HUB_PSK_WORDS:
+        raise ValueError("PreSharedKey is %d x u64 = %d bytes"
+                         % (HUB_PSK_WORDS, 8 * HUB_PSK_WORDS))
     return (ranged_uint(ERESULT_SUCCESS, 0, ERESULT_MAX)
             + hub_session(int(os.environ.get("CRUCIBLE_HUB_SHARD_ID", "0")),
                           os.environ.get("CRUCIBLE_HUB_SHARD_HOST", "127.0.0.1"),
@@ -342,49 +367,62 @@ def shard_address_success():
             + nonce + psk)
 
 
-# Response-envelope probe. The client re-sends GetUserStatus::Request once a
-# second and reports "Timing out requestid N" ~30 s later if it never matched a
-# response, so each inbound request buys one free trial of a response shape.
-# Set CRUCIBLE_HUB_PROBE=1 to cycle the variants below across successive
-# requests; the one whose request id is ABSENT from the client's timeout list
-# is the shape the client accepts.
-HUB_PROBE_VARIANTS = [
-    ("baseline hdr15 ver1 tag0005 hh0", {}),
-    ("has_handler=1", {"hh": 1}),
-    ("header id = the request id (14)", {"hdr": 14}),
-    ("body tag = msg id", {"tag": b"\x00\x0f"}),
-    ("version byte = 0", {"ver": 0}),
-    ("payload = Result byte only", {"payload": b"\x00"}),
-    ("payload empty", {"payload": b""}),
-    ("hh=1 and tag = msg id", {"hh": 1, "tag": b"\x00\x0f"}),
-    ("header id 16 (Error), Result only", {"hdr": 16, "payload": b"\x00"}),
-    ("header id 9 (Heartbeat::Success)", {"hdr": 9, "payload": b"\x00"}),
-    ("UserStatus.UserId = the caller's id", {"echo_uid": True}),
-    ("GameState = Connecting", {"gamestate": 0}),
-]
+# GetServerShardAddress::Success probe. Unlike GetUserStatus, the client asks
+# for the shard address exactly ONCE per connection, so variants cannot be
+# cycled within a run - the counter is persisted to disk and advances per
+# connection, i.e. one variant per re-READY.
+#
+# Run 5 (2026-09-17 16:45) sent variant 0, the shape the disassembly implies,
+# and the client timed out request 2 ("Failed shard request with result 1" -
+# EResult 1 is Timeout, logged by the timeout path). So the frame was never
+# matched: it is not a semantic rejection, the payload did not deserialise.
+HUB_SHARD_PROBE_STATE = os.path.join(HERE, ".shard-probe-counter")
 
 
-def hub_probe_reply(req_id, caller_uid):
-    """One probe variant, chosen by request id so each request tries the next."""
-    name, v = HUB_PROBE_VARIANTS[req_id % len(HUB_PROBE_VARIANTS)]
-    uid = caller_uid if v.get("echo_uid") else 0
-    payload = v.get("payload")
-    if payload is None:
-        payload = (ranged_uint(ERESULT_SUCCESS, 0, ERESULT_MAX)
-                   + ranged_uint(uid, 0, 0xFFFFFFFF)
-                   + hub_str("") + hub_str("")
-                   + ranged_uint(1, 0, 0xFFFFFFFF)
-                   + ranged_uint(v.get("gamestate", EGAMESTATE_IDLE),
-                                 0, EGAMESTATE_MAX))
-    body = (bytes([v.get("ver", HUB_VERSION)])
-            + v.get("tag", HUB_BODY_TAG)
-            + req_id.to_bytes(4, "big")
-            + bytes([v.get("hh", 0)])
-            + payload)
-    hdr = v.get("hdr", HUB_USERSTATUS_OK)
-    log("      PROBE req %-5d variant %d: %s" % (
-        req_id, req_id % len(HUB_PROBE_VARIANTS), name))
-    return hdr.to_bytes(2, "big") + len(body).to_bytes(2, "big") + body
+def shard_probe_variants(nonce, psk, shard, host, port, instance):
+    """Length sweep, 2026-09-17 evening.
+
+    Settled by experiment: a GetServerShardAddress::ERROR (id 13) carrying a
+    single Result byte is accepted INSTANTLY - the client logged "Failed shard
+    request with result 2" 0.3 s after we sent Result=InternalError(2), and
+    that request id is absent from its timeout list. So the envelope, the
+    header id, the request-id echo and the Result encoding are all correct,
+    and the problem is confined to the id-12 Success payload.
+
+    An all-zero byte string is a VALID encoding of that payload: Result=0,
+    ShardId=0, GameHost len 0, GamePort 0, GameInstanceId len 0, and zeroed
+    nonce/psk (both range checks in the u64 reader are unsigned, so 0 passes).
+    The disassembly says that needs 70 bytes, and 70 was rejected. So this
+    sweeps the LENGTH: if some longer all-zero payload is accepted, the real
+    layout is bigger than the five fields imply and the accepted length says
+    by how much.
+
+    Returns (header_id, name, payload) triples.
+    """
+    return [
+        (HUB_SHARDADDR_OK, "0 all zeros, 120 bytes", b"\x00" * 120),
+        (HUB_SHARDADDR_OK, "1 all zeros, 250 bytes", b"\x00" * 250),
+        (HUB_SHARDADDR_OK, "2 all zeros, 90 bytes", b"\x00" * 90),
+        (HUB_SHARDADDR_OK, "3 all zeros, 71 bytes", b"\x00" * 71),
+        (HUB_SHARDADDR_OK, "4 all zeros, 70 bytes (control, known to fail)",
+         b"\x00" * 70),
+        (HUB_SHARDADDR_OK, "5 all zeros, 500 bytes", b"\x00" * 500),
+    ]
+
+
+def shard_probe_index():
+    """Read-and-advance the persisted per-connection variant counter."""
+    try:
+        with open(HUB_SHARD_PROBE_STATE) as f:
+            i = int(f.read().strip() or "0")
+    except (OSError, ValueError):
+        i = 0
+    try:
+        with open(HUB_SHARD_PROBE_STATE, "w") as f:
+            f.write(str(i + 1))
+    except OSError:
+        pass
+    return i
 
 
 def hubrpc_reply(frame):
@@ -428,6 +466,20 @@ def hubrpc_reply(frame):
         # with a confusing shard-connect failure.
         if os.environ.get("CRUCIBLE_HUB_SHARDADDR", "silent") != "reply":
             return None
+        if os.environ.get("CRUCIBLE_HUB_SHARD_PROBE") == "1":
+            nonce = bytes.fromhex(os.environ.get("CRUCIBLE_HUB_NONCE", "00" * 32))
+            psk = bytes.fromhex(os.environ.get("CRUCIBLE_HUB_PSK", "00" * 32))
+            variants = shard_probe_variants(
+                nonce, psk,
+                int(os.environ.get("CRUCIBLE_HUB_SHARD_ID", "0")),
+                os.environ.get("CRUCIBLE_HUB_SHARD_HOST", "127.0.0.1"),
+                int(os.environ.get("CRUCIBLE_HUB_SHARD_PORT", "18878")),
+                os.environ.get("CRUCIBLE_HUB_INSTANCE", ""))
+            i = shard_probe_index() % len(variants)
+            hdr, name, payload = variants[i]
+            log("      SHARD PROBE variant %s -> id %d, payload %d bytes"
+                % (name, hdr, len(payload)))
+            return build_hub(hdr, req_id, payload, flag)
         return build_hub(HUB_SHARDADDR_OK, req_id, shard_address_success(), flag)
 
     return None

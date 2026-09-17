@@ -1,0 +1,107 @@
+[2026-09-17T16:01:42.103] listening on 127.0.0.1:18877 (TLS, log: /var/home/blizz/Projects/Crucible Revival/server/match_stub.log)
+[2026-09-17T16:01:42.103] expect: matchserver.connect {type:'lan'} after PLAY -> mode -> READY
+[2026-09-17T16:02:20.958] --- TCP accept from ('127.0.0.1', 37116) ---
+[2026-09-17T16:02:20.959]   SNI presented: None
+[2026-09-17T16:02:20.965] TLS handshake OK from ('127.0.0.1', 37116): TLSv1.3 TLS_AES_256_GCM_SHA384 alpn=None sni=None
+[2026-09-17T16:02:20.965]   peer closed before sending anything
+[2026-09-17T16:02:20.966] --- connection from ('127.0.0.1', 37116) closed ---
+[2026-09-17T16:10:09.408] --- TCP accept from ('127.0.0.1', 42536) ---
+[2026-09-17T16:10:09.409]   SNI presented: None
+[2026-09-17T16:10:09.457] TLS handshake OK from ('127.0.0.1', 42536): TLSv1.3 TLS_AES_256_GCM_SHA384 alpn=None sni=None
+[2026-09-17T16:10:09.457]   app <- 17 bytes
+[2026-09-17T16:10:09.457]       hex: 0005000d0100050000000101b7846f9600
+[2026-09-17T16:10:09.457]       asc: b'\x00\x05\x00\r\x01\x00\x05\x00\x00\x00\x01\x01\xb7\x84o\x96\x00'
+[2026-09-17T16:10:09.457]   reply mode: hubrpc
+[2026-09-17T16:10:09.457]       hub Connect::Request               id 5  req 1     wants_resp 1 payload b7846f9600
+[2026-09-17T16:10:09.457]       reply(hubrpc) to opening frame -> 0006002c0100050000000101000d70726163746963656172656e610f436f6d62617447616d6552756c65730000000000
+[2026-09-17T16:10:10.659]   after-probe <- 16 bytes (total 16)
+[2026-09-17T16:10:10.659]       hex: 0008000c0100050000000200b7846f96
+[2026-09-17T16:10:10.659]       asc: b'\x00\x08\x00\x0c\x01\x00\x05\x00\x00\x00\x02\x00\xb7\x84o\x96'
+[2026-09-17T16:10:10.659]       hub Heartbeat::Request             id 8  req 2     wants_resp 0 payload b7846f96
+[2026-09-17T16:10:15.212]   after-probe <- 12 bytes (total 28)
+[2026-09-17T16:10:15.212]       hex: 000b00080100050000000301
+[2026-09-17T16:10:15.212]       asc: b'\x00\x0b\x00\x08\x01\x00\x05\x00\x00\x00\x03\x01'
+[2026-09-17T16:10:15.212]       hub GetServerShardAddress::Request id 11 req 3     wants_resp 1 payload -
+[2026-09-17T16:10:15.263]   after-probe <- 12 bytes (total 40)
+[2026-09-17T16:10:15.263]       hex: 000e00080100050000000401
+[2026-09-17T16:10:15.263]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x04\x01'
+[2026-09-17T16:10:15.263]       hub GetUserStatus::Request         id 14 req 4     wants_resp 1 payload -
+[2026-09-17T16:10:15.264]       reply(hubrpc) -> 000f00140100050000000401000000000000000000000101
+[2026-09-17T16:10:16.369]   after-probe <- 12 bytes (total 52)
+[2026-09-17T16:10:16.369]       hex: 000e00080100050000000501
+[2026-09-17T16:10:16.369]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x05\x01'
+[2026-09-17T16:10:16.369]       hub GetUserStatus::Request         id 14 req 5     wants_resp 1 payload -
+[2026-09-17T16:10:16.369]       reply(hubrpc) -> 000f00140100050000000501000000000000000000000101
+[2026-09-17T16:10:17.366]   after-probe <- 12 bytes (total 64)
+[2026-09-17T16:10:17.366]       hex: 000e00080100050000000601
+[2026-09-17T16:10:17.366]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x06\x01'
+[2026-09-17T16:10:17.366]       hub GetUserStatus::Request         id 14 req 6     wants_resp 1 payload -
+[2026-09-17T16:10:17.367]       reply(hubrpc) -> 000f00140100050000000601000000000000000000000101
+[2026-09-17T16:10:18.368]   after-probe <- 12 bytes (total 76)
+[2026-09-17T16:10:18.368]       hex: 000e00080100050000000701
+[2026-09-17T16:10:18.368]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x07\x01'
+[2026-09-17T16:10:18.368]       hub GetUserStatus::Request         id 14 req 7     wants_resp 1 payload -
+[2026-09-17T16:10:18.368]       reply(hubrpc) -> 000f00140100050000000701000000000000000000000101
+[2026-09-17T16:10:19.367]   after-probe <- 12 bytes (total 88)
+[2026-09-17T16:10:19.367]       hex: 000e00080100050000000801
+[2026-09-17T16:10:19.367]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x08\x01'
+[2026-09-17T16:10:19.368]       hub GetUserStatus::Request         id 14 req 8     wants_resp 1 payload -
+[2026-09-17T16:10:19.368]       reply(hubrpc) -> 000f00140100050000000801000000000000000000000101
+[2026-09-17T16:10:20.371]   after-probe <- 12 bytes (total 100)
+[2026-09-17T16:10:20.371]       hex: 000e00080100050000000901
+[2026-09-17T16:10:20.371]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\t\x01'
+[2026-09-17T16:10:20.371]       hub GetUserStatus::Request         id 14 req 9     wants_resp 1 payload -
+[2026-09-17T16:10:20.371]       reply(hubrpc) -> 000f00140100050000000901000000000000000000000101
+[2026-09-17T16:10:21.373]   after-probe <- 12 bytes (total 112)
+[2026-09-17T16:10:21.373]       hex: 000e00080100050000000a01
+[2026-09-17T16:10:21.373]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\n\x01'
+[2026-09-17T16:10:21.373]       hub GetUserStatus::Request         id 14 req 10    wants_resp 1 payload -
+[2026-09-17T16:10:21.373]       reply(hubrpc) -> 000f00140100050000000a01000000000000000000000101
+[2026-09-17T16:10:22.375]   after-probe <- 12 bytes (total 124)
+[2026-09-17T16:10:22.375]       hex: 000e00080100050000000b01
+[2026-09-17T16:10:22.375]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x0b\x01'
+[2026-09-17T16:10:22.375]       hub GetUserStatus::Request         id 14 req 11    wants_resp 1 payload -
+[2026-09-17T16:10:22.375]       reply(hubrpc) -> 000f00140100050000000b01000000000000000000000101
+[2026-09-17T16:10:23.377]   after-probe <- 12 bytes (total 136)
+[2026-09-17T16:10:23.378]       hex: 000e00080100050000000c01
+[2026-09-17T16:10:23.378]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x0c\x01'
+[2026-09-17T16:10:23.378]       hub GetUserStatus::Request         id 14 req 12    wants_resp 1 payload -
+[2026-09-17T16:10:23.379]       reply(hubrpc) -> 000f00140100050000000c01000000000000000000000101
+[2026-09-17T16:10:24.380]   after-probe <- 12 bytes (total 148)
+[2026-09-17T16:10:24.381]       hex: 000e00080100050000000d01
+[2026-09-17T16:10:24.381]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\r\x01'
+[2026-09-17T16:10:24.381]       hub GetUserStatus::Request         id 14 req 13    wants_resp 1 payload -
+[2026-09-17T16:10:24.381]       reply(hubrpc) -> 000f00140100050000000d01000000000000000000000101
+[2026-09-17T16:10:25.381]   after-probe <- 12 bytes (total 160)
+[2026-09-17T16:10:25.381]       hex: 000e00080100050000000e01
+[2026-09-17T16:10:25.381]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x0e\x01'
+[2026-09-17T16:10:25.381]       hub GetUserStatus::Request         id 14 req 14    wants_resp 1 payload -
+[2026-09-17T16:10:25.382]       reply(hubrpc) -> 000f00140100050000000e01000000000000000000000101
+[2026-09-17T16:10:25.682]   after-probe <- 16 bytes (total 176)
+[2026-09-17T16:10:25.683]       hex: 0008000c0100050000000f00b7846f96
+[2026-09-17T16:10:25.683]       asc: b'\x00\x08\x00\x0c\x01\x00\x05\x00\x00\x00\x0f\x00\xb7\x84o\x96'
+[2026-09-17T16:10:25.683]       hub Heartbeat::Request             id 8  req 15    wants_resp 0 payload b7846f96
+[2026-09-17T16:10:26.384]   after-probe <- 12 bytes (total 188)
+[2026-09-17T16:10:26.384]       hex: 000e00080100050000001001
+[2026-09-17T16:10:26.384]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x10\x01'
+[2026-09-17T16:10:26.385]       hub GetUserStatus::Request         id 14 req 16    wants_resp 1 payload -
+[2026-09-17T16:10:26.385]       reply(hubrpc) -> 000f00140100050000001001000000000000000000000101
+[2026-09-17T16:10:27.388]   after-probe <- 12 bytes (total 200)
+[2026-09-17T16:10:27.388]       hex: 000e00080100050000001101
+[2026-09-17T16:10:27.388]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x11\x01'
+[2026-09-17T16:10:27.388]       hub GetUserStatus::Request         id 14 req 17    wants_resp 1 payload -
+[2026-09-17T16:10:27.388]       reply(hubrpc) -> 000f00140100050000001101000000000000000000000101
+[2026-09-17T16:10:28.391]   after-probe <- 12 bytes (total 212)
+[2026-09-17T16:10:28.391]       hex: 000e00080100050000001201
+[2026-09-17T16:10:28.391]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x12\x01'
+[2026-09-17T16:10:28.391]       hub GetUserStatus::Request         id 14 req 18    wants_resp 1 payload -
+[2026-09-17T16:10:28.391]       reply(hubrpc) -> 000f00140100050000001201000000000000000000000101
+[2026-09-17T16:10:29.392]   after-probe <- 12 bytes (total 224)
+[2026-09-17T16:10:29.393]       hex: 000e00080100050000001301
+[2026-09-17T16:10:29.393]       asc: b'\x00\x0e\x00\x08\x01\x00\x05\x00\x00\x00\x13\x01'
+[2026-09-17T16:10:29.393]       hub GetUserStatus::Request         id 14 req 19    wants_resp 1 payload -
+[2026-09-17T16:10:29.393]       reply(hubrpc) -> 000f00140100050000001301000000000000000000000101
+[2026-09-17T16:10:30.294]   after-probe peer closed (clean EOF) after 224 bytes
+[2026-09-17T16:10:30.294] --- connection from ('127.0.0.1', 42536) closed ---
+[2026-09-17T16:10:50.843] listening on 127.0.0.1:18878 (TLS, log: /var/home/blizz/Projects/Crucible Revival/server/match_stub.log)
+[2026-09-17T16:10:50.843] expect: matchserver.connect {type:'lan'} after PLAY -> mode -> READY
