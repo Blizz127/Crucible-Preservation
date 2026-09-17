@@ -133,8 +133,11 @@ MAGIC = b"\x01\x00\x05\x00\x00"
 # Recovered from Crucible.exe build 5685572, 2026-09-17 (docs/11):
 #
 #   frame:   u16 BE msg id | u16 BE body length | body
-#   body:    u8 version(=1) | u16 BE msg id | u32 BE request id
-#            | u8 wants-response | payload
+#   body:    u8 version(=1) | u16 BE msg id | Metadata | payload
+#   Metadata: u32 BE RequestId | u8 HasHandler       (rva 0x4f1c6c0)
+#
+# Field encodings are not "the C++ type": every integer is range-compressed by
+# the reader at rva 0x4f57140 — see ranged_uint() below.
 #
 # The msg id appears twice; the client's own Connect frame has it in both
 # places. Message ids come from NovaGameHubClient's response dispatcher
@@ -169,37 +172,85 @@ HUB_NAMES = {
 }
 
 # NovaNet::EResult, declaration order read off the enum-name table at
-# rva 0x3185320.
+# rva 0x3185320. ERESULT_MAX is the declared upper bound from the field
+# descriptor (0..13), which is what sizes the field on the wire.
 ERESULT_SUCCESS = 0
-# NovaNet::EGameState, from rva 0x3185590: Connecting, Idle, Playing, Ended.
+ERESULT_MAX = 13
+# NovaNet::EGameState, from rva 0x3185590: Connecting, Idle, Playing, Ended;
+# declared range 0..4.
 EGAMESTATE_CONNECTING = 0
 EGAMESTATE_IDLE = 1
 EGAMESTATE_PLAYING = 2
 EGAMESTATE_ENDED = 3
+EGAMESTATE_MAX = 4
+
+
+def ranged_uint(value, lo, hi):
+    """One integer field, encoded the way NovaNet's serialiser does it.
+
+    Every integer goes through the ranged reader at rva 0x4f57140, which sizes
+    the field from the range declared on it, not from the C++ type:
+
+        hi - lo <= 0xFF         1 byte
+        hi - lo <= 0xFFFF       2 bytes, big endian (it calls ntohs)
+        hi - lo <= 0xFFFFFFFF   4 bytes, big endian
+        otherwise               8 bytes, big endian
+
+    and what goes on the wire is value - lo. This is why `Result` is one byte
+    even though the field is a 32-bit enum: NovaNet::EResult is declared
+    0..13. The ranges come out of each field's descriptor (the min/max pair at
+    descriptor offset 0x10), so they are read, not assumed.
+    """
+    if not lo <= value <= hi:
+        raise ValueError("%d outside the declared range %d..%d" % (value, lo, hi))
+    span = hi - lo
+    width = 1 if span <= 0xFF else 2 if span <= 0xFFFF else 4 if span <= 0xFFFFFFFF else 8
+    return (value - lo).to_bytes(width, "big")
 
 
 def hub_str(s):
-    """One serialised string field.
+    """One string field: u8 length, then the bytes. Not NUL terminated.
 
-    Only the empty case is confirmed on the wire: the client's Connect carries
-    an empty GameLiftSessionId as a single 0x00 byte, and the frame's length
-    field accounts for exactly that one byte. That is consistent with both a
-    u8 length prefix and a NUL terminator, so the two cannot be told apart
-    yet — CRUCIBLE_HUB_STR picks one ("len8", default, or "cstr"). Replies
-    that only ever send empty strings are unaffected either way.
+    The string reader (rva 0x4f56910) calls the same ranged integer reader for
+    the length with lo=0 and hi=the field's capacity, and every String field
+    here passes capacity 127 (`mov r8d, 0x7f` in the helper at 0x8552e0) — so
+    the length is one byte and the payload caps at 127. The NUL the client
+    writes afterwards goes into its own buffer, not onto the wire.
     """
     raw = s.encode("utf-8")
-    if os.environ.get("CRUCIBLE_HUB_STR", "len8") == "cstr":
-        return raw + b"\x00"
-    if len(raw) > 255:
-        raise ValueError("string too long for a u8 length prefix: %d" % len(raw))
-    return bytes([len(raw)]) + raw
+    if len(raw) > 127:
+        raise ValueError("string longer than the 127-byte field capacity")
+    return ranged_uint(len(raw), 0, 127) + raw
+
+
+def hub_bool(value):
+    """One bool field.
+
+    Bools are bit-packed (rva 0x4f565d0): the first bool of a run reserves a
+    byte and the next seven reuse it, and the bit cursor is NOT reset by the
+    non-bool fields in between. Every message answered here has at most one
+    bool, so a lone byte is correct — a second bool would have to go into bit
+    1 of this same byte, not a new one.
+    """
+    return b"\x01" if value else b"\x00"
+
+
+def hub_session(shard_id, host, port):
+    """The `Session` struct (rva 0x3186f80), also used as `ServerShardAddr`.
+
+    { u8 ShardId (0..255), str GameHost, u16 GamePort (0..65535) }
+    """
+    return (ranged_uint(shard_id, 0, 255)
+            + hub_str(host)
+            + ranged_uint(port, 0, 65535))
 
 
 def parse_hub(frame):
     """Envelope fields of one hub frame, or None if it is too short.
 
-    Returns (msg_id, request_id, wants_response, payload).
+    Returns (msg_id, request_id, has_handler, payload). `Metadata`
+    (rva 0x4f1c6c0) is { u32 RequestId, bool HasHandler }, which is the u32 at
+    body offset 3 and the byte at offset 7.
     """
     if len(frame) < 12:
         return None
@@ -214,70 +265,104 @@ def parse_hub(frame):
     )
 
 
-def build_hub(msg_id, request_id, payload, wants_response=0):
+def build_hub(msg_id, request_id, payload, has_handler=0):
     body = (bytes([HUB_VERSION])
             + msg_id.to_bytes(2, "big")
             + request_id.to_bytes(4, "big")
-            + bytes([wants_response])
+            + bytes([has_handler])
             + payload)
     return msg_id.to_bytes(2, "big") + len(body).to_bytes(2, "big") + body
 
 
-def hubrpc_reply(frame):
-    """Response for one hub frame, or None to stay silent.
+def connect_success():
+    """Connect::Success payload (serialiser rva 0x3185be0).
 
-    Payload layouts are read off the generated serialisers; the field types
-    come from which ISerializer vtable slot each field calls (+0x38 uint32,
-    +0x40 uint16, +0x48 uint8, +0x78 bool).
-
-      Connect::Success    = u32 Result, str LevelName, str GameRules,
-                            Session{u8 ShardId, str GameHost, u16 GamePort},
-                            bool ShouldLoadDebugComponents
-      Heartbeat::Success  = u32 Result
-      GetUserStatus::Success = u32 Result, u32 UserCount, u32 GameState
+    { u8 Result, str LevelName, str GameRules,
+      Session{u8 ShardId, str GameHost, u16 GamePort},
+      bool ShouldLoadDebugComponents }
     """
+    return (ranged_uint(ERESULT_SUCCESS, 0, ERESULT_MAX)
+            + hub_str(os.environ.get("CRUCIBLE_HUB_LEVEL", ""))
+            + hub_str(os.environ.get("CRUCIBLE_HUB_RULES", ""))
+            + hub_session(int(os.environ.get("CRUCIBLE_HUB_SHARD_ID", "0")),
+                          os.environ.get("CRUCIBLE_HUB_SHARD_HOST", ""),
+                          int(os.environ.get("CRUCIBLE_HUB_SHARD_PORT", "0")))
+            + hub_bool(os.environ.get("CRUCIBLE_HUB_DEBUGCOMPS") == "1"))
+
+
+def user_status_success():
+    """GetUserStatus::Success payload (serialiser rva 0x3186890).
+
+    { u8 Result, UserStatus{u32 UserId, str PlayerName, str GameLiftSessionId},
+      u32 UserCount, u8 GameState }
+    """
+    return (ranged_uint(ERESULT_SUCCESS, 0, ERESULT_MAX)
+            + ranged_uint(int(os.environ.get("CRUCIBLE_HUB_USERID", "0")),
+                          0, 0xFFFFFFFF)
+            + hub_str(os.environ.get("CRUCIBLE_HUB_PLAYERNAME", ""))
+            + hub_str("")
+            + ranged_uint(int(os.environ.get("CRUCIBLE_HUB_USERCOUNT", "1")),
+                          0, 0xFFFFFFFF)
+            + ranged_uint(int(os.environ.get("CRUCIBLE_HUB_GAMESTATE",
+                                             str(EGAMESTATE_IDLE))),
+                          0, EGAMESTATE_MAX))
+
+
+def shard_address_success():
+    """GetServerShardAddress::Success payload (serialiser rva 0x3186460).
+
+    { u8 Result, Session ServerShardAddr, str GameInstanceId,
+      u64[4] ConnectionNonce, u64[4] PreSharedKey }
+
+    Both trailing vectors are SerializableFixedSizeVector with a hard count of
+    4 (`cmp edi, 4` at rva 0x3187460) and no length prefix, so they are 32
+    bytes each. This is the message that hands the client a shard to connect
+    to, and the one that carries the nonce and pre-shared key docs/10 was
+    chasing.
+    """
+    nonce = bytes.fromhex(os.environ.get("CRUCIBLE_HUB_NONCE", "00" * 32))
+    psk = bytes.fromhex(os.environ.get("CRUCIBLE_HUB_PSK", "00" * 32))
+    if len(nonce) != 32 or len(psk) != 32:
+        raise ValueError("ConnectionNonce and PreSharedKey are 4 x u64 = 32 bytes")
+    return (ranged_uint(ERESULT_SUCCESS, 0, ERESULT_MAX)
+            + hub_session(int(os.environ.get("CRUCIBLE_HUB_SHARD_ID", "0")),
+                          os.environ.get("CRUCIBLE_HUB_SHARD_HOST", "127.0.0.1"),
+                          int(os.environ.get("CRUCIBLE_HUB_SHARD_PORT", "18878")))
+            + hub_str(os.environ.get("CRUCIBLE_HUB_INSTANCE", ""))
+            + nonce + psk)
+
+
+def hubrpc_reply(frame):
+    """Response for one hub frame, or None to stay silent."""
     parsed = parse_hub(frame)
     if parsed is None:
         return None
-    msg_id, req_id, _wants, _payload = parsed
+    msg_id, req_id, _has_handler, _payload = parsed
     flag = int(os.environ.get("CRUCIBLE_HUB_RESPFLAG", "0"))
 
     if msg_id == HUB_CONNECT_REQ:
-        level = os.environ.get("CRUCIBLE_HUB_LEVEL", "")
-        rules = os.environ.get("CRUCIBLE_HUB_RULES", "")
-        host = os.environ.get("CRUCIBLE_HUB_SHARD_HOST", "")
-        port = int(os.environ.get("CRUCIBLE_HUB_SHARD_PORT", "0"))
-        shard = int(os.environ.get("CRUCIBLE_HUB_SHARD_ID", "0"))
-        payload = (ERESULT_SUCCESS.to_bytes(4, "big")
-                   + hub_str(level)
-                   + hub_str(rules)
-                   + bytes([shard & 0xFF])
-                   + hub_str(host)
-                   + port.to_bytes(2, "big")
-                   + b"\x00")
-        return build_hub(HUB_CONNECT_OK, req_id, payload, flag)
+        return build_hub(HUB_CONNECT_OK, req_id, connect_success(), flag)
 
     if msg_id == HUB_HEARTBEAT_REQ:
-        # The client sets wants-response 0 on these, so it is not waiting on
-        # one; answer only when asked to, to keep the first run's variables
-        # down.
+        # The client sets HasHandler 0 on these, so it is not waiting on a
+        # response; answer only when asked to, to keep the first run's
+        # variables down.
         if os.environ.get("CRUCIBLE_HUB_HB", "silent") != "reply":
             return None
         return build_hub(HUB_HEARTBEAT_OK, req_id,
-                         ERESULT_SUCCESS.to_bytes(4, "big"), flag)
+                         ranged_uint(ERESULT_SUCCESS, 0, ERESULT_MAX), flag)
 
     if msg_id == HUB_USERSTATUS_REQ:
-        state = int(os.environ.get("CRUCIBLE_HUB_GAMESTATE",
-                                   str(EGAMESTATE_IDLE)))
-        users = int(os.environ.get("CRUCIBLE_HUB_USERCOUNT", "1"))
-        payload = (ERESULT_SUCCESS.to_bytes(4, "big")
-                   + users.to_bytes(4, "big")
-                   + state.to_bytes(4, "big"))
-        return build_hub(HUB_USERSTATUS_OK, req_id, payload, flag)
+        return build_hub(HUB_USERSTATUS_OK, req_id, user_status_success(), flag)
 
-    # GetServerShardAddress (11) is the one that matters for real gameplay and
-    # its Success payload (Result, ServerShardAddr, GameInstanceId) is not
-    # pinned down yet; log it loudly rather than guess.
+    if msg_id == HUB_SHARDADDR_REQ:
+        # Off by default: it points the client at a shard that does not exist
+        # yet, so on the first run it would replace a clean "connected" result
+        # with a confusing shard-connect failure.
+        if os.environ.get("CRUCIBLE_HUB_SHARDADDR", "silent") != "reply":
+            return None
+        return build_hub(HUB_SHARDADDR_OK, req_id, shard_address_success(), flag)
+
     return None
 
 
