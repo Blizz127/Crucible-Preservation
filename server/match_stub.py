@@ -133,19 +133,25 @@ MAGIC = b"\x01\x00\x05\x00\x00"
 # Recovered from Crucible.exe build 5685572, 2026-09-17 (docs/11):
 #
 #   frame:   u16 BE msg id | u16 BE body length | body
-#   body:    u8 version(=1) | u16 BE msg id | Metadata | payload
+#   body:    u8 version(=1) | u16 BE 0x0005 (constant) | Metadata | payload
 #   Metadata: u32 BE RequestId | u8 HasHandler       (rva 0x4f1c6c0)
 #
 # Field encodings are not "the C++ type": every integer is range-compressed by
 # the reader at rva 0x4f57140 — see ranged_uint() below.
 #
-# The msg id appears twice; the client's own Connect frame has it in both
-# places. Message ids come from NovaGameHubClient's response dispatcher
+# Message ids come from NovaGameHubClient's response dispatcher
 # (rva 0x3187fa7: `add eax,-6; cmp eax,0xd`, jump table at 0x3188c18), which
 # handles 6..19 and leaves 8, 11, 14, 17 to the default case — i.e. those four
 # are the ids the *client* sends, so the space is five (Request, Success,
 # Error) triples starting at 5.
 HUB_VERSION = 1
+# Body offsets 1-2, constant 0x0005 on every frame the client sends, whatever
+# the message. Purpose unknown (an interface or protocol id, most likely); the
+# stub mirrors what the client sends rather than guessing something else.
+HUB_BODY_TAG = b"\x00\x05"
+# The caller's NovaNetUserId, learned from Connect/Heartbeat, for probes that
+# want to echo it back.
+HUB_LAST_UID = [0]
 
 HUB_CONNECT_REQ = 5
 HUB_CONNECT_OK = 6
@@ -248,9 +254,13 @@ def hub_session(shard_id, host, port):
 def parse_hub(frame):
     """Envelope fields of one hub frame, or None if it is too short.
 
-    Returns (msg_id, request_id, has_handler, payload). `Metadata`
-    (rva 0x4f1c6c0) is { u32 RequestId, bool HasHandler }, which is the u32 at
-    body offset 3 and the byte at offset 7.
+    Returns (msg_id, request_id, has_handler, payload).
+
+    The message id comes from the transport header ONLY. Body offsets 1-2 are
+    a constant 0x0005 — proven on the wire 2026-09-17 15:08, where an id-14
+    frame body reads 01 00 05 00 00 00 41 01 and an id-8 body reads
+    01 00 05 00 00 00 42 00 38f1f744. Reading the id out of the body instead
+    made every frame look like Connect::Request.
     """
     if len(frame) < 12:
         return None
@@ -258,16 +268,16 @@ def parse_hub(frame):
     if len(body) < 8:
         return None
     return (
-        int.from_bytes(body[1:3], "big"),
+        int.from_bytes(frame[0:2], "big"),
         int.from_bytes(body[3:7], "big"),
         body[7],
         bytes(body[8:]),
     )
 
 
-def build_hub(msg_id, request_id, payload, has_handler=0):
+def build_hub(msg_id, request_id, payload, has_handler=1):
     body = (bytes([HUB_VERSION])
-            + msg_id.to_bytes(2, "big")
+            + HUB_BODY_TAG
             + request_id.to_bytes(4, "big")
             + bytes([has_handler])
             + payload)
@@ -332,18 +342,73 @@ def shard_address_success():
             + nonce + psk)
 
 
+# Response-envelope probe. The client re-sends GetUserStatus::Request once a
+# second and reports "Timing out requestid N" ~30 s later if it never matched a
+# response, so each inbound request buys one free trial of a response shape.
+# Set CRUCIBLE_HUB_PROBE=1 to cycle the variants below across successive
+# requests; the one whose request id is ABSENT from the client's timeout list
+# is the shape the client accepts.
+HUB_PROBE_VARIANTS = [
+    ("baseline hdr15 ver1 tag0005 hh0", {}),
+    ("has_handler=1", {"hh": 1}),
+    ("header id = the request id (14)", {"hdr": 14}),
+    ("body tag = msg id", {"tag": b"\x00\x0f"}),
+    ("version byte = 0", {"ver": 0}),
+    ("payload = Result byte only", {"payload": b"\x00"}),
+    ("payload empty", {"payload": b""}),
+    ("hh=1 and tag = msg id", {"hh": 1, "tag": b"\x00\x0f"}),
+    ("header id 16 (Error), Result only", {"hdr": 16, "payload": b"\x00"}),
+    ("header id 9 (Heartbeat::Success)", {"hdr": 9, "payload": b"\x00"}),
+    ("UserStatus.UserId = the caller's id", {"echo_uid": True}),
+    ("GameState = Connecting", {"gamestate": 0}),
+]
+
+
+def hub_probe_reply(req_id, caller_uid):
+    """One probe variant, chosen by request id so each request tries the next."""
+    name, v = HUB_PROBE_VARIANTS[req_id % len(HUB_PROBE_VARIANTS)]
+    uid = caller_uid if v.get("echo_uid") else 0
+    payload = v.get("payload")
+    if payload is None:
+        payload = (ranged_uint(ERESULT_SUCCESS, 0, ERESULT_MAX)
+                   + ranged_uint(uid, 0, 0xFFFFFFFF)
+                   + hub_str("") + hub_str("")
+                   + ranged_uint(1, 0, 0xFFFFFFFF)
+                   + ranged_uint(v.get("gamestate", EGAMESTATE_IDLE),
+                                 0, EGAMESTATE_MAX))
+    body = (bytes([v.get("ver", HUB_VERSION)])
+            + v.get("tag", HUB_BODY_TAG)
+            + req_id.to_bytes(4, "big")
+            + bytes([v.get("hh", 0)])
+            + payload)
+    hdr = v.get("hdr", HUB_USERSTATUS_OK)
+    log("      PROBE req %-5d variant %d: %s" % (
+        req_id, req_id % len(HUB_PROBE_VARIANTS), name))
+    return hdr.to_bytes(2, "big") + len(body).to_bytes(2, "big") + body
+
+
 def hubrpc_reply(frame):
     """Response for one hub frame, or None to stay silent."""
     parsed = parse_hub(frame)
     if parsed is None:
         return None
     msg_id, req_id, _has_handler, _payload = parsed
-    flag = int(os.environ.get("CRUCIBLE_HUB_RESPFLAG", "0"))
+    # HasHandler must be 1 on a RESPONSE too. Proven on the wire 2026-09-17
+    # 15:40 by cycling 12 response-envelope variants across the client's 1 Hz
+    # GetUserStatus poll: every request id answered with HasHandler=1 (13, 25,
+    # 37, 49, 61, 73, 85) is absent from the client's "Timing out requestid N"
+    # list, and every other variant timed out. Sending 0 is what made the
+    # correct payloads look wrong.
+    flag = int(os.environ.get("CRUCIBLE_HUB_RESPFLAG", "1"))
+    if msg_id == HUB_CONNECT_REQ and len(_payload) >= 4:
+        HUB_LAST_UID[0] = int.from_bytes(_payload[:4], "big")
 
     if msg_id == HUB_CONNECT_REQ:
         return build_hub(HUB_CONNECT_OK, req_id, connect_success(), flag)
 
     if msg_id == HUB_HEARTBEAT_REQ:
+        if len(_payload) >= 4:
+            HUB_LAST_UID[0] = int.from_bytes(_payload[:4], "big")
         # The client sets HasHandler 0 on these, so it is not waiting on a
         # response; answer only when asked to, to keep the first run's
         # variables down.
@@ -353,6 +418,8 @@ def hubrpc_reply(frame):
                          ranged_uint(ERESULT_SUCCESS, 0, ERESULT_MAX), flag)
 
     if msg_id == HUB_USERSTATUS_REQ:
+        if os.environ.get("CRUCIBLE_HUB_PROBE") == "1":
+            return hub_probe_reply(req_id, HUB_LAST_UID[0])
         return build_hub(HUB_USERSTATUS_OK, req_id, user_status_success(), flag)
 
     if msg_id == HUB_SHARDADDR_REQ:

@@ -47,6 +47,25 @@ def main():
           int.from_bytes(built[2:4], "big"), len(built) - 4)
     check("round trip", ms.parse_hub(built),
           (ms.HUB_CONNECT_OK, 1, 0, b"\x00\x00\x00\x00"))
+    check("body carries the constant tag, not the msg id",
+          built[5:7], ms.HUB_BODY_TAG)
+
+    # Live frames, 2026-09-17 15:08. These are why the id must come from the
+    # transport header: both carry 00 05 at body offset 1, so parsing the id
+    # out of the body made every frame look like Connect::Request.
+    hb_live = bytes.fromhex("0008000c010005000000420038f1f744")
+    check("live id-8 is Heartbeat::Request",
+          ms.parse_hub(hb_live)[0], ms.HUB_HEARTBEAT_REQ)
+    check("live id-8 request id", ms.parse_hub(hb_live)[1], 0x42)
+    check("live id-8 HasHandler is 0", ms.parse_hub(hb_live)[2], 0)
+    check("live id-8 payload is the UserId",
+          ms.parse_hub(hb_live)[3], bytes.fromhex("38f1f744"))
+
+    us_live = bytes.fromhex("000e00080100050000004101")
+    check("live id-14 is GetUserStatus::Request",
+          ms.parse_hub(us_live)[0], ms.HUB_USERSTATUS_REQ)
+    check("live id-14 HasHandler is 1", ms.parse_hub(us_live)[2], 1)
+    check("live id-14 payload is empty", ms.parse_hub(us_live)[3], b"")
 
     # Connect::Success with the defaults: Result(1) + two empty strings(1+1)
     # + Session(u8 shard 1 + empty host 1 + u16 port 2) + bool(1) = 8.
@@ -58,6 +77,8 @@ def main():
     out_id, out_req, _out_wants, out_payload = ms.parse_hub(out)
     check("Connect answered with Connect::Success", out_id, ms.HUB_CONNECT_OK)
     check("response echoes the request id", out_req, 1)
+    # Proven on the wire: a response with HasHandler=0 is silently dropped.
+    check("responses set HasHandler", _out_wants, 1)
     check("Connect::Success payload", out_payload,
           bytes.fromhex("00" "00" "00" "00" "00" "0000" "00"))
 

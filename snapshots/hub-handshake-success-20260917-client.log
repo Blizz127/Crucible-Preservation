@@ -1,0 +1,5 @@
+[09-17-2026:20:47:58.769553-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from Disconnected to ConnectingToGameRegistry
+[09-17-2026:20:47:58.769558-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToGameRegistry to ConnectingToHub
+[09-17-2026:20:47:58.769563-GMT] NovaNet::NovaGameServiceClient::ClientConnect(): User 1301645879(1557393037) is connecting to the NovaGameHub at: 127.0.0.1:18877
+[09-17-2026:20:47:58.769746-GMT] NovaGameHubClient::ClientManager::Connect(): NovaGameHubClient::ClientManager::Connect: Sending connect request to 127.0.0.1:18877
+[09-17-2026:20:47:58.927311-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToHub to LoadingLevel
