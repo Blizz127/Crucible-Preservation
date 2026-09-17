@@ -288,3 +288,21 @@ reply is `ack` by default; `CRUCIBLE_ACCEPT_DATA=auto` echoes the Connect's
 data bytes verbatim with only the id flipped (never tested — the old accept
 mode always cleared data[0]). Fuzz order now: `auto`, `00`, `0000`
 (`0100` failed to advance).
+
+## Superseded, 2026-09-17: this was the wrong protocol
+
+Everything in this file from "What the wire actually is" onward reads port
+18877 as the shard's `NovaGameClientPackets` stream. It is not — it is the
+**NovaGameHub**, a generated RPC interface with its own id space and its own
+envelope. See `docs/11-novagamehub-protocol.md`, which supersedes:
+
+- the "constant 5-byte magic `01 00 05 00 00`" (bytes 1-2 are the message id),
+- the "u16 counter" (low half of a u32 request id),
+- the cumulative-ack model (the hub has no acks),
+- and every Accept variant, including `auto2` in `a7dfee6` — `Accept` is a
+  shard message and was never going to be read on this connection.
+
+What survives unchanged and is still correct: the TLS/pinning findings, the
+`NovaGameClientPackets` dispatch table (it is the *shard's*), and the
+observation that the marker byte at body offset 7 tracks which frames the
+client waits on — `docs/11` names it `wants-response`.

@@ -48,8 +48,11 @@ repository's original work, not any third-party game content.
 - `docs/07-local-backend.md` — the local backend and its pak patches (M1–M4).
 - `docs/08-matchmaking-practice.md` — READY flow, TLS match server, practice.
 - `docs/09-practice-arena.md` — the mode-select gate and entitlement unlocks.
-- `docs/10-match-server-tls.md` — cert pinning (the real blocker) and the first
-  captured NovaNet frame.
+- `docs/10-match-server-tls.md` — cert pinning (the real blocker), the first
+  captured frame, and the shard's packet table. Its wire-format section is
+  superseded by `docs/11`.
+- `docs/11-novagamehub-protocol.md` — the NovaGameHub RPC on `:18877`: message
+  ids, envelope, field encodings, and what the stub now answers.
 - `server/crucible_backend.py` — local live-services backend (`:18876`).
 - `server/tls_stub.py` — PlayerAuthorizer TLS logging stub (`:443`).
 - `server/match_stub.py` — LAN match-server TLS listener (`:18877`); records the
@@ -60,6 +63,7 @@ repository's original work, not any third-party game content.
 - `tools/rebuild_pak.py` — replace pak entries without disturbing the rest.
 - `tools/patch_menu.py`, `patch_services.py`, `patch_locale.py` — UI patches.
 - `tools/test_patch_menu.py`, `test_mode_gate.py` — committed checks.
+- `server/test_hubrpc.py` — committed checks for the NovaGameHub envelope.
 
 ## Quickstart
 

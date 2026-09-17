@@ -49,6 +49,16 @@ The client then names each type in its own log, which is the only way to
 resolve the id -> name mapping.
 
   CRUCIBLE_PROBE_IDS=5 python3 server/match_stub.py     # single id
+
+Reply modes
+-----------
+  CRUCIBLE_REPLY=hubrpc    speak the NovaGameHub RPC (docs/11) — the protocol
+                           this port actually runs. Use this one.
+  CRUCIBLE_REPLY=hub|accept|echo|ack
+                           earlier attempts that treated the port as the
+                           shard's NovaGameClientPackets stream. Kept only so
+                           the old runs stay reproducible; all of them are
+                           aimed at the wrong protocol (docs/10, "Superseded").
 """
 import datetime
 import os
@@ -107,7 +117,168 @@ ACCEPT_ID = 6
 # timed out. So server frames need their OWN sequence (01, 02, 03, ...) and
 # data[0] = the client counter being acked. A game response (Accept) is
 # matched to its request the same way: ack byte == request counter.
+#
+# SUPERSEDED (2026-09-17, static RE): the "5 constant magic bytes" reading was
+# generalised from the one Connect frame ever hex-dumped, and it is wrong. The
+# stub is the NovaGameHub, whose wire is a plain request/response RPC — see the
+# hubrpc section below and docs/11-novagamehub-protocol.md. MAGIC and the
+# hub/echo/ack/accept modes are kept only so the old experiments stay
+# reproducible; they target NovaGameClientPackets, which is the *shard*
+# protocol, not this port.
 MAGIC = b"\x01\x00\x05\x00\x00"
+
+# ---------------------------------------------------------------------------
+# NovaGameHub RPC (CRUCIBLE_REPLY=hubrpc)
+# ---------------------------------------------------------------------------
+# Recovered from Crucible.exe build 5685572, 2026-09-17 (docs/11):
+#
+#   frame:   u16 BE msg id | u16 BE body length | body
+#   body:    u8 version(=1) | u16 BE msg id | u32 BE request id
+#            | u8 wants-response | payload
+#
+# The msg id appears twice; the client's own Connect frame has it in both
+# places. Message ids come from NovaGameHubClient's response dispatcher
+# (rva 0x3187fa7: `add eax,-6; cmp eax,0xd`, jump table at 0x3188c18), which
+# handles 6..19 and leaves 8, 11, 14, 17 to the default case — i.e. those four
+# are the ids the *client* sends, so the space is five (Request, Success,
+# Error) triples starting at 5.
+HUB_VERSION = 1
+
+HUB_CONNECT_REQ = 5
+HUB_CONNECT_OK = 6
+HUB_CONNECT_ERR = 7
+HUB_HEARTBEAT_REQ = 8
+HUB_HEARTBEAT_OK = 9
+HUB_SHARDADDR_REQ = 11
+HUB_SHARDADDR_OK = 12
+HUB_USERSTATUS_REQ = 14
+HUB_USERSTATUS_OK = 15
+HUB_METRICS_REQ = 17
+HUB_METRICS_OK = 18
+
+HUB_NAMES = {
+    5: "Connect::Request", 6: "Connect::Success", 7: "Connect::Error",
+    8: "Heartbeat::Request", 9: "Heartbeat::Success", 10: "Heartbeat::Error",
+    11: "GetServerShardAddress::Request",
+    12: "GetServerShardAddress::Success",
+    13: "GetServerShardAddress::Error",
+    14: "GetUserStatus::Request", 15: "GetUserStatus::Success",
+    16: "GetUserStatus::Error",
+    17: "GetServerMetrics::Request", 18: "GetServerMetrics::Success",
+    19: "GetServerMetrics::Error",
+}
+
+# NovaNet::EResult, declaration order read off the enum-name table at
+# rva 0x3185320.
+ERESULT_SUCCESS = 0
+# NovaNet::EGameState, from rva 0x3185590: Connecting, Idle, Playing, Ended.
+EGAMESTATE_CONNECTING = 0
+EGAMESTATE_IDLE = 1
+EGAMESTATE_PLAYING = 2
+EGAMESTATE_ENDED = 3
+
+
+def hub_str(s):
+    """One serialised string field.
+
+    Only the empty case is confirmed on the wire: the client's Connect carries
+    an empty GameLiftSessionId as a single 0x00 byte, and the frame's length
+    field accounts for exactly that one byte. That is consistent with both a
+    u8 length prefix and a NUL terminator, so the two cannot be told apart
+    yet — CRUCIBLE_HUB_STR picks one ("len8", default, or "cstr"). Replies
+    that only ever send empty strings are unaffected either way.
+    """
+    raw = s.encode("utf-8")
+    if os.environ.get("CRUCIBLE_HUB_STR", "len8") == "cstr":
+        return raw + b"\x00"
+    if len(raw) > 255:
+        raise ValueError("string too long for a u8 length prefix: %d" % len(raw))
+    return bytes([len(raw)]) + raw
+
+
+def parse_hub(frame):
+    """Envelope fields of one hub frame, or None if it is too short.
+
+    Returns (msg_id, request_id, wants_response, payload).
+    """
+    if len(frame) < 12:
+        return None
+    body = frame[4:]
+    if len(body) < 8:
+        return None
+    return (
+        int.from_bytes(body[1:3], "big"),
+        int.from_bytes(body[3:7], "big"),
+        body[7],
+        bytes(body[8:]),
+    )
+
+
+def build_hub(msg_id, request_id, payload, wants_response=0):
+    body = (bytes([HUB_VERSION])
+            + msg_id.to_bytes(2, "big")
+            + request_id.to_bytes(4, "big")
+            + bytes([wants_response])
+            + payload)
+    return msg_id.to_bytes(2, "big") + len(body).to_bytes(2, "big") + body
+
+
+def hubrpc_reply(frame):
+    """Response for one hub frame, or None to stay silent.
+
+    Payload layouts are read off the generated serialisers; the field types
+    come from which ISerializer vtable slot each field calls (+0x38 uint32,
+    +0x40 uint16, +0x48 uint8, +0x78 bool).
+
+      Connect::Success    = u32 Result, str LevelName, str GameRules,
+                            Session{u8 ShardId, str GameHost, u16 GamePort},
+                            bool ShouldLoadDebugComponents
+      Heartbeat::Success  = u32 Result
+      GetUserStatus::Success = u32 Result, u32 UserCount, u32 GameState
+    """
+    parsed = parse_hub(frame)
+    if parsed is None:
+        return None
+    msg_id, req_id, _wants, _payload = parsed
+    flag = int(os.environ.get("CRUCIBLE_HUB_RESPFLAG", "0"))
+
+    if msg_id == HUB_CONNECT_REQ:
+        level = os.environ.get("CRUCIBLE_HUB_LEVEL", "")
+        rules = os.environ.get("CRUCIBLE_HUB_RULES", "")
+        host = os.environ.get("CRUCIBLE_HUB_SHARD_HOST", "")
+        port = int(os.environ.get("CRUCIBLE_HUB_SHARD_PORT", "0"))
+        shard = int(os.environ.get("CRUCIBLE_HUB_SHARD_ID", "0"))
+        payload = (ERESULT_SUCCESS.to_bytes(4, "big")
+                   + hub_str(level)
+                   + hub_str(rules)
+                   + bytes([shard & 0xFF])
+                   + hub_str(host)
+                   + port.to_bytes(2, "big")
+                   + b"\x00")
+        return build_hub(HUB_CONNECT_OK, req_id, payload, flag)
+
+    if msg_id == HUB_HEARTBEAT_REQ:
+        # The client sets wants-response 0 on these, so it is not waiting on
+        # one; answer only when asked to, to keep the first run's variables
+        # down.
+        if os.environ.get("CRUCIBLE_HUB_HB", "silent") != "reply":
+            return None
+        return build_hub(HUB_HEARTBEAT_OK, req_id,
+                         ERESULT_SUCCESS.to_bytes(4, "big"), flag)
+
+    if msg_id == HUB_USERSTATUS_REQ:
+        state = int(os.environ.get("CRUCIBLE_HUB_GAMESTATE",
+                                   str(EGAMESTATE_IDLE)))
+        users = int(os.environ.get("CRUCIBLE_HUB_USERCOUNT", "1"))
+        payload = (ERESULT_SUCCESS.to_bytes(4, "big")
+                   + users.to_bytes(4, "big")
+                   + state.to_bytes(4, "big"))
+        return build_hub(HUB_USERSTATUS_OK, req_id, payload, flag)
+
+    # GetServerShardAddress (11) is the one that matters for real gameplay and
+    # its Success payload (Result, ServerShardAddr, GameInstanceId) is not
+    # pinned down yet; log it loudly rather than guess.
+    return None
 
 
 def split_frame(buf):
@@ -254,7 +425,7 @@ def drain(tls, addr, label, reply=None, srv_seq=None):
         log("  %s <- %d bytes (total %d)" % (label, len(data), total))
         log("      hex: %s" % data[:1024].hex())
         log("      asc: %r" % (data[:512],))
-        if reply == "hub":
+        if reply in ("hub", "hubrpc"):
             # Frame-aware: split by header length so coalesced recvs still
             # get one response per frame, each with its own server seq.
             pending += data
@@ -263,6 +434,17 @@ def drain(tls, addr, label, reply=None, srv_seq=None):
                 if frame is None:
                     break
                 pid = int.from_bytes(frame[0:2], "big")
+                if reply == "hubrpc":
+                    log_hub_frame(frame)
+                    out = hubrpc_reply(frame)
+                    if out is not None:
+                        try:
+                            tls.sendall(out)
+                            log("      reply(hubrpc) -> %s" % out.hex())
+                        except (ssl.SSLError, OSError) as e:
+                            log("      reply(hubrpc) failed: %r" % (e,))
+                            return total
+                    continue
                 log("      frame id %-2d ctr %s datalen %d" % (
                     pid, frame_counter(frame),
                     max(0, len(frame) - 11)))
@@ -285,6 +467,19 @@ def drain(tls, addr, label, reply=None, srv_seq=None):
                 except (ssl.SSLError, OSError) as e:
                     log("      reply(%s) failed: %r" % (reply, e))
                     return total
+
+
+def log_hub_frame(frame):
+    """One log line naming the hub message and its envelope fields."""
+    parsed = parse_hub(frame)
+    if parsed is None:
+        log("      frame (not a hub envelope, %d bytes): %s"
+            % (len(frame), frame.hex()))
+        return
+    msg_id, req_id, wants, payload = parsed
+    log("      hub %-30s id %-2d req %-5d wants_resp %d payload %s"
+        % (HUB_NAMES.get(msg_id, "UNKNOWN"), msg_id, req_id, wants,
+           payload.hex() or "-"))
 
 
 def build_probe(pid, payload=b""):
@@ -362,7 +557,13 @@ def handle(conn, addr, ctx):
             srv_seq = [1]  # our server sequence for this connection (hub)
             if reply:
                 log("  reply mode: %s" % reply)
-                if reply == "hub":
+                if reply == "hubrpc":
+                    frame, _ = split_frame(first)
+                    out = None
+                    if frame is not None:
+                        log_hub_frame(frame)
+                        out = hubrpc_reply(frame)
+                elif reply == "hub":
                     frame, _ = split_frame(first)
                     out = hub_reply(frame, srv_seq[0]) \
                         if frame is not None else None
@@ -381,7 +582,7 @@ def handle(conn, addr, ctx):
                         return
             probe(tls, first)
             drain(tls, addr, "after-probe", reply=reply,
-                  srv_seq=srv_seq if reply == "hub" else None)
+                  srv_seq=srv_seq if reply in ("hub", "hubrpc") else None)
         finally:
             try:
                 tls.close()
