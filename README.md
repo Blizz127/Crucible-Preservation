@@ -6,7 +6,7 @@ playable again via a community backend — same playbook as other dead-game
 revivals (local server emulator + traffic redirect via hosts file / firewall
 rules, client patched only where unavoidable).
 
-> Status: **Phase 3 — menu alive, no gameplay yet.** Client downloaded and
+> Status: **Phase 3+ — the client now loads a level from our backend.** Client downloaded and
 > hashed (21 GB, `5685572`); boot log captured; the local backend populates the
 > menu (battlepass, challenges, store) and the LAN READY flow runs to a clean
 > Timeout modal. Match server speaks TLS and rejects untrusted certs, so real
@@ -53,10 +53,13 @@ repository's original work, not any third-party game content.
   superseded by `docs/11`.
 - `docs/11-novagamehub-protocol.md` — the NovaGameHub RPC on `:18877`: message
   ids, envelope, field encodings, and what the stub now answers.
+- `docs/12-server-shard-udp.md` — the server shard on `:18878`: UDP/DTLS, the
+  packet framing, and the one checksum that is still unexplained.
 - `server/crucible_backend.py` — local live-services backend (`:18876`).
 - `server/tls_stub.py` — PlayerAuthorizer TLS logging stub (`:443`).
-- `server/match_stub.py` — LAN match-server TLS listener (`:18877`); records the
-  client's first bytes for the NovaNet protocol work.
+- `server/match_stub.py` — NovaGameHub TLS listener (`:18877`); speaks the hub
+  RPC well enough that the client loads a level.
+- `server/shard_stub.py` — server-shard UDP listener (`:18878`).
 - `tools/install_test_ca.py` — trust the stubs' test certs in the Proton prefix.
 - `tools/scan_endpoints.sh` — re-runnable endpoint/credential scan.
 - `tools/pak.py` — list / extract entries from a `.pak` (read-only).
