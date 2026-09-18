@@ -125,6 +125,66 @@ def describe(data):
 
 
 
+# ---------------------------------------------------------------------------
+# Entity replication primitives (docs/13)
+# ---------------------------------------------------------------------------
+# Entity RelativeId is a zigzag-encoded LEB128 varint - protobuf's sint32.
+# Read path at rva 0x4a13ac0:
+#     mov eax,[raw]; mov ecx,eax; and eax,1; shr ecx,1; neg eax; xor ecx,eax
+# i.e. value = (raw >> 1) ^ -(raw & 1). The raw value comes from the varint
+# reader at rva 0x4fafcd0, which is a textbook LEB128:
+#     and eax,0x7f; shl eax,cl; or [acc],eax; test dl,dl; jns done;
+#     add rbx,7; cmp rbx,0x23
+# so 7 bits per byte, high bit as the continuation flag, and a 35-bit ceiling
+# (five bytes). The caller asserts against 0xffffff - "Requested Id out of
+# range" - so ids themselves are 24-bit.
+ENTITY_ID_MAX = 0xFFFFFF
+
+
+def encode_varint(value):
+    """LEB128, low 7 bits per byte, high bit = continuation."""
+    if value < 0:
+        raise ValueError("varint is unsigned; zigzag first")
+    out = bytearray()
+    while True:
+        b = value & 0x7F
+        value >>= 7
+        if value:
+            out.append(b | 0x80)
+        else:
+            out.append(b)
+            return bytes(out)
+
+
+def decode_varint(data, offset=0):
+    """Returns (value, next_offset). Stops at the 35-bit ceiling like the
+    engine does."""
+    value = 0
+    shift = 0
+    while offset < len(data):
+        b = data[offset]
+        offset += 1
+        value |= (b & 0x7F) << shift
+        if not (b & 0x80):
+            return value, offset
+        shift += 7
+        if shift >= 0x23:
+            break
+    raise ValueError("varint did not terminate within the 35-bit ceiling")
+
+
+def encode_entity_id(value):
+    """Zigzag then varint, as RelativeId is written."""
+    if abs(value) > ENTITY_ID_MAX:
+        raise ValueError("entity id out of the engine's 24-bit range")
+    return encode_varint((value << 1) ^ (value >> 31 if value < 0 else 0))
+
+
+def decode_entity_id(data, offset=0):
+    raw, offset = decode_varint(data, offset)
+    return (raw >> 1) ^ -(raw & 1), offset
+
+
 def parse_shard(data):
     """Split a datagram into (prefix, region, crc) or None.
 
