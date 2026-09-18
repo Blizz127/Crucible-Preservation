@@ -31,9 +31,35 @@ Unlike the hub's fixed-size vectors, `EntityMessages` is **length-prefixed**
 (body at `0x4b9df30`):
 
 ```
-EntityMessages   = Size (ranged uint via vtable +0x38) | element[Size]
-element          = EntityUpdateMessage | u16 PayloadSize | <PayloadSize bytes>
-EntityUpdateMessage = RelativeId | u8 TypeAndFlags        (body at 0x4b9daa0)
+EntityUpdates (id 10, rva 0xe262e0)
+  = base Packet header
+  | ServerGameTimePoint { u32 BE GameTimeMs }        (rva 0x77d1d0)
+  | EntityMessages
+
+EntityMessages = u16 BE Size | element[Size]         (Size declared 0..2048,
+                                                      descriptor 0x7481d60)
+element        = RelativeId          (zigzag varint)
+               | u8 TypeAndFlags
+               | SliceEntryId        (ONLY when bit7 clear and bit4 set)
+               | u16 BE PayloadSize
+               | <PayloadSize bytes>
+```
+
+The conditional `SliceEntryId` is the client's own logic at `0x4b9dc5b`: it
+tests the delete flag (bit 7) first and skips the rest, then tests bit 4 and
+only then calls the `SliceEntryId` serialiser (`0x4b9e620`) into `+0x10`.
+That is what makes a message a *spawn* rather than a property update.
+
+Built end to end by `build_entity_updates` in `server/shard_stub.py`. A spawn
+of `slices/player/hero/hero_character` is nine bytes of entity message:
+
+```
+02 11 ad efa4ef 01 0000
+|  |  |          |
+|  |  |          u16 PayloadSize = 0
+|  |  SliceEntryId varint = 501823405
+|  TypeAndFlags = type 1, bit4 (has slice)
+RelativeId zigzag varint = 1
 ```
 
 - `PayloadSize` is a `uint16_t` declared `0..65535`, so two bytes big endian

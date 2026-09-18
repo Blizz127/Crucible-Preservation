@@ -233,16 +233,78 @@ def unpack_type_and_flags(byte):
     }
 
 
-def build_entity_message(entity_id, type_and_flags, payload=b""):
-    """One element of the EntityMessages vector (docs/13).
+def build_slice_entry_id(asset_hash):
+    """`SliceEntryId` — the reference that makes the client build an entity
+    from a slice it already has on disk.
 
-        EntityUpdateMessage | u16 PayloadSize | <payload>
-        EntityUpdateMessage = RelativeId (zigzag varint) | u8 TypeAndFlags
+    Body at rva 0x4bfb1d0, `{StringAsset, Slice}`, where the id is a varint:
+    the body branches on 0x7f / 0x3fff / 0x1fffff / 0xfffffff, the 7/14/21/28
+    bit LEB128 boundaries. The hash is resolved against the level's own
+    AssetHashMap (`levels/<level>/commondata/stringhashlibrary.xml`), e.g.
+    501823405 = slices/player/hero/hero_character in practicearena.
+
+    Only the varint id is emitted here; whether `StringAsset` contributes
+    separate bytes is unverified, so this is the piece most likely to need a
+    second attempt.
     """
+    return encode_varint(asset_hash)
+
+
+def build_entity_message(entity_id, type_and_flags, slice_hash=None,
+                         payload=b""):
+    """One element of the EntityMessages vector.
+
+        RelativeId (zigzag varint)
+        u8 TypeAndFlags
+        SliceEntryId              -- ONLY when bit7 is clear and bit4 is set
+        u16 PayloadSize
+        <payload>
+
+    The conditional is the client's own, at rva 0x4b9dc5b: it tests the
+    delete flag (bit 7) first and skips everything, then tests bit 4 and only
+    then calls the SliceEntryId serialiser (0x4b9e620) into +0x10.
+    """
+    flags = type_and_flags[0]
+    out = encode_entity_id(entity_id) + type_and_flags
+    wants_slice = (not flags & ENTITY_FLAG_BIT7) and (flags & ENTITY_FLAG_BIT4)
+    if wants_slice:
+        if slice_hash is None:
+            raise ValueError("bit 4 is set, so a slice hash is required")
+        out += build_slice_entry_id(slice_hash)
+    elif slice_hash is not None:
+        raise ValueError("a slice hash needs bit 4 set, or the client will "
+                         "not read it")
     if len(payload) > 0xFFFF:
         raise ValueError("payload exceeds the u16 PayloadSize field")
-    return (encode_entity_id(entity_id) + type_and_flags
-            + len(payload).to_bytes(2, "big") + payload)
+    return out + len(payload).to_bytes(2, "big") + payload
+
+
+# EntityMessages.Size is declared 0..2048 (descriptor at rva 0x7481d60), so it
+# is two bytes big endian and a packet carries at most 2048 messages.
+ENTITY_MESSAGES_MAX = 2048
+
+
+def build_entity_updates(prefix, local_seq, remote_seq, messages,
+                         game_time_ms=0):
+    """A complete EntityUpdates packet (id 10, serialiser rva 0xe262e0).
+
+        base Packet header
+        ServerGameTimePoint { u32 BE GameTimeMs }   (rva 0x77d1d0)
+        EntityMessages: u16 BE Size | element[Size]
+    """
+    if len(messages) > ENTITY_MESSAGES_MAX:
+        raise ValueError("at most %d entity messages per packet"
+                         % ENTITY_MESSAGES_MAX)
+    payload = (ranged_uint32(game_time_ms)
+               + len(messages).to_bytes(2, "big")
+               + b"".join(messages))
+    return build_shard(prefix, 10, local_seq, remote_seq, payload)
+
+
+def ranged_uint32(value):
+    """Full-range u32, four bytes big endian — the encoding docs/11 recovered
+    for every integer whose declared range spans the whole type."""
+    return value.to_bytes(4, "big")
 
 
 def parse_shard(data):
