@@ -237,17 +237,25 @@ def build_slice_entry_id(asset_hash):
     """`SliceEntryId` — the reference that makes the client build an entity
     from a slice it already has on disk.
 
-    Body at rva 0x4bfb1d0, `{StringAsset, Slice}`, where the id is a varint:
-    the body branches on 0x7f / 0x3fff / 0x1fffff / 0xfffffff, the 7/14/21/28
-    bit LEB128 boundaries. The hash is resolved against the level's own
-    AssetHashMap (`levels/<level>/commondata/stringhashlibrary.xml`), e.g.
-    501823405 = slices/player/hero/hero_character in practicearena.
+    Resolved by following the types rather than guessing from the name:
+    `SliceEntryId` (body rva 0x4bfb1d0) serialises exactly ONE field, named
+    `Slice`, of type `StringAsset`. `StringAsset` (rva 0xa88e90) in turn
+    serialises one field named `HashString` through the ranged-integer slot
+    (+0x38), and its descriptor (rva 0x7480dd0) declares the full uint32
+    range — so it is **four bytes big endian**, not a varint.
 
-    Only the varint id is emitted here; whether `StringAsset` contributes
-    separate bytes is unverified, so this is the piece most likely to need a
-    second attempt.
+    (The 0x7f / 0x3fff / 0x1fffff / 0xfffffff comparisons further down
+    0x4bfb1d0 are a separate varint length computed over a different field at
+    +0x90; they are not this id. Mistaking them for it is what produced the
+    first, wrong version of this function.)
+
+    The hash is resolved against the level's own AssetHashMap
+    (`levels/<level>/commondata/stringhashlibrary.xml`), e.g. 501823405 =
+    slices/player/hero/hero_character in practicearena.
     """
-    return encode_varint(asset_hash)
+    if not 0 <= asset_hash <= 0xFFFFFFFF:
+        raise ValueError("asset hash must fit a uint32")
+    return asset_hash.to_bytes(4, "big")
 
 
 def build_entity_message(entity_id, type_and_flags, slice_hash=None,

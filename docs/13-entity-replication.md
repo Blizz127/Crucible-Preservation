@@ -51,13 +51,13 @@ only then calls the `SliceEntryId` serialiser (`0x4b9e620`) into `+0x10`.
 That is what makes a message a *spawn* rather than a property update.
 
 Built end to end by `build_entity_updates` in `server/shard_stub.py`. A spawn
-of `slices/player/hero/hero_character` is nine bytes of entity message:
+of `slices/player/hero/hero_character` is eight bytes of entity message:
 
 ```
-02 11 ad efa4ef 01 0000
-|  |  |          |
-|  |  |          u16 PayloadSize = 0
-|  |  SliceEntryId varint = 501823405
+02 11 1de937ad 0000
+|  |  |         |
+|  |  |         u16 PayloadSize = 0
+|  |  SliceEntryId = u32 BE 501823405
 |  TypeAndFlags = type 1, bit4 (has slice)
 RelativeId zigzag varint = 1
 ```
@@ -126,10 +126,16 @@ The `<PayloadSize bytes>` blob is the component data.
 This is the finding that changes the size of the job, and it came from
 following `SliceEntryId` rather than assuming.
 
-`SliceEntryId` (wrapper `0x4b9e620`, body `0x4bfb1d0`) is
-`{ StringAsset, Slice }`, and the id is a **varint** — the body branches on
-`0x7f`, `0x3fff`, `0x1fffff`, `0xfffffff`, the exact 7/14/21/28-bit LEB128
-boundaries. It is an interned **asset hash**, not inline data.
+`SliceEntryId` (wrapper `0x4b9e620`, body `0x4bfb1d0`) serialises exactly one
+field, named `Slice`, of type `StringAsset`. `StringAsset` (`0xa88e90`) in
+turn serialises one field, `HashString`, through the ranged-integer slot, and
+its descriptor (`0x7480dd0`) declares the full `uint32` range — so the id is
+an interned **asset hash written as four bytes big endian**.
+
+> Corrected before testing: an earlier reading called this a varint, from the
+> `0x7f / 0x3fff / 0x1fffff / 0xfffffff` comparisons further down `0x4bfb1d0`.
+> Those belong to a separate varint length over a different field at `+0x90`,
+> not to this id. The type chain is what settles it.
 
 The client resolves that hash locally. Every level ships its own map in
 `levels.pak`, e.g.
