@@ -1,0 +1,12 @@
+[2026-09-17T20:11:25.241] listening on 127.0.0.1:18878 (UDP, log: /var/home/blizz/Projects/Crucible Revival/server/shard_udp.log)
+[2026-09-17T20:11:25.241] expect: NovaGameClientPackets after the hub hands out this address
+[2026-09-17T20:11:25.241] reply mode: accept
+[2026-09-17T20:20:22.244] listening on 127.0.0.1:18878 (UDP, log: /var/home/blizz/Projects/Crucible Revival/server/shard_udp.log)
+[2026-09-17T20:20:22.244] expect: NovaGameClientPackets after the hub hands out this address
+[2026-09-17T20:20:22.244] reply mode: accept
+[2026-09-17T20:21:57.124]       ACCEPT PROBE variant 0 FORGED: client's Connect, PacketType 5->6, CRC repaired (73 bytes)
+[2026-09-17T20:21:57.124]       ACCEPT PROBE variant 1 FORGED: type 5->6 and first payload byte = ServerShardId (73 bytes)
+[2026-09-17T20:21:57.124]       ACCEPT PROBE variant 2 FORGED: type 5->6 and our own LocalSequence (73 bytes)
+[2026-09-17T20:22:49.692] listening on 127.0.0.1:18878 (UDP, log: /var/home/blizz/Projects/Crucible Revival/server/shard_udp.log)
+[2026-09-17T20:22:49.692] expect: NovaGameClientPackets after the hub hands out this address
+[2026-09-17T20:22:49.692] reply mode: accept

@@ -454,16 +454,45 @@ def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
     # packet with a few bytes changed and the CRC repaired by linearity.
     # Everything after them is a fallback that assumes crc32(region), which
     # the client's own 51-channel packets demonstrably do not satisfy.
-    forged_type_only = forge_from(inbound, {2: 0x06})
-    forged_with_sid = forge_from(inbound, {2: 0x06, 12: shard_id & 0xFF})
-    forged_seq = forge_from(inbound, {2: 0x06, 4: (our_seq & 0xFF)})
+    # A full forge: every field an Accept needs, with the trailing Connect
+    # payload zeroed. The linearity identity allows arbitrary edits as long
+    # as the LENGTH is unchanged, so the datagram stays 73 bytes and carries
+    # zero padding after the ServerShardId. The earlier forge kept the
+    # client's own 57-byte Connect payload and its sequence numbers - a valid
+    # trailer on a semantically wrong packet, which is probably why it was
+    # dropped.
+    plen = len(prefix)
+    hdr = plen + 11                      # first payload byte
+    end = len(inbound) - 4               # region end / trailer start
+
+    def full_forge(local, remote, reliable=0, pad=0x00):
+        edits = {
+            plen + 0: 0x00, plen + 1: 0x06,            # PacketType = 6
+            plen + 2: (local >> 8) & 0xFF, plen + 3: local & 0xFF,
+            plen + 4: (remote >> 8) & 0xFF, plen + 5: remote & 0xFF,
+            plen + 6: 0x00, plen + 7: 0x00,
+            plen + 8: 0x00, plen + 9: 0x00,            # SequenceWindow = 0
+            plen + 10: 1 if reliable else 0,
+        }
+        edits[hdr] = shard_id & 0xFF                   # ServerShardId
+        for i in range(hdr + 1, end):                  # zero the rest
+            edits[i] = pad
+        return forge_from(inbound, edits)
+
+    forged_full = full_forge(our_seq, their_seq)
+    forged_full_reliable = full_forge(our_seq, their_seq, reliable=1)
+    forged_full_theirseq = full_forge(their_seq, their_seq)
+    forged_type_only = forge_from(inbound, {plen + 1: 0x06})
+
     return [
-        ("0 FORGED: client's Connect, PacketType 5->6, CRC repaired",
+        ("0 FULL FORGE: real Accept fields, Connect payload zeroed",
+         forged_full),
+        ("1 FULL FORGE with IsReliable set",
+         forged_full_reliable),
+        ("2 FULL FORGE using the client's own sequence",
+         forged_full_theirseq),
+        ("3b FORGED: type byte only (previous best, known rejected)",
          forged_type_only),
-        ("1 FORGED: type 5->6 and first payload byte = ServerShardId",
-         forged_with_sid),
-        ("2 FORGED: type 5->6 and our own LocalSequence",
-         forged_seq),
         ("3 trailer copied verbatim from the client's packet",
          raw(prefix, base_region + their_trailer)),
         ("4 correct crc32(region), for comparison",

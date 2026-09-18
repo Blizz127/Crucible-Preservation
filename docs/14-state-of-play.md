@@ -41,7 +41,25 @@ connect
 
 `cl_serveraddr` is described in the binary as *"The NovaGameHub hostname to
 connect to"* (default `localhost`), `cl_serverport` pairs with it, and
-`connect` is *"Connects to the game service and game server"*. CryEngine runs
+`connect` is *"Connects to the game service and game server"*.
+
+**This works.** A launch with no UI interaction produced:
+
+```
+ClientConnect(): User 3405967138(...) is connecting to the NovaGameHub at: localhost:8192
+NovaGameHubClient::ClientManager::Connect: Sending connect request to 127.0.0.1:8192
+```
+
+followed by a full hub handshake and 322 shard datagrams. Two notes:
+
+- **The hub port is 8192, not 18877.** `cl_serverport 18877` did not take —
+  the port comes from elsewhere (its own help text says the default "should
+  match the cvar `sv_ClientGameServicePort`"). Run a second `match_stub` with
+  `CRUCIBLE_MATCH_PORT=8192` and the same `hubrpc` env; that is what the
+  client actually dials.
+- Relaunching repeatedly via `steam -applaunch` gets unreliable after a few
+  cycles — the process starts but never reaches the network stage. Give Steam
+  time between attempts, or launch from the UI. CryEngine runs
 `autoexec.cfg` after system init — later than `user.cfg`, and much later than
 the `+map` launch argument that crashed this build early (`docs/08`) — so it
 is the right place for a command that needs the game up. `connect` is kept
