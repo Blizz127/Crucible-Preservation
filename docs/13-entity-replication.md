@@ -38,7 +38,16 @@ EntityUpdateMessage = RelativeId | u8 TypeAndFlags        (body at 0x4b9daa0)
 
 - `PayloadSize` is a `uint16_t` declared `0..65535`, so two bytes big endian
   (`0x4b9e904`).
-- `TypeAndFlags` is a `uint8_t` declared `0..255`, one byte (`0x4b9dbac`).
+- `TypeAndFlags` is a `uint8_t` declared `0..255`, one byte (`0x4b9dbac`),
+  stored at message offset `+0x40`. It packs a small update-type enum with
+  flags; the exact bit split is **not yet pinned down**. What is known:
+  `EntityReplicationManager` has three handlers —
+  `HandleEntityUpdateMessage`, `HandleEntityDeleteMessage` and
+  `HandlePropertyChangeMessage` — and `ValidateUpdate` (`0x4bb4f80`) compares
+  the decoded type against `3` and rejects with *"Unexpected update type
+  coming from peer server"*. So the type is a small integer in the low bits
+  with at least four values, and create / delete / property-change are three
+  of them. Decoding the split is the remaining blocker on the spawn message.
 - `RelativeId` is **not** a plain integer, and is now decoded: it is a
   **zigzag-encoded LEB128 varint**, i.e. protobuf's `sint32`. Its serialiser
   (`0x4a13ac0`) does `value = (raw >> 1) ^ -(raw & 1)`:
