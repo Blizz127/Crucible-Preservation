@@ -380,6 +380,60 @@ def build_shard(prefix, packet_type, local_seq, remote_seq, payload=b"",
     return prefix + region + crc.to_bytes(4, "big")
 
 
+# ---------------------------------------------------------------------------
+# The 51-channel checksum, solved 2026-09-17
+# ---------------------------------------------------------------------------
+# The trailer on that channel is a standard zlib CRC-32, but over MORE than the
+# datagram contains:
+#
+#     crc32( datagram[1:-4] + HIDDEN + b"\x00\x00\x00\x00" ) == trailer
+#
+# i.e. the region after the 1-byte prefix, then four bytes that are never
+# transmitted, then the zeroed Crc32 slot. Eight earlier theories missed it
+# because every one of them assumed the input was a contiguous slice OF the
+# datagram.
+#
+# How it was found: consecutive Connect datagrams differ in exactly one byte
+# (the LocalSequence low byte) plus the trailer, so the trailer's XOR delta
+# pins the distance from that byte to the END of the checksummed input. That
+# distance is 72 for every pair, which puts the end at datagram offset 77 -
+# four bytes past a 73-byte datagram. Solving for an 8-byte suffix then gives
+# a value that is constant across every packet and across two sessions, and
+# verifies by direct computation.
+#
+# The hidden four bytes depend on the input LENGTH (a 16-byte type-1 datagram
+# needs 5223f476 instead), which is the signature of a hidden value at the
+# START rather than the end - most likely a header the transport prepends
+# in its own buffer. Replies therefore keep the length of the datagram they
+# answer, so the known value applies.
+SHARD_HIDDEN = {
+    73: bytes.fromhex("792cce7f"),   # 73-byte datagrams (Connect)
+    16: bytes.fromhex("5223f476"),   # 16-byte datagrams (type 1)
+}
+
+
+def shard_trailer(datagram_len, region):
+    """The trailer the client will accept, or None for an unknown length."""
+    hidden = SHARD_HIDDEN.get(datagram_len)
+    if hidden is None:
+        return None
+    return (zlib.crc32(region + hidden + b"\x00" * 4) & 0xFFFFFFFF
+            ).to_bytes(4, "big")
+
+
+def build_shard_51(template, region):
+    """A 51-channel datagram with a correct trailer.
+
+    `region` must be the same length as the one in `template`, because the
+    hidden bytes are length-dependent and only two lengths are known.
+    """
+    prefix = template[:1]
+    tail = shard_trailer(len(template), region)
+    if tail is None:
+        raise ValueError("no hidden value known for length %d" % len(template))
+    return prefix + region + tail
+
+
 def _raw_crc0(data):
     """CRC-32 register with init 0 and no final xor."""
     return zlib.crc32(data, 0xFFFFFFFF) ^ 0xFFFFFFFF
@@ -481,18 +535,34 @@ def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
 
     forged_full = full_forge(our_seq, their_seq)
     forged_full_reliable = full_forge(our_seq, their_seq, reliable=1)
-    forged_full_theirseq = full_forge(their_seq, their_seq)
-    forged_type_only = forge_from(inbound, {plen + 1: 0x06})
+
+    # SOLVED trailer: build the Accept region and checksum it with the rule
+    # recovered from the client's own packets - crc32(region + hidden + 0000)
+    # - keeping the datagram length identical so the known hidden value
+    # applies. This is the first reply whose trailer is right rather than
+    # hoped for.
+    def solved(local, remote, reliable=0):
+        reg = bytearray(len(inbound) - len(prefix) - 4)
+        reg[0:2] = b"\x00\x06"                      # PacketType = Accept
+        reg[2:4] = local.to_bytes(2, "big")
+        reg[4:6] = remote.to_bytes(2, "big")
+        reg[10] = 1 if reliable else 0
+        reg[11] = shard_id & 0xFF                    # ServerShardId
+        return build_shard_51(inbound, bytes(reg))
+
+    solved_accept = solved(our_seq, their_seq)
+    solved_reliable = solved(our_seq, their_seq, reliable=1)
+    solved_remote1 = solved(our_seq, 1)
 
     return [
-        ("0 FULL FORGE: real Accept fields, Connect payload zeroed",
+        ("0 SOLVED trailer: Accept, crc32(region+hidden+0000)",
+         solved_accept),
+        ("1 SOLVED trailer, IsReliable set",
+         solved_reliable),
+        ("2 SOLVED trailer, RemoteSequence 1",
+         solved_remote1),
+        ("3b FULL FORGE (linearity, known 8 bytes short)",
          forged_full),
-        ("1 FULL FORGE with IsReliable set",
-         forged_full_reliable),
-        ("2 FULL FORGE using the client's own sequence",
-         forged_full_theirseq),
-        ("3b FORGED: type byte only (previous best, known rejected)",
-         forged_type_only),
         ("3 trailer copied verbatim from the client's packet",
          raw(prefix, base_region + their_trailer)),
         ("4 correct crc32(region), for comparison",
@@ -524,6 +594,41 @@ def shard_reply(data, state):
     their_seq = int.from_bytes(region[2:4], "big")
     state["seq"] = state.get("seq", 0) + 1
     if ptype == 2:
+        # The control channel is the only place our checksum is provably
+        # right (crc32(region), matching the client's own packets), so it is
+        # the only place a FIELD mistake can be isolated. The client's own
+        # type-2 RemoteSequence stays 0 for an entire session; we have been
+        # echoing theirs instead. Cycle the candidates and watch whether the
+        # client's RemoteSequence ever becomes non-zero - that is the one
+        # unambiguous signal that it accepted something from us.
+        if os.environ.get("CRUCIBLE_CTRL_PROBE") == "1":
+            n = state.get("ctrl", 0)
+            state["ctrl"] = n + 1
+            pay = region[11:12] or b"\x00"
+            variants = [
+                ("RemoteSeq 0, like the client sends",
+                 build_shard(prefix, 2, state["seq"], 0, pay)),
+                ("RemoteSeq = their LocalSeq (previous behaviour)",
+                 build_shard(prefix, 2, state["seq"], their_seq, pay)),
+                ("LocalSeq 0",
+                 build_shard(prefix, 2, 0, 0, pay)),
+                ("LocalSeq mirrors theirs, RemoteSeq 0",
+                 build_shard(prefix, 2, their_seq, 0, pay)),
+                ("payload byte 01",
+                 build_shard(prefix, 2, state["seq"], 0, b"\x01")),
+                ("IsReliable set",
+                 build_shard(prefix, 2, state["seq"], 0, pay, reliable=1)),
+                ("verbatim echo of their datagram",
+                 data),
+                ("forged: their datagram with RemoteSeq = their LocalSeq",
+                 forge_from(data, {len(prefix) + 4: (their_seq >> 8) & 0xFF,
+                                   len(prefix) + 5: their_seq & 0xFF})),
+            ]
+            name, out = variants[n % len(variants)]
+            if n % len(variants) == 0 or n < len(variants):
+                log("      CTRL PROBE variant %d: %s"
+                    % (n % len(variants), name))
+            return out
         return build_shard(prefix, 2, state["seq"], their_seq,
                            payload=region[11:12] or b"\x00")
     # Anything that is not the type-2 control packet or a Connect retry means
