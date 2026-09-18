@@ -194,6 +194,10 @@ def decode_entity_id(data, offset=0):
 #     and eax,0x0f         -> +0x00 (the update type, a dword)
 # so:
 ENTITY_TYPE_MASK = 0x0F     # low nibble: update type
+# The only two values ValidateUpdate (rva 0x4bb4f80) will accept, one per
+# connection role. See pack_type_and_flags.
+ENTITY_UPDATE_TYPE_3 = 3
+ENTITY_UPDATE_TYPE_4 = 4
 ENTITY_FLAG_BIT4 = 0x10     # -> +0x0f; gates the field at +0x10 (the slice ref)
 ENTITY_FLAG_BIT5 = 0x20     # -> +0x0e
 ENTITY_FLAG_BIT6 = 0x40     # -> +0x0d
@@ -205,12 +209,18 @@ def pack_type_and_flags(update_type, bit4=False, bit5=False, bit6=False,
                         bit7=False):
     """Build the TypeAndFlags byte.
 
-    `update_type` is the low nibble; EntityReplicationManager::ValidateUpdate
-    (rva 0x4bb4f80) compares it against 3 and rejects anything unexpected with
-    "Unexpected update type coming from peer server", and the manager exposes
-    HandleEntityUpdateMessage / HandleEntityDeleteMessage /
-    HandlePropertyChangeMessage - so at least four values exist. Which nibble
-    value selects which handler is still unverified.
+    `update_type` is the low nibble. EntityReplicationManager::ValidateUpdate
+    (rva 0x4bb4f80) branches on a role at [this+0x48] and accepts exactly two
+    values:
+
+        role 1: type must be 3, else "Unexpected update type coming from
+                peer server" (rva 0x4bb4fc8)
+        role 0: type must be 4                       (rva 0x4bb50a8)
+
+    so the candidates are ENTITY_UPDATE_TYPE_3 and _4 rather than any of the
+    sixteen the nibble allows. Which of the two a server->client spawn should
+    carry is the one thing left to settle, and it is a two-way choice the
+    client answers in a single run.
     """
     if not 0 <= update_type <= 0x0F:
         raise ValueError("update type must fit the low nibble")

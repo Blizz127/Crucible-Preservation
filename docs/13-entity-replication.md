@@ -89,12 +89,17 @@ RelativeId zigzag varint = 1
   The dispatch at `0x4bb5424` confirms the two that matter: bit 7 short-
   circuits to delete, and bit 4 is what makes the client read the slice
   reference at `+0x10` instead of treating the message as a plain property
-  update. `ValidateUpdate` (`0x4bb4f80`) compares the low nibble against `3`
-  and rejects with *"Unexpected update type coming from peer server"*;
-  `EntityReplicationManager` exposes `HandleEntityUpdateMessage`,
-  `HandleEntityDeleteMessage` and `HandlePropertyChangeMessage`. **Which
-  nibble value selects which handler is still unverified** — that is a
-  four-way guess the client can settle in one run.
+  update. `ValidateUpdate` (`0x4bb4f80`) branches on a connection role at
+  `[this+0x48]` and accepts exactly **two** nibble values:
+
+  | role | accepted type | site |
+  |---|---|---|
+  | 1 | `3`, else *"Unexpected update type coming from peer server"* | `0x4bb4fc8` |
+  | 0 | `4` | `0x4bb50a8` |
+
+  So the spawn type is `3` or `4`, not one of sixteen. Which one a
+  server→client spawn carries is **the single remaining unknown**, and it is
+  a two-way choice the client settles in one run.
 
   `pack_type_and_flags` / `unpack_type_and_flags` / `build_entity_message` in
   `server/shard_stub.py`.
