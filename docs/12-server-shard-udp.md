@@ -488,3 +488,41 @@ The productive next step is **not** another fitted formula. It is reading
 fixes the input exactly instead of inferring it from the sender's output. The
 sender-side derivation cannot distinguish parameterisations that coincide at
 68 bytes.
+
+
+## Why no wire-byte model can be right: the datagram is unwrapped first
+
+Reading the receiver instead of fitting formulas, as the previous section
+said to. `UdpBaseConnection::ProcessReceived` does not checksum the datagram.
+It checksums a **separate buffer**, produced by an unwrap step:
+
+```
+0x4f1eaba  lea  r9,  [rbp+0x70]        ; out buffer (4 KB on the stack)
+0x4f1ead4  mov  rdx, rdi               ; in  buffer (the received bytes)
+0x4f1eac9  mov  r8,  r11               ; in  length
+0x4f1ead7  mov  qword [rsp+0x20], 0x1000   ; out capacity
+0x4f1eae0  call qword [rax+0x30]       ; unwrap -> out length at [rbp-0x48]
+```
+
+then builds the serialiser over that buffer (`[this+0x18] = rbp+0x70`,
+`[this+0x14] = out length`) and CRCs `GetData()[0 : GetSize()-4]`, where
+`GetData()` is `[this+0x18]` (rva `0x533410`) and `GetSize()` is
+`[this+0x14]` (rva `0x7824b0`) — the buffer and its limit, **not** the
+datagram and its length.
+
+So the checksum input is the *unwrapped* form. Every model fitted to wire
+bytes — including the seed form that reproduces 87/87 — is a coincidental
+parameterisation of something that happens one layer down. That is why the
+fitted formulas reproduce the client's own packets perfectly and are still
+rejected when we send them: we are matching the output of a transform we do
+not apply.
+
+It also explains the two stubborn oddities at once: the four "hidden" bytes
+(the unwrap's output differs in length from its input) and the fact that the
+`f0 01` channel *does* match a plain `crc32(region)` (presumably its unwrap
+is a straight copy).
+
+**Next:** identify `[rax+0x30]` on the DTLS endpoint object — the unwrap
+itself. With `net_UdpUseEncryption 0` it is presumably a near-passthrough,
+and the difference between its input and output is the whole remaining
+mystery. Fitting more formulas to wire bytes cannot resolve it.
