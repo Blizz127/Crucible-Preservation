@@ -198,6 +198,10 @@ ENTITY_TYPE_MASK = 0x0F     # low nibble: update type
 # connection role. See pack_type_and_flags.
 ENTITY_UPDATE_TYPE_3 = 3
 ENTITY_UPDATE_TYPE_4 = 4
+# Order the spawn probe walks: the two ValidateUpdate calls out first, then
+# the rest of the plausible low nibble, so an early trial is likely to be the
+# right one but nothing is excluded.
+ENTITY_UPDATE_TYPE_SWEEP = (3, 4, 0, 1, 2, 5, 6, 7)
 ENTITY_FLAG_BIT4 = 0x10     # -> +0x0f; gates the field at +0x10 (the slice ref)
 ENTITY_FLAG_BIT5 = 0x20     # -> +0x0e
 ENTITY_FLAG_BIT6 = 0x40     # -> +0x0d
@@ -445,7 +449,12 @@ def shard_reply(data, state):
     if ptype not in (2, 5) and os.environ.get("CRUCIBLE_SHARD_SPAWN", "1") == "1":
         n = state.get("spawn", 0)
         state["spawn"] = n + 1
-        update_type = (ENTITY_UPDATE_TYPE_3, ENTITY_UPDATE_TYPE_4)[n % 2]
+        # ValidateUpdate only constrains the nibble to 3 or 4 for roles 0
+        # and 1, and the replicator constructor (0x4bb1500) sets the role to
+        # 2, which takes neither branch - so the narrowing is not safe. The
+        # nibble IS read downstream (mov edi,[msg] at 0x4bb5538), so sweep the
+        # low values, leading with the two ValidateUpdate names.
+        update_type = ENTITY_UPDATE_TYPE_SWEEP[n % len(ENTITY_UPDATE_TYPE_SWEEP)]
         slice_hash = int(os.environ.get("CRUCIBLE_SPAWN_SLICE", "501823405"))
         msg = build_entity_message(
             state.get("next_entity", 1),
