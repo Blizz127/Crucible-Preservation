@@ -38,16 +38,40 @@ EntityUpdateMessage = RelativeId | u8 TypeAndFlags        (body at 0x4b9daa0)
 
 - `PayloadSize` is a `uint16_t` declared `0..65535`, so two bytes big endian
   (`0x4b9e904`).
-- `TypeAndFlags` is a `uint8_t` declared `0..255`, one byte (`0x4b9dbac`),
-  stored at message offset `+0x40`. It packs a small update-type enum with
-  flags; the exact bit split is **not yet pinned down**. What is known:
-  `EntityReplicationManager` has three handlers —
-  `HandleEntityUpdateMessage`, `HandleEntityDeleteMessage` and
-  `HandlePropertyChangeMessage` — and `ValidateUpdate` (`0x4bb4f80`) compares
-  the decoded type against `3` and rejects with *"Unexpected update type
-  coming from peer server"*. So the type is a small integer in the low bits
-  with at least four values, and create / delete / property-change are three
-  of them. Decoding the split is the remaining blocker on the spawn message.
+- `TypeAndFlags` is a `uint8_t` (`0x4b9dbac`) stored at `+0x40`, and the
+  client unpacks it **in the clear** at `0x4b9dc20`:
+
+  ```
+  movzx ecx, byte [msg+0x40]
+  shr al,6 ; and al,1   -> +0x0d
+  shr dl,7              -> +0x0c
+  shr al,5 ; and al,1   -> +0x0e
+  shr al,4 ; and al,1   -> +0x0f
+  and eax, 0x0f         -> +0x00   (the update type, as a dword)
+  ```
+
+  so the layout is:
+
+  | bits | meaning |
+  |---|---|
+  | 0-3 | update type (dword at `+0x00`) |
+  | 4 | flag at `+0x0f` — gates the field at `+0x10`, which is the slice reference |
+  | 5 | flag at `+0x0e` |
+  | 6 | flag at `+0x0d` |
+  | 7 | flag at `+0x0c` — checked **first** and routed to `0x4bb41f0`, the delete path, before the update path runs |
+
+  The dispatch at `0x4bb5424` confirms the two that matter: bit 7 short-
+  circuits to delete, and bit 4 is what makes the client read the slice
+  reference at `+0x10` instead of treating the message as a plain property
+  update. `ValidateUpdate` (`0x4bb4f80`) compares the low nibble against `3`
+  and rejects with *"Unexpected update type coming from peer server"*;
+  `EntityReplicationManager` exposes `HandleEntityUpdateMessage`,
+  `HandleEntityDeleteMessage` and `HandlePropertyChangeMessage`. **Which
+  nibble value selects which handler is still unverified** — that is a
+  four-way guess the client can settle in one run.
+
+  `pack_type_and_flags` / `unpack_type_and_flags` / `build_entity_message` in
+  `server/shard_stub.py`.
 - `RelativeId` is **not** a plain integer, and is now decoded: it is a
   **zigzag-encoded LEB128 varint**, i.e. protobuf's `sint32`. Its serialiser
   (`0x4a13ac0`) does `value = (raw >> 1) ^ -(raw & 1)`:
@@ -110,9 +134,9 @@ replication bitset — they are not required to bring an entity into existence.
 
 That reorders the work substantially. Spawning one entity needs:
 the `EntityUpdates` envelope (mapped above), `RelativeId` (done),
-the `TypeAndFlags` byte, a `SliceEntryId` varint, and whatever minimal
-property set the client insists on — not a reimplementation of the component
-serialisers.
+the `TypeAndFlags` byte (done), a `SliceEntryId` varint (format known, and the
+level ships the hashes), and whatever minimal property set the client insists
+on — not a reimplementation of the component serialisers.
 
 ## Why the payload is still the long pole for *gameplay*
 

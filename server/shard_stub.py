@@ -185,6 +185,66 @@ def decode_entity_id(data, offset=0):
     return (raw >> 1) ^ -(raw & 1), offset
 
 
+# TypeAndFlags is one byte, unpacked by the client at rva 0x4b9dc20:
+#     movzx ecx,[msg+0x40]
+#     shr al,6  ; and al,1 -> +0x0d
+#     shr dl,7           -> +0x0c
+#     shr al,5  ; and al,1 -> +0x0e
+#     shr al,4  ; and al,1 -> +0x0f
+#     and eax,0x0f         -> +0x00 (the update type, a dword)
+# so:
+ENTITY_TYPE_MASK = 0x0F     # low nibble: update type
+ENTITY_FLAG_BIT4 = 0x10     # -> +0x0f; gates the field at +0x10 (the slice ref)
+ENTITY_FLAG_BIT5 = 0x20     # -> +0x0e
+ENTITY_FLAG_BIT6 = 0x40     # -> +0x0d
+ENTITY_FLAG_BIT7 = 0x80     # -> +0x0c; checked FIRST and routed to 0x4bb41f0
+                            #    (the delete path) before the update path runs
+
+
+def pack_type_and_flags(update_type, bit4=False, bit5=False, bit6=False,
+                        bit7=False):
+    """Build the TypeAndFlags byte.
+
+    `update_type` is the low nibble; EntityReplicationManager::ValidateUpdate
+    (rva 0x4bb4f80) compares it against 3 and rejects anything unexpected with
+    "Unexpected update type coming from peer server", and the manager exposes
+    HandleEntityUpdateMessage / HandleEntityDeleteMessage /
+    HandlePropertyChangeMessage - so at least four values exist. Which nibble
+    value selects which handler is still unverified.
+    """
+    if not 0 <= update_type <= 0x0F:
+        raise ValueError("update type must fit the low nibble")
+    v = update_type
+    for on, bit in ((bit4, ENTITY_FLAG_BIT4), (bit5, ENTITY_FLAG_BIT5),
+                    (bit6, ENTITY_FLAG_BIT6), (bit7, ENTITY_FLAG_BIT7)):
+        if on:
+            v |= bit
+    return bytes([v])
+
+
+def unpack_type_and_flags(byte):
+    """Inverse of pack_type_and_flags; mirrors the client's own unpack."""
+    return {
+        "type": byte & ENTITY_TYPE_MASK,
+        "bit4": bool(byte & ENTITY_FLAG_BIT4),
+        "bit5": bool(byte & ENTITY_FLAG_BIT5),
+        "bit6": bool(byte & ENTITY_FLAG_BIT6),
+        "bit7": bool(byte & ENTITY_FLAG_BIT7),
+    }
+
+
+def build_entity_message(entity_id, type_and_flags, payload=b""):
+    """One element of the EntityMessages vector (docs/13).
+
+        EntityUpdateMessage | u16 PayloadSize | <payload>
+        EntityUpdateMessage = RelativeId (zigzag varint) | u8 TypeAndFlags
+    """
+    if len(payload) > 0xFFFF:
+        raise ValueError("payload exceeds the u16 PayloadSize field")
+    return (encode_entity_id(entity_id) + type_and_flags
+            + len(payload).to_bytes(2, "big") + payload)
+
+
 def parse_shard(data):
     """Split a datagram into (prefix, region, crc) or None.
 
