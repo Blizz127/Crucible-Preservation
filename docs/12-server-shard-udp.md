@@ -432,3 +432,35 @@ on the wire.
 If so, the remaining unknown is small and specific — what four bytes the
 client's receive buffer holds ahead of the datagram — and it is the last
 thing between here and a shard handshake.
+
+
+## Exact-size Accept with the solved checksum: also rejected
+
+The seed formulation makes the rule length-independent, so the Accept can be
+sent at its natural 17 bytes (1 prefix + 12 region + 4 trailer) instead of
+padded to 73 — removing the risk that 56 unconsumed bytes were the problem.
+
+That was tried, along with `IsReliable` and `RemoteSequence 1` variants.
+
+One run showed only **5** `Connect` packets instead of the usual 40, which
+would have been exactly the signature of the Connect finally being
+acknowledged and retransmission stopping. **It did not reproduce**: the next
+run under identical conditions gave 39. The short run was an aborted session,
+not an effect. Recorded because it is the kind of result that is very easy to
+publish by accident.
+
+So the position after solving the checksum is:
+
+- the `51` channel trailer is understood and reproducible (87/87);
+- the Accept can be sent at the correct length with a correct trailer;
+- the client still re-sends `Connect` ~40 times and disconnects.
+
+Remaining candidates, none yet tested:
+
+1. The four hidden bytes are **sender-side** buffer state, so a receiver
+   expects a different value than the sender emits. The seed
+   `0x8a31dc2a` was derived from packets the client SENT.
+2. The `51` prefix (`0x51`) is a token the server is meant to choose rather
+   than echo.
+3. The client requires something on the `f0 01` control channel to complete
+   before it will look at `51` at all.

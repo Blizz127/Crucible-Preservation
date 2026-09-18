@@ -406,19 +406,37 @@ def build_shard(prefix, packet_type, local_seq, remote_seq, payload=b"",
 # START rather than the end - most likely a header the transport prepends
 # in its own buffer. Replies therefore keep the length of the datagram they
 # answer, so the known value applies.
+# Better formulation, and the one to use: the same rule expressed as a
+# constant SEED rather than a length-dependent suffix.
+#
+#     crc32( region + 8 zero bytes , init = SHARD_CRC_SEED ) == trailer
+#
+# A seed is what a hidden PREFIX looks like algebraically, and unlike the
+# suffix form it does not depend on the packet length - so it lets us build
+# a correctly sized Accept instead of padding to 73 bytes and risking a
+# "data not fully consumed" rejection. Verified on 87/87 of the 73-byte
+# datagrams across two sessions.
+#
+# It does NOT hold for the 16-byte type-1 datagrams (4 samples, 4 different
+# seeds), so those have some other structure; noted, not needed yet.
+SHARD_CRC_SEED = 0x8A31DC2A
+SHARD_CRC_TAIL_ZEROS = 8
+
 SHARD_HIDDEN = {
-    73: bytes.fromhex("792cce7f"),   # 73-byte datagrams (Connect)
-    16: bytes.fromhex("5223f476"),   # 16-byte datagrams (type 1)
+    73: bytes.fromhex("792cce7f"),   # suffix form, 73-byte datagrams
+    16: bytes.fromhex("5223f476"),   # 16-byte, does not generalise
 }
 
 
 def shard_trailer(datagram_len, region):
-    """The trailer the client will accept, or None for an unknown length."""
-    hidden = SHARD_HIDDEN.get(datagram_len)
-    if hidden is None:
-        return None
-    return (zlib.crc32(region + hidden + b"\x00" * 4) & 0xFFFFFFFF
-            ).to_bytes(4, "big")
+    """The trailer for a 51-channel datagram, via the constant-seed rule.
+
+    `datagram_len` is accepted for symmetry with the older suffix form but is
+    no longer used: the seed formulation is length-independent.
+    """
+    crc = zlib.crc32(region + b"\x00" * SHARD_CRC_TAIL_ZEROS,
+                     SHARD_CRC_SEED) & 0xFFFFFFFF
+    return crc.to_bytes(4, "big")
 
 
 def build_shard_51(template, region):
@@ -541,6 +559,22 @@ def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
     # - keeping the datagram length identical so the known hidden value
     # applies. This is the first reply whose trailer is right rather than
     # hoped for.
+    def solved_exact(local, remote, reliable=0):
+        """A correctly SIZED Accept: 12-byte region, no padding.
+
+        Possible now that the checksum is expressed as a constant seed rather
+        than a length-dependent suffix. Padding to 73 bytes leaves 56 bytes
+        the Accept deserialiser will not consume, and this engine does assert
+        on unconsumed data elsewhere, so the short form is the better bet.
+        """
+        reg = bytearray(12)
+        reg[0:2] = b"\x00\x06"
+        reg[2:4] = local.to_bytes(2, "big")
+        reg[4:6] = remote.to_bytes(2, "big")
+        reg[10] = 1 if reliable else 0
+        reg[11] = shard_id & 0xFF
+        return prefix + bytes(reg) + shard_trailer(0, bytes(reg))
+
     def solved(local, remote, reliable=0):
         reg = bytearray(len(inbound) - len(prefix) - 4)
         reg[0:2] = b"\x00\x06"                      # PacketType = Accept
@@ -550,9 +584,10 @@ def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
         reg[11] = shard_id & 0xFF                    # ServerShardId
         return build_shard_51(inbound, bytes(reg))
 
-    solved_accept = solved(our_seq, their_seq)
-    solved_reliable = solved(our_seq, their_seq, reliable=1)
-    solved_remote1 = solved(our_seq, 1)
+    solved_accept = solved_exact(our_seq, their_seq)
+    solved_reliable = solved_exact(our_seq, their_seq, reliable=1)
+    solved_remote1 = solved_exact(our_seq, 1)
+    solved_padded = solved(our_seq, their_seq)
 
     return [
         ("0 SOLVED trailer: Accept, crc32(region+hidden+0000)",
@@ -561,8 +596,8 @@ def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
          solved_reliable),
         ("2 SOLVED trailer, RemoteSequence 1",
          solved_remote1),
-        ("3b FULL FORGE (linearity, known 8 bytes short)",
-         forged_full),
+        ("3b SOLVED trailer, padded to 73 bytes",
+         solved_padded),
         ("3 trailer copied verbatim from the client's packet",
          raw(prefix, base_region + their_trailer)),
         ("4 correct crc32(region), for comparison",

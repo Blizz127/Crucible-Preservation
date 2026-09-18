@@ -1,0 +1,735 @@
+[2026-09-17T21:09:55.717] listening on 127.0.0.1:18878 (UDP, log: /var/home/blizz/Projects/Crucible Revival/server/shard_udp.log)
+[2026-09-17T21:09:55.717] expect: NovaGameClientPackets after the hub hands out this address
+[2026-09-17T21:09:55.717] reply mode: accept
+[2026-09-17T21:09:57.397] --- first datagram from ('127.0.0.1', 47203) ---
+[2026-09-17T21:09:57.397]   <- 73 bytes from ('127.0.0.1', 47203) (total 73)
+[2026-09-17T21:09:57.397]       BasePacket::unknown(0x51), encrypted or handshake - not decodable here
+[2026-09-17T21:09:57.397]       hex: 5100050001000100f11a0300006435f1dbf15d1a6bfdbce12c7b73bbe5bb64b0273bc197a600010080000200000800002008022e000231000002002005eb060080001145f1816ae89b
+[2026-09-17T21:09:57.397]       asc: b"Q\x00\x05\x00\x01\x00\x01\x00\xf1\x1a\x03\x00\x00d5\xf1\xdb\xf1]\x1ak\xfd\xbc\xe1,{s\xbb\xe5\xbbd\xb0';\xc1\x97\xa6\x00\x01\x00\x80\x00\x02\x00\x00\x08\x00\x00 \x08\x02.\x00\x021\x00\x00\x02\x00 \x05\xeb\x06\x00\x80\x00\x11E\xf1\x81j\xe8\x9b"
+[2026-09-17T21:09:57.397]       ACCEPT PROBE variant 0 SOLVED trailer: Accept, crc32(region+hidden+0000) (17 bytes)
+[2026-09-17T21:09:57.397]       reply(accept) -> 51000600010001000000000000d138296d
+[2026-09-17T21:09:57.682]   <- 18 bytes from ('127.0.0.1', 47203) (total 91)
+[2026-09-17T21:09:57.682]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:09:57.682]       hex: f0010002000200000000000000000d4f5728
+[2026-09-17T21:09:57.682]       asc: b'\xf0\x01\x00\x02\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\rOW('
+[2026-09-17T21:09:57.682]       reply(accept) -> f0010002000200020000000000009ad04601
+[2026-09-17T21:09:58.202]   <- 18 bytes from ('127.0.0.1', 47203) (total 109)
+[2026-09-17T21:09:58.202]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:09:58.202]       hex: f0010002000300000000000000001a34436b
+[2026-09-17T21:09:58.202]       asc: b'\xf0\x01\x00\x02\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x1a4Ck'
+[2026-09-17T21:09:58.203]       reply(accept) -> f0010002000300030000000000002bdc59f6
+[2026-09-17T21:09:58.410]   <- 18 bytes from ('127.0.0.1', 47203) (total 127)
+[2026-09-17T21:09:58.411]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:09:58.411]       hex: f0010002000400000000000000007e552ea2
+[2026-09-17T21:09:58.411]       asc: b'\xf0\x01\x00\x02\x00\x04\x00\x00\x00\x00\x00\x00\x00\x00~U.\xa2'
+[2026-09-17T21:09:58.411]       reply(accept) -> f0010002000400040000000000008a1a0ab1
+[2026-09-17T21:09:58.617]   <- 18 bytes from ('127.0.0.1', 47203) (total 145)
+[2026-09-17T21:09:58.617]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:09:58.617]       hex: f001000200050000000000000000692e3ae1
+[2026-09-17T21:09:58.617]       asc: b'\xf0\x01\x00\x02\x00\x05\x00\x00\x00\x00\x00\x00\x00\x00i.:\xe1'
+[2026-09-17T21:09:58.618]       reply(accept) -> f0010002000500050000000000003b161546
+[2026-09-17T21:09:58.823]   <- 18 bytes from ('127.0.0.1', 47203) (total 163)
+[2026-09-17T21:09:58.824]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:09:58.824]       hex: f00100020006000000000000000050a30624
+[2026-09-17T21:09:58.824]       asc: b'\xf0\x01\x00\x02\x00\x06\x00\x00\x00\x00\x00\x00\x00\x00P\xa3\x06$'
+[2026-09-17T21:09:58.824]       reply(accept) -> f0010002000600060000000000003373331e
+[2026-09-17T21:09:59.030]   <- 18 bytes from ('127.0.0.1', 47203) (total 181)
+[2026-09-17T21:09:59.030]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:09:59.030]       hex: f00100020007000000000000000047d81267
+[2026-09-17T21:09:59.030]       asc: b'\xf0\x01\x00\x02\x00\x07\x00\x00\x00\x00\x00\x00\x00\x00G\xd8\x12g'
+[2026-09-17T21:09:59.030]       reply(accept) -> f001000200070007000000000000827f2ce9
+[2026-09-17T21:09:59.236]   <- 18 bytes from ('127.0.0.1', 47203) (total 199)
+[2026-09-17T21:09:59.236]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:09:59.236]       hex: f0010002000800000000000000009861ddb6
+[2026-09-17T21:09:59.236]       asc: b'\xf0\x01\x00\x02\x00\x08\x00\x00\x00\x00\x00\x00\x00\x00\x98a\xdd\xb6'
+[2026-09-17T21:09:59.236]       reply(accept) -> f001000200080008000000000000ab8e93d1
+[2026-09-17T21:09:59.443]   <- 18 bytes from ('127.0.0.1', 47203) (total 217)
+[2026-09-17T21:09:59.444]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:09:59.444]       hex: f0010002000900000000000000008f1ac9f5
+[2026-09-17T21:09:59.444]       asc: b'\xf0\x01\x00\x02\x00\t\x00\x00\x00\x00\x00\x00\x00\x00\x8f\x1a\xc9\xf5'
+[2026-09-17T21:09:59.444]       reply(accept) -> f0010002000900090000000000001a828c26
+[2026-09-17T21:09:59.651]   <- 18 bytes from ('127.0.0.1', 47203) (total 235)
+[2026-09-17T21:09:59.651]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:09:59.651]       hex: f0010002000a0000000000000000b697f530
+[2026-09-17T21:09:59.651]       asc: b'\xf0\x01\x00\x02\x00\n\x00\x00\x00\x00\x00\x00\x00\x00\xb6\x97\xf50'
+[2026-09-17T21:09:59.651]       reply(accept) -> f0010002000a000a00000000000012e7aa7e
+[2026-09-17T21:09:59.861]   <- 18 bytes from ('127.0.0.1', 47203) (total 253)
+[2026-09-17T21:09:59.861]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:09:59.861]       hex: f0010002000b0000000000000000a1ece173
+[2026-09-17T21:09:59.861]       asc: b'\xf0\x01\x00\x02\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\xa1\xec\xe1s'
+[2026-09-17T21:09:59.861]       reply(accept) -> f0010002000b000b000000000000a3ebb589
+[2026-09-17T21:10:00.068]   <- 18 bytes from ('127.0.0.1', 47203) (total 271)
+[2026-09-17T21:10:00.068]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:00.068]       hex: f0010002000c0000000000000000c58d8cba
+[2026-09-17T21:10:00.068]       asc: b'\xf0\x01\x00\x02\x00\x0c\x00\x00\x00\x00\x00\x00\x00\x00\xc5\x8d\x8c\xba'
+[2026-09-17T21:10:00.068]       reply(accept) -> f0010002000c000c000000000000022de6ce
+[2026-09-17T21:10:00.277]   <- 18 bytes from ('127.0.0.1', 47203) (total 289)
+[2026-09-17T21:10:00.277]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:00.277]       hex: f0010002000d0000000000000000d2f698f9
+[2026-09-17T21:10:00.277]       asc: b'\xf0\x01\x00\x02\x00\r\x00\x00\x00\x00\x00\x00\x00\x00\xd2\xf6\x98\xf9'
+[2026-09-17T21:10:00.277]       reply(accept) -> f0010002000d000d000000000000b321f939
+[2026-09-17T21:10:00.486]   <- 18 bytes from ('127.0.0.1', 47203) (total 307)
+[2026-09-17T21:10:00.486]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:00.486]       hex: f0010002000e0000000000000000eb7ba43c
+[2026-09-17T21:10:00.486]       asc: b'\xf0\x01\x00\x02\x00\x0e\x00\x00\x00\x00\x00\x00\x00\x00\xeb{\xa4<'
+[2026-09-17T21:10:00.486]       reply(accept) -> f0010002000e000e000000000000bb44df61
+[2026-09-17T21:10:00.694]   <- 18 bytes from ('127.0.0.1', 47203) (total 325)
+[2026-09-17T21:10:00.694]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:00.695]       hex: f0010002000f0000000000000000fc00b07f
+[2026-09-17T21:10:00.695]       asc: b'\xf0\x01\x00\x02\x00\x0f\x00\x00\x00\x00\x00\x00\x00\x00\xfc\x00\xb0\x7f'
+[2026-09-17T21:10:00.695]       reply(accept) -> f0010002000f000f0000000000000a48c096
+[2026-09-17T21:10:00.906]   <- 18 bytes from ('127.0.0.1', 47203) (total 343)
+[2026-09-17T21:10:00.906]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:00.906]       hex: f0010002001000000000000000008f793ddf
+[2026-09-17T21:10:00.906]       asc: b'\xf0\x01\x00\x02\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x8fy=\xdf'
+[2026-09-17T21:10:00.906]       reply(accept) -> f001000200100010000000000000e8a7a111
+[2026-09-17T21:10:01.114]   <- 18 bytes from ('127.0.0.1', 47203) (total 361)
+[2026-09-17T21:10:01.114]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:01.114]       hex: f0010002001100000000000000009802299c
+[2026-09-17T21:10:01.114]       asc: b'\xf0\x01\x00\x02\x00\x11\x00\x00\x00\x00\x00\x00\x00\x00\x98\x02)\x9c'
+[2026-09-17T21:10:01.114]       reply(accept) -> f00100020011001100000000000059abbee6
+[2026-09-17T21:10:01.322]   <- 18 bytes from ('127.0.0.1', 47203) (total 379)
+[2026-09-17T21:10:01.322]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:01.322]       hex: f001000200120000000000000000a18f1559
+[2026-09-17T21:10:01.322]       asc: b'\xf0\x01\x00\x02\x00\x12\x00\x00\x00\x00\x00\x00\x00\x00\xa1\x8f\x15Y'
+[2026-09-17T21:10:01.323]       reply(accept) -> f00100020012001200000000000051ce98be
+[2026-09-17T21:10:01.531]   <- 18 bytes from ('127.0.0.1', 47203) (total 397)
+[2026-09-17T21:10:01.531]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:01.531]       hex: f001000200130000000000000000b6f4011a
+[2026-09-17T21:10:01.531]       asc: b'\xf0\x01\x00\x02\x00\x13\x00\x00\x00\x00\x00\x00\x00\x00\xb6\xf4\x01\x1a'
+[2026-09-17T21:10:01.531]       reply(accept) -> f001000200130013000000000000e0c28749
+[2026-09-17T21:10:01.741]   <- 18 bytes from ('127.0.0.1', 47203) (total 415)
+[2026-09-17T21:10:01.741]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:01.741]       hex: f001000200140000000000000000d2956cd3
+[2026-09-17T21:10:01.741]       asc: b'\xf0\x01\x00\x02\x00\x14\x00\x00\x00\x00\x00\x00\x00\x00\xd2\x95l\xd3'
+[2026-09-17T21:10:01.741]       reply(accept) -> f0010002001400140000000000004104d40e
+[2026-09-17T21:10:01.948]   <- 18 bytes from ('127.0.0.1', 47203) (total 433)
+[2026-09-17T21:10:01.948]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:01.948]       hex: f001000200150000000000000000c5ee7890
+[2026-09-17T21:10:01.948]       asc: b'\xf0\x01\x00\x02\x00\x15\x00\x00\x00\x00\x00\x00\x00\x00\xc5\xeex\x90'
+[2026-09-17T21:10:01.949]       reply(accept) -> f001000200150015000000000000f008cbf9
+[2026-09-17T21:10:02.155]   <- 18 bytes from ('127.0.0.1', 47203) (total 451)
+[2026-09-17T21:10:02.155]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:02.155]       hex: f001000200160000000000000000fc634455
+[2026-09-17T21:10:02.155]       asc: b'\xf0\x01\x00\x02\x00\x16\x00\x00\x00\x00\x00\x00\x00\x00\xfccDU'
+[2026-09-17T21:10:02.155]       reply(accept) -> f001000200160016000000000000f86deda1
+[2026-09-17T21:10:02.362]   <- 18 bytes from ('127.0.0.1', 47203) (total 469)
+[2026-09-17T21:10:02.363]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:02.363]       hex: f001000200170000000000000000eb185016
+[2026-09-17T21:10:02.363]       asc: b'\xf0\x01\x00\x02\x00\x17\x00\x00\x00\x00\x00\x00\x00\x00\xeb\x18P\x16'
+[2026-09-17T21:10:02.363]       reply(accept) -> f0010002001700170000000000004961f256
+[2026-09-17T21:10:02.569]   <- 18 bytes from ('127.0.0.1', 47203) (total 487)
+[2026-09-17T21:10:02.569]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:02.569]       hex: f00100020018000000000000000034a19fc7
+[2026-09-17T21:10:02.569]       asc: b'\xf0\x01\x00\x02\x00\x18\x00\x00\x00\x00\x00\x00\x00\x004\xa1\x9f\xc7'
+[2026-09-17T21:10:02.569]       reply(accept) -> f00100020018001800000000000060904d6e
+[2026-09-17T21:10:02.727]   <- 73 bytes from ('127.0.0.1', 47203) (total 560)
+[2026-09-17T21:10:02.727]       BasePacket::unknown(0x51), encrypted or handshake - not decodable here
+[2026-09-17T21:10:02.727]       hex: 5100050019000100f11a0300006435f1dbf15d1a6bfdbce12c7b73bbe5bb64b0273bc197a600010080000200000800002008022e000231000002002005eb060080001145f12ef0e546
+[2026-09-17T21:10:02.727]       asc: b"Q\x00\x05\x00\x19\x00\x01\x00\xf1\x1a\x03\x00\x00d5\xf1\xdb\xf1]\x1ak\xfd\xbc\xe1,{s\xbb\xe5\xbbd\xb0';\xc1\x97\xa6\x00\x01\x00\x80\x00\x02\x00\x00\x08\x00\x00 \x08\x02.\x00\x021\x00\x00\x02\x00 \x05\xeb\x06\x00\x80\x00\x11E\xf1.\xf0\xe5F"
+[2026-09-17T21:10:02.727]       ACCEPT PROBE variant 1 SOLVED trailer, IsReliable set (17 bytes)
+[2026-09-17T21:10:02.727]       reply(accept) -> 510006001900190000000001004450c778
+[2026-09-17T21:10:02.933]   <- 18 bytes from ('127.0.0.1', 47203) (total 578)
+[2026-09-17T21:10:02.933]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:02.933]       hex: f0010002001a00000000000000001a57b741
+[2026-09-17T21:10:02.933]       asc: b'\xf0\x01\x00\x02\x00\x1a\x00\x00\x00\x00\x00\x00\x00\x00\x1aW\xb7A'
+[2026-09-17T21:10:02.933]       reply(accept) -> f0010002001a001a000000000000d9f974c1
+[2026-09-17T21:10:03.139]   <- 18 bytes from ('127.0.0.1', 47203) (total 596)
+[2026-09-17T21:10:03.139]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:03.139]       hex: f0010002001b00000000000000000d2ca302
+[2026-09-17T21:10:03.139]       asc: b'\xf0\x01\x00\x02\x00\x1b\x00\x00\x00\x00\x00\x00\x00\x00\r,\xa3\x02'
+[2026-09-17T21:10:03.140]       reply(accept) -> f0010002001b001b00000000000068f56b36
+[2026-09-17T21:10:03.347]   <- 18 bytes from ('127.0.0.1', 47203) (total 614)
+[2026-09-17T21:10:03.347]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:03.347]       hex: f0010002001c0000000000000000694dcecb
+[2026-09-17T21:10:03.347]       asc: b'\xf0\x01\x00\x02\x00\x1c\x00\x00\x00\x00\x00\x00\x00\x00iM\xce\xcb'
+[2026-09-17T21:10:03.347]       reply(accept) -> f0010002001c001c000000000000c9333871
+[2026-09-17T21:10:03.553]   <- 18 bytes from ('127.0.0.1', 47203) (total 632)
+[2026-09-17T21:10:03.553]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:03.553]       hex: f0010002001d00000000000000007e36da88
+[2026-09-17T21:10:03.553]       asc: b'\xf0\x01\x00\x02\x00\x1d\x00\x00\x00\x00\x00\x00\x00\x00~6\xda\x88'
+[2026-09-17T21:10:03.553]       reply(accept) -> f0010002001d001d000000000000783f2786
+[2026-09-17T21:10:03.760]   <- 18 bytes from ('127.0.0.1', 47203) (total 650)
+[2026-09-17T21:10:03.760]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:03.760]       hex: f0010002001e000000000000000047bbe64d
+[2026-09-17T21:10:03.760]       asc: b'\xf0\x01\x00\x02\x00\x1e\x00\x00\x00\x00\x00\x00\x00\x00G\xbb\xe6M'
+[2026-09-17T21:10:03.760]       reply(accept) -> f0010002001e001e000000000000705a01de
+[2026-09-17T21:10:03.961]   <- 18 bytes from ('127.0.0.1', 47203) (total 668)
+[2026-09-17T21:10:03.961]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:03.961]       hex: f0010002001f000000000000000050c0f20e
+[2026-09-17T21:10:03.961]       asc: b'\xf0\x01\x00\x02\x00\x1f\x00\x00\x00\x00\x00\x00\x00\x00P\xc0\xf2\x0e'
+[2026-09-17T21:10:03.961]       reply(accept) -> f0010002001f001f000000000000c1561e29
+[2026-09-17T21:10:04.169]   <- 18 bytes from ('127.0.0.1', 47203) (total 686)
+[2026-09-17T21:10:04.169]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:04.169]       hex: f001000200200000000000000000a148fd0d
+[2026-09-17T21:10:04.169]       asc: b'\xf0\x01\x00\x02\x00 \x00\x00\x00\x00\x00\x00\x00\x00\xa1H\xfd\r'
+[2026-09-17T21:10:04.169]       reply(accept) -> f0010002002000200000000000006ef5c491
+[2026-09-17T21:10:04.378]   <- 18 bytes from ('127.0.0.1', 47203) (total 704)
+[2026-09-17T21:10:04.379]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:04.379]       hex: f001000200210000000000000000b633e94e
+[2026-09-17T21:10:04.379]       asc: b'\xf0\x01\x00\x02\x00!\x00\x00\x00\x00\x00\x00\x00\x00\xb63\xe9N'
+[2026-09-17T21:10:04.379]       reply(accept) -> f001000200210021000000000000dff9db66
+[2026-09-17T21:10:04.587]   <- 18 bytes from ('127.0.0.1', 47203) (total 722)
+[2026-09-17T21:10:04.587]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:04.587]       hex: f0010002002200000000000000008fbed58b
+[2026-09-17T21:10:04.587]       asc: b'\xf0\x01\x00\x02\x00"\x00\x00\x00\x00\x00\x00\x00\x00\x8f\xbe\xd5\x8b'
+[2026-09-17T21:10:04.587]       reply(accept) -> f001000200220022000000000000d79cfd3e
+[2026-09-17T21:10:04.795]   <- 18 bytes from ('127.0.0.1', 47203) (total 740)
+[2026-09-17T21:10:04.795]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:04.795]       hex: f00100020023000000000000000098c5c1c8
+[2026-09-17T21:10:04.795]       asc: b'\xf0\x01\x00\x02\x00#\x00\x00\x00\x00\x00\x00\x00\x00\x98\xc5\xc1\xc8'
+[2026-09-17T21:10:04.795]       reply(accept) -> f0010002002300230000000000006690e2c9
+[2026-09-17T21:10:05.003]   <- 18 bytes from ('127.0.0.1', 47203) (total 758)
+[2026-09-17T21:10:05.003]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:05.003]       hex: f001000200240000000000000000fca4ac01
+[2026-09-17T21:10:05.003]       asc: b'\xf0\x01\x00\x02\x00$\x00\x00\x00\x00\x00\x00\x00\x00\xfc\xa4\xac\x01'
+[2026-09-17T21:10:05.003]       reply(accept) -> f001000200240024000000000000c756b18e
+[2026-09-17T21:10:05.211]   <- 18 bytes from ('127.0.0.1', 47203) (total 776)
+[2026-09-17T21:10:05.211]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:05.211]       hex: f001000200250000000000000000ebdfb842
+[2026-09-17T21:10:05.211]       asc: b'\xf0\x01\x00\x02\x00%\x00\x00\x00\x00\x00\x00\x00\x00\xeb\xdf\xb8B'
+[2026-09-17T21:10:05.211]       reply(accept) -> f001000200250025000000000000765aae79
+[2026-09-17T21:10:05.414]   <- 18 bytes from ('127.0.0.1', 47203) (total 794)
+[2026-09-17T21:10:05.414]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:05.414]       hex: f001000200260000000000000000d2528487
+[2026-09-17T21:10:05.414]       asc: b'\xf0\x01\x00\x02\x00&\x00\x00\x00\x00\x00\x00\x00\x00\xd2R\x84\x87'
+[2026-09-17T21:10:05.415]       reply(accept) -> f0010002002600260000000000007e3f8821
+[2026-09-17T21:10:05.619]   <- 18 bytes from ('127.0.0.1', 47203) (total 812)
+[2026-09-17T21:10:05.620]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:05.620]       hex: f001000200270000000000000000c52990c4
+[2026-09-17T21:10:05.620]       asc: b"\xf0\x01\x00\x02\x00'\x00\x00\x00\x00\x00\x00\x00\x00\xc5)\x90\xc4"
+[2026-09-17T21:10:05.620]       reply(accept) -> f001000200270027000000000000cf3397d6
+[2026-09-17T21:10:05.828]   <- 18 bytes from ('127.0.0.1', 47203) (total 830)
+[2026-09-17T21:10:05.828]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:05.828]       hex: f0010002002800000000000000001a905f15
+[2026-09-17T21:10:05.828]       asc: b'\xf0\x01\x00\x02\x00(\x00\x00\x00\x00\x00\x00\x00\x00\x1a\x90_\x15'
+[2026-09-17T21:10:05.828]       reply(accept) -> f001000200280028000000000000e6c228ee
+[2026-09-17T21:10:06.033]   <- 18 bytes from ('127.0.0.1', 47203) (total 848)
+[2026-09-17T21:10:06.034]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:06.034]       hex: f0010002002900000000000000000deb4b56
+[2026-09-17T21:10:06.034]       asc: b'\xf0\x01\x00\x02\x00)\x00\x00\x00\x00\x00\x00\x00\x00\r\xebKV'
+[2026-09-17T21:10:06.034]       reply(accept) -> f00100020029002900000000000057ce3719
+[2026-09-17T21:10:06.238]   <- 18 bytes from ('127.0.0.1', 47203) (total 866)
+[2026-09-17T21:10:06.239]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:06.239]       hex: f0010002002a000000000000000034667793
+[2026-09-17T21:10:06.239]       asc: b'\xf0\x01\x00\x02\x00*\x00\x00\x00\x00\x00\x00\x00\x004fw\x93'
+[2026-09-17T21:10:06.239]       reply(accept) -> f0010002002a002a0000000000005fab1141
+[2026-09-17T21:10:06.441]   <- 18 bytes from ('127.0.0.1', 47203) (total 884)
+[2026-09-17T21:10:06.441]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:06.441]       hex: f0010002002b0000000000000000231d63d0
+[2026-09-17T21:10:06.441]       asc: b'\xf0\x01\x00\x02\x00+\x00\x00\x00\x00\x00\x00\x00\x00#\x1dc\xd0'
+[2026-09-17T21:10:06.441]       reply(accept) -> f0010002002b002b000000000000eea70eb6
+[2026-09-17T21:10:06.648]   <- 18 bytes from ('127.0.0.1', 47203) (total 902)
+[2026-09-17T21:10:06.648]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:06.648]       hex: f0010002002c0000000000000000477c0e19
+[2026-09-17T21:10:06.648]       asc: b'\xf0\x01\x00\x02\x00,\x00\x00\x00\x00\x00\x00\x00\x00G|\x0e\x19'
+[2026-09-17T21:10:06.648]       reply(accept) -> f0010002002c002c0000000000004f615df1
+[2026-09-17T21:10:06.852]   <- 18 bytes from ('127.0.0.1', 47203) (total 920)
+[2026-09-17T21:10:06.852]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:06.852]       hex: f0010002002d000000000000000050071a5a
+[2026-09-17T21:10:06.852]       asc: b'\xf0\x01\x00\x02\x00-\x00\x00\x00\x00\x00\x00\x00\x00P\x07\x1aZ'
+[2026-09-17T21:10:06.852]       reply(accept) -> f0010002002d002d000000000000fe6d4206
+[2026-09-17T21:10:07.056]   <- 18 bytes from ('127.0.0.1', 47203) (total 938)
+[2026-09-17T21:10:07.056]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:07.056]       hex: f0010002002e0000000000000000698a269f
+[2026-09-17T21:10:07.056]       asc: b'\xf0\x01\x00\x02\x00.\x00\x00\x00\x00\x00\x00\x00\x00i\x8a&\x9f'
+[2026-09-17T21:10:07.056]       reply(accept) -> f0010002002e002e000000000000f608645e
+[2026-09-17T21:10:07.262]   <- 18 bytes from ('127.0.0.1', 47203) (total 956)
+[2026-09-17T21:10:07.262]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:07.262]       hex: f0010002002f00000000000000007ef132dc
+[2026-09-17T21:10:07.262]       asc: b'\xf0\x01\x00\x02\x00/\x00\x00\x00\x00\x00\x00\x00\x00~\xf12\xdc'
+[2026-09-17T21:10:07.262]       reply(accept) -> f0010002002f002f00000000000047047ba9
+[2026-09-17T21:10:07.466]   <- 18 bytes from ('127.0.0.1', 47203) (total 974)
+[2026-09-17T21:10:07.466]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:07.466]       hex: f0010002003000000000000000000d88bf7c
+[2026-09-17T21:10:07.467]       asc: b'\xf0\x01\x00\x02\x000\x00\x00\x00\x00\x00\x00\x00\x00\r\x88\xbf|'
+[2026-09-17T21:10:07.467]       reply(accept) -> f001000200300030000000000000a5eb1a2e
+[2026-09-17T21:10:07.671]   <- 18 bytes from ('127.0.0.1', 47203) (total 992)
+[2026-09-17T21:10:07.671]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:07.671]       hex: f0010002003100000000000000001af3ab3f
+[2026-09-17T21:10:07.671]       asc: b'\xf0\x01\x00\x02\x001\x00\x00\x00\x00\x00\x00\x00\x00\x1a\xf3\xab?'
+[2026-09-17T21:10:07.671]       reply(accept) -> f00100020031003100000000000014e705d9
+[2026-09-17T21:10:07.875]   <- 18 bytes from ('127.0.0.1', 47203) (total 1010)
+[2026-09-17T21:10:07.875]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:07.875]       hex: f001000200320000000000000000237e97fa
+[2026-09-17T21:10:07.875]       asc: b'\xf0\x01\x00\x02\x002\x00\x00\x00\x00\x00\x00\x00\x00#~\x97\xfa'
+[2026-09-17T21:10:07.876]       reply(accept) -> f0010002003200320000000000001c822381
+[2026-09-17T21:10:08.054]   <- 73 bytes from ('127.0.0.1', 47203) (total 1083)
+[2026-09-17T21:10:08.054]       BasePacket::unknown(0x51), encrypted or handshake - not decodable here
+[2026-09-17T21:10:08.054]       hex: 5100050033000100f11a0300006435f1dbf15d1a6bfdbce12c7b73bbe5bb64b0273bc197a600010080000200000800002008022e000231000002002005eb060080001145f131c64b3d
+[2026-09-17T21:10:08.054]       asc: b"Q\x00\x05\x003\x00\x01\x00\xf1\x1a\x03\x00\x00d5\xf1\xdb\xf1]\x1ak\xfd\xbc\xe1,{s\xbb\xe5\xbbd\xb0';\xc1\x97\xa6\x00\x01\x00\x80\x00\x02\x00\x00\x08\x00\x00 \x08\x02.\x00\x021\x00\x00\x02\x00 \x05\xeb\x06\x00\x80\x00\x11E\xf11\xc6K="
+[2026-09-17T21:10:08.055]       ACCEPT PROBE variant 2 SOLVED trailer, RemoteSequence 1 (17 bytes)
+[2026-09-17T21:10:08.055]       reply(accept) -> 510006003300010000000000003cf6122d
+[2026-09-17T21:10:08.255]   <- 18 bytes from ('127.0.0.1', 47203) (total 1101)
+[2026-09-17T21:10:08.255]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:08.255]       hex: f0010002003400000000000000005064ee70
+[2026-09-17T21:10:08.255]       asc: b'\xf0\x01\x00\x02\x004\x00\x00\x00\x00\x00\x00\x00\x00Pd\xeep'
+[2026-09-17T21:10:08.255]       reply(accept) -> f0010002003400340000000000000c486f31
+[2026-09-17T21:10:08.457]   <- 18 bytes from ('127.0.0.1', 47203) (total 1119)
+[2026-09-17T21:10:08.457]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:08.457]       hex: f001000200350000000000000000471ffa33
+[2026-09-17T21:10:08.457]       asc: b'\xf0\x01\x00\x02\x005\x00\x00\x00\x00\x00\x00\x00\x00G\x1f\xfa3'
+[2026-09-17T21:10:08.457]       reply(accept) -> f001000200350035000000000000bd4470c6
+[2026-09-17T21:10:08.658]   <- 18 bytes from ('127.0.0.1', 47203) (total 1137)
+[2026-09-17T21:10:08.658]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:08.658]       hex: f0010002003600000000000000007e92c6f6
+[2026-09-17T21:10:08.658]       asc: b'\xf0\x01\x00\x02\x006\x00\x00\x00\x00\x00\x00\x00\x00~\x92\xc6\xf6'
+[2026-09-17T21:10:08.658]       reply(accept) -> f001000200360036000000000000b521569e
+[2026-09-17T21:10:08.859]   <- 18 bytes from ('127.0.0.1', 47203) (total 1155)
+[2026-09-17T21:10:08.860]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:08.860]       hex: f00100020037000000000000000069e9d2b5
+[2026-09-17T21:10:08.860]       asc: b'\xf0\x01\x00\x02\x007\x00\x00\x00\x00\x00\x00\x00\x00i\xe9\xd2\xb5'
+[2026-09-17T21:10:08.860]       reply(accept) -> f001000200370037000000000000042d4969
+[2026-09-17T21:10:09.062]   <- 18 bytes from ('127.0.0.1', 47203) (total 1173)
+[2026-09-17T21:10:09.062]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:09.062]       hex: f001000200380000000000000000b6501d64
+[2026-09-17T21:10:09.062]       asc: b'\xf0\x01\x00\x02\x008\x00\x00\x00\x00\x00\x00\x00\x00\xb6P\x1dd'
+[2026-09-17T21:10:09.062]       reply(accept) -> f0010002003800380000000000002ddcf651
+[2026-09-17T21:10:09.263]   <- 18 bytes from ('127.0.0.1', 47203) (total 1191)
+[2026-09-17T21:10:09.264]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:09.264]       hex: f001000200390000000000000000a12b0927
+[2026-09-17T21:10:09.264]       asc: b"\xf0\x01\x00\x02\x009\x00\x00\x00\x00\x00\x00\x00\x00\xa1+\t'"
+[2026-09-17T21:10:09.264]       reply(accept) -> f0010002003900390000000000009cd0e9a6
+[2026-09-17T21:10:09.464]   <- 18 bytes from ('127.0.0.1', 47203) (total 1209)
+[2026-09-17T21:10:09.465]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:09.465]       hex: f0010002003a000000000000000098a635e2
+[2026-09-17T21:10:09.465]       asc: b'\xf0\x01\x00\x02\x00:\x00\x00\x00\x00\x00\x00\x00\x00\x98\xa65\xe2'
+[2026-09-17T21:10:09.465]       reply(accept) -> f0010002003a003a00000000000094b5cffe
+[2026-09-17T21:10:09.666]   <- 18 bytes from ('127.0.0.1', 47203) (total 1227)
+[2026-09-17T21:10:09.666]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:09.666]       hex: f0010002003b00000000000000008fdd21a1
+[2026-09-17T21:10:09.666]       asc: b'\xf0\x01\x00\x02\x00;\x00\x00\x00\x00\x00\x00\x00\x00\x8f\xdd!\xa1'
+[2026-09-17T21:10:09.666]       reply(accept) -> f0010002003b003b00000000000025b9d009
+[2026-09-17T21:10:09.869]   <- 18 bytes from ('127.0.0.1', 47203) (total 1245)
+[2026-09-17T21:10:09.870]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:09.870]       hex: f0010002003c0000000000000000ebbc4c68
+[2026-09-17T21:10:09.870]       asc: b'\xf0\x01\x00\x02\x00<\x00\x00\x00\x00\x00\x00\x00\x00\xeb\xbcLh'
+[2026-09-17T21:10:09.870]       reply(accept) -> f0010002003c003c000000000000847f834e
+[2026-09-17T21:10:10.071]   <- 18 bytes from ('127.0.0.1', 47203) (total 1263)
+[2026-09-17T21:10:10.071]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:10.071]       hex: f0010002003d0000000000000000fcc7582b
+[2026-09-17T21:10:10.071]       asc: b'\xf0\x01\x00\x02\x00=\x00\x00\x00\x00\x00\x00\x00\x00\xfc\xc7X+'
+[2026-09-17T21:10:10.071]       reply(accept) -> f0010002003d003d00000000000035739cb9
+[2026-09-17T21:10:10.273]   <- 18 bytes from ('127.0.0.1', 47203) (total 1281)
+[2026-09-17T21:10:10.273]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:10.273]       hex: f0010002003e0000000000000000c54a64ee
+[2026-09-17T21:10:10.273]       asc: b'\xf0\x01\x00\x02\x00>\x00\x00\x00\x00\x00\x00\x00\x00\xc5Jd\xee'
+[2026-09-17T21:10:10.273]       reply(accept) -> f0010002003e003e0000000000003d16bae1
+[2026-09-17T21:10:10.475]   <- 18 bytes from ('127.0.0.1', 47203) (total 1299)
+[2026-09-17T21:10:10.475]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:10.475]       hex: f0010002003f0000000000000000d23170ad
+[2026-09-17T21:10:10.475]       asc: b'\xf0\x01\x00\x02\x00?\x00\x00\x00\x00\x00\x00\x00\x00\xd21p\xad'
+[2026-09-17T21:10:10.476]       reply(accept) -> f0010002003f003f0000000000008c1aa516
+[2026-09-17T21:10:10.676]   <- 18 bytes from ('127.0.0.1', 47203) (total 1317)
+[2026-09-17T21:10:10.676]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:10.676]       hex: f001000200400000000000000000fd2b7ca9
+[2026-09-17T21:10:10.676]       asc: b'\xf0\x01\x00\x02\x00@\x00\x00\x00\x00\x00\x00\x00\x00\xfd+|\xa9'
+[2026-09-17T21:10:10.676]       reply(accept) -> f001000200400040000000000000b92009d0
+[2026-09-17T21:10:10.878]   <- 18 bytes from ('127.0.0.1', 47203) (total 1335)
+[2026-09-17T21:10:10.878]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:10.878]       hex: f001000200410000000000000000ea5068ea
+[2026-09-17T21:10:10.878]       asc: b'\xf0\x01\x00\x02\x00A\x00\x00\x00\x00\x00\x00\x00\x00\xeaPh\xea'
+[2026-09-17T21:10:10.878]       reply(accept) -> f001000200410041000000000000082c1627
+[2026-09-17T21:10:11.079]   <- 18 bytes from ('127.0.0.1', 47203) (total 1353)
+[2026-09-17T21:10:11.079]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:11.079]       hex: f001000200420000000000000000d3dd542f
+[2026-09-17T21:10:11.079]       asc: b'\xf0\x01\x00\x02\x00B\x00\x00\x00\x00\x00\x00\x00\x00\xd3\xddT/'
+[2026-09-17T21:10:11.080]       reply(accept) -> f0010002004200420000000000000049307f
+[2026-09-17T21:10:11.281]   <- 18 bytes from ('127.0.0.1', 47203) (total 1371)
+[2026-09-17T21:10:11.281]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:11.281]       hex: f001000200430000000000000000c4a6406c
+[2026-09-17T21:10:11.281]       asc: b'\xf0\x01\x00\x02\x00C\x00\x00\x00\x00\x00\x00\x00\x00\xc4\xa6@l'
+[2026-09-17T21:10:11.281]       reply(accept) -> f001000200430043000000000000b1452f88
+[2026-09-17T21:10:11.484]   <- 18 bytes from ('127.0.0.1', 47203) (total 1389)
+[2026-09-17T21:10:11.484]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:11.484]       hex: f001000200440000000000000000a0c72da5
+[2026-09-17T21:10:11.484]       asc: b'\xf0\x01\x00\x02\x00D\x00\x00\x00\x00\x00\x00\x00\x00\xa0\xc7-\xa5'
+[2026-09-17T21:10:11.484]       reply(accept) -> f00100020044004400000000000010837ccf
+[2026-09-17T21:10:11.685]   <- 18 bytes from ('127.0.0.1', 47203) (total 1407)
+[2026-09-17T21:10:11.685]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:11.685]       hex: f001000200450000000000000000b7bc39e6
+[2026-09-17T21:10:11.685]       asc: b'\xf0\x01\x00\x02\x00E\x00\x00\x00\x00\x00\x00\x00\x00\xb7\xbc9\xe6'
+[2026-09-17T21:10:11.685]       reply(accept) -> f001000200450045000000000000a18f6338
+[2026-09-17T21:10:11.889]   <- 18 bytes from ('127.0.0.1', 47203) (total 1425)
+[2026-09-17T21:10:11.890]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:11.890]       hex: f0010002004600000000000000008e310523
+[2026-09-17T21:10:11.890]       asc: b'\xf0\x01\x00\x02\x00F\x00\x00\x00\x00\x00\x00\x00\x00\x8e1\x05#'
+[2026-09-17T21:10:11.890]       reply(accept) -> f001000200460046000000000000a9ea4560
+[2026-09-17T21:10:12.092]   <- 18 bytes from ('127.0.0.1', 47203) (total 1443)
+[2026-09-17T21:10:12.092]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:12.092]       hex: f001000200470000000000000000994a1160
+[2026-09-17T21:10:12.092]       asc: b'\xf0\x01\x00\x02\x00G\x00\x00\x00\x00\x00\x00\x00\x00\x99J\x11`'
+[2026-09-17T21:10:12.092]       reply(accept) -> f00100020047004700000000000018e65a97
+[2026-09-17T21:10:12.298]   <- 18 bytes from ('127.0.0.1', 47203) (total 1461)
+[2026-09-17T21:10:12.298]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:12.298]       hex: f00100020048000000000000000046f3deb1
+[2026-09-17T21:10:12.298]       asc: b'\xf0\x01\x00\x02\x00H\x00\x00\x00\x00\x00\x00\x00\x00F\xf3\xde\xb1'
+[2026-09-17T21:10:12.298]       reply(accept) -> f0010002004800480000000000003117e5af
+[2026-09-17T21:10:12.501]   <- 18 bytes from ('127.0.0.1', 47203) (total 1479)
+[2026-09-17T21:10:12.501]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:12.501]       hex: f0010002004900000000000000005188caf2
+[2026-09-17T21:10:12.501]       asc: b'\xf0\x01\x00\x02\x00I\x00\x00\x00\x00\x00\x00\x00\x00Q\x88\xca\xf2'
+[2026-09-17T21:10:12.502]       reply(accept) -> f001000200490049000000000000801bfa58
+[2026-09-17T21:10:12.705]   <- 18 bytes from ('127.0.0.1', 47203) (total 1497)
+[2026-09-17T21:10:12.705]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:12.705]       hex: f0010002004a00000000000000006805f637
+[2026-09-17T21:10:12.705]       asc: b'\xf0\x01\x00\x02\x00J\x00\x00\x00\x00\x00\x00\x00\x00h\x05\xf67'
+[2026-09-17T21:10:12.705]       reply(accept) -> f0010002004a004a000000000000887edc00
+[2026-09-17T21:10:12.906]   <- 18 bytes from ('127.0.0.1', 47203) (total 1515)
+[2026-09-17T21:10:12.906]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:12.906]       hex: f0010002004b00000000000000007f7ee274
+[2026-09-17T21:10:12.906]       asc: b'\xf0\x01\x00\x02\x00K\x00\x00\x00\x00\x00\x00\x00\x00\x7f~\xe2t'
+[2026-09-17T21:10:12.906]       reply(accept) -> f0010002004b004b0000000000003972c3f7
+[2026-09-17T21:10:13.109]   <- 18 bytes from ('127.0.0.1', 47203) (total 1533)
+[2026-09-17T21:10:13.109]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:13.109]       hex: f0010002004c00000000000000001b1f8fbd
+[2026-09-17T21:10:13.109]       asc: b'\xf0\x01\x00\x02\x00L\x00\x00\x00\x00\x00\x00\x00\x00\x1b\x1f\x8f\xbd'
+[2026-09-17T21:10:13.109]       reply(accept) -> f0010002004c004c00000000000098b490b0
+[2026-09-17T21:10:13.313]   <- 18 bytes from ('127.0.0.1', 47203) (total 1551)
+[2026-09-17T21:10:13.313]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:13.313]       hex: f0010002004d00000000000000000c649bfe
+[2026-09-17T21:10:13.313]       asc: b'\xf0\x01\x00\x02\x00M\x00\x00\x00\x00\x00\x00\x00\x00\x0cd\x9b\xfe'
+[2026-09-17T21:10:13.314]       reply(accept) -> f0010002004d004d00000000000029b88f47
+[2026-09-17T21:10:13.517]   <- 18 bytes from ('127.0.0.1', 47203) (total 1569)
+[2026-09-17T21:10:13.518]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:13.518]       hex: f0010002004e000000000000000035e9a73b
+[2026-09-17T21:10:13.518]       asc: b'\xf0\x01\x00\x02\x00N\x00\x00\x00\x00\x00\x00\x00\x005\xe9\xa7;'
+[2026-09-17T21:10:13.518]       reply(accept) -> f0010002004e004e00000000000021dda91f
+[2026-09-17T21:10:13.724]   <- 18 bytes from ('127.0.0.1', 47203) (total 1587)
+[2026-09-17T21:10:13.724]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:13.724]       hex: f0010002004f00000000000000002292b378
+[2026-09-17T21:10:13.724]       asc: b'\xf0\x01\x00\x02\x00O\x00\x00\x00\x00\x00\x00\x00\x00"\x92\xb3x'
+[2026-09-17T21:10:13.724]       reply(accept) -> f0010002004f004f00000000000090d1b6e8
+[2026-09-17T21:10:13.928]   <- 18 bytes from ('127.0.0.1', 47203) (total 1605)
+[2026-09-17T21:10:13.928]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:13.928]       hex: f00100020050000000000000000051eb3ed8
+[2026-09-17T21:10:13.928]       asc: b'\xf0\x01\x00\x02\x00P\x00\x00\x00\x00\x00\x00\x00\x00Q\xeb>\xd8'
+[2026-09-17T21:10:13.929]       reply(accept) -> f001000200500050000000000000723ed76f
+[2026-09-17T21:10:14.132]   <- 18 bytes from ('127.0.0.1', 47203) (total 1623)
+[2026-09-17T21:10:14.132]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:14.132]       hex: f00100020051000000000000000046902a9b
+[2026-09-17T21:10:14.132]       asc: b'\xf0\x01\x00\x02\x00Q\x00\x00\x00\x00\x00\x00\x00\x00F\x90*\x9b'
+[2026-09-17T21:10:14.132]       reply(accept) -> f001000200510051000000000000c332c898
+[2026-09-17T21:10:14.334]   <- 18 bytes from ('127.0.0.1', 47203) (total 1641)
+[2026-09-17T21:10:14.334]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:14.334]       hex: f0010002005200000000000000007f1d165e
+[2026-09-17T21:10:14.334]       asc: b'\xf0\x01\x00\x02\x00R\x00\x00\x00\x00\x00\x00\x00\x00\x7f\x1d\x16^'
+[2026-09-17T21:10:14.334]       reply(accept) -> f001000200520052000000000000cb57eec0
+[2026-09-17T21:10:14.537]   <- 18 bytes from ('127.0.0.1', 47203) (total 1659)
+[2026-09-17T21:10:14.537]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:14.537]       hex: f0010002005300000000000000006866021d
+[2026-09-17T21:10:14.537]       asc: b'\xf0\x01\x00\x02\x00S\x00\x00\x00\x00\x00\x00\x00\x00hf\x02\x1d'
+[2026-09-17T21:10:14.537]       reply(accept) -> f0010002005300530000000000007a5bf137
+[2026-09-17T21:10:14.738]   <- 18 bytes from ('127.0.0.1', 47203) (total 1677)
+[2026-09-17T21:10:14.739]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:14.739]       hex: f0010002005400000000000000000c076fd4
+[2026-09-17T21:10:14.739]       asc: b'\xf0\x01\x00\x02\x00T\x00\x00\x00\x00\x00\x00\x00\x00\x0c\x07o\xd4'
+[2026-09-17T21:10:14.739]       reply(accept) -> f001000200540054000000000000db9da270
+[2026-09-17T21:10:14.942]   <- 18 bytes from ('127.0.0.1', 47203) (total 1695)
+[2026-09-17T21:10:14.942]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:14.942]       hex: f0010002005500000000000000001b7c7b97
+[2026-09-17T21:10:14.942]       asc: b'\xf0\x01\x00\x02\x00U\x00\x00\x00\x00\x00\x00\x00\x00\x1b|{\x97'
+[2026-09-17T21:10:14.943]       reply(accept) -> f0010002005500550000000000006a91bd87
+[2026-09-17T21:10:15.144]   <- 18 bytes from ('127.0.0.1', 47203) (total 1713)
+[2026-09-17T21:10:15.145]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:15.145]       hex: f00100020056000000000000000022f14752
+[2026-09-17T21:10:15.145]       asc: b'\xf0\x01\x00\x02\x00V\x00\x00\x00\x00\x00\x00\x00\x00"\xf1GR'
+[2026-09-17T21:10:15.145]       reply(accept) -> f00100020056005600000000000062f49bdf
+[2026-09-17T21:10:15.348]   <- 18 bytes from ('127.0.0.1', 47203) (total 1731)
+[2026-09-17T21:10:15.348]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:15.349]       hex: f001000200570000000000000000358a5311
+[2026-09-17T21:10:15.349]       asc: b'\xf0\x01\x00\x02\x00W\x00\x00\x00\x00\x00\x00\x00\x005\x8aS\x11'
+[2026-09-17T21:10:15.349]       reply(accept) -> f001000200570057000000000000d3f88428
+[2026-09-17T21:10:15.550]   <- 18 bytes from ('127.0.0.1', 47203) (total 1749)
+[2026-09-17T21:10:15.550]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:15.550]       hex: f001000200580000000000000000ea339cc0
+[2026-09-17T21:10:15.550]       asc: b'\xf0\x01\x00\x02\x00X\x00\x00\x00\x00\x00\x00\x00\x00\xea3\x9c\xc0'
+[2026-09-17T21:10:15.550]       reply(accept) -> f001000200580058000000000000fa093b10
+[2026-09-17T21:10:15.720]   <- 73 bytes from ('127.0.0.1', 47203) (total 1822)
+[2026-09-17T21:10:15.721]       BasePacket::unknown(0x51), encrypted or handshake - not decodable here
+[2026-09-17T21:10:15.721]       hex: 5100050059000100f11a0300006435f1dbf15d1a6bfdbce12c7b73bbe5bb64b0273bc197a600010080000200000800002008022e000231000002002005eb060080001145f1057231a3
+[2026-09-17T21:10:15.721]       asc: b"Q\x00\x05\x00Y\x00\x01\x00\xf1\x1a\x03\x00\x00d5\xf1\xdb\xf1]\x1ak\xfd\xbc\xe1,{s\xbb\xe5\xbbd\xb0';\xc1\x97\xa6\x00\x01\x00\x80\x00\x02\x00\x00\x08\x00\x00 \x08\x02.\x00\x021\x00\x00\x02\x00 \x05\xeb\x06\x00\x80\x00\x11E\xf1\x05r1\xa3"
+[2026-09-17T21:10:15.721]       ACCEPT PROBE variant 3b SOLVED trailer, padded to 73 bytes (73 bytes)
+[2026-09-17T21:10:15.721]       reply(accept) -> 510006005900590000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e253c4e6
+[2026-09-17T21:10:15.922]   <- 18 bytes from ('127.0.0.1', 47203) (total 1840)
+[2026-09-17T21:10:15.923]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:15.923]       hex: f0010002005a0000000000000000c4c5b446
+[2026-09-17T21:10:15.923]       asc: b'\xf0\x01\x00\x02\x00Z\x00\x00\x00\x00\x00\x00\x00\x00\xc4\xc5\xb4F'
+[2026-09-17T21:10:15.923]       reply(accept) -> f0010002005a005a000000000000436002bf
+[2026-09-17T21:10:16.124]   <- 18 bytes from ('127.0.0.1', 47203) (total 1858)
+[2026-09-17T21:10:16.124]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:16.124]       hex: f0010002005b0000000000000000d3bea005
+[2026-09-17T21:10:16.124]       asc: b'\xf0\x01\x00\x02\x00[\x00\x00\x00\x00\x00\x00\x00\x00\xd3\xbe\xa0\x05'
+[2026-09-17T21:10:16.124]       reply(accept) -> f0010002005b005b000000000000f26c1d48
+[2026-09-17T21:10:16.325]   <- 18 bytes from ('127.0.0.1', 47203) (total 1876)
+[2026-09-17T21:10:16.325]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:16.326]       hex: f0010002005c0000000000000000b7dfcdcc
+[2026-09-17T21:10:16.326]       asc: b'\xf0\x01\x00\x02\x00\\\x00\x00\x00\x00\x00\x00\x00\x00\xb7\xdf\xcd\xcc'
+[2026-09-17T21:10:16.326]       reply(accept) -> f0010002005c005c00000000000053aa4e0f
+[2026-09-17T21:10:16.528]   <- 18 bytes from ('127.0.0.1', 47203) (total 1894)
+[2026-09-17T21:10:16.528]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:16.528]       hex: f0010002005d0000000000000000a0a4d98f
+[2026-09-17T21:10:16.528]       asc: b'\xf0\x01\x00\x02\x00]\x00\x00\x00\x00\x00\x00\x00\x00\xa0\xa4\xd9\x8f'
+[2026-09-17T21:10:16.528]       reply(accept) -> f0010002005d005d000000000000e2a651f8
+[2026-09-17T21:10:16.730]   <- 18 bytes from ('127.0.0.1', 47203) (total 1912)
+[2026-09-17T21:10:16.730]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:16.730]       hex: f0010002005e00000000000000009929e54a
+[2026-09-17T21:10:16.731]       asc: b'\xf0\x01\x00\x02\x00^\x00\x00\x00\x00\x00\x00\x00\x00\x99)\xe5J'
+[2026-09-17T21:10:16.731]       reply(accept) -> f0010002005e005e000000000000eac377a0
+[2026-09-17T21:10:16.934]   <- 18 bytes from ('127.0.0.1', 47203) (total 1930)
+[2026-09-17T21:10:16.934]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:16.934]       hex: f0010002005f00000000000000008e52f109
+[2026-09-17T21:10:16.934]       asc: b'\xf0\x01\x00\x02\x00_\x00\x00\x00\x00\x00\x00\x00\x00\x8eR\xf1\t'
+[2026-09-17T21:10:16.934]       reply(accept) -> f0010002005f005f0000000000005bcf6857
+[2026-09-17T21:10:17.136]   <- 18 bytes from ('127.0.0.1', 47203) (total 1948)
+[2026-09-17T21:10:17.136]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:17.136]       hex: f0010002006000000000000000007fdafe0a
+[2026-09-17T21:10:17.136]       asc: b'\xf0\x01\x00\x02\x00`\x00\x00\x00\x00\x00\x00\x00\x00\x7f\xda\xfe\n'
+[2026-09-17T21:10:17.136]       reply(accept) -> f001000200600060000000000000f46cb2ef
+[2026-09-17T21:10:17.339]   <- 18 bytes from ('127.0.0.1', 47203) (total 1966)
+[2026-09-17T21:10:17.339]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:17.339]       hex: f00100020061000000000000000068a1ea49
+[2026-09-17T21:10:17.339]       asc: b'\xf0\x01\x00\x02\x00a\x00\x00\x00\x00\x00\x00\x00\x00h\xa1\xeaI'
+[2026-09-17T21:10:17.340]       reply(accept) -> f0010002006100610000000000004560ad18
+[2026-09-17T21:10:17.541]   <- 18 bytes from ('127.0.0.1', 47203) (total 1984)
+[2026-09-17T21:10:17.541]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:17.541]       hex: f001000200620000000000000000512cd68c
+[2026-09-17T21:10:17.541]       asc: b'\xf0\x01\x00\x02\x00b\x00\x00\x00\x00\x00\x00\x00\x00Q,\xd6\x8c'
+[2026-09-17T21:10:17.541]       reply(accept) -> f0010002006200620000000000004d058b40
+[2026-09-17T21:10:17.742]   <- 18 bytes from ('127.0.0.1', 47203) (total 2002)
+[2026-09-17T21:10:17.742]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:17.742]       hex: f0010002006300000000000000004657c2cf
+[2026-09-17T21:10:17.742]       asc: b'\xf0\x01\x00\x02\x00c\x00\x00\x00\x00\x00\x00\x00\x00FW\xc2\xcf'
+[2026-09-17T21:10:17.742]       reply(accept) -> f001000200630063000000000000fc0994b7
+[2026-09-17T21:10:17.942]   <- 18 bytes from ('127.0.0.1', 47203) (total 2020)
+[2026-09-17T21:10:17.943]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:17.943]       hex: f0010002006400000000000000002236af06
+[2026-09-17T21:10:17.943]       asc: b'\xf0\x01\x00\x02\x00d\x00\x00\x00\x00\x00\x00\x00\x00"6\xaf\x06'
+[2026-09-17T21:10:17.943]       reply(accept) -> f0010002006400640000000000005dcfc7f0
+[2026-09-17T21:10:18.144]   <- 18 bytes from ('127.0.0.1', 47203) (total 2038)
+[2026-09-17T21:10:18.145]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:18.145]       hex: f001000200650000000000000000354dbb45
+[2026-09-17T21:10:18.145]       asc: b'\xf0\x01\x00\x02\x00e\x00\x00\x00\x00\x00\x00\x00\x005M\xbbE'
+[2026-09-17T21:10:18.145]       reply(accept) -> f001000200650065000000000000ecc3d807
+[2026-09-17T21:10:18.348]   <- 18 bytes from ('127.0.0.1', 47203) (total 2056)
+[2026-09-17T21:10:18.348]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:18.348]       hex: f0010002006600000000000000000cc08780
+[2026-09-17T21:10:18.348]       asc: b'\xf0\x01\x00\x02\x00f\x00\x00\x00\x00\x00\x00\x00\x00\x0c\xc0\x87\x80'
+[2026-09-17T21:10:18.348]       reply(accept) -> f001000200660066000000000000e4a6fe5f
+[2026-09-17T21:10:18.550]   <- 18 bytes from ('127.0.0.1', 47203) (total 2074)
+[2026-09-17T21:10:18.551]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:18.551]       hex: f0010002006700000000000000001bbb93c3
+[2026-09-17T21:10:18.551]       asc: b'\xf0\x01\x00\x02\x00g\x00\x00\x00\x00\x00\x00\x00\x00\x1b\xbb\x93\xc3'
+[2026-09-17T21:10:18.551]       reply(accept) -> f00100020067006700000000000055aae1a8
+[2026-09-17T21:10:18.754]   <- 18 bytes from ('127.0.0.1', 47203) (total 2092)
+[2026-09-17T21:10:18.754]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:18.754]       hex: f001000200680000000000000000c4025c12
+[2026-09-17T21:10:18.754]       asc: b'\xf0\x01\x00\x02\x00h\x00\x00\x00\x00\x00\x00\x00\x00\xc4\x02\\\x12'
+[2026-09-17T21:10:18.754]       reply(accept) -> f0010002006800680000000000007c5b5e90
+[2026-09-17T21:10:18.954]   <- 18 bytes from ('127.0.0.1', 47203) (total 2110)
+[2026-09-17T21:10:18.955]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:18.955]       hex: f001000200690000000000000000d3794851
+[2026-09-17T21:10:18.955]       asc: b'\xf0\x01\x00\x02\x00i\x00\x00\x00\x00\x00\x00\x00\x00\xd3yHQ'
+[2026-09-17T21:10:18.955]       reply(accept) -> f001000200690069000000000000cd574167
+[2026-09-17T21:10:19.155]   <- 18 bytes from ('127.0.0.1', 47203) (total 2128)
+[2026-09-17T21:10:19.155]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:19.155]       hex: f0010002006a0000000000000000eaf47494
+[2026-09-17T21:10:19.156]       asc: b'\xf0\x01\x00\x02\x00j\x00\x00\x00\x00\x00\x00\x00\x00\xea\xf4t\x94'
+[2026-09-17T21:10:19.156]       reply(accept) -> f0010002006a006a000000000000c532673f
+[2026-09-17T21:10:19.357]   <- 18 bytes from ('127.0.0.1', 47203) (total 2146)
+[2026-09-17T21:10:19.357]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:19.357]       hex: f0010002006b0000000000000000fd8f60d7
+[2026-09-17T21:10:19.357]       asc: b'\xf0\x01\x00\x02\x00k\x00\x00\x00\x00\x00\x00\x00\x00\xfd\x8f`\xd7'
+[2026-09-17T21:10:19.357]       reply(accept) -> f0010002006b006b000000000000743e78c8
+[2026-09-17T21:10:19.559]   <- 18 bytes from ('127.0.0.1', 47203) (total 2164)
+[2026-09-17T21:10:19.559]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:19.559]       hex: f0010002006c000000000000000099ee0d1e
+[2026-09-17T21:10:19.559]       asc: b'\xf0\x01\x00\x02\x00l\x00\x00\x00\x00\x00\x00\x00\x00\x99\xee\r\x1e'
+[2026-09-17T21:10:19.559]       reply(accept) -> f0010002006c006c000000000000d5f82b8f
+[2026-09-17T21:10:19.761]   <- 18 bytes from ('127.0.0.1', 47203) (total 2182)
+[2026-09-17T21:10:19.761]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:19.761]       hex: f0010002006d00000000000000008e95195d
+[2026-09-17T21:10:19.761]       asc: b'\xf0\x01\x00\x02\x00m\x00\x00\x00\x00\x00\x00\x00\x00\x8e\x95\x19]'
+[2026-09-17T21:10:19.761]       reply(accept) -> f0010002006d006d00000000000064f43478
+[2026-09-17T21:10:19.963]   <- 18 bytes from ('127.0.0.1', 47203) (total 2200)
+[2026-09-17T21:10:19.963]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:19.963]       hex: f0010002006e0000000000000000b7182598
+[2026-09-17T21:10:19.963]       asc: b'\xf0\x01\x00\x02\x00n\x00\x00\x00\x00\x00\x00\x00\x00\xb7\x18%\x98'
+[2026-09-17T21:10:19.964]       reply(accept) -> f0010002006e006e0000000000006c911220
+[2026-09-17T21:10:20.163]   <- 18 bytes from ('127.0.0.1', 47203) (total 2218)
+[2026-09-17T21:10:20.164]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:20.164]       hex: f0010002006f0000000000000000a06331db
+[2026-09-17T21:10:20.164]       asc: b'\xf0\x01\x00\x02\x00o\x00\x00\x00\x00\x00\x00\x00\x00\xa0c1\xdb'
+[2026-09-17T21:10:20.164]       reply(accept) -> f0010002006f006f000000000000dd9d0dd7
+[2026-09-17T21:10:20.366]   <- 18 bytes from ('127.0.0.1', 47203) (total 2236)
+[2026-09-17T21:10:20.367]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:20.367]       hex: f001000200700000000000000000d31abc7b
+[2026-09-17T21:10:20.367]       asc: b'\xf0\x01\x00\x02\x00p\x00\x00\x00\x00\x00\x00\x00\x00\xd3\x1a\xbc{'
+[2026-09-17T21:10:20.367]       reply(accept) -> f0010002007000700000000000003f726c50
+[2026-09-17T21:10:20.568]   <- 18 bytes from ('127.0.0.1', 47203) (total 2254)
+[2026-09-17T21:10:20.568]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:20.568]       hex: f001000200710000000000000000c461a838
+[2026-09-17T21:10:20.568]       asc: b'\xf0\x01\x00\x02\x00q\x00\x00\x00\x00\x00\x00\x00\x00\xc4a\xa88'
+[2026-09-17T21:10:20.569]       reply(accept) -> f0010002007100710000000000008e7e73a7
+[2026-09-17T21:10:20.773]   <- 18 bytes from ('127.0.0.1', 47203) (total 2272)
+[2026-09-17T21:10:20.773]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:20.773]       hex: f001000200720000000000000000fdec94fd
+[2026-09-17T21:10:20.773]       asc: b'\xf0\x01\x00\x02\x00r\x00\x00\x00\x00\x00\x00\x00\x00\xfd\xec\x94\xfd'
+[2026-09-17T21:10:20.774]       reply(accept) -> f001000200720072000000000000861b55ff
+[2026-09-17T21:10:20.976]   <- 18 bytes from ('127.0.0.1', 47203) (total 2290)
+[2026-09-17T21:10:20.976]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:20.977]       hex: f001000200730000000000000000ea9780be
+[2026-09-17T21:10:20.977]       asc: b'\xf0\x01\x00\x02\x00s\x00\x00\x00\x00\x00\x00\x00\x00\xea\x97\x80\xbe'
+[2026-09-17T21:10:20.977]       reply(accept) -> f00100020073007300000000000037174a08
+[2026-09-17T21:10:21.178]   <- 18 bytes from ('127.0.0.1', 47203) (total 2308)
+[2026-09-17T21:10:21.178]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:21.178]       hex: f0010002007400000000000000008ef6ed77
+[2026-09-17T21:10:21.178]       asc: b'\xf0\x01\x00\x02\x00t\x00\x00\x00\x00\x00\x00\x00\x00\x8e\xf6\xedw'
+[2026-09-17T21:10:21.178]       reply(accept) -> f00100020074007400000000000096d1194f
+[2026-09-17T21:10:21.378]   <- 18 bytes from ('127.0.0.1', 47203) (total 2326)
+[2026-09-17T21:10:21.379]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:21.379]       hex: f001000200750000000000000000998df934
+[2026-09-17T21:10:21.379]       asc: b'\xf0\x01\x00\x02\x00u\x00\x00\x00\x00\x00\x00\x00\x00\x99\x8d\xf94'
+[2026-09-17T21:10:21.379]       reply(accept) -> f00100020075007500000000000027dd06b8
+[2026-09-17T21:10:21.580]   <- 18 bytes from ('127.0.0.1', 47203) (total 2344)
+[2026-09-17T21:10:21.580]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:21.580]       hex: f001000200760000000000000000a000c5f1
+[2026-09-17T21:10:21.580]       asc: b'\xf0\x01\x00\x02\x00v\x00\x00\x00\x00\x00\x00\x00\x00\xa0\x00\xc5\xf1'
+[2026-09-17T21:10:21.580]       reply(accept) -> f0010002007600760000000000002fb820e0
+[2026-09-17T21:10:21.781]   <- 18 bytes from ('127.0.0.1', 47203) (total 2362)
+[2026-09-17T21:10:21.782]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:21.783]       hex: f001000200770000000000000000b77bd1b2
+[2026-09-17T21:10:21.783]       asc: b'\xf0\x01\x00\x02\x00w\x00\x00\x00\x00\x00\x00\x00\x00\xb7{\xd1\xb2'
+[2026-09-17T21:10:21.783]       reply(accept) -> f0010002007700770000000000009eb43f17
+[2026-09-17T21:10:21.983]   <- 18 bytes from ('127.0.0.1', 47203) (total 2380)
+[2026-09-17T21:10:21.983]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:21.983]       hex: f00100020078000000000000000068c21e63
+[2026-09-17T21:10:21.983]       asc: b'\xf0\x01\x00\x02\x00x\x00\x00\x00\x00\x00\x00\x00\x00h\xc2\x1ec'
+[2026-09-17T21:10:21.983]       reply(accept) -> f001000200780078000000000000b745802f
+[2026-09-17T21:10:22.185]   <- 18 bytes from ('127.0.0.1', 47203) (total 2398)
+[2026-09-17T21:10:22.185]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:22.185]       hex: f0010002007900000000000000007fb90a20
+[2026-09-17T21:10:22.185]       asc: b'\xf0\x01\x00\x02\x00y\x00\x00\x00\x00\x00\x00\x00\x00\x7f\xb9\n '
+[2026-09-17T21:10:22.185]       reply(accept) -> f00100020079007900000000000006499fd8
+[2026-09-17T21:10:22.386]   <- 18 bytes from ('127.0.0.1', 47203) (total 2416)
+[2026-09-17T21:10:22.386]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:22.386]       hex: f0010002007a0000000000000000463436e5
+[2026-09-17T21:10:22.386]       asc: b'\xf0\x01\x00\x02\x00z\x00\x00\x00\x00\x00\x00\x00\x00F46\xe5'
+[2026-09-17T21:10:22.386]       reply(accept) -> f0010002007a007a0000000000000e2cb980
+[2026-09-17T21:10:22.587]   <- 18 bytes from ('127.0.0.1', 47203) (total 2434)
+[2026-09-17T21:10:22.587]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:22.587]       hex: f0010002007b0000000000000000514f22a6
+[2026-09-17T21:10:22.587]       asc: b'\xf0\x01\x00\x02\x00{\x00\x00\x00\x00\x00\x00\x00\x00QO"\xa6'
+[2026-09-17T21:10:22.587]       reply(accept) -> f0010002007b007b000000000000bf20a677
+[2026-09-17T21:10:22.788]   <- 18 bytes from ('127.0.0.1', 47203) (total 2452)
+[2026-09-17T21:10:22.788]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:22.788]       hex: f0010002007c0000000000000000352e4f6f
+[2026-09-17T21:10:22.788]       asc: b'\xf0\x01\x00\x02\x00|\x00\x00\x00\x00\x00\x00\x00\x005.Oo'
+[2026-09-17T21:10:22.788]       reply(accept) -> f0010002007c007c0000000000001ee6f530
+[2026-09-17T21:10:22.989]   <- 18 bytes from ('127.0.0.1', 47203) (total 2470)
+[2026-09-17T21:10:22.990]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:22.990]       hex: f0010002007d000000000000000022555b2c
+[2026-09-17T21:10:22.990]       asc: b'\xf0\x01\x00\x02\x00}\x00\x00\x00\x00\x00\x00\x00\x00"U[,'
+[2026-09-17T21:10:22.990]       reply(accept) -> f0010002007d007d000000000000afeaeac7
+[2026-09-17T21:10:23.192]   <- 18 bytes from ('127.0.0.1', 47203) (total 2488)
+[2026-09-17T21:10:23.192]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:23.192]       hex: f0010002007e00000000000000001bd867e9
+[2026-09-17T21:10:23.192]       asc: b'\xf0\x01\x00\x02\x00~\x00\x00\x00\x00\x00\x00\x00\x00\x1b\xd8g\xe9'
+[2026-09-17T21:10:23.192]       reply(accept) -> f0010002007e007e000000000000a78fcc9f
+[2026-09-17T21:10:23.393]   <- 18 bytes from ('127.0.0.1', 47203) (total 2506)
+[2026-09-17T21:10:23.393]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:23.393]       hex: f0010002007f00000000000000000ca373aa
+[2026-09-17T21:10:23.393]       asc: b'\xf0\x01\x00\x02\x00\x7f\x00\x00\x00\x00\x00\x00\x00\x00\x0c\xa3s\xaa'
+[2026-09-17T21:10:23.393]       reply(accept) -> f0010002007f007f0000000000001683d368
+[2026-09-17T21:10:23.593]   <- 18 bytes from ('127.0.0.1', 47203) (total 2524)
+[2026-09-17T21:10:23.594]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:23.594]       hex: f00100020080000000000000000045ec7fe1
+[2026-09-17T21:10:23.594]       asc: b'\xf0\x01\x00\x02\x00\x80\x00\x00\x00\x00\x00\x00\x00\x00E\xec\x7f\xe1'
+[2026-09-17T21:10:23.594]       reply(accept) -> f001000200800080000000000000cdfa9513
+[2026-09-17T21:10:23.795]   <- 18 bytes from ('127.0.0.1', 47203) (total 2542)
+[2026-09-17T21:10:23.795]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:23.795]       hex: f00100020081000000000000000052976ba2
+[2026-09-17T21:10:23.795]       asc: b'\xf0\x01\x00\x02\x00\x81\x00\x00\x00\x00\x00\x00\x00\x00R\x97k\xa2'
+[2026-09-17T21:10:23.795]       reply(accept) -> f0010002008100810000000000007cf68ae4
+[2026-09-17T21:10:23.996]   <- 18 bytes from ('127.0.0.1', 47203) (total 2560)
+[2026-09-17T21:10:23.997]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:23.997]       hex: f0010002008200000000000000006b1a5767
+[2026-09-17T21:10:23.997]       asc: b'\xf0\x01\x00\x02\x00\x82\x00\x00\x00\x00\x00\x00\x00\x00k\x1aWg'
+[2026-09-17T21:10:23.997]       reply(accept) -> f0010002008200820000000000007493acbc
+[2026-09-17T21:10:24.199]   <- 18 bytes from ('127.0.0.1', 47203) (total 2578)
+[2026-09-17T21:10:24.199]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:24.199]       hex: f0010002008300000000000000007c614324
+[2026-09-17T21:10:24.199]       asc: b'\xf0\x01\x00\x02\x00\x83\x00\x00\x00\x00\x00\x00\x00\x00|aC$'
+[2026-09-17T21:10:24.199]       reply(accept) -> f001000200830083000000000000c59fb34b
+[2026-09-17T21:10:24.401]   <- 18 bytes from ('127.0.0.1', 47203) (total 2596)
+[2026-09-17T21:10:24.401]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:24.402]       hex: f00100020084000000000000000018002eed
+[2026-09-17T21:10:24.402]       asc: b'\xf0\x01\x00\x02\x00\x84\x00\x00\x00\x00\x00\x00\x00\x00\x18\x00.\xed'
+[2026-09-17T21:10:24.402]       reply(accept) -> f0010002008400840000000000006459e00c
+[2026-09-17T21:10:24.604]   <- 18 bytes from ('127.0.0.1', 47203) (total 2614)
+[2026-09-17T21:10:24.604]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:24.604]       hex: f0010002008500000000000000000f7b3aae
+[2026-09-17T21:10:24.604]       asc: b'\xf0\x01\x00\x02\x00\x85\x00\x00\x00\x00\x00\x00\x00\x00\x0f{:\xae'
+[2026-09-17T21:10:24.604]       reply(accept) -> f001000200850085000000000000d555fffb
+[2026-09-17T21:10:24.804]   <- 18 bytes from ('127.0.0.1', 47203) (total 2632)
+[2026-09-17T21:10:24.804]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:24.805]       hex: f00100020086000000000000000036f6066b
+[2026-09-17T21:10:24.805]       asc: b'\xf0\x01\x00\x02\x00\x86\x00\x00\x00\x00\x00\x00\x00\x006\xf6\x06k'
+[2026-09-17T21:10:24.805]       reply(accept) -> f001000200860086000000000000dd30d9a3
+[2026-09-17T21:10:25.007]   <- 18 bytes from ('127.0.0.1', 47203) (total 2650)
+[2026-09-17T21:10:25.007]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:25.007]       hex: f001000200870000000000000000218d1228
+[2026-09-17T21:10:25.007]       asc: b'\xf0\x01\x00\x02\x00\x87\x00\x00\x00\x00\x00\x00\x00\x00!\x8d\x12('
+[2026-09-17T21:10:25.007]       reply(accept) -> f0010002008700870000000000006c3cc654
+[2026-09-17T21:10:25.209]   <- 18 bytes from ('127.0.0.1', 47203) (total 2668)
+[2026-09-17T21:10:25.209]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:25.209]       hex: f001000200880000000000000000fe34ddf9
+[2026-09-17T21:10:25.209]       asc: b'\xf0\x01\x00\x02\x00\x88\x00\x00\x00\x00\x00\x00\x00\x00\xfe4\xdd\xf9'
+[2026-09-17T21:10:25.209]       reply(accept) -> f00100020088008800000000000045cd796c
+[2026-09-17T21:10:25.411]   <- 18 bytes from ('127.0.0.1', 47203) (total 2686)
+[2026-09-17T21:10:25.411]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:25.411]       hex: f001000200890000000000000000e94fc9ba
+[2026-09-17T21:10:25.411]       asc: b'\xf0\x01\x00\x02\x00\x89\x00\x00\x00\x00\x00\x00\x00\x00\xe9O\xc9\xba'
+[2026-09-17T21:10:25.411]       reply(accept) -> f001000200890089000000000000f4c1669b
+[2026-09-17T21:10:25.614]   <- 18 bytes from ('127.0.0.1', 47203) (total 2704)
+[2026-09-17T21:10:25.615]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:25.615]       hex: f0010002008a0000000000000000d0c2f57f
+[2026-09-17T21:10:25.615]       asc: b'\xf0\x01\x00\x02\x00\x8a\x00\x00\x00\x00\x00\x00\x00\x00\xd0\xc2\xf5\x7f'
+[2026-09-17T21:10:25.615]       reply(accept) -> f0010002008a008a000000000000fca440c3
+[2026-09-17T21:10:25.816]   <- 18 bytes from ('127.0.0.1', 47203) (total 2722)
+[2026-09-17T21:10:25.816]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:25.816]       hex: f0010002008b0000000000000000c7b9e13c
+[2026-09-17T21:10:25.816]       asc: b'\xf0\x01\x00\x02\x00\x8b\x00\x00\x00\x00\x00\x00\x00\x00\xc7\xb9\xe1<'
+[2026-09-17T21:10:25.816]       reply(accept) -> f0010002008b008b0000000000004da85f34
+[2026-09-17T21:10:26.017]   <- 18 bytes from ('127.0.0.1', 47203) (total 2740)
+[2026-09-17T21:10:26.017]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:26.017]       hex: f0010002008c0000000000000000a3d88cf5
+[2026-09-17T21:10:26.017]       asc: b'\xf0\x01\x00\x02\x00\x8c\x00\x00\x00\x00\x00\x00\x00\x00\xa3\xd8\x8c\xf5'
+[2026-09-17T21:10:26.017]       reply(accept) -> f0010002008c008c000000000000ec6e0c73
+[2026-09-17T21:10:26.218]   <- 18 bytes from ('127.0.0.1', 47203) (total 2758)
+[2026-09-17T21:10:26.218]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:26.218]       hex: f0010002008d0000000000000000b4a398b6
+[2026-09-17T21:10:26.218]       asc: b'\xf0\x01\x00\x02\x00\x8d\x00\x00\x00\x00\x00\x00\x00\x00\xb4\xa3\x98\xb6'
+[2026-09-17T21:10:26.218]       reply(accept) -> f0010002008d008d0000000000005d621384
+[2026-09-17T21:10:26.419]   <- 18 bytes from ('127.0.0.1', 47203) (total 2776)
+[2026-09-17T21:10:26.419]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:26.419]       hex: f0010002008e00000000000000008d2ea473
+[2026-09-17T21:10:26.419]       asc: b'\xf0\x01\x00\x02\x00\x8e\x00\x00\x00\x00\x00\x00\x00\x00\x8d.\xa4s'
+[2026-09-17T21:10:26.419]       reply(accept) -> f0010002008e008e000000000000550735dc
+[2026-09-17T21:10:26.621]   <- 18 bytes from ('127.0.0.1', 47203) (total 2794)
+[2026-09-17T21:10:26.622]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-17T21:10:26.622]       hex: f0010002008f00000000000000009a55b030
+[2026-09-17T21:10:26.622]       asc: b'\xf0\x01\x00\x02\x00\x8f\x00\x00\x00\x00\x00\x00\x00\x00\x9aU\xb00'
+[2026-09-17T21:10:26.622]       reply(accept) -> f0010002008f008f000000000000e40b2a2b
+[2026-09-17T21:10:26.763]   <- 73 bytes from ('127.0.0.1', 47203) (total 2867)
+[2026-09-17T21:10:26.763]       BasePacket::unknown(0x51), encrypted or handshake - not decodable here
+[2026-09-17T21:10:26.763]       hex: 5100050090000100f11a0300006435f1dbf15d1a6bfdbce12c7b73bbe5bb64b0273bc197a600010080000200000800002008022e000231000002002005eb060080001145f15d9fe9f6
+[2026-09-17T21:10:26.763]       asc: b"Q\x00\x05\x00\x90\x00\x01\x00\xf1\x1a\x03\x00\x00d5\xf1\xdb\xf1]\x1ak\xfd\xbc\xe1,{s\xbb\xe5\xbbd\xb0';\xc1\x97\xa6\x00\x01\x00\x80\x00\x02\x00\x00\x08\x00\x00 \x08\x02.\x00\x021\x00\x00\x02\x00 \x05\xeb\x06\x00\x80\x00\x11E\xf1]\x9f\xe9\xf6"
+[2026-09-17T21:10:26.763]       ACCEPT PROBE variant 3 trailer copied verbatim from the client's packet (17 bytes)
+[2026-09-17T21:10:26.763]       reply(accept) -> 510006009000900000000000005d9fe9f6
+[2026-09-17T21:10:26.940]   <- 16 bytes from ('127.0.0.1', 47203) (total 2883)
+[2026-09-17T21:10:26.940]       BasePacket::unknown(0x51), encrypted or handshake - not decodable here
+[2026-09-17T21:10:26.940]       hex: 510001009100010070a200046729a42d
+[2026-09-17T21:10:26.940]       asc: b'Q\x00\x01\x00\x91\x00\x01\x00p\xa2\x00\x04g)\xa4-'
+[2026-09-17T21:10:26.940]       SPAWN probe: update type 3, slice 501823405, entity 1
+[2026-09-17T21:10:26.940]       reply(accept) -> 51000a00910091000000000000000000000102131de937ad0000d8236e92
