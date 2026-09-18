@@ -183,3 +183,53 @@ which host the CLIENT resolves for the hub (`sv_LanHost`).
 
 So a community server has to be written from scratch, which is what
 `docs/02` Phase 4.2 already assumed.
+
+
+## First full session with the stub replying (2026-09-17 20:04)
+
+166 datagrams, every one of them answered. Snapshot:
+`snapshots/shard-session-20260917-2004.log`.
+
+What the client sent, decoded:
+
+| type | count | prefix | RemoteSequence |
+|---|---|---|---|
+| 5 `Connect` | 40 | `51` | always 1 |
+| 2 (control) | 125 | `f0 01` | always 0 |
+| 1 | 1, last | `51` | 1 |
+
+**Packet type 1 is new** — sent once, immediately before the client gave up,
+so it is almost certainly the transport-level disconnect.
+
+### The prefix is a channel id, and the checksum rule differs per channel
+
+The prefix is constant per channel for the whole session — `51` carries types
+5 and 1, `f0 01` carries type 2 — so it is not a counter or a length. Packet
+arithmetic confirms both lengths: type 1 is `1 + 11 + 4` = 16, type 2 is
+`2 + 12 + 4` = 18, type 5 is `1 + 68 + 4` = 73.
+
+And the two channels do **not** checksum the same way:
+
+- `f0 01` channel: `crc32(region)` big endian, reproduces exactly.
+- `51` channel: nothing reproduces. Checked exhaustively on both the 73-byte
+  Connect and the 16-byte type-1 — every contiguous range in both byte
+  orders, every fixed seed (solved as an affine system), every single-byte
+  edit, every appended 4-byte value, and md5/sha1/sha256/HMAC-with-zero-key/
+  adler32 over the obvious regions.
+
+So the `51` channel authenticates its packets with something that is not a
+CRC over their own bytes.
+
+### Nothing we sent was ever accepted
+
+`RemoteSequence` is the peer's highest received sequence. Across 166
+datagrams and nine different Accept shapes it **never moved** — it stayed at
+1 on the `51` channel and 0 on the `f0 01` channel from the first packet to
+the last. The client was not rejecting our Accept's *contents*; it was
+discarding our datagrams before they reached that layer.
+
+That reframes the remaining work. The open question is no longer "which
+Accept payload" but "what makes a datagram acceptable on the `51` channel" —
+and the unreproducible trailer is the obvious suspect, since it is the one
+thing about those datagrams we cannot construct. The two anomalies are
+probably the same anomaly.
