@@ -559,6 +559,29 @@ def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
     # - keeping the datagram length identical so the known hidden value
     # applies. This is the first reply whose trailer is right rather than
     # hoped for.
+    def accept_region(local, remote, reliable=0):
+        reg = bytearray(12)
+        reg[0:2] = b"\x00\x06"
+        reg[2:4] = local.to_bytes(2, "big")
+        reg[4:6] = remote.to_bytes(2, "big")
+        reg[10] = 1 if reliable else 0
+        reg[11] = shard_id & 0xFF
+        return bytes(reg)
+
+    def solved_exact_suffix(local, remote, reliable=0):
+        """Same Accept, trailer under the SUFFIX formulation.
+
+        The seed and suffix forms were both fitted on 68-byte regions, where
+        they agree by construction. At any other region length they diverge,
+        and nothing observed says which is the real rule - so send both and
+        let the client decide. This one is
+        crc32(region + 792cce7f + 00000000) with the standard seed.
+        """
+        reg = accept_region(local, remote, reliable)
+        tail = (zlib.crc32(reg + SHARD_HIDDEN[73] + b"\x00" * 4)
+                & 0xFFFFFFFF).to_bytes(4, "big")
+        return prefix + reg + tail
+
     def solved_exact(local, remote, reliable=0):
         """A correctly SIZED Accept: 12-byte region, no padding.
 
@@ -588,6 +611,8 @@ def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
     solved_reliable = solved_exact(our_seq, their_seq, reliable=1)
     solved_remote1 = solved_exact(our_seq, 1)
     solved_padded = solved(our_seq, their_seq)
+    solved_sfx = solved_exact_suffix(our_seq, their_seq)
+    solved_sfx_rel = solved_exact_suffix(our_seq, their_seq, reliable=1)
 
     return [
         ("0 SOLVED trailer: Accept, crc32(region+hidden+0000)",
@@ -596,7 +621,11 @@ def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
          solved_reliable),
         ("2 SOLVED trailer, RemoteSequence 1",
          solved_remote1),
-        ("3b SOLVED trailer, padded to 73 bytes",
+        ("3b SUFFIX-form trailer, exact size",
+         solved_sfx),
+        ("3c SUFFIX-form trailer, exact size, IsReliable",
+         solved_sfx_rel),
+        ("3d SEED-form trailer, padded to 73 bytes",
          solved_padded),
         ("3 trailer copied verbatim from the client's packet",
          raw(prefix, base_region + their_trailer)),

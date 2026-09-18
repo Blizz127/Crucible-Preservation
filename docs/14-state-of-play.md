@@ -73,21 +73,29 @@ and `net_EnableDtlsPreSharedKeys 0`; all three are required.
 
 Run `python3 server/test_hubrpc.py` after touching the hub code.
 
-## The one open problem
+## The one open problem (updated 2026-09-17 21:2x)
 
 The client discards everything we send to the shard. The transport is
 understood (`docs/12`) except for one thing:
 
-**The `51` channel's 4-byte trailer cannot be reproduced.** The receive path
-(`UdpBaseConnection::ProcessReceived`, CRC loop inlined at `0x4f20aa0`)
-checksums `GetData()[0 : GetSize()-4]` and discards mismatches. On the
-`f0 01` control channel that is exactly `crc32(region)` and reproduces. On
-the `51` channel — which carries `Connect` and the type-1 disconnect — no
-start offset reproduces the client's own value, so the bytes it checksums
-are not the bytes on the wire.
+**The `51` channel trailer is now SOLVED but the Accept is still rejected.**
 
-`docs/12` lists eight eliminated theories with the method for each. Do not
-re-run them.
+    crc32( region + 8 zero bytes , init = 0x8a31dc2a ) == trailer
+
+reproduces 87/87 captured 73-byte datagrams across two sessions. `docs/12`
+has the derivation and the eight theories it displaced.
+
+It did not unlock anything. Accepts sent with a correct trailer — at the
+padded 73-byte length and at the natural 17-byte length, under both the seed
+and suffix parameterisations, with and without `IsReliable` — are all
+rejected the same way: 40 `Connect` retries, then disconnect.
+
+The honest reading is that the sender-side derivation is **under-determined**:
+it was fitted on one region length, so several formulas agree there and
+diverge elsewhere. Stop fitting. Read
+`UdpBaseConnection::ProcessReceived` around rva `0x4f209ef` and find what
+`GetData()`/`GetSize()` return for a *received* datagram; that pins the
+checksum input exactly.
 
 ## Next experiment, already armed
 

@@ -464,3 +464,27 @@ Remaining candidates, none yet tested:
    than echo.
 3. The client requires something on the `f0 01` control channel to complete
    before it will look at `51` at all.
+
+
+## Both checksum formulations rejected at exact size
+
+The seed form and the suffix form were both fitted on 68-byte regions, where
+they agree by construction, and they **diverge** at other region lengths — a
+12-byte Accept region gives `d138296d` under the seed form and `b398bd30`
+under the suffix form. Both were sent in the same session, at the correct
+17-byte datagram size, with and without `IsReliable`.
+
+Rejected: 40 `Connect` retries, disconnect.
+
+So one of these is true, and the disassembly is the only way to tell which:
+
+- the real checksum input is neither of the two shapes fitted here (both fit
+  one length and are under-determined), or
+- the checksum is fine and the rejection happens somewhere else entirely.
+
+The productive next step is **not** another fitted formula. It is reading
+`UdpBaseConnection::ProcessReceived` around rva `0x4f209ef` to find what
+`GetData()` and `GetSize()` actually return for a *received* datagram — that
+fixes the input exactly instead of inferring it from the sender's output. The
+sender-side derivation cannot distinguish parameterisations that coincide at
+68 bytes.
