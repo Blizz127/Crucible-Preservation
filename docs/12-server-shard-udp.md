@@ -306,3 +306,45 @@ Note the ordering caveat that broke a first reading of that pattern: the `51`
 channel carries the type-1 disconnect as well as Connect, so "consecutive
 packets on the channel" and "consecutive Connect packets" are not the same
 series.
+
+
+## The checksum is NOT the blocker (2026-09-17 20:47)
+
+A clean automated run with the full-forge Accept leading the probe:
+
+- the forged datagram is the client's own `Connect` with every header field
+  rewritten to a valid Accept, `ServerShardId` set, the remaining payload
+  zeroed, the length unchanged, and the trailer repaired by CRC linearity —
+  so its checksum is correct *by construction*, whatever the coverage is;
+- variants with `IsReliable` set and with the client's own sequence were
+  tried alongside it.
+
+Result: 40 `Connect` retries, 122 control packets, one type-1, disconnect.
+Identical to every previous session. `RemoteSequence` stayed at 1.
+
+**So neither the checksum nor the Accept payload is what stops this.** Both
+were plausible and both are now eliminated by construction rather than by
+argument. That is worth more than it sounds — the `51` trailer had consumed a
+lot of effort and eight eliminated theories, and it turns out not to matter.
+
+What is left, in rough order of likelihood:
+
+1. **The transport connection is never established.** The client sends type-2
+   on the `f0 01` channel 2/second throughout and its `RemoteSequence` there
+   stays 0 from first packet to last. If type 2 is a connection handshake
+   rather than a keepalive, nothing on the `51` channel would be looked at
+   until it completes. Our type-2 mirror uses the provably-correct checksum
+   rule, so if it is being rejected the fault is in a *field*, not the
+   framing — the obvious suspects being `RemoteSequence` (we echo theirs;
+   they always send 0) and the initial `LocalSequence`.
+2. **The prefix is a token we are meant to choose, not echo.** It is constant
+   per channel per session (`81` on `51`, `240` on `f0 01`) and matches no
+   length, counter or `BasePacket` type value. A server-side identifier the
+   client learns elsewhere — the hub handshake, or the `GameInstanceId` /
+   nonce we currently send as zeros — would fit.
+3. **Source address/port matching** beyond what we do (we reply from the
+   bound socket to the sender, which should be right).
+
+The next probe should therefore vary the **type-2 reply** fields, not the
+Accept. That channel is the one where our checksum is known-good, which makes
+it the only place a field-level mistake can be isolated cleanly.
