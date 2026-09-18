@@ -380,46 +380,57 @@ def build_shard(prefix, packet_type, local_seq, remote_seq, payload=b"",
     return prefix + region + crc.to_bytes(4, "big")
 
 
-def accept_variants(prefix, region, their_seq, our_seq, shard_id):
-    """Candidate shapes for the Accept reply to a shard Connect.
+def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
+    """Accept shapes, revised after the 2026-09-17 20:04 session.
 
-    Unlike the hub, the client re-sends Connect about twice a second for the
-    ~4 seconds it spends in ConnectingToServerShard, so several shapes can be
-    tried per READY instead of one per reconnect.
+    That session answered all 166 datagrams with nine shapes and the client
+    re-sent Connect 40 times regardless, so none was accepted. It also showed
+    what the earlier guessing could not:
 
-    Accept (rva 0xe25eb0) deserialises as the base Packet header plus a single
-    u8 ServerShardId. What is NOT known is the transport prefix rule - the
-    client used one byte (0x51) on Connect and two (0xf0 0x01) on its type-2
-    control packet, matching none of the BasePacket type values - so several
-    variants differ only in that.
+    - the prefix is a CHANNEL id, constant per channel (`51` carries Connect
+      and the type-1 disconnect, `f0 01` carries the type-2 control stream);
+    - the two channels checksum differently - `f0 01` is plain
+      crc32(region), the `51` channel reproduces as nothing.
 
-    The CRC is set correctly on all of them, but it is probably not checked:
-    the CRC helper (rva 0x4f20970) has exactly one caller in the whole
-    executable, and that caller is the SEND path (rva 0x4f23038). Nothing
-    validates it on receive.
+    The observable that matters is whether the client STOPS re-sending
+    Connect. These variants therefore attack the transport, not the payload:
+    the payload is a constant one-byte ServerShardId throughout.
     """
-    their_window = int.from_bytes(region[6:10], "big")
     sid = bytes([shard_id & 0xFF])
+    their_trailer = inbound[-4:]
+
+    def raw(pre, body):
+        """Assemble without recomputing the CRC, so a trailer can be forced."""
+        return pre + body
+
+    base_region = (b"\x00\x06" + our_seq.to_bytes(2, "big")
+                   + their_seq.to_bytes(2, "big") + b"\x00\x00\x00\x00"
+                   + b"\x00" + sid)
     return [
-        ("0 echo prefix, seq=ours, remote=theirs, 1-byte payload",
+        # Does the trailer matter at all? Reuse the client's own, and send a
+        # deliberately invalid one. If the client never checks, these behave
+        # the same as a correct CRC.
+        ("0 trailer copied verbatim from the client's packet",
+         raw(prefix, base_region + their_trailer)),
+        ("1 deliberately invalid trailer (deadbeef)",
+         raw(prefix, base_region + b"\xde\xad\xbe\xef")),
+        ("2 correct crc32(region), for comparison",
          build_shard(prefix, 6, our_seq, their_seq, sid)),
-        ("1 same but IsReliable set",
-         build_shard(prefix, 6, our_seq, their_seq, sid, reliable=1)),
-        ("2 mirror their SequenceWindow",
-         build_shard(prefix, 6, our_seq, their_seq, sid,
-                     seq_window=their_window)),
-        ("3 one-byte prefix 0x51",
-         build_shard(b"\x51", 6, our_seq, their_seq, sid)),
-        ("4 two-byte prefix f0 01",
+        # Maybe Accept belongs on the control channel, not the Connect one.
+        ("3 Accept on the f0 01 control channel",
          build_shard(b"\xf0\x01", 6, our_seq, their_seq, sid)),
-        ("5 no prefix at all",
-         build_shard(b"", 6, our_seq, their_seq, sid)),
-        ("6 LocalSequence mirrors theirs",
+        # Maybe the 51 channel wants a two-byte prefix like the other one.
+        ("4 two-byte prefix 51 00",
+         build_shard(b"\x51\x00", 6, our_seq, their_seq, sid)),
+        # Mirror the client's own framing as closely as possible.
+        ("5 mirror their sequence exactly",
          build_shard(prefix, 6, their_seq, their_seq, sid)),
-        ("7 empty payload",
+        ("6 RemoteSequence 1, as the client's own Connect carries",
+         build_shard(prefix, 6, our_seq, 1, sid)),
+        ("7 no payload byte",
          build_shard(prefix, 6, our_seq, their_seq, b"")),
-        ("8 zero prefix byte (BasePacket::Unencrypted)",
-         build_shard(b"\x00", 6, our_seq, their_seq, sid)),
+        ("8 reply as type 2 on the control channel",
+         build_shard(b"\xf0\x01", 2, our_seq, their_seq, b"\x00")),
     ]
 
 
@@ -470,7 +481,7 @@ def shard_reply(data, state):
         shard_id = int(os.environ.get("CRUCIBLE_SHARD_ID", "0"))
         if os.environ.get("CRUCIBLE_SHARD_PROBE") == "1":
             variants = accept_variants(prefix, region, their_seq,
-                                       state["seq"], shard_id)
+                                       state["seq"], shard_id, data)
             i = state.get("variant", 0)
             state["variant"] = i + 1
             name, out = variants[i % len(variants)]
