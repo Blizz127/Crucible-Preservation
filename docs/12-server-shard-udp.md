@@ -387,3 +387,48 @@ Two cautions on reading that:
 313 replies were sent with no socket errors, and our listener is bound to
 `127.0.0.1:18878` replying to the sender, so delivery itself is not in
 question.
+
+
+## The `51` channel checksum, SOLVED (2026-09-17 21:0x)
+
+```
+crc32( datagram[1:-4] + HIDDEN + b"\x00\x00\x00\x00" ) == trailer
+HIDDEN = 792cce7f   for 73-byte datagrams
+```
+
+The region after the 1-byte prefix, then **four bytes that are never
+transmitted**, then the zeroed `Crc32` slot. Every one of the eight
+eliminated theories missed it for the same reason: they all assumed the input
+was a contiguous slice *of the datagram*.
+
+Method, which is reusable: consecutive `Connect` datagrams differ in exactly
+one byte (the `LocalSequence` low byte) plus the trailer. For a CRC, the
+trailer's XOR delta therefore pins the **distance from that byte to the end
+of the checksummed input** — `raw_crc0(delta_byte + N zeros)`. That distance
+is 72 for every pair, putting the end at datagram offset 77, four bytes past
+a 73-byte datagram. Solving the affine system for an 8-byte suffix then gives
+a value that is constant across all 46 Connects *and* across two sessions,
+and reproduces 46 of 46 captured trailers by direct computation.
+
+The hidden four bytes are length-dependent (a 16-byte type-1 wants
+`5223f476`, and even that does not hold for both samples), which is the
+signature of a value at the *start* of the client's buffer rather than a
+field on the wire — a suffix solve emulates a prefix with a length-dependent
+constant.
+
+### And it is still not the blocker
+
+An Accept built with that exact formula, at the same 73-byte length so the
+known hidden value applies, was sent and rejected like every other: 40
+`Connect` retries, `RemoteSequence` unmoved, disconnect
+(`snapshots/shard-session-solvedcrc-20260917.log`).
+
+The most likely reading is that `HIDDEN` is buffer state on the *sender's*
+side, so the value the client will expect on a packet it *receives* is not
+the value it uses on packets it *sends*. That is consistent with everything
+seen: constant per length, identical across sessions and users, and invisible
+on the wire.
+
+If so, the remaining unknown is small and specific — what four bytes the
+client's receive buffer holds ahead of the datagram — and it is the last
+thing between here and a shard handshake.
