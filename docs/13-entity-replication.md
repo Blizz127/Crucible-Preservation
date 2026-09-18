@@ -60,10 +60,52 @@ EntityUpdateMessage = RelativeId | u8 TypeAndFlags        (body at 0x4b9daa0)
   zigzag vectors (`0→00`, `-1→01`, `1→02`, `-2→03`) and LEB128 vectors
   (`127→7f`, `128→80 01`, `300→ac 02`).
 
-The `<PayloadSize bytes>` blob is the component data. That is where the real
-work lives.
+The `<PayloadSize bytes>` blob is the component data.
 
-## Why this is the long pole
+## Entities are spawned by ASSET REFERENCE, not by serialising components
+
+This is the finding that changes the size of the job, and it came from
+following `SliceEntryId` rather than assuming.
+
+`SliceEntryId` (wrapper `0x4b9e620`, body `0x4bfb1d0`) is
+`{ StringAsset, Slice }`, and the id is a **varint** — the body branches on
+`0x7f`, `0x3fff`, `0x1fffff`, `0xfffffff`, the exact 7/14/21/28-bit LEB128
+boundaries. It is an interned **asset hash**, not inline data.
+
+The client resolves that hash locally. Every level ships its own map in
+`levels.pak`, e.g.
+`levels/practicearena/commondata/stringhashlibrary.xml`, an `AssetHashMap`
+of 907 entries, 436 of them `slices/...` paths:
+
+```
+<AssetHashMap Size="907">
+    <Elmt00000003 Key="9256072"   Value="slices/player/marine/marine_character" />
+    ...              Key="501823405" Value="slices/player/hero/hero_character"
+```
+
+(Extract it yourself with
+`python3 tools/pak.py cat <game>/levels.pak levels/practicearena/commondata/stringhashlibrary.xml`;
+it is game content and is deliberately not committed here.)
+
+The console command `SpawnEntityByArchetype` agrees: its usage string is
+*"SpawnEntityByArchetype requires a slice name and optional count"*, and the
+matching RPC struct is
+`DebugComponent::SendDebugSpawnEntityFromArchetypePathRpcStruct`
+= `{ archetypePath, spawnCount }`.
+
+So **construction is by reference**: the server names a slice the client
+already has on disk, and the archetype supplies every component and its
+defaults. The hundreds of `SerializeAuthorityTo*Properties` implementations
+are for *property deltas* on an already-constructed entity, driven by the
+replication bitset — they are not required to bring an entity into existence.
+
+That reorders the work substantially. Spawning one entity needs:
+the `EntityUpdates` envelope (mapped above), `RelativeId` (done),
+the `TypeAndFlags` byte, a `SliceEntryId` varint, and whatever minimal
+property set the client insists on — not a reimplementation of the component
+serialisers.
+
+## Why the payload is still the long pole for *gameplay*
 
 The envelope above is small and tractable. The payload is not. The executable
 carries hundreds of generated
@@ -89,10 +131,15 @@ the whole entity stream and the client's only feedback is a disconnect.
    server→client — so there is no traffic to learn from. The only sources are
    the generated serialisers in the binary and careful replay against the
    client.
-4. **One entity, one component.** Spawn something inert and see whether the
-   client accepts it, before attempting a player.
+4. **Spawn one entity by slice reference.** Pick a harmless slice from the
+   level's own `AssetHashMap`, send a single `EntityUpdates`, and see whether
+   the client instantiates it. This is now a small experiment rather than a
+   port of the component layer.
+5. **Spawn a player.** `slices/player/hero/hero_character` (hash `501823405`
+   in practicearena) or `marine_character` (`9256072`), then whatever input
+   and property flow the client needs to control it.
 
-Step 4 is where "playable" starts, and it is a long way past step 1. `docs/02`
-files this as Phase 4.2; nothing found today shortens it. What today did
-establish is that the two routes which *would* have shortened it — a listen
-server, and starting a level locally — are both closed (`docs/12`).
+Steps 4-5 are where "playable" starts. `docs/02` files this as Phase 4.2, and
+the asset-reference finding above shortens it — but does not remove it, and
+neither of the two routes that would have removed it survives: a listen server
+and starting a level locally are both closed (`docs/12`).
