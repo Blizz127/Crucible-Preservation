@@ -150,3 +150,36 @@ has to drive entity replication, and the executable carries hundreds of
 implementations across gameplay components (`docs/10`), plus `EntityUpdates`
 (id 10) and `EntityRpcs` (id 11) channels. `docs/02` files a playable server
 as Phase 4.2 and that remains the right estimate.
+
+## The listen-server shortcut does not exist
+
+Worth ruling out explicitly, because it would have replaced the whole
+server-writing effort: many revivals get gameplay by making the shipped
+client host its own match.
+
+The client binary *looks* like it might. It carries hundreds of `sv_` cvars
+(`sv_EnableLAN`, `sv_LanHost`, `sv_DebugDisableNonceChecks`,
+`sv_ClientGameServicePort`, `sv_MaxUnackedPacketCount`, ...), a `NoCurses`
+cvar of the sort a dedicated-server console would use, the strings
+`DedicatedServer` and `dedicated`, console commands `connect` / `disconnect`
+("Connects to the game service and game server"), and the packet type names
+`NovaGameServerPackets::EntityUpdates` / `EntityRpcs` / `EntityMigration`.
+
+It cannot. Two checks settle it:
+
+- **No server dispatcher.** `NovaGameServerPackets::DispatchPacket`,
+  `::Connect` and `::Accept` do not appear anywhere in the executable, while
+  their `NovaGameClientPackets` counterparts do. The `NovaGameServerPackets::*`
+  strings that *are* present are the shared type names for packets the client
+  SENDS; the code that receives and dispatches them is absent.
+- **No server executable.** `bin/` contains only `Crucible.exe` and
+  `GameCrashUploader.exe`. Amazon shipped the dedicated server as a separate
+  binary that was never in the Steam depot.
+
+The `sv_` cvars are a shared registry declared in common code, not evidence of
+a server build. `sv_EnableLAN` in particular is client-side: its only error
+string is emitted from `NovaGameServiceClient::ClientConnect` and it selects
+which host the CLIENT resolves for the hub (`sv_LanHost`).
+
+So a community server has to be written from scratch, which is what
+`docs/02` Phase 4.2 already assumed.
