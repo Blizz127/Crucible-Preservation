@@ -526,3 +526,48 @@ is a straight copy).
 itself. With `net_UdpUseEncryption 0` it is presumably a near-passthrough,
 and the difference between its input and output is the whole remaining
 mystery. Fitting more formulas to wire bytes cannot resolve it.
+
+
+## The unwrap is conditional, and that is the whole story
+
+The unwrap object is `[connection + 0x20]`, and the call is guarded:
+
+```
+0x4f1ea9e  mov  rcx, qword [r13+0x20]   ; the crypto/endpoint object
+0x4f1eaa8  test rcx, rcx
+0x4f1eaab  je   0x4f1eb18               ; NULL -> skip the unwrap entirely
+...
+0x4f1eae0  call qword [rax+0x30]        ; otherwise unwrap into rbp+0x70
+```
+
+If that pointer is NULL the unwrap is skipped and the serialiser is built
+over the received bytes as they arrived, so the checksum would be a plain
+`crc32` over the datagram. **The client's own `51`-channel packets do not
+satisfy that.** Therefore the pointer is *not* NULL on that connection:
+something is still wrapping shard traffic despite
+
+```
+net_UdpUseEncryption 0
+net_EnableDtlsPreSharedKeys 0
+```
+
+and the `f0 01` channel matching plain `crc32(region)` fits the same picture
+— it is the unwrapped one.
+
+This reframes the problem completely. It is not a checksum puzzle; it is that
+**shard traffic is still being wrapped**, and we neither apply the wrap when
+sending nor reverse it when reading. Curve-fitting the trailer was doomed
+from the start.
+
+Two candidate causes, in order:
+
+1. **We enable it ourselves.** `GetServerShardAddress::Success` hands the
+   client a `ConnectionNonce` and `PreSharedKey`, which is exactly what
+   `net_EnableDtlsPreSharedKeys` describes as "kickstarting DTLS". We send 64
+   zero bytes of key material — plausibly configuring encryption rather than
+   declining it. The hub protocol may have a way to signal "no shard
+   crypto" that we are not using.
+2. The cvars govern only the *client's own* outbound choice and the shard
+   connection takes its setting from elsewhere.
+
+Cause 1 is directly testable from our side and costs one run.
