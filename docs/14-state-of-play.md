@@ -29,9 +29,29 @@ CRUCIBLE_REPLY=hubrpc CRUCIBLE_HUB_SHARDADDR=reply \
 CRUCIBLE_SHARD_REPLY=accept CRUCIBLE_SHARD_PROBE=1 python3 server/shard_stub.py
 ```
 
-Then launch Crucible, PLAY, pick a mode, READY. `user.cfg` already carries
-`net_SslEnablePinning 0`, `net_UdpUseEncryption 0` and
-`net_EnableDtlsPreSharedKeys 0`; all three are required.
+Then just **launch Crucible** — the UI click path is no longer needed. The
+game root now carries an `autoexec.cfg` (copy in
+`snapshots/autoexec-autoconnect-20260917.cfg`):
+
+```
+cl_serveraddr 127.0.0.1
+cl_serverport 18877
+connect
+```
+
+`cl_serveraddr` is described in the binary as *"The NovaGameHub hostname to
+connect to"* (default `localhost`), `cl_serverport` pairs with it, and
+`connect` is *"Connects to the game service and game server"*. CryEngine runs
+`autoexec.cfg` after system init — later than `user.cfg`, and much later than
+the `+map` launch argument that crashed this build early (`docs/08`) — so it
+is the right place for a command that needs the game up. `connect` is kept
+last so a rejection cannot abort parsing of the cvars above.
+
+If that works it replaces PLAY → mode → READY entirely, which matters because
+each test previously needed a human at the keyboard.
+
+`user.cfg` already carries `net_SslEnablePinning 0`, `net_UdpUseEncryption 0`
+and `net_EnableDtlsPreSharedKeys 0`; all three are required.
 
 Run `python3 server/test_hubrpc.py` after touching the hub code.
 
