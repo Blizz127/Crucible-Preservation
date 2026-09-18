@@ -646,3 +646,42 @@ remaining blocker is one transform, and the honest options are:
 
 Everything up to the shard is working and automated: hub handshake, level
 load, shard address handoff, and a launch-to-result loop that needs no human.
+
+
+## Every cvar switch tried, none disables the wrap
+
+Set in `autoexec.cfg` (which demonstrably runs — `connect` from the same file
+is what drives the whole automated loop):
+
+```
+net_UdpUseEncryption 0
+net_EnableDtlsPreSharedKeys 0
+net_UdpCompressor 0
+net_UseDtlsCookies 0
+```
+
+`51`-channel packets still match a plain `crc32(region)` **zero** times. The
+complete list of UDP/DTLS/crypto cvars in the binary was enumerated; nothing
+else looks like a master switch.
+
+The wire bytes are also not raw deflate, zlib or gzip at any offset, so
+`net_UdpCompressor` was not the transform either.
+
+What is certain: `DecodePacket` drives **OpenSSL** — its own assert reads
+*"Failed to write into our openSSL read bio wrote %d desired %d"* — so the
+datagram is fed through an SSL BIO before anything reads it. That is the
+transform, it is on, and no configuration reachable from here turns it off.
+
+### Recommendation
+
+Two ways forward, and they are genuinely different in cost:
+
+- **Debugger.** Break on `DecodePacket` (`0x4fbc0b0`), read the input buffer
+  and the output buffer at `rbp+0x70`. The difference between them is the
+  entire remaining unknown, and it is one breakpoint. This is the tool this
+  setup lacks and the reason the static route has been so expensive.
+- **Implement the peer side.** A DTLS-PSK endpoint using the
+  `ConnectionNonce` / `PreSharedKey` the hub already hands out, via
+  OpenSSL/wolfSSL bindings rather than Python's stdlib. Larger, and worth
+  doing only after the debugger confirms what the framing actually is —
+  the wire bytes do not look like standard DTLS records.
