@@ -283,6 +283,19 @@ reproduces exactly. On the `51` channel none of the following does:
   a zero key (we hand the client an all-zero PreSharedKey), adler32, over the
   region and over the whole datagram.
 
+**And the CRC is validated on receive**, which an earlier note in this file
+denied. `NovaNet::UdpBaseConnection::ProcessReceived` inlines its own copy of
+the same table-driven CRC-32 (loop at rva `0x4f20aa0`) and discards
+mismatches — *"Crc32 mismatch, discarding packet"* (`0x4f20b9e`) and
+*"Failed to deserialize Crc32, discarding packet"*. The earlier claim rested
+on the CRC helper at `0x4f20970` having a single caller on the send path;
+the receive path simply does not call it.
+
+It checksums `GetData()[0 : GetSize()-4]` — the whole buffer bar the trailer.
+That makes our `f0 01` replies provably correct, and it makes the `51`
+channel stranger, not less strange: no start offset reproduces the client's
+own trailer, so the bytes it checksums there are not the bytes on the wire.
+
 The one real handle: restricted to the 73-byte Connect packets, the solved
 seeds form a *structured* series rather than a random one — the XOR between
 consecutive packets alternates, with `0x78c05360` recurring on every other
