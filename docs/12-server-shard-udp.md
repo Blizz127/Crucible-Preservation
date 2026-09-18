@@ -615,3 +615,34 @@ handshake needs us to either
 
 The second is much cheaper if it exists, and finding out is a static read of
 one function rather than another fitted formula.
+
+
+## Re-asserting the cvars later does not help
+
+`net_UdpUseEncryption 0` and `net_EnableDtlsPreSharedKeys 0` were added to
+`autoexec.cfg` as well as `user.cfg`, so they are definitely set long before
+the shard connection is made. Result: 41 `51`-channel packets, **0** matching
+a plain `crc32(region)`. The wrap is still on.
+
+So those cvars do not govern the shard link, and the switch — if one exists —
+is elsewhere. Note also that the wire bytes are **not standard DTLS records**:
+a DTLS record starts with a content type in `0x14`-`0x17` then `fe fd`, and
+these start `0x51` / `0xf0 01`. Whatever `DecodePacket` reverses, it is not a
+textbook DTLS record layer, which makes "just run a DTLS server" less
+obviously the answer than it first looked.
+
+### Where that leaves the training-arena goal
+
+The client reaches `ConnectingToServerShard` reliably and automatically. The
+remaining blocker is one transform, and the honest options are:
+
+1. **Read `DecodePacket`'s real decode path** (`0x4fbc17b` onward) and
+   implement the inverse. This is the only route that does not depend on
+   guessing, and the function is bounded — a few hundred bytes of
+   disassembly.
+2. **Attach a debugger to the client** and read the buffer before and after
+   the unwrap. That answers in minutes what static reading answers in hours,
+   and is the tool genuinely missing from this setup.
+
+Everything up to the shard is working and automated: hub handshake, level
+load, shard address handoff, and a launch-to-result loop that needs no human.
