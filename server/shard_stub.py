@@ -437,6 +437,26 @@ def shard_reply(data, state):
     if ptype == 2:
         return build_shard(prefix, 2, state["seq"], their_seq,
                            payload=region[11:12] or b"\x00")
+    # Anything that is not the type-2 control packet or a Connect retry means
+    # the client accepted our Accept and moved on - that is the only evidence
+    # available that the handshake landed, since nothing else is logged. Use
+    # it to try a spawn, alternating the two update types ValidateUpdate
+    # allows, so one run answers the last open question instead of two.
+    if ptype not in (2, 5) and os.environ.get("CRUCIBLE_SHARD_SPAWN", "1") == "1":
+        n = state.get("spawn", 0)
+        state["spawn"] = n + 1
+        update_type = (ENTITY_UPDATE_TYPE_3, ENTITY_UPDATE_TYPE_4)[n % 2]
+        slice_hash = int(os.environ.get("CRUCIBLE_SPAWN_SLICE", "501823405"))
+        msg = build_entity_message(
+            state.get("next_entity", 1),
+            pack_type_and_flags(update_type, bit4=True),
+            slice_hash=slice_hash)
+        state["next_entity"] = state.get("next_entity", 1) + 1
+        log("      SPAWN probe: update type %d, slice %d, entity %d"
+            % (update_type, slice_hash, state.get("next_entity", 1) - 1))
+        return build_entity_updates(prefix, state["seq"], their_seq, [msg],
+                                    game_time_ms=state.get("game_time", 0))
+
     if ptype == 5:
         shard_id = int(os.environ.get("CRUCIBLE_SHARD_ID", "0"))
         if os.environ.get("CRUCIBLE_SHARD_PROBE") == "1":
