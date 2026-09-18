@@ -220,16 +220,34 @@ And the two channels do **not** checksum the same way:
 So the `51` channel authenticates its packets with something that is not a
 CRC over their own bytes.
 
-### Nothing we sent was ever accepted
+### RemoteSequence never moved — but it is not an ack
 
-`RemoteSequence` is the peer's highest received sequence. Across 166
-datagrams and nine different Accept shapes it **never moved** — it stayed at
-1 on the `51` channel and 0 on the `f0 01` channel from the first packet to
-the last. The client was not rejecting our Accept's *contents*; it was
-discarding our datagrams before they reached that layer.
+Across 166 datagrams and nine Accept shapes, `RemoteSequence` stayed at 1 on
+the `51` channel and 0 on the `f0 01` channel from first packet to last.
 
-That reframes the remaining work. The open question is no longer "which
-Accept payload" but "what makes a datagram acceptable on the `51` channel" —
-and the unreproducible trailer is the obvious suspect, since it is the one
-thing about those datagrams we cannot construct. The two anomalies are
-probably the same anomaly.
+It is tempting to read that as "the client received nothing from us", and
+that reading was written here first. It is **wrong**: the *first* packet on
+the `51` channel of a fresh connection already carries `RemoteSequence = 1`,
+before anything could have been received. So the field is not a simple
+"highest sequence seen from the peer" — it may be a stream or connection
+index, or carry an initial-value convention — and its not moving proves
+nothing either way.
+
+What the session *does* show is behavioural: the client re-sent `Connect` 40
+times over ~30 seconds and then emitted the type-1 packet and disconnected.
+That is consistent with never receiving an Accept it accepted, but it does
+not localise the failure to a layer.
+
+So the honest position is that we do not yet know whether our datagrams are
+discarded by the transport or rejected by the Accept handler. Two candidate
+next probes, in order of cost:
+
+1. **Reply on the `f0 01` channel only**, where our checksum provably matches
+   the client's own rule, and see whether anything in the client's behaviour
+   changes. That isolates "can it accept our datagrams at all" from "is the
+   `51` trailer wrong".
+2. **Crack the `51` trailer.** Solving the affine system for the required
+   CRC seed per Connect packet gives a structured, non-random series — the
+   XOR between consecutive packets alternates, with `0x78c05360` recurring on
+   every other step. That is a real handle, and it implies the checksum
+   covers something that changes once per packet and is not in the datagram.
