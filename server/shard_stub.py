@@ -380,6 +380,49 @@ def build_shard(prefix, packet_type, local_seq, remote_seq, payload=b"",
     return prefix + region + crc.to_bytes(4, "big")
 
 
+def _raw_crc0(data):
+    """CRC-32 register with init 0 and no final xor."""
+    return zlib.crc32(data, 0xFFFFFFFF) ^ 0xFFFFFFFF
+
+
+def forge_from(inbound, edits):
+    """Mutate the client's own datagram and repair the trailer by linearity.
+
+    This sidesteps the unsolved `51` channel checksum entirely. CRC-32 is
+    linear, so for two equal-length buffers
+
+        crc(M1) ^ crc(M2) = raw_crc0(M1 ^ M2)
+
+    and with init 0 a run of leading zero bytes leaves the register at zero.
+    So the new trailer can be computed from the old one, the bytes changed,
+    and their distance from the END of the checksummed region - **without
+    knowing where that region starts**, which is the one thing we could not
+    work out.
+
+    The trailer is the last four bytes, so the region ends at len-4. `edits`
+    is {datagram_offset: new_byte}; the length must not change, because the
+    identity above only holds for equal lengths.
+
+    Validated against the f0 01 channel, where the covered region IS known:
+    predicting a mutated packet's trailer this way reproduces the directly
+    computed CRC exactly.
+    """
+    p = bytearray(inbound)
+    end = len(p) - 4
+    old_tail = int.from_bytes(p[end:], "big")
+    for off, val in edits.items():
+        if off >= end:
+            raise ValueError("edit at %d is inside the trailer" % off)
+        p[off] = val
+    delta = bytes(a ^ b for a, b in zip(inbound[:end], bytes(p[:end])))
+    first = next((i for i, b in enumerate(delta) if b), None)
+    if first is None:
+        return bytes(inbound)
+    new_tail = old_tail ^ _raw_crc0(delta[first:])
+    p[end:] = new_tail.to_bytes(4, "big")
+    return bytes(p)
+
+
 def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
     """Accept shapes, revised after the 2026-09-17 20:04 session.
 
@@ -400,35 +443,37 @@ def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
     their_trailer = inbound[-4:]
 
     def raw(pre, body):
-        """Assemble without recomputing the CRC, so a trailer can be forced."""
         return pre + body
 
     base_region = (b"\x00\x06" + our_seq.to_bytes(2, "big")
                    + their_seq.to_bytes(2, "big") + b"\x00\x00\x00\x00"
                    + b"\x00" + sid)
+
+    # The forged shapes come FIRST: they are the only ones whose trailer is
+    # guaranteed valid on the 51 channel, because they are the client's own
+    # packet with a few bytes changed and the CRC repaired by linearity.
+    # Everything after them is a fallback that assumes crc32(region), which
+    # the client's own 51-channel packets demonstrably do not satisfy.
+    forged_type_only = forge_from(inbound, {2: 0x06})
+    forged_with_sid = forge_from(inbound, {2: 0x06, 12: shard_id & 0xFF})
+    forged_seq = forge_from(inbound, {2: 0x06, 4: (our_seq & 0xFF)})
     return [
-        # Does the trailer matter at all? Reuse the client's own, and send a
-        # deliberately invalid one. If the client never checks, these behave
-        # the same as a correct CRC.
-        ("0 trailer copied verbatim from the client's packet",
+        ("0 FORGED: client's Connect, PacketType 5->6, CRC repaired",
+         forged_type_only),
+        ("1 FORGED: type 5->6 and first payload byte = ServerShardId",
+         forged_with_sid),
+        ("2 FORGED: type 5->6 and our own LocalSequence",
+         forged_seq),
+        ("3 trailer copied verbatim from the client's packet",
          raw(prefix, base_region + their_trailer)),
-        ("1 deliberately invalid trailer (deadbeef)",
-         raw(prefix, base_region + b"\xde\xad\xbe\xef")),
-        ("2 correct crc32(region), for comparison",
+        ("4 correct crc32(region), for comparison",
          build_shard(prefix, 6, our_seq, their_seq, sid)),
-        # Maybe Accept belongs on the control channel, not the Connect one.
-        ("3 Accept on the f0 01 control channel",
+        ("5 Accept on the f0 01 control channel",
          build_shard(b"\xf0\x01", 6, our_seq, their_seq, sid)),
-        # Maybe the 51 channel wants a two-byte prefix like the other one.
-        ("4 two-byte prefix 51 00",
+        ("6 two-byte prefix 51 00",
          build_shard(b"\x51\x00", 6, our_seq, their_seq, sid)),
-        # Mirror the client's own framing as closely as possible.
-        ("5 mirror their sequence exactly",
-         build_shard(prefix, 6, their_seq, their_seq, sid)),
-        ("6 RemoteSequence 1, as the client's own Connect carries",
+        ("7 RemoteSequence 1, as the client's own Connect carries",
          build_shard(prefix, 6, our_seq, 1, sid)),
-        ("7 no payload byte",
-         build_shard(prefix, 6, our_seq, their_seq, b"")),
         ("8 reply as type 2 on the control channel",
          build_shard(b"\xf0\x01", 2, our_seq, their_seq, b"\x00")),
     ]
