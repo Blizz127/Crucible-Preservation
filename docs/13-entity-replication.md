@@ -97,9 +97,21 @@ RelativeId zigzag varint = 1
   | 1 | `3`, else *"Unexpected update type coming from peer server"* | `0x4bb4fc8` |
   | 0 | `4` | `0x4bb50a8` |
 
-  So the spawn type is `3` or `4`, not one of sixteen. Which one a
-  server→client spawn carries is **the single remaining unknown**, and it is
-  a two-way choice the client settles in one run.
+  So where the role is 0 or 1 the spawn type is `3` or `4`, not one of
+  sixteen.
+
+  **But the role is not obviously 0 or 1.** The replicator's constructor
+  (`0x4bb1500`, which installs vtable `0x6d40f28`) initialises `[this+0x48]`
+  to **2**, and no other write of `0` or `1` to that dword appears in the
+  surrounding code. Role 2 takes neither branch: it falls through to
+  `0x4bb50f8`, a property-subscriber path that never looks at the type
+  nibble. So on the client's actual role the type may not be gated by
+  `ValidateUpdate` at all, and the real handler selection happens elsewhere.
+
+  The practical consequence is unchanged — cycling `3` and `4` is still the
+  right probe — but it would be wrong to claim the answer is certainly one of
+  those two. It is the value that reaches the right handler, and that is
+  observable only at runtime.
 
   `pack_type_and_flags` / `unpack_type_and_flags` / `build_entity_message` in
   `server/shard_stub.py`.
