@@ -685,3 +685,34 @@ Two ways forward, and they are genuinely different in cost:
   OpenSSL/wolfSSL bindings rather than Python's stdlib. Larger, and worth
   doing only after the debugger confirms what the framing actually is —
   the wire bytes do not look like standard DTLS records.
+
+
+## Proposed diagnostic: neutralise the receive CRC gate (needs a decision)
+
+`tools/patch_crc_gate.py` is written but **not applied** — running it was
+blocked, and modifying the game executable is the user's call, not a tool's.
+
+It changes **one byte** in `UdpBaseConnection::ProcessReceived`:
+
+```
+0x4f20b5a  cmp ebx, dword [rsp+0xb8]    ; computed vs received Crc32
+0x4f20b61  je  0x4f20baf                ; 74 4c  ->  eb 4c   (unconditional)
+```
+
+making "Crc32 mismatch, discarding packet" unreachable. It backs up to
+`Crucible.exe.pre-crcgate` and `--revert` restores it.
+
+Why it is worth doing: the checksum is currently the only thing we cannot
+compute, because it is taken over the OpenSSL-unwrapped buffer rather than
+the wire. Removing it as a variable answers a question nothing else can:
+
+- **Accept now works** → the checksum was the sole blocker, the rest of our
+  shard handshake is correct, and the arena should be reachable. The honest
+  follow-up is then to reverse the unwrap so the patch is not needed.
+- **Accept still refused** → the checksum was a red herring and the problem
+  is further up, which redirects everything.
+
+Scope notes, for the record: it touches NovaNet's UDP transport, **not** any
+anti-cheat component; EasyAntiCheat is untouched and does not start in this
+build anyway; and it is applied to a local copy for interoperability with a
+local server, the same basis as the existing pak patches.
