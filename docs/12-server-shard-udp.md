@@ -571,3 +571,47 @@ Two candidate causes, in order:
    connection takes its setting from elsewhere.
 
 Cause 1 is directly testable from our side and costs one run.
+
+
+## `DtlsEndpoint::DecodePacket` has a passthrough, and we are not on it
+
+The unwrap is `NovaNet::DtlsEndpoint::DecodePacket` (rva `0x4fbc0b0`). Its
+first test is:
+
+```
+0x4fbc0c9  cmp  qword [this+0xc8], 0    ; the SSL context
+0x4fbc0dd  jne  0x4fbc17b               ; -> real DTLS decode
+...
+0x4fbc167  mov  [outlen], edi           ; else: length unchanged
+0x4fbc173  mov  rax, r14                ; and buffer returned as-is
+```
+
+So with no SSL context it is a **passthrough**, and the checksum would then
+be a plain `crc32` over the received bytes. The client's own `51`-channel
+packets do not satisfy that, so on the shard connection `[this+0xc8]` is
+non-null: **an SSL context exists and the DTLS path runs**, despite
+`net_UdpUseEncryption 0` and `net_EnableDtlsPreSharedKeys 0`.
+
+That is consistent with the `f0 01` channel matching plain `crc32(region)`
+(passthrough) while `51` does not (decoded), and with the payload still
+reading as plaintext: a completed DTLS session with a null or unused cipher
+still *frames* records even when it does not encrypt them, and framing is
+enough to make the wire bytes differ from what gets checksummed.
+
+### What this means for the goal
+
+Reaching the training arena needs the shard handshake, and the shard
+handshake needs us to either
+
+- **speak DTLS** on that socket (a real DTLS server with PSK, using the
+  `ConnectionNonce` / `PreSharedKey` we hand out — Python has no stdlib DTLS,
+  so this means wolfSSL/OpenSSL bindings or an external process), or
+- **find the switch that leaves `[this+0xc8]` null.** `net_UdpUseEncryption`
+  was the obvious candidate and demonstrably is not sufficient. The next
+  places to look are `DtlsEndpoint::ConstructEndpointInternal` (rva string at
+  `0x6d8d020`) to see what decides whether a context is created, and whether
+  the hub can decline the whole thing by what it returns in
+  `GetServerShardAddress::Success`.
+
+The second is much cheaper if it exists, and finding out is a static read of
+one function rather than another fitted formula.
