@@ -90,28 +90,81 @@ padded 73-byte length and at the natural 17-byte length, under both the seed
 and suffix parameterisations, with and without `IsReliable` — are all
 rejected the same way: 40 `Connect` retries, then disconnect.
 
-The honest reading is that the sender-side derivation is **under-determined**:
+The honest reading was that the sender-side derivation is **under-determined**:
 it was fitted on one region length, so several formulas agree there and
-diverge elsewhere. Stop fitting. Read
-`UdpBaseConnection::ProcessReceived` around rva `0x4f209ef` and find what
-`GetData()`/`GetSize()` return for a *received* datagram; that pins the
-checksum input exactly.
+diverge elsewhere.
 
-## Next experiment, already armed
+> **Superseded 2026-09-18.** Do not go read `ProcessReceived` to pin the
+> checksum input. The checksum was removed from the equation entirely by
+> patching its branch out, and nothing changed — see *The checksum is a red
+> herring* below. The derivation being under-determined is probably still
+> true; it just is not what is blocking the handshake.
 
-`CRUCIBLE_SHARD_PROBE=1` cycles nine Accept shapes that hold the payload
-constant and vary the framing. The decisive one is **variant 3, the Accept
-sent on the `f0 01` channel**, where our checksum provably satisfies the
-client's own validator. Read it as:
+## The checksum is a red herring — settled 2026-09-18
 
-- **client stops re-sending `Connect`** → the `51` trailer was the whole
-  problem; concentrate there.
-- **no change** → the problem is above the transport and the trailer is a
-  distraction.
+`tools/patch_crc_gate.py` was applied, the client relaunched, and the patch
+**reverted**. The binary is back to original bytes; run `--check` to confirm.
+Evidence in `snapshots/host-boot-crcgate-20260918-184419/`.
+
+The one-byte patch made `74 4c` → `eb 4c` at file offset `0x4f1ff61`, so the
+`Crc32 mismatch, discarding packet` path in `UdpBaseConnection::ProcessReceived`
+was unreachable. **Behaviour did not change at all.** Same
+`ConnectTimeout`, same `Exceeded connection retry attempts`, same teardown.
+
+Two independent confirmations that the CRC never gated anything:
+
+- `grep -c Crc32` over **every** `NovaNetLogs/*.log` ever captured returns 0,
+  including the runs from before the patch. The discard branch was never taken.
+- The blocked-attempt ratio is identical either side of the patch: 85/90
+  pre-patch, 28/30 post-patch.
+
+So take the second branch of the old prediction: **the problem is above the
+transport.** Do not spend more time on the `51` trailer, and do not re-derive
+the checksum. The tool stays in the tree, reverted, so this does not get
+re-litigated.
+
+## What the run actually found, and it changes the method
+
+The client log states the real reason the retries go nowhere:
+
+```
+ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server
+shard while the UDP client connection was still open, failing the connect attempt
+```
+
+**28 of 30** `ConnectToServerShard` calls in the post-patch run were
+self-blocked this way (85 of 90 pre-patch). The client is not making 40
+connection attempts. It makes **about three**, each dying on `ConnectTimeout`;
+everything in between is refused by the client before a packet leaves.
+
+That means the 73-byte `Connect` datagrams arriving at the stub are the
+*reliable resend of one connection*, not fresh attempts — and it invalidates
+how `CRUCIBLE_SHARD_PROBE` tests:
+
+```
+connection 43392: variants used = [4,5,6,7,8,0,1,2,3, 3,3,3, 4,5,6,7,8,...]
+connection 55562: variants used = [7]
+```
+
+The probe cycles a **different Accept shape per datagram**, so no variant is
+ever held constant for the life of a connection, and across the whole session
+only variants 4 and 7 ever occupied the slot that matters — the reply to a
+connection's *first* `Connect`. Variants 0,1,2,3,5,6,8 have never actually
+been tested as a first reply. The earlier reading that "variant 3 was tried
+and did nothing" is not supported.
+
+**Fix the probe before drawing any more conclusions from it:** pin one variant
+per connection (key it off the source port, not a global counter) and let the
+whole ~4 s connection lifetime run under that single shape. `CRUCIBLE_SHARD_PROBE`
+in `server/shard_stub.py` needs to become per-connection state.
 
 Do not read `RemoteSequence` as an acknowledgement. It is 1 on the first
 `51`-channel packet of a fresh connection, before anything can have been
 received.
+
+`0x53` is new and appears exactly once, immediately before teardown
+(`530001000600010050089714f298`), followed 50 ms later by a clean FIN on the
+hub socket. Read it as the client's disconnect notification, not progress.
 
 ## After the handshake
 

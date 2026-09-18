@@ -1,0 +1,3 @@
+date=2026-09-18T18:38:12-05:00
+5887098a1d526c5f53e145e679e14c79  /home/blizz/.local/share/Steam/steamapps/common/Crucible/bin/Crucible.exe
+state: patched (/home/blizz/.local/share/Steam/steamapps/common/Crucible/bin/Crucible.exe)

@@ -1,7 +1,19 @@
 #!/usr/bin/env python3
 """Force the UDP receive CRC check to pass (revival tool, reversible).
 
-Why
+RESULT (2026-09-18): ran, answered NO, reverted.
+------------------------------------------------
+This was applied and the client relaunched. **Nothing changed** - same
+ConnectTimeout, same "Exceeded connection retry attempts", same teardown.
+`grep -c Crc32` over every NovaNetLogs/*.log ever captured is 0, including
+pre-patch runs, so the discard branch was never being taken in the first
+place. The checksum is not the gate; the problem is above the transport.
+
+Evidence: snapshots/host-boot-crcgate-20260918-184419/. Write-up: docs/14.
+The binary is reverted. There is no reason to run this again - it is kept
+only so the negative result cannot be re-litigated.
+
+Why (the original reasoning, preserved)
 ---
 The shard link (docs/12) runs every datagram through OpenSSL before anything
 reads it: `NovaNet::DtlsEndpoint::DecodePacket` writes into an SSL BIO, and

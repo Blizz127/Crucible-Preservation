@@ -1,0 +1,109 @@
+[09-18-2026:23:44:27.597705-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from Disconnected to ConnectingToGameRegistry
+[09-18-2026:23:44:27.597708-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToGameRegistry to ConnectingToHub
+[09-18-2026:23:44:30.680518-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToHub to LoadingLevel
+[09-18-2026:23:44:34.888012-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from LoadingLevel to LevelLoaded
+[09-18-2026:23:44:36.228174-GMT] NovaNet::NovaGameClient::SetClientGameState(): Level load duration was 5548 milliseconds
+[09-18-2026:23:44:36.228176-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client level loaded
+[09-18-2026:23:44:36.891062-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from LevelLoaded to ConnectingToServerShard
+[09-18-2026:23:44:36.891247-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:37.947845-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:37.948040-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:37.948041-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:38.950014-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:38.950165-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:38.950166-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:39.952176-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:39.952366-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:39.952366-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:40.954947-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:40.955121-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:40.955122-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:41.956990-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:41.957129-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:41.957130-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:42.955686-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:42.955980-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:42.955981-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:43.958338-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:43.958512-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:43.958513-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:44.962548-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:44.962718-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:44.962719-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:45.965377-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:45.965547-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:45.965547-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:46.965443-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:46.965652-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:46.965653-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:47.968957-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:47.969233-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:47.969234-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:48.971900-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:48.972236-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:48.972238-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:49.973504-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:49.973809-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:49.973810-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:50.975425-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:50.975603-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:50.975604-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:51.975931-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:51.976457-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:51.976457-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:52.979321-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:52.979569-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:52.979570-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:53.980564-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:53.980782-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:53.980782-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:54.985124-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:54.985424-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:54.985426-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:55.987683-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:55.988025-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:55.988026-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:56.988412-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:56.988604-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:56.988605-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:57.990320-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:57.990616-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:57.990617-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:58.994041-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:58.994272-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:58.994273-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:44:59.996851-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:44:59.997028-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:44:59.997029-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:45:01.001502-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:45:01.001747-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:45:01.001748-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:45:02.004513-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:45:02.004766-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:45:02.004767-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:45:03.006072-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:45:03.006253-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:45:03.006254-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:45:04.008258-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:45:04.008484-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:45:04.008484-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:45:05.009356-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:45:05.009545-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:45:05.009546-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Attempted to connect to a server shard while the UDP client connection was still open, failing the connect attempt
+[09-18-2026:23:45:05.377042-GMT] NovaNet::UdpClientConnection::Disconnect(): UdpClientConnection: Local endpoint disconnecting due to ConnectTimeout
+[09-18-2026:23:45:05.377325-GMT] NovaNet::ClientNetworkAgent::OnDisconnect(): ClientNetworkAgent: Network disconnected due to ConnectTimeout
+[09-18-2026:23:45:05.960904-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to ConnectingToServerShard
+[09-18-2026:23:45:05.961372-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-18-2026:23:45:06.964131-GMT] NovaNet::ClientNetworkAgent::OnConnectTimeout(): Exceeded connection retry attempts, the game will now stop attempting to connect to the NovaNet game server
+[09-18-2026:23:45:06.964134-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to Disconnecting
+[09-18-2026:23:45:06.964135-GMT] NovaNet::NovaGameClient::SetClientGameState(): Removing all entities after client disconnection
+[09-18-2026:23:45:06.964144-GMT] NovaNet::UdpClientConnection::Disconnect(): UdpClientConnection: Local endpoint disconnecting due to TerminatedByClient
+[09-18-2026:23:45:06.964308-GMT] NovaNet::ClientNetworkAgent::OnDisconnect(): ClientNetworkAgent: Network disconnected due to TerminatedByClient
+[09-18-2026:23:45:06.964318-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from Disconnecting to Disconnecting
+[09-18-2026:23:45:06.964319-GMT] NovaNet::NovaGameClient::SetClientGameState(): Removing all entities after client disconnection
+[09-18-2026:23:45:06.964322-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from Disconnecting to Disconnected
+[09-18-2026:23:45:06.964323-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from Disconnected to Disconnected
+[09-18-2026:23:45:06.964362-GMT] Info(): [Info][Meta] Match Phase is unknown (client not connected) and client state is Disconnected, last disconnect reason 'TerminatedByClient'
+[09-18-2026:23:45:06.989990-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from Disconnected to Disconnecting
+[09-18-2026:23:45:06.989992-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from Disconnecting to Disconnected
+[09-18-2026:23:45:09.897061-GMT] NovaNet::NovaGameServiceClient::OnDisconnect(): Client has been disconnected from the hub due to TerminatedByClient

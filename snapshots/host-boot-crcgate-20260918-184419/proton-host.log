@@ -1,0 +1,4 @@
+ProtonFixes[3743918] WARN: Skipping fix execution. We are probably running a unit test.
+Proton: Upgrading prefix from 11.0-100 to GE-Proton11-6 (/home/blizz/.local/share/Steam/steamapps/compatdata/1057240/)
+Proton: Prefix has an invalid version?! You may want to back up user files and delete this prefix.
+ProtonFixes[3743918] WARN: Skipping fix execution. We are probably running a unit test.
