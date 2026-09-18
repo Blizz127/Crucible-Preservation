@@ -251,3 +251,45 @@ next probes, in order of cost:
    XOR between consecutive packets alternates, with `0x78c05360` recurring on
    every other step. That is a real handle, and it implies the checksum
    covers something that changes once per packet and is not in the datagram.
+
+
+## The `51` channel trailer: what it is not
+
+Accumulated across two sessions and a lot of algebra. Recorded so none of it
+gets retried.
+
+The trailer is four bytes and the engine's only CRC helper is a standard zlib
+CRC-32 (table dumped at rva `0x6616060`, matched against `0x77073096,
+0xee0e612c, 0x990951ba`). On the `f0 01` channel `crc32(region)` big endian
+reproduces exactly. On the `51` channel none of the following does:
+
+- **Any contiguous range.** All start/end pairs, both byte orders, against
+  every 4-byte window in the datagram, on a 73-byte Connect and a 16-byte
+  type-1.
+- **Any fixed seed.** Solving the affine system for the required initial CRC
+  register gives a *different* value per packet.
+- **Any single-byte difference** from a CRC'd buffer — every position, every
+  value.
+- **Any appended 4-byte value**, solved rather than searched; the required
+  values are neither constant nor meaningful.
+- **A constant XOR**: `crc32(region) XOR trailer` takes 12 distinct values
+  over 12 packets.
+- **A hidden prepended integer** (e.g. the `PacketId` the engine asserts on):
+  70 000 candidate values in five encodings, none matches any solved seed.
+- **A rolling checksum** across the connection: neither
+  `init_N = trailer_{N-1}`, nor a running `crc32` over concatenated regions,
+  nor one over whole datagrams.
+- **Common hashes**: md5 / sha1 / sha256 first or last four bytes, HMAC with
+  a zero key (we hand the client an all-zero PreSharedKey), adler32, over the
+  region and over the whole datagram.
+
+The one real handle: restricted to the 73-byte Connect packets, the solved
+seeds form a *structured* series rather than a random one — the XOR between
+consecutive packets alternates, with `0x78c05360` recurring on every other
+step. Whatever the checksum covers changes once per packet and is not in the
+datagram.
+
+Note the ordering caveat that broke a first reading of that pattern: the `51`
+channel carries the type-1 disconnect as well as Connect, so "consecutive
+packets on the channel" and "consecutive Connect packets" are not the same
+series.
