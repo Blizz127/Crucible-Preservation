@@ -57,6 +57,8 @@ repository's original work, not any third-party game content.
   packet framing, and the one checksum that is still unexplained.
 - `docs/13-entity-replication.md` — the EntityUpdates/EntityRpcs envelope and
   an honest ordering of the work between here and a playable match.
+- `docs/14-state-of-play.md` — **start here**: what works, how to start it,
+  the one open problem, and the experiment already armed to answer it.
 - `server/crucible_backend.py` — local live-services backend (`:18876`).
 - `server/tls_stub.py` — PlayerAuthorizer TLS logging stub (`:443`).
 - `server/match_stub.py` — NovaGameHub TLS listener (`:18877`); speaks the hub
