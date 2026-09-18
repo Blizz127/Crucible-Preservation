@@ -310,7 +310,8 @@ series.
 
 ## The checksum is NOT the blocker (2026-09-17 20:47)
 
-A clean automated run with the full-forge Accept leading the probe:
+A clean automated run with the full-forge Accept leading the probe
+(`snapshots/shard-session-fullforge-20260917.log`):
 
 - the forged datagram is the client's own `Connect` with every header field
   rewritten to a valid Accept, `ServerShardId` set, the remaining payload
@@ -322,10 +323,22 @@ A clean automated run with the full-forge Accept leading the probe:
 Result: 40 `Connect` retries, 122 control packets, one type-1, disconnect.
 Identical to every previous session. `RemoteSequence` stayed at 1.
 
-**So neither the checksum nor the Accept payload is what stops this.** Both
-were plausible and both are now eliminated by construction rather than by
-argument. That is worth more than it sounds — the `51` trailer had consumed a
-lot of effort and eight eliminated theories, and it turns out not to matter.
+**RETRACTED.** The paragraph that stood here claimed this eliminated the
+checksum "by construction". It does not, and the flaw is in the forge, not
+the client.
+
+CRC linearity only repairs a trailer that really is `crc32` over a contiguous
+region ending at `len-4`. That is exactly what this document proves is **not**
+true of the `51` channel: no contiguous range reproduces its trailer under
+any seed. So on that channel the linearity correction computes a delta for a
+function the channel does not use, and the forged Accepts went out with
+*invalid* checksums after all. They were "correct by construction" only on
+`f0 01`, where the rule is known — and that is not where Accept goes.
+
+What the run does establish is narrower: the Accept **payload** is not the
+problem, since a semantically valid Accept with correct header fields fared
+no differently. The checksum remains a live suspect for the `51` channel and
+the eight eliminated theories still matter.
 
 What is left, in rough order of likelihood:
 
@@ -348,3 +361,29 @@ What is left, in rough order of likelihood:
 The next probe should therefore vary the **type-2 reply** fields, not the
 Accept. That channel is the one where our checksum is known-good, which makes
 it the only place a field-level mistake can be isolated cleanly.
+
+
+## Control-channel field probe (2026-09-17 20:49)
+
+314 datagrams, eight type-2 reply variants cycled on the `f0 01` channel
+where our checksum provably matches the client's own rule: `RemoteSequence`
+0 and their `LocalSeq`, `LocalSequence` 0 / ours / theirs, payload `00` and
+`01`, `IsReliable` set, a verbatim echo of their datagram, and a forged copy
+with `RemoteSequence` rewritten.
+
+The client's `RemoteSequence` never moved — 0 on `f0 01` and 1 on `51`, first
+packet to last, in every session so far.
+
+Two cautions on reading that:
+
+- `RemoteSequence` is **not** a plain acknowledgement (it is 1 on the first
+  `51` packet of a fresh connection), so "never moved" is suggestive, not
+  conclusive.
+- The verbatim-echo variant is weaker evidence than it looks. Echoing the
+  client's own type-2 back sends it a *client* packet with the client's own
+  sequence numbers; discarding that is reasonable behaviour and says little
+  about whether our checksum or framing is acceptable.
+
+313 replies were sent with no socket errors, and our listener is bound to
+`127.0.0.1:18878` replying to the sender, so delivery itself is not in
+question.
