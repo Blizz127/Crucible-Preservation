@@ -326,6 +326,75 @@ feeds the CRC at `0x4f23038` that is not in the datagram it emits.
 
 Do that before sending an eighteenth variant.
 
+## Found it: the drop is silent, and it is the sequence window
+
+`ProcessReceived` was read properly. The receive-side checksum rule is
+simple and was never exotic:
+
+```
+0x4f209fe  call [r9+0xa8]        ; size = GetSize()
+0x4f20a08  cmp eax, 4 / jae      ; else "Packet is smaller than its checksum!"
+0x4f20a72  lea eax, [r10-4]      ; CRC length = size - 4
+0x4f20aa0  <table loop, 0x6616060, init 0xFFFFFFFF, final NOT>
+0x4f20b0a  call 0x4f57140        ; read the stored Crc32 (ranged u32)
+0x4f20b5a  cmp ebx, [rsp+0xb8]   ; computed vs stored
+```
+
+so it is a plain `crc32(buffer[0 : size-4])`. Then, **immediately after the
+checksum passes**:
+
+```
+0x4f20bbc  call 0x4f21570        ; -> UdpPacketIdWindow::UpdateForReceivedPacket
+0x4f20bc1  test al, al
+0x4f20bc3  je   0x4f20a51        ; return false -- SILENTLY, no log line
+```
+
+That silent `je` is where our packets die. It explains the whole shape of
+this investigation: the CRC-gate patch changed nothing because the CRC was
+never the gate, and no log line ever appeared because **this path does not
+log**. The two rejection reasons inside the window check,
+
+```
+"[NET_Debug] Discarding old packet, sequence is too old to process"
+"[NET_Debug] Discarding packet due to duplicated sequence id"
+```
+
+are both gated on the `NET_Debug` channel, which is off.
+
+### The hidden 8 bytes, confirmed independently
+
+Two Connect retries differ in exactly one body byte (the LocalSequence low
+byte at index 4) plus the trailer. CRC linearity turns that into a direct
+measurement of where the checksummed region *ends*, with no fitting:
+
+| quantity | value |
+|---|---|
+| delta byte | `0x02` at index 4 |
+| trailer XOR | `0x34e9be5d` |
+| solved zero-run after the delta byte | 72 |
+| implied region end | offset 77 |
+| datagram length | 73 |
+
+So the checksummed buffer carries **8 bytes after the sequence field that
+never reach the wire**, confirming the earlier "8 hidden bytes" fit by an
+independent route. An exhaustive contiguous-range search reproduces the
+`f0 01` channel exactly (`crc32(d[2:len-4])`, the only hit) and reproduces
+nothing on the `51`/`53` channels, consistent with that.
+
+### What is blocked
+
+`tools/patch_log_channels.py` is written and **not applied**. It is three
+bytes at `0x906300`, the channel-enabled predicate, turning it into
+`mov al,1 ; ret` so every `NET_*` channel reports enabled. Emission happens
+at the call sites, not inside that predicate, so nothing else changes. With
+it on, the client states which check rejected each datagram instead of
+dropping it silently, which is the one thing that turns this from guessing
+into reading.
+
+It needs a human to approve patching the executable. Until then the
+sequence-window hypothesis cannot be confirmed or killed, because the only
+evidence for it is a log line that does not currently print.
+
 Do not read `RemoteSequence` as an acknowledgement. It is 1 on the first
 `51`-channel packet of a fresh connection, before anything can have been
 received.
