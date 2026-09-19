@@ -538,9 +538,9 @@ def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
     hdr = plen + 11                      # first payload byte
     end = len(inbound) - 4               # region end / trailer start
 
-    def full_forge(local, remote, reliable=0, pad=0x00):
+    def full_forge(local, remote, reliable=0, pad=0x00, ptype=6):
         edits = {
-            plen + 0: 0x00, plen + 1: 0x06,            # PacketType = 6
+            plen + 0: (ptype >> 8) & 0xFF, plen + 1: ptype & 0xFF,
             plen + 2: (local >> 8) & 0xFF, plen + 3: local & 0xFF,
             plen + 4: (remote >> 8) & 0xFF, plen + 5: remote & 0xFF,
             plen + 6: 0x00, plen + 7: 0x00,
@@ -640,6 +640,41 @@ def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
          build_shard(prefix, 6, our_seq, 1, sid)),
         ("8 reply as type 2 on the control channel",
          build_shard(b"\xf0\x01", 2, our_seq, their_seq, b"\x00")),
+        # These two were built above and then NEVER RETURNED - a dead-variable
+        # bug found 2026-09-18, after all twelve shapes above had been walked
+        # and refused. They matter more than any of them: every shape above
+        # carries a trailer we DERIVED, and this file's own docstring admits
+        # the 51-channel derivation is under-determined. These carry a trailer
+        # that is correct by construction - the client's own Connect with the
+        # header rewritten into an Accept and the CRC repaired by linearity,
+        # which needs no knowledge of where the checksummed region starts.
+        # Cost of the trick: length must not change, so the Accept is padded
+        # to 73 bytes with 56 zero bytes after ServerShardId.
+        ("9 FORGED from the client's own Connect, trailer valid by linearity",
+         forged_full),
+        ("10 FORGED, IsReliable set",
+         forged_full_reliable),
+        # CORE PACKETS. UdpBaseConnection::HandleCorePacket dispatches an enum
+        # that sits UNDER the NovaGameClientPackets ids (5..12):
+        #   ECorePackets_InitiateConnection / TerminateConnection
+        #   / Heartbeat / Fragment
+        # Two of the four are pinned by observation: the client sends type 2
+        # about twice a second (Heartbeat) and type 1 exactly once, immediately
+        # before teardown (TerminateConnection). It has NEVER sent type 0 or 3.
+        #
+        # The client times out with ConnectTimeout, which is a TRANSPORT-level
+        # failure - the UDP connection never came up - so a game-level Accept
+        # (type 6) may simply be the wrong layer to answer on. If the transport
+        # is waiting for InitiateConnection, none of the shapes above can ever
+        # satisfy it no matter how correct their framing.
+        #
+        # Forged, so the trailer is valid by construction rather than derived.
+        ("11 FORGED core packet type 0 (InitiateConnection?)",
+         full_forge(our_seq, their_seq, ptype=0)),
+        ("12 FORGED core packet type 3 (the other unobserved id)",
+         full_forge(our_seq, their_seq, ptype=3)),
+        ("13 FORGED core packet type 2 (Heartbeat) on the 51 channel",
+         full_forge(our_seq, their_seq, ptype=2)),
     ]
 
 
@@ -749,7 +784,15 @@ def shard_reply(data, state):
     # available that the handshake landed, since nothing else is logged. Use
     # it to try a spawn, alternating the two update types ValidateUpdate
     # allows, so one run answers the last open question instead of two.
-    if ptype not in (2, 5) and os.environ.get("CRUCIBLE_SHARD_SPAWN", "1") == "1":
+    # Was `ptype not in (2, 5)`, which also caught **type 1**. Type 1 is
+    # ECorePackets_TerminateConnection - the client's disconnect, identified
+    # 2026-09-18 from the core-packet enum and confirmed by it appearing
+    # exactly once per connection, immediately before teardown. So every
+    # "SPAWN probe" line in every log to date fired at a client that was
+    # hanging up, never at a connected one. The spawn path has still never
+    # been exercised for real. Only game-packet ids (the dispatcher covers
+    # 5..12) mean the client actually moved on.
+    if 6 <= ptype <= 12 and os.environ.get("CRUCIBLE_SHARD_SPAWN", "1") == "1":
         n = state.get("spawn", 0)
         state["spawn"] = n + 1
         # ValidateUpdate only constrains the nibble to 3 or 4 for roles 0

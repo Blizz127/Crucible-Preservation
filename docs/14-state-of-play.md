@@ -230,11 +230,101 @@ decodes the header with a range coder driven by per-field descriptors, our
 bytes do not mean what we intend regardless of how the datagram is framed —
 which is exactly the signature we are seeing.
 
-Next step: read the field descriptors the client uses for the base header and
-for `Accept` (rva `0xe25eb0`), and make `build_shard` encode through the same
-range coder rather than `to_bytes`. Do that before inventing any more Accept
-shapes — a thirteenth shape built on the wrong integer encoding will fail the
-same way the first twelve did.
+That lead turned out to be already handled — `docs/12` records the declared
+widths for the base header (`u16/u16/u16/u32/bool`) and the stub already
+writes exactly those. The header is not the gap. What chasing it did turn up
+is below, and it is better.
+
+## The checksum is dead for a third time, by a method that cannot be wrong
+
+`accept_variants` built two shapes, `forged_full` and `forged_full_reliable`,
+and **never returned them**. Dead variables. They had never been sent, on any
+run, ever — while its own docstring called them "the only ones whose trailer
+is guaranteed valid on the `51` channel".
+
+That mattered, because every one of the twelve shapes that *was* being sent
+carries a trailer we derived, and the file admits the `51`-channel derivation
+is under-determined. The forged pair sidesteps derivation entirely: take the
+client's own Connect, rewrite the header into an Accept, and repair the CRC
+by linearity, which needs no knowledge of where the checksummed region
+starts. Re-verified here against the `f0 01` channel where the region *is*
+known: **300/300** mutations predict the directly computed CRC exactly.
+
+Both were wired in and tested with a full-length connection each. **Both
+refused**, 40 and 39 retries. So an Accept whose trailer is correct *by
+construction* is rejected exactly like one whose trailer was guessed. The
+checksum is not the blocker and cannot be made into one.
+
+## The layer we had missed: core packets
+
+`UdpBaseConnection::HandleCorePacket` dispatches an enum that sits **under**
+the `NovaGameClientPackets` ids (5..12):
+
+```
+ECorePackets_InitiateConnection   ECorePackets_TerminateConnection
+ECorePackets_Fragment             ECorePackets_Heartbeat
+```
+
+Two are pinned by observation, not by guessing the enum order:
+
+| type | evidence | meaning |
+|---|---|---|
+| 1 | sent exactly once per connection, immediately before teardown | `TerminateConnection` |
+| 2 | sent ~twice a second, 18 bytes, one payload byte | `Heartbeat` |
+
+The client has **never** sent type 0 or type 3. Every datagram it has ever
+sent, across every session, is one of exactly four shapes:
+
+```
+f001 0002  18 B   1734x     51 0005  73 B   450x
+51   0001  16 B     12x     53 0001  14 B    11x
+```
+
+This matters because the client fails with `ConnectTimeout`, which is a
+*transport*-level failure — the UDP connection never came up. A game-level
+Accept may simply be the wrong layer to answer on. So three forged core
+packets were tested (types 0, 3 and 2 on the `51` channel), each with a
+trailer valid by construction and a full-length connection.
+
+**All three refused.** Seventeen variants have now been tested this way and
+not one has changed the client's behaviour.
+
+### A second misfire this exposed
+
+The spawn trigger was `ptype not in (2, 5)`, which also caught **type 1**.
+Type 1 is the client hanging up. So every `SPAWN probe` line in every log to
+date fired at a client that was already disconnecting, and the spawn path
+from `docs/13` has still never been exercised against a live connection.
+Now gated on `6 <= ptype <= 12`.
+
+### The transport will not talk to us
+
+There are 27 `NET_*` log channels in the binary, including
+`[NET_CorePackets] %s: Received core packet %s`, which would have answered
+all of this directly. Tried `net_debugVerboseLevel`, `net_assertlogging`,
+`net_LogConnectionStats`, `log_Verbosity`, `log_WriteToFileVerbosity`. **Not
+one `[NET_*]` line appears at any setting and none of the cvars is
+acknowledged** — the channels are compiled out of this release build. Do not
+try a third time; see the note now in `autoexec.cfg`.
+
+## Where to go next
+
+Everything reachable by varying *what we send* has now been tried: checksum
+(three ways), sequencing, twelve framings, and the core-packet layer. The
+client never logs a reason and never sends anything but its four shapes.
+
+The remaining unknown is the one `docs/12` flagged and never closed: **the
+`51`-channel checksum covers something that is not on the wire.** The
+derivation needed 8 hidden bytes and a non-standard init (`0x8a31dc2a`) to
+reproduce, which is the signature of a checksum computed over a larger
+buffer — a field stripped before sending, or a connection/endpoint value the
+receiver mixes in. If the receiver mixes in something we cannot see, then our
+forged trailer is valid only for a packet travelling *client to server*, and
+no reply we construct can ever validate. That would explain all seventeen
+results at once, and it is testable: find what `SendPacket` (rva `0x4f22d30`)
+feeds the CRC at `0x4f23038` that is not in the datagram it emits.
+
+Do that before sending an eighteenth variant.
 
 Do not read `RemoteSequence` as an acknowledgement. It is 1 on the first
 `51`-channel packet of a fresh connection, before anything can have been
