@@ -395,6 +395,79 @@ It needs a human to approve patching the executable. Until then the
 sequence-window hypothesis cannot be confirmed or killed, because the only
 evidence for it is a log line that does not currently print.
 
+## APPLIED — and the client finally told us. It was the first byte.
+
+`tools/patch_log_channels.py` was approved and applied. The binary is
+**still patched**; `--revert` undoes it. Channels immediately started
+firing, and the answer was one line:
+
+```
+UdpSocketReader::ReadDataFromSocket(): Received BasePacketType of invalid header 81    (0x51)
+UdpSocketReader::ReadDataFromSocket(): Received BasePacketType of invalid header 240   (0xf0)
+```
+
+**Every reply this project has ever sent was thrown away on its first byte**,
+before `ProcessReceived`, before the checksum, before the sequence window.
+That is why seventeen Accept shapes, three checksum theories and the
+CRC-gate patch all produced identical behaviour. None of them ever got that
+far. The `51`/`f0 01` leading bytes are not channel ids; we copied them off
+the client's own datagrams and they are not valid inbound.
+
+The reader accepts exactly three values (rva `0x4f2478f`), then does
+`inc rsi` and records `size-1`, so the byte is consumed:
+
+```
+test r9b, r9b / je   -> 0x00
+sub  edx, 0xcc / je  -> 0xCC
+cmp  edx, 0x33 / je  -> 0xFF
+```
+
+giving the true framing, which is what `build_shard` already produced —
+it had only ever been handed the wrong first byte:
+
+```
+[1 byte BasePacketType][base header + payload][4 byte Crc32]
+```
+
+Note the asymmetry: the client **sends** `0x51`/`0xf0` but will not
+**accept** them. Its outbound framing is not its inbound expectation. That
+also explains why the `51`-channel checksum never reproduced as a contiguous
+range while the `f0 01` one did.
+
+### Fixed, and verified
+
+`shard_bpt()` now puts a valid BasePacketType on every reply, heartbeats
+included (`CRUCIBLE_SHARD_BPT`, default `0x00`).
+
+| | invalid-header rejections |
+|---|---|
+| before | 222 |
+| after | **0** |
+
+### Still not connected, one layer deeper
+
+All three values were tested. All pass the reader and then die **silently**
+before anything downstream logs. Two controls pin this down:
+
+- A deliberately corrupted Crc32 (variant 17, a control, not a candidate)
+  produces **no** `Crc32 mismatch, discarding packet`. So we are not
+  reaching `ProcessReceived`.
+- `[NET_Acks] Connection timeout exceeded ... last %d ms` is the time since
+  the client last received anything. It climbs monotonically — 14 s, 44 s,
+  86 s — and **never resets**, across all three BasePacketType values. The
+  client has still never registered a single received packet.
+
+So the drop is now between `ReadDataFromSocket` storing the datagram and
+`ProcessReceived` consuming it. The reader writes a 0x40-byte ring entry at
+`r12+0x4000000`: vtable at `+0x00`, what looks like the sender address at
+`+0x0e`/`+0x1e`, data pointer `+0x30`, size `+0x38`, BasePacketType `+0x3c`.
+
+Next: find the consumer of that ring and what it does with `+0x3c` and the
+recorded address. The likely candidates are an endpoint/connection lookup
+that fails to match our source, or a DTLS route selected by BasePacketType
+where `0x00` is not the plain path. Identify the class from the vtable at
+`0x67a2890` and work forward from there.
+
 Do not read `RemoteSequence` as an acknowledgement. It is 1 on the first
 `51`-channel packet of a fresh connection, before anything can have been
 received.

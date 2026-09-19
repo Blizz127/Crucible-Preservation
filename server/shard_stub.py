@@ -361,6 +361,44 @@ def parse_shard(data):
     return None
 
 
+# ---------------------------------------------------------------------------
+# BasePacketType - the real meaning of the leading byte, found 2026-09-19
+# ---------------------------------------------------------------------------
+# With every NET_* log channel forced on (tools/patch_log_channels.py), the
+# client finally said what it does with our datagrams:
+#
+#     UdpSocketReader::ReadDataFromSocket(): Received BasePacketType of
+#       invalid header 81       <- 0x51, our 51-channel replies
+#     ... invalid header 240    <- 0xf0, our f0 01 replies
+#
+# Every reply we have ever sent was thrown away on its FIRST BYTE, before
+# ProcessReceived, before the checksum, before the sequence window. That is
+# why seventeen Accept shapes, three checksum theories and the CRC-gate patch
+# all produced identical behaviour: none of them ever got that far.
+#
+# The leading byte is not a channel id. It is a BasePacketType, and
+# ReadDataFromSocket accepts exactly three values (rva 0x4f2478f):
+#
+#     test r9b, r9b   / je valid      -> 0x00
+#     sub edx, 0xcc   / je valid      -> 0xCC
+#     cmp edx, 0x33   / je valid      -> 0xFF
+#
+# On the valid path it does `inc rsi` and records size-1, so the byte is
+# consumed and the rest is the packet:
+#
+#     [1 byte BasePacketType][base header + payload][4 byte Crc32]
+#
+# which is precisely what build_shard already produces - it was only ever
+# handed the wrong first byte, copied from the client's own datagrams.
+#
+# Note the asymmetry: the client SENDS 0x51 / 0xf0 but will not ACCEPT them.
+# Its outbound framing is not its inbound expectation, which is also why the
+# 51-channel checksum never reproduced as a contiguous range.
+def shard_bpt():
+    """The BasePacketType byte to put in front of every reply."""
+    return bytes([int(os.environ.get("CRUCIBLE_SHARD_BPT", "0"), 0) & 0xFF])
+
+
 def build_shard(prefix, packet_type, local_seq, remote_seq, payload=b"",
                 seq_window=0, reliable=0):
     """One datagram in the layout above, with a correct CRC32.
@@ -675,6 +713,21 @@ def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
          full_forge(our_seq, their_seq, ptype=3)),
         ("13 FORGED core packet type 2 (Heartbeat) on the 51 channel",
          full_forge(our_seq, their_seq, ptype=2)),
+        # The three BasePacketType values ReadDataFromSocket actually accepts.
+        # Everything above this line was discarded on its first byte.
+        ("14 BasePacketType 0x00 + Accept",
+         build_shard(b"\x00", 6, our_seq, their_seq, sid)),
+        ("15 BasePacketType 0xCC + Accept",
+         build_shard(b"\xcc", 6, our_seq, their_seq, sid)),
+        ("16 BasePacketType 0xFF + Accept",
+         build_shard(b"\xff", 6, our_seq, their_seq, sid)),
+        # POSITIVE CONTROL, not a candidate. Identical to variant 14 but with
+        # the Crc32 deliberately corrupted. If the client logs "Crc32
+        # mismatch, discarding packet" then our datagrams are reaching
+        # UdpBaseConnection::ProcessReceived and the framing is right; if it
+        # logs nothing, they are still dying somewhere earlier and silently.
+        ("17 CONTROL: BasePacketType 0x00, deliberately BAD Crc32",
+         build_shard(b"\x00", 6, our_seq, their_seq, sid)[:-4] + b"\xde\xad\xbe\xef"),
     ]
 
 
@@ -777,7 +830,8 @@ def shard_reply(data, state):
                 log("      CTRL PROBE variant %d: %s"
                     % (n % len(variants), name))
             return out
-        return build_shard(prefix, 2, state["seq"], their_seq,
+        # Reply with a VALID BasePacketType, not the client's 0xf0 echo.
+        return build_shard(shard_bpt(), 2, state["seq"], their_seq,
                            payload=region[11:12] or b"\x00")
     # Anything that is not the type-2 control packet or a Connect retry means
     # the client accepted our Accept and moved on - that is the only evidence
@@ -826,7 +880,7 @@ def shard_reply(data, state):
                     "index %d of %d, %s" % (i, len(variants), name))
             log("      ACCEPT PROBE variant %s (%d bytes)" % (name, len(out)))
             return out
-        return build_shard(prefix, 6, state["seq"], their_seq,
+        return build_shard(shard_bpt(), 6, state["seq"], their_seq,
                            payload=bytes([shard_id & 0xFF]))
     return None
 
