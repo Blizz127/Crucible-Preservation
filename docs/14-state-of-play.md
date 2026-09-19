@@ -462,11 +462,65 @@ So the drop is now between `ReadDataFromSocket` storing the datagram and
 `r12+0x4000000`: vtable at `+0x00`, what looks like the sender address at
 `+0x0e`/`+0x1e`, data pointer `+0x30`, size `+0x38`, BasePacketType `+0x3c`.
 
-Next: find the consumer of that ring and what it does with `+0x3c` and the
-recorded address. The likely candidates are an endpoint/connection lookup
-that fails to match our source, or a DTLS route selected by BasePacketType
-where `0x00` is not the plain path. Identify the class from the vtable at
-`0x67a2890` and work forward from there.
+## The receive chain, mapped end to end
+
+Followed it all the way. `ProcessReceived` has exactly one caller
+(`0x4f1ebdb`, inside `0x4f1e929`), and that function is the whole gate:
+
+| # | site | what it does | failure |
+|---|---|---|---|
+| 1 | `0x4f24785` | `ReadDataFromSocket` reads byte 0 as BasePacketType | logs `invalid header %u`, drops |
+| 2 | `0x4f1ea53` | `DtlsEndpoint::DecodePacket` | returns len 0 → **silent** drop at `0x4f1ea62` |
+| 3 | `0x4f1ebb0` | deserialize `Header` (→ base header `0x4f212f0`) | **silent** skip at `0x4f1ebb7` |
+| 4 | `0x4f1ebdb` | `ProcessReceived` — checksum, then sequence window | logs mismatch / silently drops |
+
+Two of the four gates do not log at all. That is the whole reason this took
+so long.
+
+### BasePacketType decoded, with the client's own names
+
+`DecodePacket` has a passthrough when no DTLS context exists
+(`[rcx+0xc8] == 0`), but it still checks the identifier first and, on
+mismatch, sets the out-length to 0 and returns — the silent drop. It logs
+`Packet Identifier: Expected %s instead receieved %s`, and forcing that on
+made the client name the whole enum:
+
+| byte | name | result |
+|---|---|---|
+| `0x00` | `BasePacket::Unencrypted` | **accepted, 0 mismatches** |
+| `0xCC` | `BasePacket::DtlsHandshake` | rejected |
+| `0xFF` | `BasePacket::Encrypted` | rejected |
+
+The client expects `Unencrypted`, which is consistent with
+`net_UdpUseEncryption 0` having taken after all. `CRUCIBLE_SHARD_BPT`
+already defaults to `0x00`, so **gates 1 and 2 are now passed**.
+
+### Where it dies now: gate 3, the header deserialize
+
+The bad-Crc32 control settles this. With `0x00` the packet clears the
+reader and `DecodePacket` (zero identifier mismatches), yet a deliberately
+corrupted checksum produces **no** `Crc32 mismatch` line. The checksum
+compare lives inside `ProcessReceived`, which is gate 4, so we are not
+getting there. The only thing between is gate 3, and it skips silently.
+
+The field encoding is *not* the problem — the declared ranges were read
+straight out of the descriptors and match what we already send:
+
+| field | declared range | wire |
+|---|---|---|
+| `PacketType` | 0..65535 | 2 bytes |
+| `LocalSequence` | 0..65535 | 2 bytes |
+| `RemoteSequence` | 0..65535 | 2 bytes |
+| `SequenceWindow` | 0..4294967295 | 4 bytes |
+| `IsReliable` | 0..1 | 1 byte |
+
+So the 11-byte header layout is confirmed correct. What fails is something
+around it. Read `0x4bb7400`: before the header fields it calls
+`[vtable+0x90]` and bails if that returns 1, and afterwards
+`[vtable+0xd0]` and `[vtable+0xd8]`. Those are the serializer's
+object-framing calls, and one of them is rejecting our buffer. Start there
+— it is a two-minute run to confirm, because the bad-Crc32 control turns
+into a positive signal the moment gate 3 is passed.
 
 Do not read `RemoteSequence` as an acknowledgement. It is 1 on the first
 `51`-channel packet of a fresh connection, before anything can have been
