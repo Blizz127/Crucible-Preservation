@@ -153,10 +153,41 @@ connection's *first* `Connect`. Variants 0,1,2,3,5,6,8 have never actually
 been tested as a first reply. The earlier reading that "variant 3 was tried
 and did nothing" is not supported.
 
-**Fix the probe before drawing any more conclusions from it:** pin one variant
-per connection (key it off the source port, not a global counter) and let the
-whole ~4 s connection lifetime run under that single shape. `CRUCIBLE_SHARD_PROBE`
-in `server/shard_stub.py` needs to become per-connection state.
+**Fixed 2026-09-18.** `server/shard_stub.py` now keys state on the peer
+address instead of sharing one dict process-wide, and the variant is chosen
+once per connection and held. `CRUCIBLE_SHARD_VARIANT=N` pins a specific one;
+`server/.shard-probe-counter` advances one step per *connection* and persists,
+so repeated launches walk the list.
+
+### The bug that fix exposed: our LocalSequence was ~600 too high
+
+The same global dict held `seq`, our LocalSequence, and it never reset. On a
+brand-new connection:
+
+| | LocalSequence on first packet |
+|---|---|
+| client's `Connect` | 1 |
+| our `Accept` (before fix) | **625**, then 788 on the next connection |
+| our `Accept` (after fix) | 1 |
+
+The base header carries an explicit `SequenceWindow` field, so a reply ~600
+ahead of the window is a very plausible silent drop, and it would have
+invalidated *every* Accept ever sent from this stub. This is a better
+candidate for the original blocker than anything in the checksum.
+
+It is **not** sufficient on its own: variant 0 (the SOLVED-trailer Accept)
+re-tested with correct sequencing still draws 39 `Connect` retries. Our first
+Accept now reads `51 0006 0001 0001 00000000 00 00 <crc>`, mirroring the
+client's own header exactly, and is still refused.
+
+### Walking the rest
+
+`tools/walk_probe_variants.sh` drives one launch per variant, because the
+client only opens ~1-3 shard connections per launch before giving up for
+good. Each cycle rotates the log, launches, waits out boot plus the ~30 s
+shard phase, kills, and summarises. Results land in
+`snapshots/probe-walk-<ts>/summary.txt`, flagged when Connect retries fall
+well below ~39 or an unexpected packet type appears.
 
 Do not read `RemoteSequence` as an acknowledgement. It is 1 on the first
 `51`-channel packet of a fresh connection, before anything can have been

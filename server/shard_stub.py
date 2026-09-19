@@ -45,6 +45,7 @@ import datetime
 import os
 import socket
 import threading
+import time
 import zlib
 
 HOST = "127.0.0.1"
@@ -642,13 +643,61 @@ def accept_variants(prefix, region, their_seq, our_seq, shard_id, inbound):
     ]
 
 
+PROBE_COUNTER = os.path.join(HERE, ".shard-probe-counter")
+
+
+def _next_probe_index():
+    """Index for the next CONNECTION, persisted across stub restarts.
+
+    Persisting matters because a connection only lives ~4 s and the client
+    only gets ~3 real attempts per launch (docs/14), so walking a 12-entry
+    variant list takes several runs.
+    """
+    try:
+        n = int((open(PROBE_COUNTER).read().strip() or "0"))
+    except Exception:
+        n = 0
+    try:
+        with open(PROBE_COUNTER, "w") as f:
+            f.write(str(n + 1))
+    except Exception:
+        pass
+    return n
+
+
+def new_connection_state():
+    """Fresh per-connection state.
+
+    Everything here used to live in ONE dict shared by every peer, which
+    broke the stub in two ways (both found 2026-09-18, see docs/14):
+
+    - `seq` is our LocalSequence. Global, it never reset, so the first Accept
+      of a brand-new connection claimed LocalSequence 625 while the client's
+      own Connect carried 1. The base header has an explicit SequenceWindow
+      field, so a reply ~600 ahead of the window is a plausible silent drop.
+    - `variant` advanced per DATAGRAM, so a single connection was answered
+      with a different Accept shape each time its Connect was resent, and no
+      shape was ever tested over a whole connection lifetime.
+
+    The variant is now chosen ONCE per connection and held. Set
+    CRUCIBLE_SHARD_VARIANT=N to pin a specific one instead of walking.
+    """
+    st = {}
+    if os.environ.get("CRUCIBLE_SHARD_PROBE") == "1":
+        override = os.environ.get("CRUCIBLE_SHARD_VARIANT")
+        st["variant"] = int(override) if override else _next_probe_index()
+    return st
+
+
 def shard_reply(data, state):
     """Answer one datagram, or None.
 
     - PacketType 2: a transport-level control packet, ~2/second, one payload
       byte. Mirrored with RemoteSequence set to the sequence being acked.
     - PacketType 5 (Connect): answered with Accept (id 6). With
-      CRUCIBLE_SHARD_PROBE=1 each Connect gets the next candidate shape.
+      CRUCIBLE_SHARD_PROBE=1 the shape is fixed for the whole connection.
+
+    `state` MUST be per-connection (see new_connection_state).
     """
     parsed = parse_shard(data)
     if parsed is None:
@@ -725,9 +774,13 @@ def shard_reply(data, state):
         if os.environ.get("CRUCIBLE_SHARD_PROBE") == "1":
             variants = accept_variants(prefix, region, their_seq,
                                        state["seq"], shard_id, data)
-            i = state.get("variant", 0)
-            state["variant"] = i + 1
-            name, out = variants[i % len(variants)]
+            # Pinned for the life of this connection - do NOT advance here.
+            i = state.get("variant", 0) % len(variants)
+            name, out = variants[i]
+            if not state.get("variant_logged"):
+                state["variant_logged"] = True
+                log("      ACCEPT PROBE pinned for this connection: "
+                    "index %d of %d, %s" % (i, len(variants), name))
             log("      ACCEPT PROBE variant %s (%d bytes)" % (name, len(out)))
             return out
         return build_shard(prefix, 6, state["seq"], their_seq,
@@ -747,15 +800,31 @@ def main():
         log("reply mode: %s" % reply)
 
     total = 0
-    peers = set()
-    state = {}
+    # Per-connection state, keyed on the client's source port. A shard
+    # connection lives ~4 s and the client opens a fresh source port for each
+    # attempt, so the peer address is the connection identity. Sharing one
+    # dict across peers is what made our LocalSequence start at 625 on a
+    # brand-new connection (docs/14).
+    states = {}
+    idle_reset = float(os.environ.get("CRUCIBLE_SHARD_PEER_IDLE", "10"))
     try:
         while True:
             data, addr = sock.recvfrom(65535)
             total += len(data)
-            if addr not in peers:
-                peers.add(addr)
+            now = time.time()
+            st = states.get(addr)
+            if st is not None and now - st.get("last", now) > idle_reset:
+                log("--- %s idle > %.0fs, treating as a NEW connection ---"
+                    % (addr, idle_reset))
+                st = None
+            if st is None:
+                st = new_connection_state()
+                states[addr] = st
                 log("--- first datagram from %s ---" % (addr,))
+                if "variant" in st:
+                    log("      (connection pinned to probe index %d)"
+                        % st["variant"])
+            st["last"] = now
             log("  <- %d bytes from %s (total %d)" % (len(data), addr, total))
             log("      %s" % describe(data))
             log("      hex: %s" % data[:1024].hex())
@@ -764,7 +833,7 @@ def main():
                 sock.sendto(data, addr)
                 log("      reply(echo) -> %d bytes" % len(data))
             elif reply == "accept":
-                out = shard_reply(data, state)
+                out = shard_reply(data, st)
                 if out is not None:
                     sock.sendto(out, addr)
                     log("      reply(accept) -> %s" % out.hex())
