@@ -186,8 +186,55 @@ client's own header exactly, and is still refused.
 client only opens ~1-3 shard connections per launch before giving up for
 good. Each cycle rotates the log, launches, waits out boot plus the ~30 s
 shard phase, kills, and summarises. Results land in
-`snapshots/probe-walk-<ts>/summary.txt`, flagged when Connect retries fall
-well below ~39 or an unexpected packet type appears.
+`snapshots/probe-walk-<ts>/summary.txt`.
+
+### Result: all twelve fail. The transport theories are exhausted.
+
+Ran 2026-09-18 — 11 launches, **25 connections, all 12 variants covered**,
+plus two extra runs with `CRUCIBLE_SHARD_VARIANT=5` and `=7` to give those
+two a full-length connection rather than an end-of-budget one.
+
+Every variant draws **38-40 `Connect` retries and then teardown**, with
+correct per-connection sequencing and a checksum that satisfies the client's
+own validator. Not one behaved differently from the others.
+
+Reading the logs, do not mistake a short connection for progress. Each launch
+produces one full-length connection (~40 retries) followed by one or two
+6-datagram connections that carry a single `Connect` and end in the `0x53`
+teardown. Those are the client burning the last of its retry budget, not an
+Accept landing. The walker's "unexpected packet type `53`" flag is a **false
+positive** for the same reason — `0x53` appears on every clean give-up.
+
+The only packet types ever observed from the client, across every session,
+are `51`, `f0` and `53`. It has never once sent anything that would indicate
+an Accept was taken.
+
+## Where that leaves it
+
+Three transport-level explanations have now been tested to destruction and
+all are closed:
+
+| theory | how it was closed |
+|---|---|
+| the `51` trailer checksum is wrong | patched the CRC branch out of the binary; no change (above) |
+| our sequence numbers are wrong | were wrong, ~600 too high, fixed; still refused |
+| the Accept framing is wrong | all 12 shapes pinned per connection; all refused |
+
+So the Accept is not being rejected on framing, checksum, or sequencing. The
+remaining lead is the one the header comment in `shard_stub.py` already
+flags and nothing has yet acted on: **the range-compressed integer
+encoding.** The base `Packet` header (rva `0x4f212f0`) is documented as using
+the same range coding as the hub, which makes every field width *nominal*.
+This stub writes fixed-width big-endian fields throughout. If the client
+decodes the header with a range coder driven by per-field descriptors, our
+bytes do not mean what we intend regardless of how the datagram is framed —
+which is exactly the signature we are seeing.
+
+Next step: read the field descriptors the client uses for the base header and
+for `Accept` (rva `0xe25eb0`), and make `build_shard` encode through the same
+range coder rather than `to_bytes`. Do that before inventing any more Accept
+shapes — a thirteenth shape built on the wrong integer encoding will fail the
+same way the first twelve did.
 
 Do not read `RemoteSequence` as an acknowledgement. It is 1 on the first
 `51`-channel packet of a fresh connection, before anything can have been

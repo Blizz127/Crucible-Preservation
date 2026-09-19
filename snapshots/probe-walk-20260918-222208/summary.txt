@@ -1,0 +1,23 @@
+cycle  idx  variant                                        dgrams   connect73 types
+1      1    1 SOLVED trailer, IsReliable set               155      41        {'51': 42, '53': 1, 'f0': 112}
+  *** unexpected packet types {'53'} - CANDIDATE ***
+2      3    3b SUFFIX-form trailer, exact size             244      42        {'51': 44, '53': 1, 'f0': 199}
+  *** unexpected packet types {'53'} - CANDIDATE ***
+3      6    3 trailer copied verbatim from the client's pa 170      40        {'51': 41, '53': 1, 'f0': 128}
+  *** unexpected packet types {'53'} - CANDIDATE ***
+4      8    5 Accept on the f0 01 control channel          170      39        {'51': 41, '53': 1, 'f0': 128}
+  *** unexpected packet types {'53'} - CANDIDATE ***
+5      10   7 RemoteSequence 1, as the client's own Connec 170      39        {'51': 41, '53': 1, 'f0': 128}
+  *** unexpected packet types {'53'} - CANDIDATE ***
+6      12   0 SOLVED trailer: Accept, crc32(region+hidden+ 169      41        {'51': 43, '53': 1, 'f0': 125}
+  *** unexpected packet types {'53'} - CANDIDATE ***
+7      14   2 SOLVED trailer, RemoteSequence 1             170      39        {'51': 41, '53': 1, 'f0': 128}
+  *** unexpected packet types {'53'} - CANDIDATE ***
+8      16   3c SUFFIX-form trailer, exact size, IsReliable 170      40        {'51': 42, '53': 1, 'f0': 127}
+  *** unexpected packet types {'53'} - CANDIDATE ***
+9      18   3 trailer copied verbatim from the client's pa 299      44        {'51': 45, '53': 1, 'f0': 253}
+  *** unexpected packet types {'53'} - CANDIDATE ***
+10     21   6 two-byte prefix 51 00                        170      40        {'51': 41, '53': 1, 'f0': 128}
+  *** unexpected packet types {'53'} - CANDIDATE ***
+11     23   8 reply as type 2 on the control channel       179      41        {'51': 42, '53': 1, 'f0': 136}
+  *** unexpected packet types {'53'} - CANDIDATE ***
