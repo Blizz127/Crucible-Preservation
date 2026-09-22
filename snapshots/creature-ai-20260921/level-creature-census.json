@@ -1,0 +1,131 @@
+{
+ "note": "String census of AZStd::string names in each installed level.dynamicslice. A name occurring once is usually the spawner archetype itself, not an instance.",
+ "levels": {
+  "levels/april2018/commondata/level.dynamicslice": {
+   "sha256": "b2bf2ecf285bc6cd40947c8b8bf266f75da6c8289a0ec4619001140e0e4f6ce5",
+   "bytes": 66342023,
+   "names": {
+    "Respawn": 304,
+    "SpawnNodeMatchStart": 115,
+    "Spawner_HealthPlant": 101,
+    "Spawner_MegaDrone": 97,
+    "Spawner_Spitter": 89,
+    "Spawner_Healthpack": 81,
+    "Spawner_Snurtle": 62,
+    "Spawner_Hive": 47,
+    "Spawner_MegaDrone_MatchStart": 6,
+    "Spawner_Predator": 1,
+    "spawner_mega": 1,
+    "Spawner_MegaDrone_NoAggro": 1,
+    "Spawner_Spitter_NoAggro": 1,
+    "Spawner_Snurtle_NoAggro": 1,
+    "spawner_SnurtleHealer_NoAggro": 1
+   }
+  },
+  "levels/HotH_02/commondata/level.dynamicslice": {
+   "sha256": "c3b4c663524c9cb41db370f2c936c40f1d1982e1d9f94440e9371b0c8e615968",
+   "bytes": 72345542,
+   "names": {
+    "Spawner_HealthPlant": 101,
+    "Spawner_MegaDrone": 97,
+    "Spawner_Healthpack": 84,
+    "Respawn": 24,
+    "SpawnNodeMatchStart": 18,
+    "GuideEnemyBotSpawner": 12,
+    "MegaDroneCampAnchor": 10,
+    "SnurtleCamp": 8,
+    "SnurtleHerd": 8,
+    "SpitterCamp": 7,
+    "SpitterColony": 7,
+    "Spawner_Hive": 7,
+    "Spawner_Snurtle": 1,
+    "Spawner_Spitter": 1,
+    "Spawner_Predator": 1,
+    "Spawner_MegaDrone_MatchStart": 1,
+    "spawner_mega": 1,
+    "Spawner_MegaDrone_NoAggro": 1,
+    "Spawner_Spitter_NoAggro": 1,
+    "Spawner_Snurtle_NoAggro": 1,
+    "spawner_SnurtleHealer_NoAggro": 1,
+    "MegaDroneCamp": 1,
+    "MegadroneGathering": 1
+   }
+  },
+  "levels/mainmenu/commondata/level.dynamicslice": {
+   "sha256": "24039178d21c06cb71836a98104d0865e0355fdd4c5516df7d80d5c4012b22cb",
+   "bytes": 865601,
+   "names": {}
+  },
+  "levels/practicearena/commondata/level.dynamicslice": {
+   "sha256": "049bd5301f47349d3c9092fee34e42f2b14da03230a4f142df490454cf3d933e",
+   "bytes": 4768591,
+   "names": {
+    "Spawner_MegaDrone": 2,
+    "Hive": 2,
+    "Snurtles": 1,
+    "HEART_OF_THE_HIVES": 1,
+    "Spawner_Snurtle": 1,
+    "Spawner_Spitter": 1,
+    "Spawner_Predator": 1,
+    "Spawner_Healthpack": 1,
+    "Spawner_Hive": 1,
+    "Spawner_HealthPlant": 1,
+    "Spawner_MegaDrone_MatchStart": 1,
+    "spawner_mega": 1,
+    "Spawner_MegaDrone_NoAggro": 1,
+    "Spawner_Spitter_NoAggro": 1,
+    "Spawner_Snurtle_NoAggro": 1,
+    "spawner_SnurtleHealer_NoAggro": 1
+   }
+  },
+  "levels/tutorial_02/commondata/level.dynamicslice": {
+   "sha256": "afbe01afdf7eac664520b1aa874a8797e259aa1d7255c354f6d97c0a1a9385f0",
+   "bytes": 8435353,
+   "names": {
+    "Spawner_Spitter": 10,
+    "SpawnedByGM": 5,
+    "NamedRespawn": 5,
+    "Spawner_Snurtle": 4,
+    "Spawner_Predator": 1,
+    "Spawner_Healthpack": 1,
+    "Spawner_Hive": 1,
+    "Spawner_HealthPlant": 1,
+    "Spawner_MegaDrone_MatchStart": 1,
+    "Spawner_MegaDrone": 1,
+    "spawner_mega": 1,
+    "Spawner_MegaDrone_NoAggro": 1,
+    "Spawner_Spitter_NoAggro": 1,
+    "Spawner_Snurtle_NoAggro": 1,
+    "spawner_SnurtleHealer_NoAggro": 1,
+    "SnurtleRoom": 1,
+    "HiveRoom": 1
+   }
+  },
+  "levels/tutorial_03/commondata/level.dynamicslice": {
+   "sha256": "9c91a447685d084809081f9eddc95e5ab9fb4b3dffde9e0ec5aece6dc782bfe1",
+   "bytes": 8988762,
+   "names": {
+    "SpawnedByGM": 7,
+    "NamedRespawn": 6,
+    "Snurtle": 3,
+    "HiveRoom": 2,
+    "Spitter": 1,
+    "Spawner_Snurtle": 1,
+    "Spawner_Spitter": 1,
+    "Spawner_Predator": 1,
+    "Spawner_Healthpack": 1,
+    "Spawner_Hive": 1,
+    "Spawner_HealthPlant": 1,
+    "Spawner_MegaDrone_MatchStart": 1,
+    "Spawner_MegaDrone": 1,
+    "spawner_mega": 1,
+    "Spawner_MegaDrone_NoAggro": 1,
+    "Spawner_Spitter_NoAggro": 1,
+    "Spawner_Snurtle_NoAggro": 1,
+    "spawner_SnurtleHealer_NoAggro": 1,
+    "SnurtleRoom": 1,
+    "TutorialSpitterSpawn": 1
+   }
+  }
+ }
+}

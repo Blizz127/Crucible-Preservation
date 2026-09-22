@@ -1,0 +1,5013 @@
+{
+  "file": "/tmp/claude-1000/lv/HotH_02.dynamicslice",
+  "entity_array_length": 21510,
+  "has_nested_slice_instances": false,
+  "controllers": {
+    "MatchPhaseController": [
+      {
+        "entry": 617,
+        "name": "MatchPhaseController"
+      }
+    ],
+    "GameMode": [
+      {
+        "entry": 621,
+        "name": "GameMode"
+      }
+    ],
+    "MatchDataStore": [
+      {
+        "entry": 627,
+        "name": "MatchDataStore"
+      }
+    ]
+  },
+  "named": [
+    {
+      "entry": 18,
+      "name": "SpawnNode_SnurtleCamp_Minimal",
+      "translation": [
+        1246.3349609375,
+        909.611328125,
+        19.049999237060547
+      ]
+    },
+    {
+      "entry": 19,
+      "name": "SpawnNode_SnurtleCamp_Minimal",
+      "translation": [
+        1170.54833984375,
+        1189.002197265625,
+        19.119998931884766
+      ]
+    },
+    {
+      "entry": 20,
+      "name": "SpawnNode_SnurtleCamp_Minimal",
+      "translation": [
+        1028.548583984375,
+        770.583984375,
+        17.869346618652344
+      ]
+    },
+    {
+      "entry": 21,
+      "name": "SpawnNode_SnurtleCamp_Minimal",
+      "translation": [
+        848.8094482421875,
+        1058.77294921875,
+        46.323081970214844
+      ]
+    },
+    {
+      "entry": 22,
+      "name": "SpawnNode_SnurtleCamp_Minimal",
+      "translation": [
+        1223.527099609375,
+        1270.8775634765625,
+        26.943391799926758
+      ]
+    },
+    {
+      "entry": 23,
+      "name": "SpawnNode_SnurtleCamp_Minimal",
+      "translation": [
+        1134.5582275390625,
+        828.2916870117188,
+        17.551727294921875
+      ]
+    },
+    {
+      "entry": 24,
+      "name": "SpawnNode_SnurtleCamp_Minimal",
+      "translation": [
+        1288.043701171875,
+        982.3363037109375,
+        17.881668090820312
+      ]
+    },
+    {
+      "entry": 25,
+      "name": "SpawnNode_SnurtleCamp_Minimal",
+      "translation": [
+        942.3634643554688,
+        853.296630859375,
+        25.372224807739258
+      ]
+    },
+    {
+      "entry": 26,
+      "name": "SpawnNode_SpitterCamp_Minimal",
+      "translation": [
+        1214.33544921875,
+        1057.3284912109375,
+        21.683639526367188
+      ]
+    },
+    {
+      "entry": 27,
+      "name": "SpawnNode_SpitterCamp_Minimal",
+      "translation": [
+        1006.054443359375,
+        873.1347045898438,
+        20.01752471923828
+      ]
+    },
+    {
+      "entry": 28,
+      "name": "SpawnNode_SpitterCamp_Minimal",
+      "translation": [
+        1151.4210205078125,
+        1122.0718994140625,
+        18.489999771118164
+      ]
+    },
+    {
+      "entry": 29,
+      "name": "SpawnNode_SpitterCamp_Minimal",
+      "translation": [
+        1048.7109375,
+        1001.155517578125,
+        20.456676483154297
+      ]
+    },
+    {
+      "entry": 30,
+      "name": "SpawnNode_SpitterCamp_Minimal",
+      "translation": [
+        948.6331787109375,
+        1058.80908203125,
+        35.89542770385742
+      ]
+    },
+    {
+      "entry": 31,
+      "name": "SpawnNode_SpitterCamp_Minimal",
+      "translation": [
+        896.62939453125,
+        1235.1572265625,
+        63.345733642578125
+      ]
+    },
+    {
+      "entry": 32,
+      "name": "SpawnNode_SpitterCamp_Minimal",
+      "translation": [
+        1023.29150390625,
+        1196.180908203125,
+        41.82667541503906
+      ]
+    },
+    {
+      "entry": 33,
+      "name": "SpawnNode_Guide_EnemyBot",
+      "translation": [
+        754.2969970703125,
+        1051.093505859375,
+        56.45686721801758
+      ]
+    },
+    {
+      "entry": 34,
+      "name": "SpawnNode_Guide_EnemyBot",
+      "translation": [
+        1200.2071533203125,
+        1203.4083251953125,
+        25.895103454589844
+      ]
+    },
+    {
+      "entry": 35,
+      "name": "SpawnNode_Guide_EnemyBot",
+      "translation": [
+        905.9044189453125,
+        756.08154296875,
+        16.393978118896484
+      ]
+    },
+    {
+      "entry": 36,
+      "name": "SpawnNode_Guide_EnemyBot",
+      "translation": [
+        1208.5262451171875,
+        806.21826171875,
+        23.87455177307129
+      ]
+    },
+    {
+      "entry": 37,
+      "name": "SpawnNode_Guide_EnemyBot",
+      "translation": [
+        978.9752807617188,
+        1209.764892578125,
+        58.96003341674805
+      ]
+    },
+    {
+      "entry": 38,
+      "name": "SpawnNode_Guide_EnemyBot",
+      "translation": [
+        940.55078125,
+        721.4732666015625,
+        13.03976821899414
+      ]
+    },
+    {
+      "entry": 39,
+      "name": "SpawnNode_Guide_EnemyBot",
+      "translation": [
+        1259.547119140625,
+        1062.1329345703125,
+        30.893030166625977
+      ]
+    },
+    {
+      "entry": 40,
+      "name": "SpawnNode_Guide_EnemyBot",
+      "translation": [
+        997.5733642578125,
+        1269.808349609375,
+        59.713417053222656
+      ]
+    },
+    {
+      "entry": 41,
+      "name": "SpawnNode_Guide_EnemyBot",
+      "translation": [
+        1194.12548828125,
+        1256.833740234375,
+        27.506921768188477
+      ]
+    },
+    {
+      "entry": 42,
+      "name": "SpawnNode_Guide_EnemyBot",
+      "translation": [
+        1223.384765625,
+        847.5761108398438,
+        26.346139907836914
+      ]
+    },
+    {
+      "entry": 43,
+      "name": "SpawnNode_Guide_EnemyBot",
+      "translation": [
+        817.1101684570312,
+        1051.6953125,
+        50.3217658996582
+      ]
+    },
+    {
+      "entry": 44,
+      "name": "SpawnNode_Guide_EnemyBot",
+      "translation": [
+        1300.6107177734375,
+        1034.3909912109375,
+        30.026182174682617
+      ]
+    },
+    {
+      "entry": 47,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1279.7227783203125,
+        1046.15380859375,
+        22.209049224853516
+      ]
+    },
+    {
+      "entry": 48,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        1276.3309326171875,
+        1043.2294921875,
+        22.309864044189453
+      ]
+    },
+    {
+      "entry": 49,
+      "name": "hive_spawn_root_003",
+      "translation": [
+        1269.6109619140625,
+        1034.677490234375,
+        22.485280990600586
+      ]
+    },
+    {
+      "entry": 50,
+      "name": "hive_spawn_flower_branch_001",
+      "translation": [
+        1268.693115234375,
+        1038.14013671875,
+        22.010601043701172
+      ]
+    },
+    {
+      "entry": 51,
+      "name": "hive_spawn_flower_branch_001",
+      "translation": [
+        1295.8394775390625,
+        1054.5689697265625,
+        21.360092163085938
+      ]
+    },
+    {
+      "entry": 52,
+      "name": "hive_spawn_root_001",
+      "translation": [
+        1280.2049560546875,
+        1041.171142578125,
+        21.600553512573242
+      ]
+    },
+    {
+      "entry": 54,
+      "name": "hive_spawn_root_001",
+      "translation": [
+        1283.54296875,
+        1047.34619140625,
+        21.687681198120117
+      ]
+    },
+    {
+      "entry": 59,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        1283.9874267578125,
+        1046.9970703125,
+        22.419677734375
+      ]
+    },
+    {
+      "entry": 60,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        1280.0516357421875,
+        1041.153564453125,
+        21.98011589050293
+      ]
+    },
+    {
+      "entry": 61,
+      "name": "hive_spawn_root_003",
+      "translation": [
+        1289.8328857421875,
+        1029.42919921875,
+        22.021080017089844
+      ]
+    },
+    {
+      "entry": 62,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        1273.0494384765625,
+        1058.0780029296875,
+        21.9984073638916
+      ]
+    },
+    {
+      "entry": 63,
+      "name": "hive_spawn_root_003",
+      "translation": [
+        1285.1737060546875,
+        1050.010498046875,
+        22.284439086914062
+      ]
+    },
+    {
+      "entry": 65,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        905.220458984375,
+        720.125244140625,
+        9.199745178222656
+      ]
+    },
+    {
+      "entry": 68,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        787.559326171875,
+        1054.32568359375,
+        49.75
+      ]
+    },
+    {
+      "entry": 70,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        783.7846069335938,
+        1053.264892578125,
+        49.853458404541016
+      ]
+    },
+    {
+      "entry": 71,
+      "name": "hive_spawn_root_003",
+      "translation": [
+        784.5184936523438,
+        1051.723876953125,
+        49.83189010620117
+      ]
+    },
+    {
+      "entry": 72,
+      "name": "hive_spawn_flower_branch_001",
+      "translation": [
+        799.3320922851562,
+        1046.8973388671875,
+        50.12449264526367
+      ]
+    },
+    {
+      "entry": 73,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        788.2846069335938,
+        1058.389892578125,
+        49.603458404541016
+      ]
+    },
+    {
+      "entry": 74,
+      "name": "hive_spawn_root_003",
+      "translation": [
+        784.0472412109375,
+        1052.371826171875,
+        49.85218048095703
+      ]
+    },
+    {
+      "entry": 75,
+      "name": "hive_spawn_root_003",
+      "translation": [
+        791.9256591796875,
+        1052.62255859375,
+        49.85360336303711
+      ]
+    },
+    {
+      "entry": 76,
+      "name": "hive_spawn_flower_branch_001",
+      "translation": [
+        779.1798095703125,
+        1060.9637451171875,
+        49.31340789794922
+      ]
+    },
+    {
+      "entry": 77,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        791.9594116210938,
+        1053.66552734375,
+        50.19694137573242
+      ]
+    },
+    {
+      "entry": 78,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        786.213623046875,
+        1051.19482421875,
+        49.9224739074707
+      ]
+    },
+    {
+      "entry": 79,
+      "name": "hive_spawn_root_001",
+      "translation": [
+        783.747314453125,
+        1053.53662109375,
+        49.548641204833984
+      ]
+    },
+    {
+      "entry": 80,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        783.4199829101562,
+        1053.784912109375,
+        49.5521240234375
+      ]
+    },
+    {
+      "entry": 81,
+      "name": "hive_spawn_root_003",
+      "translation": [
+        780.2936401367188,
+        1056.4425048828125,
+        49.520835876464844
+      ]
+    },
+    {
+      "entry": 82,
+      "name": "hive_spawn_root_003",
+      "translation": [
+        792.3961181640625,
+        1053.292236328125,
+        50.13557815551758
+      ]
+    },
+    {
+      "entry": 83,
+      "name": "hive_spawn_root_003",
+      "translation": [
+        793.1632690429688,
+        1052.3504638671875,
+        50.35183334350586
+      ]
+    },
+    {
+      "entry": 85,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1229.126953125,
+        821.033447265625,
+        17.29502296447754
+      ]
+    },
+    {
+      "entry": 86,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        987.7031860351562,
+        1242.7506103515625,
+        50.96214294433594
+      ]
+    },
+    {
+      "entry": 87,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        983.8836669921875,
+        1237.3226318359375,
+        50.09219741821289
+      ]
+    },
+    {
+      "entry": 88,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        993.0415649414062,
+        1255.5863037109375,
+        51.24175262451172
+      ]
+    },
+    {
+      "entry": 89,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        993.1268310546875,
+        1241.4500732421875,
+        51.39688491821289
+      ]
+    },
+    {
+      "entry": 90,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        992.1900634765625,
+        1235.647705078125,
+        50.519073486328125
+      ]
+    },
+    {
+      "entry": 91,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        989.5506591796875,
+        1238.8681640625,
+        50.783294677734375
+      ]
+    },
+    {
+      "entry": 92,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        994.2398071289062,
+        1241.0037841796875,
+        50.714385986328125
+      ]
+    },
+    {
+      "entry": 93,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        902.8187866210938,
+        719.0634155273438,
+        8.988678932189941
+      ]
+    },
+    {
+      "entry": 94,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        905.2560424804688,
+        719.1808471679688,
+        8.7368803024292
+      ]
+    },
+    {
+      "entry": 95,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        904.9862060546875,
+        717.21044921875,
+        9.136993408203125
+      ]
+    },
+    {
+      "entry": 96,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        908.2057495117188,
+        717.7095947265625,
+        9.15670394897461
+      ]
+    },
+    {
+      "entry": 97,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        901.3373413085938,
+        721.851806640625,
+        9.506237030029297
+      ]
+    },
+    {
+      "entry": 98,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        908.4592895507812,
+        716.0684204101562,
+        9.366687774658203
+      ]
+    },
+    {
+      "entry": 99,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        900.1541748046875,
+        718.17626953125,
+        9.613431930541992
+      ]
+    },
+    {
+      "entry": 100,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1228.032958984375,
+        825.5484619140625,
+        17.0504207611084
+      ]
+    },
+    {
+      "entry": 101,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1227.7513427734375,
+        824.868408203125,
+        17.012117385864258
+      ]
+    },
+    {
+      "entry": 102,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1232.7972412109375,
+        819.4719848632812,
+        17.01999855041504
+      ]
+    },
+    {
+      "entry": 103,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1231.890869140625,
+        824.97314453125,
+        17.38558006286621
+      ]
+    },
+    {
+      "entry": 104,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1229.06787109375,
+        817.7073364257812,
+        17.70816421508789
+      ]
+    },
+    {
+      "entry": 105,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1225.1407470703125,
+        819.7531127929688,
+        17.125261306762695
+      ]
+    },
+    {
+      "entry": 106,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1229.2720947265625,
+        825.3828735351562,
+        17.292255401611328
+      ]
+    },
+    {
+      "entry": 108,
+      "name": "hive_spawn_root_003",
+      "translation": [
+        1277.5084228515625,
+        1050.27783203125,
+        22.480323791503906
+      ]
+    },
+    {
+      "entry": 121,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1193.624755859375,
+        1228.699462890625,
+        18.873510360717773
+      ]
+    },
+    {
+      "entry": 122,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1194.41357421875,
+        1226.2935791015625,
+        18.97294807434082
+      ]
+    },
+    {
+      "entry": 123,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1196.5556640625,
+        1230.9979248046875,
+        19.48985481262207
+      ]
+    },
+    {
+      "entry": 125,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1193.78564453125,
+        1232.8040771484375,
+        19.454822540283203
+      ]
+    },
+    {
+      "entry": 126,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1189.149658203125,
+        1235.0152587890625,
+        19.16835594177246
+      ]
+    },
+    {
+      "entry": 129,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1192.9552001953125,
+        1227.847900390625,
+        19.397560119628906
+      ]
+    },
+    {
+      "entry": 130,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1193.66064453125,
+        1234.0260009765625,
+        19.04471778869629
+      ]
+    },
+    {
+      "entry": 133,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        993.0511474609375,
+        1239.911865234375,
+        51.0461311340332
+      ]
+    },
+    {
+      "entry": 139,
+      "name": "hive_spawn_root_002",
+      "translation": [
+        993.0511474609375,
+        1239.911865234375,
+        51.0461311340332
+      ]
+    },
+    {
+      "entry": 154,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1233.6534423828125,
+        821.8739013671875,
+        17.57113265991211
+      ]
+    },
+    {
+      "entry": 155,
+      "name": "hive_spawn_base_001",
+      "translation": [
+        1224.7535400390625,
+        819.860107421875,
+        17.38558006286621
+      ]
+    },
+    {
+      "entry": 532,
+      "name": "SpawnNode_Player_Respawn_RESEARCH",
+      "translation": [
+        1340.830322265625,
+        920.10986328125,
+        28.000001907348633
+      ]
+    },
+    {
+      "entry": 533,
+      "name": "SpawnNode_Player_RespawnPoint_06a",
+      "translation": [
+        1335.3582763671875,
+        926.6141967773438,
+        20.500003814697266
+      ]
+    },
+    {
+      "entry": 534,
+      "name": "SpawnNode_Player_RespawnSubPoint_06b",
+      "translation": [
+        1340.8822021484375,
+        919.8653564453125,
+        19.500003814697266
+      ]
+    },
+    {
+      "entry": 535,
+      "name": "SpawnNode_Player_RespawnSubPoint_06d",
+      "translation": [
+        1344.1402587890625,
+        926.1806640625,
+        18.750003814697266
+      ]
+    },
+    {
+      "entry": 536,
+      "name": "SpawnNode_Player_RespawnSubPoint_06c",
+      "translation": [
+        1335.75537109375,
+        920.5648193359375,
+        20.5000057220459
+      ]
+    },
+    {
+      "entry": 537,
+      "name": "SpawnNode_Player_Respawn_RIVER",
+      "translation": [
+        1349.244140625,
+        1191.4134521484375,
+        18.5
+      ]
+    },
+    {
+      "entry": 538,
+      "name": "SpawnNode_Player_RespawnPoint_72a",
+      "translation": [
+        1347.785888671875,
+        1192.0731201171875,
+        18.5
+      ]
+    },
+    {
+      "entry": 539,
+      "name": "SpawnNode_Player_RespawnSubPoint_72b",
+      "translation": [
+        1349.244140625,
+        1191.4134521484375,
+        18.5
+      ]
+    },
+    {
+      "entry": 540,
+      "name": "SpawnNode_Player_RespawnSubPoint_72d",
+      "translation": [
+        1349.244140625,
+        1191.4134521484375,
+        18.5
+      ]
+    },
+    {
+      "entry": 541,
+      "name": "SpawnNode_Player_RespawnSubPoint_72c",
+      "translation": [
+        1349.244140625,
+        1191.4134521484375,
+        18.5
+      ]
+    },
+    {
+      "entry": 542,
+      "name": "SpawnNode_Player_Respawn_CRATER",
+      "translation": [
+        842.2005615234375,
+        1202.7230224609375,
+        60.54529571533203
+      ]
+    },
+    {
+      "entry": 543,
+      "name": "SpawnNode_Player_RespawnPoint_28a",
+      "translation": [
+        842.2005615234375,
+        1202.7230224609375,
+        60.54529571533203
+      ]
+    },
+    {
+      "entry": 544,
+      "name": "SpawnNode_Player_RespawnSubPoint_28b",
+      "translation": [
+        838.7464599609375,
+        1199.67041015625,
+        60.54529571533203
+      ]
+    },
+    {
+      "entry": 545,
+      "name": "SpawnNode_Player_RespawnSubPoint_28d",
+      "translation": [
+        833.7487182617188,
+        1196.1939697265625,
+        60.54529571533203
+      ]
+    },
+    {
+      "entry": 546,
+      "name": "SpawnNode_Player_RespawnSubPoint_28c",
+      "translation": [
+        843.2274169921875,
+        1207.539306640625,
+        59.7952995300293
+      ]
+    },
+    {
+      "entry": 547,
+      "name": "SpawnNode_Player_Respawn_SWAMP",
+      "translation": [
+        1079.7509765625,
+        757.5667724609375,
+        20.5
+      ]
+    },
+    {
+      "entry": 548,
+      "name": "SpawnNode_Player_RespawnPoint_37a",
+      "translation": [
+        1099.0673828125,
+        761.583251953125,
+        24.5
+      ]
+    },
+    {
+      "entry": 549,
+      "name": "SpawnNode_Player_RespawnSubPoint_37b",
+      "translation": [
+        1101.3282470703125,
+        766.2079467773438,
+        22.75
+      ]
+    },
+    {
+      "entry": 550,
+      "name": "SpawnNode_Player_RespawnSubPoint_37d",
+      "translation": [
+        1097.5936279296875,
+        751.4922485351562,
+        20.75
+      ]
+    },
+    {
+      "entry": 551,
+      "name": "SpawnNode_Player_RespawnSubPoint_37c",
+      "translation": [
+        1090.1298828125,
+        750.6004028320312,
+        20.5
+      ]
+    },
+    {
+      "entry": 552,
+      "name": "SpawnNode_Player_Respawn_SPACEPORT",
+      "translation": [
+        1129.0950927734375,
+        1292.187744140625,
+        29.750003814697266
+      ]
+    },
+    {
+      "entry": 553,
+      "name": "SpawnNode_Player_RespawnPoint_67a",
+      "translation": [
+        1106.3092041015625,
+        1344.605224609375,
+        35.500003814697266
+      ]
+    },
+    {
+      "entry": 554,
+      "name": "SpawnNode_Player_RespawnSubPoint_67b",
+      "translation": [
+        1100.3665771484375,
+        1337.2086181640625,
+        36.0
+      ]
+    },
+    {
+      "entry": 555,
+      "name": "SpawnNode_Player_RespawnSubPoint_67d",
+      "translation": [
+        1103.3118896484375,
+        1340.4892578125,
+        36.000003814697266
+      ]
+    },
+    {
+      "entry": 556,
+      "name": "SpawnNode_Player_RespawnSubPoint_67c",
+      "translation": [
+        1111.2911376953125,
+        1345.7742919921875,
+        35.500003814697266
+      ]
+    },
+    {
+      "entry": 557,
+      "name": "SpawnNode_Player_Respawn_SW_EXPANSION",
+      "translation": [
+        824.745361328125,
+        911.2015380859375,
+        41.49999237060547
+      ]
+    },
+    {
+      "entry": 558,
+      "name": "SpawnNode_Player_RespawnPoint_81a",
+      "translation": [
+        821.849365234375,
+        928.7208862304688,
+        35.99999237060547
+      ]
+    },
+    {
+      "entry": 559,
+      "name": "SpawnNode_Player_RespawnSubPoint_81b",
+      "translation": [
+        828.302490234375,
+        920.8160400390625,
+        36.49999237060547
+      ]
+    },
+    {
+      "entry": 560,
+      "name": "SpawnNode_Player_RespawnSubPoint_81d",
+      "translation": [
+        824.608642578125,
+        924.3229370117188,
+        35.74999237060547
+      ]
+    },
+    {
+      "entry": 561,
+      "name": "SpawnNode_Player_RespawnSubPoint_81c",
+      "translation": [
+        823.6219482421875,
+        933.3902587890625,
+        35.99999237060547
+      ]
+    },
+    {
+      "entry": 562,
+      "name": "SpawnNode_MegaDrone_Camper_Anchor",
+      "translation": [
+        1067.0069580078125,
+        1062.865966796875,
+        31.429012298583984
+      ]
+    },
+    {
+      "entry": 563,
+      "name": "SpawnNode_MegaDrone_Camper_Anchor",
+      "translation": [
+        1094.436279296875,
+        1081.887939453125,
+        29.197799682617188
+      ]
+    },
+    {
+      "entry": 564,
+      "name": "SpawnNode_MegaDrone_Camper_Anchor",
+      "translation": [
+        1094.42138671875,
+        1095.7431640625,
+        36.55903625488281
+      ]
+    },
+    {
+      "entry": 565,
+      "name": "SpawnNode_MegaDrone_Camper_Anchor",
+      "translation": [
+        1086.16845703125,
+        1051.0723876953125,
+        29.510753631591797
+      ]
+    },
+    {
+      "entry": 566,
+      "name": "SpawnNode_MegaDrone_Camper_Anchor",
+      "translation": [
+        1087.0042724609375,
+        1102.218994140625,
+        33.76445388793945
+      ]
+    },
+    {
+      "entry": 567,
+      "name": "SpawnNode_MegaDrone_Camper_Anchor",
+      "translation": [
+        1093.7398681640625,
+        1096.8089599609375,
+        32.07387161254883
+      ]
+    },
+    {
+      "entry": 568,
+      "name": "SpawnNode_MegaDrone_Camper_Anchor",
+      "translation": [
+        1087.0609130859375,
+        1052.230712890625,
+        29.119640350341797
+      ]
+    },
+    {
+      "entry": 569,
+      "name": "SpawnNode_MegaDrone_Camper_Anchor",
+      "translation": [
+        1089.8564453125,
+        1098.9600830078125,
+        34.6863899230957
+      ]
+    },
+    {
+      "entry": 570,
+      "name": "SpawnNode_MegaDrone_Camper_Anchor",
+      "translation": [
+        1092.0318603515625,
+        1098.4833984375,
+        37.68256378173828
+      ]
+    },
+    {
+      "entry": 571,
+      "name": "SpawnNode_MegaDrone_Camper_Anchor",
+      "translation": [
+        1096.197265625,
+        1095.70263671875,
+        33.92484664916992
+      ]
+    },
+    {
+      "entry": 572,
+      "name": "Player_DropPoint_09b",
+      "translation": [
+        1329.016357421875,
+        929.6678466796875,
+        20.0
+      ]
+    },
+    {
+      "entry": 573,
+      "name": "Player_DropPoint_09c",
+      "translation": [
+        1079.8336181640625,
+        1300.947998046875,
+        36.25
+      ]
+    },
+    {
+      "entry": 574,
+      "name": "Player_DropPoint_09a",
+      "translation": [
+        844.0587158203125,
+        1206.4560546875,
+        60.0
+      ]
+    },
+    {
+      "entry": 575,
+      "name": "Player_DropPoint_09d",
+      "translation": [
+        1104.268798828125,
+        763.47802734375,
+        23.25
+      ]
+    },
+    {
+      "entry": 576,
+      "name": "Player_DropPoint_09c",
+      "translation": [
+        812.3306884765625,
+        914.9200439453125,
+        43.0
+      ]
+    },
+    {
+      "entry": 577,
+      "name": "Player_DropPoint_09d",
+      "translation": [
+        830.8336181640625,
+        1190.521240234375,
+        64.0
+      ]
+    },
+    {
+      "entry": 578,
+      "name": "Player_DropPoint_09c",
+      "translation": [
+        835.2630615234375,
+        1208.052734375,
+        60.25
+      ]
+    },
+    {
+      "entry": 579,
+      "name": "Player_DropPoint_09b",
+      "translation": [
+        1072.1112060546875,
+        1302.8826904296875,
+        36.5
+      ]
+    },
+    {
+      "entry": 580,
+      "name": "Player_DropPoint_09c",
+      "translation": [
+        1092.815185546875,
+        752.3551025390625,
+        21.0
+      ]
+    },
+    {
+      "entry": 581,
+      "name": "Player_DropPoint_09b",
+      "translation": [
+        817.0558471679688,
+        912.1679077148438,
+        42.5
+      ]
+    },
+    {
+      "entry": 582,
+      "name": "Player_DropPoint_09c",
+      "translation": [
+        1347.2283935546875,
+        1191.921142578125,
+        18.75
+      ]
+    },
+    {
+      "entry": 583,
+      "name": "Player_DropPoint_09d",
+      "translation": [
+        824.4093627929688,
+        904.4794921875,
+        41.75
+      ]
+    },
+    {
+      "entry": 584,
+      "name": "Player_DropPoint_09a",
+      "translation": [
+        1088.680419921875,
+        750.9548950195312,
+        21.0
+      ]
+    },
+    {
+      "entry": 585,
+      "name": "Player_DropPoint_09a",
+      "translation": [
+        1349.74169921875,
+        1187.142333984375,
+        18.0
+      ]
+    },
+    {
+      "entry": 586,
+      "name": "Player_DropPoint_09a",
+      "translation": [
+        1316.24169921875,
+        921.8923950195312,
+        19.25
+      ]
+    },
+    {
+      "entry": 587,
+      "name": "Player_DropPoint_09a",
+      "translation": [
+        1091.7369384765625,
+        1292.90234375,
+        35.0
+      ]
+    },
+    {
+      "entry": 588,
+      "name": "Player_DropPoint_09d",
+      "translation": [
+        1082.8021240234375,
+        1296.62744140625,
+        35.75
+      ]
+    },
+    {
+      "entry": 589,
+      "name": "Player_DropPoint_09d",
+      "translation": [
+        1344.7470703125,
+        1201.129150390625,
+        18.75
+      ]
+    },
+    {
+      "entry": 590,
+      "name": "Player_DropPoint_09a",
+      "translation": [
+        814.6878051757812,
+        923.5430908203125,
+        42.75
+      ]
+    },
+    {
+      "entry": 591,
+      "name": "Player_DropPoint_09b",
+      "translation": [
+        1346.516357421875,
+        1196.9178466796875,
+        18.75
+      ]
+    },
+    {
+      "entry": 592,
+      "name": "Player_DropPoint_09d",
+      "translation": [
+        1331.4970703125,
+        935.1290893554688,
+        20.0
+      ]
+    },
+    {
+      "entry": 593,
+      "name": "Player_DropPoint_09c",
+      "translation": [
+        1328.4783935546875,
+        921.921142578125,
+        20.0
+      ]
+    },
+    {
+      "entry": 594,
+      "name": "Player_DropPoint_09b",
+      "translation": [
+        1096.46875,
+        755.322509765625,
+        22.25
+      ]
+    },
+    {
+      "entry": 595,
+      "name": "Player_DropPoint_09b",
+      "translation": [
+        835.828369140625,
+        1195.830322265625,
+        60.5
+      ]
+    },
+    {
+      "entry": 596,
+      "name": "MedicalStation Spawner",
+      "translation": [
+        1154.0230712890625,
+        908.55029296875,
+        19.182363510131836
+      ]
+    },
+    {
+      "entry": 600,
+      "name": "MedicalStation Spawner",
+      "translation": [
+        940.5634765625,
+        1163.703125,
+        57.474998474121094
+      ]
+    },
+    {
+      "entry": 604,
+      "name": "MedicalStation Spawner",
+      "translation": [
+        1256.0858154296875,
+        1080.0386962890625,
+        22.599998474121094
+      ]
+    },
+    {
+      "entry": 608,
+      "name": "MedicalStation Spawner",
+      "translation": [
+        1108.0753173828125,
+        1238.230712890625,
+        34.46067428588867
+      ]
+    },
+    {
+      "entry": 612,
+      "name": "MedicalStation Spawner",
+      "translation": [
+        891.0939331054688,
+        981.1439208984375,
+        39.974998474121094
+      ]
+    },
+    {
+      "entry": 633,
+      "name": "CAMERA_ally_respawn_02",
+      "translation": [
+        1370.4342041015625,
+        1007.3426513671875,
+        36.708099365234375
+      ]
+    },
+    {
+      "entry": 634,
+      "name": "CAMERA_ally_respawn_01",
+      "translation": [
+        1352.5628662109375,
+        858.4015502929688,
+        23.26580810546875
+      ]
+    },
+    {
+      "entry": 635,
+      "name": "CAMERA_ally_respawn_03",
+      "translation": [
+        1378.8004150390625,
+        1008.256103515625,
+        27.94036865234375
+      ]
+    },
+    {
+      "entry": 636,
+      "name": "CAMERA_ally_respawn_05",
+      "translation": [
+        1129.9151611328125,
+        905.2685546875,
+        117.8919448852539
+      ]
+    },
+    {
+      "entry": 637,
+      "name": "CAMERA_ally_respawn_04",
+      "translation": [
+        1373.97998046875,
+        1098.9327392578125,
+        28.454708099365234
+      ]
+    },
+    {
+      "entry": 739,
+      "name": "SpawnNode_MegaDroneCamp_MatchStart",
+      "translation": [
+        1069.5740966796875,
+        1075.5560302734375,
+        29.419998168945312
+      ]
+    },
+    {
+      "entry": 1605,
+      "name": "SpawnNode_Hive_AIOverlord_SWAMP",
+      "translation": [
+        1229.1251220703125,
+        821.033447265625,
+        18.625
+      ]
+    },
+    {
+      "entry": 1606,
+      "name": "SpawnNode_Hive_AIOverlord_LOG",
+      "translation": [
+        989.55078125,
+        1238.8681640625,
+        52.204620361328125
+      ]
+    },
+    {
+      "entry": 1607,
+      "name": "SpawnNode_Hive_AIOverlord_RESEARCH",
+      "translation": [
+        1280.4107666015625,
+        1046.880126953125,
+        22.874996185302734
+      ]
+    },
+    {
+      "entry": 1608,
+      "name": "SpawnNode_Hive_AIOverlord_GROTTO",
+      "translation": [
+        787.5592651367188,
+        1054.32568359375,
+        49.999996185302734
+      ]
+    },
+    {
+      "entry": 1609,
+      "name": "SpawnNode_Hive_AIOverlord_FALLS",
+      "translation": [
+        905.220458984375,
+        720.125244140625,
+        10.125000953674316
+      ]
+    },
+    {
+      "entry": 1610,
+      "name": "SpawnNode_Hive_AIOverlord_SPACEPORT",
+      "translation": [
+        1196.5555419921875,
+        1230.9979248046875,
+        20.499998092651367
+      ]
+    },
+    {
+      "entry": 1613,
+      "name": "RotatedSpawn",
+      "translation": [
+        1278.4444580078125,
+        1200.222412109375,
+        22.749998092651367
+      ]
+    },
+    {
+      "entry": 1616,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1180.0648193359375,
+        815.5113525390625,
+        25.340747833251953
+      ]
+    },
+    {
+      "entry": 1618,
+      "name": "RotatedSpawn",
+      "translation": [
+        1180.0648193359375,
+        815.5113525390625,
+        25.340747833251953
+      ]
+    },
+    {
+      "entry": 1621,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        937.5648193359375,
+        896.5578002929688,
+        37.46574783325195
+      ]
+    },
+    {
+      "entry": 1623,
+      "name": "RotatedSpawn",
+      "translation": [
+        792.8558349609375,
+        1009.4066772460938,
+        51.84074783325195
+      ]
+    },
+    {
+      "entry": 1739,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        1146.7486572265625,
+        824.4661254882812,
+        25.91641616821289
+      ]
+    },
+    {
+      "entry": 1947,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        963.4808349609375,
+        1033.5328369140625,
+        35.24876022338867
+      ]
+    },
+    {
+      "entry": 1954,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1012.1249389648438,
+        933.75,
+        28.624998092651367
+      ]
+    },
+    {
+      "entry": 1957,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1295.6279296875,
+        1234.9932861328125,
+        24.74999237060547
+      ]
+    },
+    {
+      "entry": 1960,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1119.4998779296875,
+        951.0,
+        18.499998092651367
+      ]
+    },
+    {
+      "entry": 1965,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        890.9999389648438,
+        947.0,
+        45.999996185302734
+      ]
+    },
+    {
+      "entry": 1968,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1198.423583984375,
+        1163.907470703125,
+        18.479999542236328
+      ]
+    },
+    {
+      "entry": 1972,
+      "name": "RotatedSpawn",
+      "translation": [
+        794.7822265625,
+        1127.1885986328125,
+        55.96574783325195
+      ]
+    },
+    {
+      "entry": 1979,
+      "name": "RotatedSpawn",
+      "translation": [
+        931.8347778320312,
+        1137.8624267578125,
+        56.09074783325195
+      ]
+    },
+    {
+      "entry": 1984,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        981.113037109375,
+        766.89794921875,
+        21.965749740600586
+      ]
+    },
+    {
+      "entry": 1989,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1177.2498779296875,
+        797.75,
+        23.874998092651367
+      ]
+    },
+    {
+      "entry": 1994,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1239.8111572265625,
+        1333.7071533203125,
+        33.74999237060547
+      ]
+    },
+    {
+      "entry": 1997,
+      "name": "RotatedSpawn",
+      "translation": [
+        1156.2802734375,
+        1264.3382568359375,
+        28.590747833251953
+      ]
+    },
+    {
+      "entry": 2000,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        845.49072265625,
+        1260.8358154296875,
+        65.84076690673828
+      ]
+    },
+    {
+      "entry": 2002,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        858.5015258789062,
+        1024.6107177734375,
+        39.886661529541016
+      ]
+    },
+    {
+      "entry": 2005,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        852.3834838867188,
+        999.6727905273438,
+        44.59074783325195
+      ]
+    },
+    {
+      "entry": 2008,
+      "name": "RotatedSpawn",
+      "translation": [
+        921.25,
+        1061.125,
+        44.5
+      ]
+    },
+    {
+      "entry": 2015,
+      "name": "RotatedSpawn",
+      "translation": [
+        790.7957763671875,
+        1176.334716796875,
+        61.090694427490234
+      ]
+    },
+    {
+      "entry": 2018,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1286.146484375,
+        1267.38037109375,
+        29.499996185302734
+      ]
+    },
+    {
+      "entry": 2024,
+      "name": "RotatedSpawn",
+      "translation": [
+        924.5,
+        1061.375,
+        41.375
+      ]
+    },
+    {
+      "entry": 2027,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        957.512939453125,
+        1327.7081298828125,
+        61.0904655456543
+      ]
+    },
+    {
+      "entry": 2030,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1230.8717041015625,
+        896.905029296875,
+        23.215747833251953
+      ]
+    },
+    {
+      "entry": 2033,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1109.9998779296875,
+        789.0,
+        23.999998092651367
+      ]
+    },
+    {
+      "entry": 2037,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        967.8749389648438,
+        1022.25,
+        32.249996185302734
+      ]
+    },
+    {
+      "entry": 2040,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        946.653076171875,
+        855.1329956054688,
+        24.91160011291504
+      ]
+    },
+    {
+      "entry": 2043,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1068.28466796875,
+        1249.50048828125,
+        41.96574783325195
+      ]
+    },
+    {
+      "entry": 2047,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        808.7499389648438,
+        1112.5,
+        47.69463348388672
+      ]
+    },
+    {
+      "entry": 2051,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        795.1366577148438,
+        1075.7891845703125,
+        55.71574783325195
+      ]
+    },
+    {
+      "entry": 2054,
+      "name": "RotatedSpawn",
+      "translation": [
+        1135.12109375,
+        1242.462890625,
+        34.09041976928711
+      ]
+    },
+    {
+      "entry": 2057,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1135.8701171875,
+        1242.42333984375,
+        32.71541976928711
+      ]
+    },
+    {
+      "entry": 2060,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        832.5321655273438,
+        1075.4827880859375,
+        54.75743103027344
+      ]
+    },
+    {
+      "entry": 2065,
+      "name": "RotatedSpawn",
+      "translation": [
+        900.189453125,
+        1261.8626708984375,
+        66.71565246582031
+      ]
+    },
+    {
+      "entry": 2069,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        849.2499389648438,
+        1099.5,
+        46.624996185302734
+      ]
+    },
+    {
+      "entry": 2072,
+      "name": "RotatedSpawn",
+      "translation": [
+        974.8352661132812,
+        1164.8414306640625,
+        57.09074783325195
+      ]
+    },
+    {
+      "entry": 2077,
+      "name": "RotatedSpawn",
+      "translation": [
+        759.5072021484375,
+        1186.170654296875,
+        63.0906982421875
+      ]
+    },
+    {
+      "entry": 2080,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        794.7822265625,
+        1127.1885986328125,
+        55.96574783325195
+      ]
+    },
+    {
+      "entry": 2083,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1241.631103515625,
+        859.30908203125,
+        25.090747833251953
+      ]
+    },
+    {
+      "entry": 2086,
+      "name": "RotatedSpawn",
+      "translation": [
+        1135.8701171875,
+        1242.42333984375,
+        32.71541976928711
+      ]
+    },
+    {
+      "entry": 2091,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        790.7957763671875,
+        1176.334716796875,
+        61.090694427490234
+      ]
+    },
+    {
+      "entry": 2098,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        956.6014404296875,
+        1113.573974609375,
+        49.999996185302734
+      ]
+    },
+    {
+      "entry": 2102,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        900.189453125,
+        1261.8626708984375,
+        66.71565246582031
+      ]
+    },
+    {
+      "entry": 2105,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1156.2802734375,
+        1264.3382568359375,
+        28.590747833251953
+      ]
+    },
+    {
+      "entry": 2112,
+      "name": "RotatedSpawn",
+      "translation": [
+        1179.873291015625,
+        1308.222412109375,
+        31.465744018554688
+      ]
+    },
+    {
+      "entry": 2119,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        845.1295776367188,
+        1081.4212646484375,
+        46.341758728027344
+      ]
+    },
+    {
+      "entry": 2122,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1139.4998779296875,
+        870.0,
+        20.499998092651367
+      ]
+    },
+    {
+      "entry": 2125,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        921.4999389648438,
+        773.5,
+        17.749998092651367
+      ]
+    },
+    {
+      "entry": 2130,
+      "name": "RotatedSpawn",
+      "translation": [
+        1241.631103515625,
+        859.30908203125,
+        25.090747833251953
+      ]
+    },
+    {
+      "entry": 2133,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        931.8347778320312,
+        1137.8624267578125,
+        56.09074783325195
+      ]
+    },
+    {
+      "entry": 2140,
+      "name": "RotatedSpawn",
+      "translation": [
+        936.9010009765625,
+        789.6741333007812,
+        20.465747833251953
+      ]
+    },
+    {
+      "entry": 2144,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1282.2498779296875,
+        933.625,
+        18.124998092651367
+      ]
+    },
+    {
+      "entry": 2148,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        974.8352661132812,
+        1164.8414306640625,
+        57.09074783325195
+      ]
+    },
+    {
+      "entry": 2153,
+      "name": "RotatedSpawn",
+      "translation": [
+        1283.837646484375,
+        963.5269165039062,
+        26.590747833251953
+      ]
+    },
+    {
+      "entry": 2155,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1190.7122802734375,
+        1305.150634765625,
+        25.49608612060547
+      ]
+    },
+    {
+      "entry": 2158,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1021.8749389648438,
+        930.5,
+        29.249998092651367
+      ]
+    },
+    {
+      "entry": 2161,
+      "name": "RotatedSpawn",
+      "translation": [
+        1150.90869140625,
+        829.1007080078125,
+        21.465747833251953
+      ]
+    },
+    {
+      "entry": 2165,
+      "name": "RotatedSpawn",
+      "translation": [
+        981.113037109375,
+        766.89794921875,
+        21.965749740600586
+      ]
+    },
+    {
+      "entry": 2167,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        844.9999389648438,
+        1051.0,
+        45.999996185302734
+      ]
+    },
+    {
+      "entry": 2172,
+      "name": "RotatedSpawn",
+      "translation": [
+        1230.8717041015625,
+        896.905029296875,
+        23.215747833251953
+      ]
+    },
+    {
+      "entry": 2180,
+      "name": "RotatedSpawn",
+      "translation": [
+        957.512939453125,
+        1327.7081298828125,
+        61.0904655456543
+      ]
+    },
+    {
+      "entry": 2187,
+      "name": "RotatedSpawn",
+      "translation": [
+        937.5648193359375,
+        896.5578002929688,
+        37.46574783325195
+      ]
+    },
+    {
+      "entry": 2194,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        800.0829467773438,
+        1034.357177734375,
+        52.46575164794922
+      ]
+    },
+    {
+      "entry": 2199,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1204.4998779296875,
+        1053.0,
+        22.999998092651367
+      ]
+    },
+    {
+      "entry": 2202,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1179.873291015625,
+        1308.222412109375,
+        31.465744018554688
+      ]
+    },
+    {
+      "entry": 2207,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1193.28662109375,
+        1280.69873046875,
+        29.8749942779541
+      ]
+    },
+    {
+      "entry": 2214,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1150.90869140625,
+        829.1007080078125,
+        21.465747833251953
+      ]
+    },
+    {
+      "entry": 2224,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1135.12109375,
+        1242.462890625,
+        34.09041976928711
+      ]
+    },
+    {
+      "entry": 2227,
+      "name": "RotatedSpawn",
+      "translation": [
+        1229.3994140625,
+        867.7189331054688,
+        22.715747833251953
+      ]
+    },
+    {
+      "entry": 2230,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        936.9010009765625,
+        789.6741333007812,
+        20.465747833251953
+      ]
+    },
+    {
+      "entry": 2233,
+      "name": "RotatedSpawn",
+      "translation": [
+        1193.28662109375,
+        1280.69873046875,
+        29.8749942779541
+      ]
+    },
+    {
+      "entry": 2236,
+      "name": "RotatedSpawn",
+      "translation": [
+        1296.2218017578125,
+        940.6787109375,
+        24.590747833251953
+      ]
+    },
+    {
+      "entry": 2244,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1283.837646484375,
+        963.5269165039062,
+        26.590747833251953
+      ]
+    },
+    {
+      "entry": 2249,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1327.8963623046875,
+        1087.088623046875,
+        23.568601608276367
+      ]
+    },
+    {
+      "entry": 2252,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1275.3861083984375,
+        1075.5435791015625,
+        36.34074401855469
+      ]
+    },
+    {
+      "entry": 2255,
+      "name": "RotatedSpawn",
+      "translation": [
+        1023.0331420898438,
+        1176.28076171875,
+        49.96567916870117
+      ]
+    },
+    {
+      "entry": 2258,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1303.9998779296875,
+        1035.0,
+        29.999998092651367
+      ]
+    },
+    {
+      "entry": 2261,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        966.9999389648438,
+        911.0,
+        29.499998092651367
+      ]
+    },
+    {
+      "entry": 2264,
+      "name": "RotatedSpawn",
+      "translation": [
+        1089.782470703125,
+        1098.82177734375,
+        32.590877532958984
+      ]
+    },
+    {
+      "entry": 2269,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1150.48486328125,
+        826.624267578125,
+        22.090747833251953
+      ]
+    },
+    {
+      "entry": 2272,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1159.9998779296875,
+        1124.5,
+        22.999998092651367
+      ]
+    },
+    {
+      "entry": 2275,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        928.25,
+        1135.875,
+        52.34074783325195
+      ]
+    },
+    {
+      "entry": 2278,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1229.3994140625,
+        867.7189331054688,
+        22.715747833251953
+      ]
+    },
+    {
+      "entry": 2287,
+      "name": "RotatedSpawn",
+      "translation": [
+        977.0,
+        1164.875,
+        57.96574783325195
+      ]
+    },
+    {
+      "entry": 2290,
+      "name": "RotatedSpawn",
+      "translation": [
+        1275.3861083984375,
+        1075.5435791015625,
+        36.34074401855469
+      ]
+    },
+    {
+      "entry": 2295,
+      "name": "RotatedSpawn",
+      "translation": [
+        928.25,
+        1135.875,
+        52.34074783325195
+      ]
+    },
+    {
+      "entry": 2300,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        913.4032592773438,
+        1197.8262939453125,
+        67.84088134765625
+      ]
+    },
+    {
+      "entry": 2305,
+      "name": "RotatedSpawn",
+      "translation": [
+        913.4032592773438,
+        1197.8262939453125,
+        67.84088134765625
+      ]
+    },
+    {
+      "entry": 2308,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        853.4999389648438,
+        1109.875,
+        46.374996185302734
+      ]
+    },
+    {
+      "entry": 2312,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1296.2218017578125,
+        940.6787109375,
+        24.590747833251953
+      ]
+    },
+    {
+      "entry": 2315,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1302.8748779296875,
+        987.0,
+        18.749998092651367
+      ]
+    },
+    {
+      "entry": 2318,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1196.9998779296875,
+        805.0,
+        22.999998092651367
+      ]
+    },
+    {
+      "entry": 2323,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        816.1249389648438,
+        1074.25,
+        53.624996185302734
+      ]
+    },
+    {
+      "entry": 2332,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1269.4998779296875,
+        986.5,
+        18.999998092651367
+      ]
+    },
+    {
+      "entry": 2336,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        759.5072021484375,
+        1186.170654296875,
+        63.0906982421875
+      ]
+    },
+    {
+      "entry": 2341,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        826.1249389648438,
+        1105.125,
+        46.374996185302734
+      ]
+    },
+    {
+      "entry": 2346,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        864.4999389648438,
+        1201.0,
+        60.999996185302734
+      ]
+    },
+    {
+      "entry": 2348,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        846.4999389648438,
+        1044.875,
+        47.374996185302734
+      ]
+    },
+    {
+      "entry": 2361,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        774.2499389648438,
+        1073.75,
+        50.374996185302734
+      ]
+    },
+    {
+      "entry": 2363,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        968.9999389648438,
+        785.5,
+        15.999999046325684
+      ]
+    },
+    {
+      "entry": 2367,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1133.7142333984375,
+        1199.7694091796875,
+        25.62518310546875
+      ]
+    },
+    {
+      "entry": 2372,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1066.9998779296875,
+        1095.5,
+        33.999996185302734
+      ]
+    },
+    {
+      "entry": 2379,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1255.9998779296875,
+        1110.0,
+        30.499998092651367
+      ]
+    },
+    {
+      "entry": 2381,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        936.8749389648438,
+        1099.75,
+        45.874996185302734
+      ]
+    },
+    {
+      "entry": 2386,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1176.6248779296875,
+        1186.625,
+        19.112499237060547
+      ]
+    },
+    {
+      "entry": 2389,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        983.9999389648438,
+        1201.5,
+        59.499996185302734
+      ]
+    },
+    {
+      "entry": 2392,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1245.4998779296875,
+        1258.0,
+        26.999998092651367
+      ]
+    },
+    {
+      "entry": 2394,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        844.1249389648438,
+        1104.375,
+        46.874996185302734
+      ]
+    },
+    {
+      "entry": 2397,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1076.2498779296875,
+        1139.5,
+        33.874996185302734
+      ]
+    },
+    {
+      "entry": 2403,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1117.9998779296875,
+        1127.0,
+        24.999996185302734
+      ]
+    },
+    {
+      "entry": 2405,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        838.4999389648438,
+        1046.375,
+        47.749996185302734
+      ]
+    },
+    {
+      "entry": 2415,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        830.2499389648438,
+        1035.5,
+        47.249996185302734
+      ]
+    },
+    {
+      "entry": 2417,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        785.1249389648438,
+        1026.25,
+        49.499996185302734
+      ]
+    },
+    {
+      "entry": 2419,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        810.9999389648438,
+        1012.5,
+        45.999996185302734
+      ]
+    },
+    {
+      "entry": 2424,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1072.6248779296875,
+        835.5,
+        21.999998092651367
+      ]
+    },
+    {
+      "entry": 2427,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1185.9998779296875,
+        1098.0,
+        24.999998092651367
+      ]
+    },
+    {
+      "entry": 2429,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        777.1249389648438,
+        1040.125,
+        49.999996185302734
+      ]
+    },
+    {
+      "entry": 2433,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        873.5759887695312,
+        1075.2725830078125,
+        50.84075164794922
+      ]
+    },
+    {
+      "entry": 2436,
+      "name": "RotatedSpawn",
+      "translation": [
+        1288.025146484375,
+        1265.843994140625,
+        31.249996185302734
+      ]
+    },
+    {
+      "entry": 2439,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1126.2498779296875,
+        1032.625,
+        17.999998092651367
+      ]
+    },
+    {
+      "entry": 2442,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        828.4999389648438,
+        1103.125,
+        46.481258392333984
+      ]
+    },
+    {
+      "entry": 2445,
+      "name": "RotatedSpawn",
+      "translation": [
+        1184.9464111328125,
+        1293.1092529296875,
+        30.840744018554688
+      ]
+    },
+    {
+      "entry": 2447,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        891.1090087890625,
+        728.309814453125,
+        10.034224510192871
+      ]
+    },
+    {
+      "entry": 2450,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1250.4998779296875,
+        1142.0,
+        21.499998092651367
+      ]
+    },
+    {
+      "entry": 2453,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        778.4999389648438,
+        1164.5,
+        54.999996185302734
+      ]
+    },
+    {
+      "entry": 2455,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        927.1249389648438,
+        1093.375,
+        45.874996185302734
+      ]
+    },
+    {
+      "entry": 2458,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1288.025146484375,
+        1265.843994140625,
+        31.249996185302734
+      ]
+    },
+    {
+      "entry": 2461,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        925.75,
+        1134.125,
+        50.59074783325195
+      ]
+    },
+    {
+      "entry": 2464,
+      "name": "RotatedSpawn",
+      "translation": [
+        1295.6279296875,
+        1234.9932861328125,
+        24.74999237060547
+      ]
+    },
+    {
+      "entry": 2475,
+      "name": "RotatedSpawn",
+      "translation": [
+        1286.146484375,
+        1267.38037109375,
+        29.499996185302734
+      ]
+    },
+    {
+      "entry": 2478,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        792.8558349609375,
+        1009.4066772460938,
+        51.84074783325195
+      ]
+    },
+    {
+      "entry": 2481,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        921.25,
+        1061.125,
+        44.5
+      ]
+    },
+    {
+      "entry": 2484,
+      "name": "RotatedSpawn",
+      "translation": [
+        1150.48486328125,
+        826.624267578125,
+        22.090747833251953
+      ]
+    },
+    {
+      "entry": 2493,
+      "name": "RotatedSpawn",
+      "translation": [
+        925.75,
+        1134.125,
+        50.59074783325195
+      ]
+    },
+    {
+      "entry": 2496,
+      "name": "RotatedSpawn",
+      "translation": [
+        852.3834838867188,
+        999.6727905273438,
+        44.59074783325195
+      ]
+    },
+    {
+      "entry": 2499,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        798.6249389648438,
+        1048.5,
+        50.249996185302734
+      ]
+    },
+    {
+      "entry": 2502,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1226.5838623046875,
+        902.59521484375,
+        22.840747833251953
+      ]
+    },
+    {
+      "entry": 2505,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        924.5,
+        1061.375,
+        41.375
+      ]
+    },
+    {
+      "entry": 2510,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1023.0331420898438,
+        1176.28076171875,
+        49.96567916870117
+      ]
+    },
+    {
+      "entry": 2516,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        977.0,
+        1164.875,
+        57.96574783325195
+      ]
+    },
+    {
+      "entry": 2519,
+      "name": "RotatedSpawn",
+      "translation": [
+        873.5759887695312,
+        1075.2725830078125,
+        50.84075164794922
+      ]
+    },
+    {
+      "entry": 2529,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        867.4999389648438,
+        1171.5,
+        61.0
+      ]
+    },
+    {
+      "entry": 2532,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1278.4444580078125,
+        1200.222412109375,
+        22.749998092651367
+      ]
+    },
+    {
+      "entry": 2535,
+      "name": "RotatedSpawn",
+      "translation": [
+        1068.28466796875,
+        1249.50048828125,
+        41.96574783325195
+      ]
+    },
+    {
+      "entry": 2538,
+      "name": "RotatedSpawn",
+      "translation": [
+        1239.8111572265625,
+        1333.7071533203125,
+        33.74999237060547
+      ]
+    },
+    {
+      "entry": 2543,
+      "name": "RotatedSpawn",
+      "translation": [
+        800.0829467773438,
+        1034.357177734375,
+        52.46575164794922
+      ]
+    },
+    {
+      "entry": 2548,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1305.9998779296875,
+        1108.0,
+        30.999998092651367
+      ]
+    },
+    {
+      "entry": 2553,
+      "name": "RotatedSpawn",
+      "translation": [
+        1226.5838623046875,
+        902.59521484375,
+        22.840747833251953
+      ]
+    },
+    {
+      "entry": 2556,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1184.9464111328125,
+        1293.1092529296875,
+        30.840744018554688
+      ]
+    },
+    {
+      "entry": 2580,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        841.5357666015625,
+        1088.4970703125,
+        47.07373046875
+      ]
+    },
+    {
+      "entry": 2587,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1169.3748779296875,
+        1270.5,
+        25.874998092651367
+      ]
+    },
+    {
+      "entry": 2593,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1283.005615234375,
+        1240.532470703125,
+        18.99776268005371
+      ]
+    },
+    {
+      "entry": 2596,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        892.257080078125,
+        1188.53125,
+        60.86020278930664
+      ]
+    },
+    {
+      "entry": 2600,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        853.4999389648438,
+        1120.125,
+        46.624996185302734
+      ]
+    },
+    {
+      "entry": 2608,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        818.4891357421875,
+        1053.3155517578125,
+        49.80507278442383
+      ]
+    },
+    {
+      "entry": 2618,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        783.7499389648438,
+        1103.5,
+        49.874996185302734
+      ]
+    },
+    {
+      "entry": 2625,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1295.8748779296875,
+        1252.375,
+        19.124998092651367
+      ]
+    },
+    {
+      "entry": 2628,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        893.9999389648438,
+        1251.0,
+        70.99999237060547
+      ]
+    },
+    {
+      "entry": 2631,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1156.4998779296875,
+        1195.5,
+        20.999998092651367
+      ]
+    },
+    {
+      "entry": 2633,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        830.9999389648438,
+        1104.0,
+        46.545013427734375
+      ]
+    },
+    {
+      "entry": 2637,
+      "name": "RotatedSpawn",
+      "translation": [
+        795.1366577148438,
+        1075.7891845703125,
+        55.71574783325195
+      ]
+    },
+    {
+      "entry": 2640,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1248.3748779296875,
+        1290.875,
+        26.749998092651367
+      ]
+    },
+    {
+      "entry": 2645,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1159.4998779296875,
+        1251.0,
+        25.999998092651367
+      ]
+    },
+    {
+      "entry": 2648,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        991.4999389648438,
+        1305.0,
+        54.999996185302734
+      ]
+    },
+    {
+      "entry": 2656,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1166.1248779296875,
+        799.875,
+        23.874998092651367
+      ]
+    },
+    {
+      "entry": 2660,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        831.2410278320312,
+        1041.9951171875,
+        47.95125961303711
+      ]
+    },
+    {
+      "entry": 2664,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1165.924560546875,
+        1150.123291015625,
+        18.62310218811035
+      ]
+    },
+    {
+      "entry": 2674,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        806.1249389648438,
+        1092.125,
+        48.874996185302734
+      ]
+    },
+    {
+      "entry": 2677,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1295.4998779296875,
+        1166.0,
+        19.999998092651367
+      ]
+    },
+    {
+      "entry": 2681,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        990.2499389648438,
+        1294.625,
+        51.75
+      ]
+    },
+    {
+      "entry": 2683,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1018.8749389648438,
+        942.25,
+        29.374998092651367
+      ]
+    },
+    {
+      "entry": 2692,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1212.9998779296875,
+        1289.0,
+        26.874998092651367
+      ]
+    },
+    {
+      "entry": 2704,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1051.9998779296875,
+        984.25,
+        20.374998092651367
+      ]
+    },
+    {
+      "entry": 2706,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        900.9999389648438,
+        1102.5,
+        47.999996185302734
+      ]
+    },
+    {
+      "entry": 2708,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1046.2047119140625,
+        996.5948486328125,
+        20.47964859008789
+      ]
+    },
+    {
+      "entry": 2717,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1076.4998779296875,
+        1061.0,
+        29.124998092651367
+      ]
+    },
+    {
+      "entry": 2720,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        794.6710205078125,
+        1029.7083740234375,
+        48.12067413330078
+      ]
+    },
+    {
+      "entry": 2723,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1330.4998779296875,
+        960.5,
+        23.999998092651367
+      ]
+    },
+    {
+      "entry": 2725,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        796.1249389648438,
+        1046.75,
+        50.499996185302734
+      ]
+    },
+    {
+      "entry": 2729,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        791.0414428710938,
+        1071.7769775390625,
+        52.02655792236328
+      ]
+    },
+    {
+      "entry": 2731,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1166.1248779296875,
+        1192.75,
+        19.307504653930664
+      ]
+    },
+    {
+      "entry": 2735,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1230.6376953125,
+        1222.065185546875,
+        18.999998092651367
+      ]
+    },
+    {
+      "entry": 2738,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1298.8673095703125,
+        1186.5218505859375,
+        19.737768173217773
+      ]
+    },
+    {
+      "entry": 2741,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        853.2499389648438,
+        1224.5,
+        53.499996185302734
+      ]
+    },
+    {
+      "entry": 2745,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        845.214599609375,
+        1085.5616455078125,
+        46.9661750793457
+      ]
+    },
+    {
+      "entry": 2751,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        928.9999389648438,
+        986.5,
+        40.999996185302734
+      ]
+    },
+    {
+      "entry": 2755,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        981.4999389648438,
+        862.0,
+        23.499998092651367
+      ]
+    },
+    {
+      "entry": 2759,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1072.4998779296875,
+        844.5,
+        21.999998092651367
+      ]
+    },
+    {
+      "entry": 2761,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1280.2498779296875,
+        942.25,
+        18.124998092651367
+      ]
+    },
+    {
+      "entry": 2763,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        805.2499389648438,
+        1102.875,
+        47.124996185302734
+      ]
+    },
+    {
+      "entry": 2767,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1033.5277099609375,
+        771.7764282226562,
+        17.724323272705078
+      ]
+    },
+    {
+      "entry": 2787,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1089.782470703125,
+        1098.82177734375,
+        32.590877532958984
+      ]
+    },
+    {
+      "entry": 2805,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1269.6248779296875,
+        943.25,
+        18.124998092651367
+      ]
+    },
+    {
+      "entry": 2822,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1038.9998779296875,
+        981.5,
+        27.499998092651367
+      ]
+    },
+    {
+      "entry": 2845,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1043.3748779296875,
+        768.875,
+        17.749998092651367
+      ]
+    },
+    {
+      "entry": 2854,
+      "name": "RotatedSpawn",
+      "translation": [
+        862.8939819335938,
+        1044.5201416015625,
+        50.71575164794922
+      ]
+    },
+    {
+      "entry": 2864,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1097.879150390625,
+        1228.9520263671875,
+        40.96564483642578
+      ]
+    },
+    {
+      "entry": 2871,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        789.0236206054688,
+        1012.6232299804688,
+        53.34074783325195
+      ]
+    },
+    {
+      "entry": 2909,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        910.1543579101562,
+        1204.142333984375,
+        68.71588134765625
+      ]
+    },
+    {
+      "entry": 2915,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        840.622802734375,
+        1255.7802734375,
+        64.96576690673828
+      ]
+    },
+    {
+      "entry": 2929,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1277.2164306640625,
+        1115.319580078125,
+        26.715747833251953
+      ]
+    },
+    {
+      "entry": 2933,
+      "name": "RotatedSpawn",
+      "translation": [
+        933.3844604492188,
+        787.1705932617188,
+        20.965747833251953
+      ]
+    },
+    {
+      "entry": 2948,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        811.7499389648438,
+        1048.375,
+        49.374996185302734
+      ]
+    },
+    {
+      "entry": 3014,
+      "name": "RotatedSpawn",
+      "translation": [
+        1184.04150390625,
+        1318.8460693359375,
+        33.62499237060547
+      ]
+    },
+    {
+      "entry": 3064,
+      "name": "RotatedSpawn",
+      "translation": [
+        1242.2535400390625,
+        1331.9151611328125,
+        35.87499237060547
+      ]
+    },
+    {
+      "entry": 3067,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        1303.496337890625,
+        1011.8121337890625,
+        28.018007278442383
+      ]
+    },
+    {
+      "entry": 3076,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        957.6474609375,
+        1171.1751708984375,
+        58.71574783325195
+      ]
+    },
+    {
+      "entry": 3122,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        1213.9998779296875,
+        1261.5,
+        26.999998092651367
+      ]
+    },
+    {
+      "entry": 3142,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1171.1248779296875,
+        794.875,
+        23.874998092651367
+      ]
+    },
+    {
+      "entry": 3173,
+      "name": "RotatedSpawn",
+      "translation": [
+        855.912353515625,
+        1016.8574829101562,
+        43.84074401855469
+      ]
+    },
+    {
+      "entry": 3182,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1287.9998779296875,
+        1182.375,
+        18.499998092651367
+      ]
+    },
+    {
+      "entry": 3190,
+      "name": "RotatedSpawn",
+      "translation": [
+        1317.037109375,
+        1241.3785400390625,
+        25.3749942779541
+      ]
+    },
+    {
+      "entry": 3238,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1292.8748779296875,
+        991.875,
+        18.90751075744629
+      ]
+    },
+    {
+      "entry": 3272,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        895.8342895507812,
+        1265.7481689453125,
+        67.09065246582031
+      ]
+    },
+    {
+      "entry": 3294,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        880.9999389648438,
+        935.5,
+        44.999996185302734
+      ]
+    },
+    {
+      "entry": 3310,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1229.4998779296875,
+        1099.0,
+        21.999998092651367
+      ]
+    },
+    {
+      "entry": 3361,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        786.5346069335938,
+        1073.4996337890625,
+        50.02998352050781
+      ]
+    },
+    {
+      "entry": 3388,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        833.2499389648438,
+        1094.25,
+        46.749996185302734
+      ]
+    },
+    {
+      "entry": 3400,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1155.4998779296875,
+        798.875,
+        24.249998092651367
+      ]
+    },
+    {
+      "entry": 3403,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1067.2498779296875,
+        831.0,
+        22.074552536010742
+      ]
+    },
+    {
+      "entry": 3413,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1074.7498779296875,
+        829.0,
+        22.874998092651367
+      ]
+    },
+    {
+      "entry": 3424,
+      "name": "RotatedSpawn",
+      "translation": [
+        956.385498046875,
+        983.6015014648438,
+        37.09074783325195
+      ]
+    },
+    {
+      "entry": 3432,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1252.9998779296875,
+        846.0,
+        17.624998092651367
+      ]
+    },
+    {
+      "entry": 3487,
+      "name": "RotatedSpawn",
+      "translation": [
+        1274.8497314453125,
+        1101.361083984375,
+        37.59074401855469
+      ]
+    },
+    {
+      "entry": 3505,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1032.6248779296875,
+        760.0,
+        17.749998092651367
+      ]
+    },
+    {
+      "entry": 3557,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        1092.9998779296875,
+        1066.0,
+        27.499998092651367
+      ]
+    },
+    {
+      "entry": 3596,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        1080.9210205078125,
+        822.055908203125,
+        24.614473342895508
+      ]
+    },
+    {
+      "entry": 3646,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        1290.9998779296875,
+        1078.5,
+        32.499996185302734
+      ]
+    },
+    {
+      "entry": 3686,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1235.4605712890625,
+        890.8152465820312,
+        22.965747833251953
+      ]
+    },
+    {
+      "entry": 3847,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        845.3749389648438,
+        1106.75,
+        46.749996185302734
+      ]
+    },
+    {
+      "entry": 3880,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1192.9998779296875,
+        1329.5,
+        28.999998092651367
+      ]
+    },
+    {
+      "entry": 3934,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        875.9999389648438,
+        1203.25,
+        61.999996185302734
+      ]
+    },
+    {
+      "entry": 3960,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1160.2498779296875,
+        1056.5,
+        17.749998092651367
+      ]
+    },
+    {
+      "entry": 3978,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1196.9998779296875,
+        1261.0,
+        27.499998092651367
+      ]
+    },
+    {
+      "entry": 3981,
+      "name": "RotatedSpawn",
+      "translation": [
+        940.1133422851562,
+        897.9397583007812,
+        36.71574401855469
+      ]
+    },
+    {
+      "entry": 4004,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        772.9999389648438,
+        1075.625,
+        50.43999099731445
+      ]
+    },
+    {
+      "entry": 4039,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        1158.9998779296875,
+        1272.5,
+        26.499998092651367
+      ]
+    },
+    {
+      "entry": 4055,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        785.7811889648438,
+        1123.793701171875,
+        55.84074401855469
+      ]
+    },
+    {
+      "entry": 4062,
+      "name": "RotatedSpawn",
+      "translation": [
+        1098.636962890625,
+        1230.0570068359375,
+        40.21564483642578
+      ]
+    },
+    {
+      "entry": 4128,
+      "name": "RotatedSpawn",
+      "translation": [
+        976.2280883789062,
+        1151.443359375,
+        59.34074783325195
+      ]
+    },
+    {
+      "entry": 4164,
+      "name": "RotatedSpawn",
+      "translation": [
+        1283.0489501953125,
+        961.8212280273438,
+        25.590747833251953
+      ]
+    },
+    {
+      "entry": 4247,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1285.574462890625,
+        1238.322021484375,
+        19.059999465942383
+      ]
+    },
+    {
+      "entry": 4444,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1275.6141357421875,
+        1113.112548828125,
+        28.715747833251953
+      ]
+    },
+    {
+      "entry": 4447,
+      "name": "RotatedSpawn",
+      "translation": [
+        1097.1715087890625,
+        1286.772705078125,
+        40.2154541015625
+      ]
+    },
+    {
+      "entry": 4562,
+      "name": "SLICE_PlayerSpawns_INITIAL",
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "entry": 4569,
+      "name": "RotatedSpawn",
+      "translation": [
+        957.8219604492188,
+        985.3045043945312,
+        38.46574401855469
+      ]
+    },
+    {
+      "entry": 4619,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1089.1248779296875,
+        1236.5,
+        30.124998092651367
+      ]
+    },
+    {
+      "entry": 4671,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1012.6249389648438,
+        1139.375,
+        41.999996185302734
+      ]
+    },
+    {
+      "entry": 4692,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        822.5092163085938,
+        1076.4989013671875,
+        54.411285400390625
+      ]
+    },
+    {
+      "entry": 4734,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        1255.885986328125,
+        1182.2999267578125,
+        20.07280921936035
+      ]
+    },
+    {
+      "entry": 4761,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1134.9818115234375,
+        855.7847900390625,
+        25.965747833251953
+      ]
+    },
+    {
+      "entry": 4913,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        955.368896484375,
+        1168.4720458984375,
+        60.34074783325195
+      ]
+    },
+    {
+      "entry": 5010,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1290.5574951171875,
+        998.9349365234375,
+        28.34074592590332
+      ]
+    },
+    {
+      "entry": 5015,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1156.8748779296875,
+        1044.125,
+        17.624998092651367
+      ]
+    },
+    {
+      "entry": 5175,
+      "name": "RotatedSpawn",
+      "translation": [
+        957.6474609375,
+        1171.1751708984375,
+        58.71574783325195
+      ]
+    },
+    {
+      "entry": 5495,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        774.0719604492188,
+        1065.8822021484375,
+        54.21574401855469
+      ]
+    },
+    {
+      "entry": 5590,
+      "name": "RotatedSpawn",
+      "translation": [
+        955.368896484375,
+        1168.4720458984375,
+        60.34074783325195
+      ]
+    },
+    {
+      "entry": 5626,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1219.37841796875,
+        862.8145751953125,
+        25.499998092651367
+      ]
+    },
+    {
+      "entry": 5652,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        1183.091552734375,
+        957.260498046875,
+        20.60519790649414
+      ]
+    },
+    {
+      "entry": 5802,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1179.4998779296875,
+        900.0,
+        26.499998092651367
+      ]
+    },
+    {
+      "entry": 5871,
+      "name": "RotatedSpawn",
+      "translation": [
+        1134.9818115234375,
+        855.7847900390625,
+        25.965747833251953
+      ]
+    },
+    {
+      "entry": 5887,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1242.2535400390625,
+        1331.9151611328125,
+        35.87499237060547
+      ]
+    },
+    {
+      "entry": 6020,
+      "name": "MegadroneCampSpawns",
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "entry": 6043,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        1343.0,
+        956.0,
+        18.0
+      ]
+    },
+    {
+      "entry": 6142,
+      "name": "SLICE_PlayerSpawns_RESPAWN",
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "entry": 6388,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1294.7498779296875,
+        1240.125,
+        19.124998092651367
+      ]
+    },
+    {
+      "entry": 6458,
+      "name": "RotatedSpawn",
+      "translation": [
+        845.49072265625,
+        1260.8358154296875,
+        65.84076690673828
+      ]
+    },
+    {
+      "entry": 6506,
+      "name": "SLICE_HIVES_SPAWNS",
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "entry": 6539,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        807.9999389648438,
+        1094.875,
+        47.499996185302734
+      ]
+    },
+    {
+      "entry": 6650,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        788.2933349609375,
+        1179.4913330078125,
+        60.46571731567383
+      ]
+    },
+    {
+      "entry": 6831,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        940.1133422851562,
+        897.9397583007812,
+        36.71574401855469
+      ]
+    },
+    {
+      "entry": 6956,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        838.375244140625,
+        1022.3197021484375,
+        45.21574401855469
+      ]
+    },
+    {
+      "entry": 6977,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        849.7506103515625,
+        1000.1557006835938,
+        45.71574783325195
+      ]
+    },
+    {
+      "entry": 7203,
+      "name": "RotatedSpawn",
+      "translation": [
+        774.0719604492188,
+        1065.8822021484375,
+        54.21574401855469
+      ]
+    },
+    {
+      "entry": 7383,
+      "name": "RotatedSpawn",
+      "translation": [
+        1223.6712646484375,
+        845.1583862304688,
+        21.965749740600586
+      ]
+    },
+    {
+      "entry": 8050,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1022.8284912109375,
+        1173.950439453125,
+        50.84067916870117
+      ]
+    },
+    {
+      "entry": 8127,
+      "name": "RotatedSpawn",
+      "translation": [
+        1022.8284912109375,
+        1173.950439453125,
+        50.84067916870117
+      ]
+    },
+    {
+      "entry": 8304,
+      "name": "MegaDronesStartingSpawns",
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "entry": 8690,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        757.5267944335938,
+        1197.927734375,
+        65.9656982421875
+      ]
+    },
+    {
+      "entry": 8799,
+      "name": "MedPacksStartingSpawns",
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "entry": 8959,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1306.0994873046875,
+        922.056884765625,
+        27.465747833251953
+      ]
+    },
+    {
+      "entry": 9036,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        882.1282348632812,
+        1012.7460327148438,
+        39.82999801635742
+      ]
+    },
+    {
+      "entry": 9055,
+      "name": "RotatedSpawn",
+      "translation": [
+        849.7506103515625,
+        1000.1557006835938,
+        45.71574783325195
+      ]
+    },
+    {
+      "entry": 9283,
+      "name": "RotatedSpawn",
+      "translation": [
+        885.3870849609375,
+        1070.713134765625,
+        48.71575164794922
+      ]
+    },
+    {
+      "entry": 9295,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        784.3749389648438,
+        1183.875,
+        57.874996185302734
+      ]
+    },
+    {
+      "entry": 9505,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1199.1248779296875,
+        1293.5,
+        25.124998092651367
+      ]
+    },
+    {
+      "entry": 9721,
+      "name": "RotatedSpawn",
+      "translation": [
+        788.2933349609375,
+        1179.4913330078125,
+        60.46571731567383
+      ]
+    },
+    {
+      "entry": 9758,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        928.9999389648438,
+        861.0,
+        28.999998092651367
+      ]
+    },
+    {
+      "entry": 9795,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        997.8749389648438,
+        1268.75,
+        49.124996185302734
+      ]
+    },
+    {
+      "entry": 9826,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1016.9999389648438,
+        757.5,
+        17.999998092651367
+      ]
+    },
+    {
+      "entry": 9918,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1067.9998779296875,
+        886.5,
+        16.624998092651367
+      ]
+    },
+    {
+      "entry": 10516,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1051.4998779296875,
+        760.125,
+        17.874998092651367
+      ]
+    },
+    {
+      "entry": 10561,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1274.8497314453125,
+        1101.361083984375,
+        37.59074401855469
+      ]
+    },
+    {
+      "entry": 10592,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        977.620849609375,
+        768.3480834960938,
+        21.965749740600586
+      ]
+    },
+    {
+      "entry": 10679,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1025.367919921875,
+        1171.72900390625,
+        48.34074783325195
+      ]
+    },
+    {
+      "entry": 10713,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        957.8219604492188,
+        985.3045043945312,
+        38.46574401855469
+      ]
+    },
+    {
+      "entry": 10765,
+      "name": "RotatedSpawn",
+      "translation": [
+        910.1543579101562,
+        1204.142333984375,
+        68.71588134765625
+      ]
+    },
+    {
+      "entry": 10839,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        958.8749389648438,
+        780.625,
+        16.374998092651367
+      ]
+    },
+    {
+      "entry": 10970,
+      "name": "RotatedSpawn",
+      "translation": [
+        759.389892578125,
+        1186.911376953125,
+        66.0906982421875
+      ]
+    },
+    {
+      "entry": 11022,
+      "name": "RotatedSpawn",
+      "translation": [
+        1097.9315185546875,
+        1094.2113037109375,
+        33.46574783325195
+      ]
+    },
+    {
+      "entry": 11478,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        759.389892578125,
+        1186.911376953125,
+        66.0906982421875
+      ]
+    },
+    {
+      "entry": 11675,
+      "name": "RotatedSpawn",
+      "translation": [
+        977.620849609375,
+        768.3480834960938,
+        21.965749740600586
+      ]
+    },
+    {
+      "entry": 11870,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1274.16162109375,
+        1065.044921875,
+        28.090749740600586
+      ]
+    },
+    {
+      "entry": 11893,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        787.3749389648438,
+        1020.125,
+        49.249996185302734
+      ]
+    },
+    {
+      "entry": 11932,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        869.0054931640625,
+        1089.1981201171875,
+        53.59075164794922
+      ]
+    },
+    {
+      "entry": 11940,
+      "name": "Guide_EnemyBotSpawns",
+      "translation": [
+        925.5409545898438,
+        949.411376953125,
+        39.48639678955078
+      ]
+    },
+    {
+      "entry": 12117,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        855.912353515625,
+        1016.8574829101562,
+        43.84074401855469
+      ]
+    },
+    {
+      "entry": 12122,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        780.18359375,
+        1065.7532958984375,
+        49.7746696472168
+      ]
+    },
+    {
+      "entry": 12453,
+      "name": "RotatedSpawn",
+      "translation": [
+        925.8750610351562,
+        1064.375,
+        39.5
+      ]
+    },
+    {
+      "entry": 12466,
+      "name": "RotatedSpawn",
+      "translation": [
+        1316.372802734375,
+        1061.092041015625,
+        28.465747833251953
+      ]
+    },
+    {
+      "entry": 12535,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        854.354248046875,
+        1253.3040771484375,
+        64.59076690673828
+      ]
+    },
+    {
+      "entry": 12742,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        954.3749389648438,
+        783.875,
+        16.374998092651367
+      ]
+    },
+    {
+      "entry": 12828,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1097.1715087890625,
+        1286.772705078125,
+        40.2154541015625
+      ]
+    },
+    {
+      "entry": 12930,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        1083.7327880859375,
+        1253.814697265625,
+        36.89039993286133
+      ]
+    },
+    {
+      "entry": 12968,
+      "name": "RotatedSpawn",
+      "translation": [
+        869.0054931640625,
+        1089.1981201171875,
+        53.59075164794922
+      ]
+    },
+    {
+      "entry": 12995,
+      "name": "RotatedSpawn",
+      "translation": [
+        1281.4178466796875,
+        1201.5731201171875,
+        24.124998092651367
+      ]
+    },
+    {
+      "entry": 13338,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1236.1248779296875,
+        844.0,
+        17.749998092651367
+      ]
+    },
+    {
+      "entry": 13516,
+      "name": "RotatedSpawn",
+      "translation": [
+        1290.5574951171875,
+        998.9349365234375,
+        28.34074592590332
+      ]
+    },
+    {
+      "entry": 13558,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        956.385498046875,
+        983.6015014648438,
+        37.09074783325195
+      ]
+    },
+    {
+      "entry": 13682,
+      "name": "RotatedSpawn",
+      "translation": [
+        838.375244140625,
+        1022.3197021484375,
+        45.21574401855469
+      ]
+    },
+    {
+      "entry": 13691,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        951.0392456054688,
+        793.1939086914062,
+        15.480409622192383
+      ]
+    },
+    {
+      "entry": 13809,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        976.2280883789062,
+        1151.443359375,
+        59.34074783325195
+      ]
+    },
+    {
+      "entry": 13988,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1281.4178466796875,
+        1201.5731201171875,
+        24.124998092651367
+      ]
+    },
+    {
+      "entry": 14246,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1162.3748779296875,
+        1038.5,
+        17.624998092651367
+      ]
+    },
+    {
+      "entry": 14451,
+      "name": "RotatedSpawn",
+      "translation": [
+        1277.2164306640625,
+        1115.319580078125,
+        26.715747833251953
+      ]
+    },
+    {
+      "entry": 14575,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        913.6249389648438,
+        1105.0,
+        45.874996185302734
+      ]
+    },
+    {
+      "entry": 14651,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        925.8750610351562,
+        1064.375,
+        39.5
+      ]
+    },
+    {
+      "entry": 14672,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1316.372802734375,
+        1061.092041015625,
+        28.465747833251953
+      ]
+    },
+    {
+      "entry": 14689,
+      "name": "RotatedSpawn",
+      "translation": [
+        895.8342895507812,
+        1265.7481689453125,
+        67.09065246582031
+      ]
+    },
+    {
+      "entry": 14701,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        903.9999389648438,
+        1098.0,
+        48.999996185302734
+      ]
+    },
+    {
+      "entry": 14735,
+      "name": "RotatedSpawn",
+      "translation": [
+        1306.0994873046875,
+        922.056884765625,
+        27.465747833251953
+      ]
+    },
+    {
+      "entry": 14804,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1317.037109375,
+        1241.3785400390625,
+        25.3749942779541
+      ]
+    },
+    {
+      "entry": 14816,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1056.2705078125,
+        976.5347290039062,
+        20.318649291992188
+      ]
+    },
+    {
+      "entry": 14851,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        862.8939819335938,
+        1044.5201416015625,
+        50.71575164794922
+      ]
+    },
+    {
+      "entry": 14901,
+      "name": "LAYER_DESIGN_SPAWNS",
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "entry": 14941,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1223.6712646484375,
+        845.1583862304688,
+        21.965749740600586
+      ]
+    },
+    {
+      "entry": 14968,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        846.114501953125,
+        1058.139404296875,
+        46.354637145996094
+      ]
+    },
+    {
+      "entry": 15007,
+      "name": "RotatedSpawn",
+      "translation": [
+        785.7811889648438,
+        1123.793701171875,
+        55.84074401855469
+      ]
+    },
+    {
+      "entry": 15045,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        806.6249389648438,
+        1111.5,
+        47.874996185302734
+      ]
+    },
+    {
+      "entry": 15255,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        957.6676635742188,
+        875.860595703125,
+        23.061338424682617
+      ]
+    },
+    {
+      "entry": 15537,
+      "name": "RotatedSpawn",
+      "translation": [
+        957.8571166992188,
+        1328.3431396484375,
+        62.09046173095703
+      ]
+    },
+    {
+      "entry": 15549,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        965.8515625,
+        1313.7940673828125,
+        60.8404655456543
+      ]
+    },
+    {
+      "entry": 15726,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1098.636962890625,
+        1230.0570068359375,
+        40.21564483642578
+      ]
+    },
+    {
+      "entry": 15949,
+      "name": "RotatedSpawn",
+      "translation": [
+        965.8515625,
+        1313.7940673828125,
+        60.8404655456543
+      ]
+    },
+    {
+      "entry": 16007,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        995.7499389648438,
+        1270.0,
+        49.124996185302734
+      ]
+    },
+    {
+      "entry": 16078,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1283.0489501953125,
+        961.8212280273438,
+        25.590747833251953
+      ]
+    },
+    {
+      "entry": 16326,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        963.05078125,
+        971.8878784179688,
+        31.709007263183594
+      ]
+    },
+    {
+      "entry": 16494,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1097.9315185546875,
+        1094.2113037109375,
+        33.46574783325195
+      ]
+    },
+    {
+      "entry": 16668,
+      "name": "RotatedSpawn",
+      "translation": [
+        1097.879150390625,
+        1228.9520263671875,
+        40.96564483642578
+      ]
+    },
+    {
+      "entry": 16687,
+      "name": "RotatedSpawn",
+      "translation": [
+        757.5267944335938,
+        1197.927734375,
+        65.9656982421875
+      ]
+    },
+    {
+      "entry": 16719,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1302.514892578125,
+        920.5567626953125,
+        24.340747833251953
+      ]
+    },
+    {
+      "entry": 16833,
+      "name": "RotatedSpawn",
+      "translation": [
+        1235.4605712890625,
+        890.8152465820312,
+        22.965747833251953
+      ]
+    },
+    {
+      "entry": 17115,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1162.9998779296875,
+        1011.5,
+        20.499998092651367
+      ]
+    },
+    {
+      "entry": 17386,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1196.3653564453125,
+        1206.2205810546875,
+        24.562976837158203
+      ]
+    },
+    {
+      "entry": 17824,
+      "name": "RotatedSpawn",
+      "translation": [
+        840.622802734375,
+        1255.7802734375,
+        64.96576690673828
+      ]
+    },
+    {
+      "entry": 18212,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        933.3844604492188,
+        787.1705932617188,
+        20.965747833251953
+      ]
+    },
+    {
+      "entry": 18260,
+      "name": "RotatedSpawn",
+      "translation": [
+        1025.367919921875,
+        1171.72900390625,
+        48.34074783325195
+      ]
+    },
+    {
+      "entry": 18350,
+      "name": "RotatedSpawn",
+      "translation": [
+        1302.514892578125,
+        920.5567626953125,
+        24.340747833251953
+      ]
+    },
+    {
+      "entry": 18514,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1101.89697265625,
+        1282.493408203125,
+        41.3404541015625
+      ]
+    },
+    {
+      "entry": 18542,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1200.6248779296875,
+        1300.25,
+        25.624998092651367
+      ]
+    },
+    {
+      "entry": 19087,
+      "name": "RotatedSpawn",
+      "translation": [
+        789.0236206054688,
+        1012.6232299804688,
+        53.34074783325195
+      ]
+    },
+    {
+      "entry": 19115,
+      "name": "SpawnNode_Medpack_MatchStart",
+      "translation": [
+        1235.9998779296875,
+        879.5,
+        27.624998092651367
+      ]
+    },
+    {
+      "entry": 19160,
+      "name": "RotatedSpawn",
+      "translation": [
+        1275.6141357421875,
+        1113.112548828125,
+        28.715747833251953
+      ]
+    },
+    {
+      "entry": 19220,
+      "name": "RotatedSpawn",
+      "translation": [
+        1274.16162109375,
+        1065.044921875,
+        28.090749740600586
+      ]
+    },
+    {
+      "entry": 19293,
+      "name": "RotatedSpawn",
+      "translation": [
+        1101.89697265625,
+        1282.493408203125,
+        41.3404541015625
+      ]
+    },
+    {
+      "entry": 19344,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        885.3870849609375,
+        1070.713134765625,
+        48.71575164794922
+      ]
+    },
+    {
+      "entry": 19399,
+      "name": "RotatedSpawn",
+      "translation": [
+        854.354248046875,
+        1253.3040771484375,
+        64.59076690673828
+      ]
+    },
+    {
+      "entry": 19631,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        1184.04150390625,
+        1318.8460693359375,
+        33.62499237060547
+      ]
+    },
+    {
+      "entry": 19731,
+      "name": "OnStartNonCampSnurtleSpawns",
+      "translation": [
+        987.9743041992188,
+        1224.384033203125,
+        50.66179656982422
+      ]
+    },
+    {
+      "entry": 19761,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        957.8571166992188,
+        1328.3431396484375,
+        62.09046173095703
+      ]
+    },
+    {
+      "entry": 19864,
+      "name": "SpawnNode_MedPack_AIOverlord",
+      "translation": [
+        1063.9998779296875,
+        1224.5,
+        42.499996185302734
+      ]
+    },
+    {
+      "entry": 20505,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1246.1248779296875,
+        853.5,
+        17.999998092651367
+      ]
+    },
+    {
+      "entry": 20532,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1089.4998779296875,
+        1222.875,
+        29.999998092651367
+      ]
+    },
+    {
+      "entry": 20853,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1292.681396484375,
+        1170.32763671875,
+        18.55252456665039
+      ]
+    },
+    {
+      "entry": 20895,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        1084.8748779296875,
+        1229.5,
+        30.124998092651367
+      ]
+    },
+    {
+      "entry": 20923,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        957.6249389648438,
+        1036.375,
+        32.999996185302734
+      ]
+    },
+    {
+      "entry": 21025,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        810.4999389648438,
+        1111.875,
+        47.249996185302734
+      ]
+    },
+    {
+      "entry": 21067,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        968.109130859375,
+        1037.0347900390625,
+        32.62207794189453
+      ]
+    },
+    {
+      "entry": 21167,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        782.635009765625,
+        1113.5234375,
+        51.202484130859375
+      ]
+    },
+    {
+      "entry": 21192,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        780.2804565429688,
+        1078.028076171875,
+        49.424766540527344
+      ]
+    },
+    {
+      "entry": 21252,
+      "name": "SpawnNode_HealthPlant_AIOverlord",
+      "translation": [
+        940.7499389648438,
+        859.0,
+        25.499998092651367
+      ]
+    }
+  ]
+}

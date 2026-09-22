@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Crucible static-RE helper: disassemble true (pdata-bounded) functions with
+"""Crucible static-RE helper: disassemble unwind fragments or explicit code ranges with
 string + import annotations. No execution needed.
 
 Usage:
   ./tools/xref.py --strings gamesparks_creds,connect   # find string RVAs + LEA xrefs
+  ./tools/xref.py --range 0x4bfb1d0:0x4bfb620  # explicit range across unwind fragments
   ./tools/xref.py --func 0xb7a030                      # disassemble one function
   ./tools/xref.py --around NAME                        # disassemble funcs referencing a string
 EXE default: Steam install of Crucible (override with CRUCIBLE_EXE).
@@ -62,7 +63,7 @@ def md():
     c.detail = True
     return c
 
-def disasm_func(cap, pe, img, tbase, traw, iat, ibase, rva, before=0x250, after=0x120, full=False):
+def disasm_func(cap, pe, img, tbase, traw, iat, ibase, rva, before=0x250, after=0x120, full=False, end_rva=None):
     secs = {s.Name.rstrip(b'\0').decode(): s for s in pe.sections}
     praw = secs['.pdata'].get_data()
     funcs = []
@@ -75,8 +76,14 @@ def disasm_func(cap, pe, img, tbase, traw, iat, ibase, rva, before=0x250, after=
     b, e = funcs[idx]
     end = e if full else min(e, rva + after)
     start = b if full else max(b, rva - before)
+    if end_rva is not None:
+        if not tbase <= rva < end_rva <= tbase + len(traw):
+            raise ValueError("range must lie inside .text and have end > start")
+        start, end = rva, end_rva
     code = traw[start - tbase:end - tbase]
-    out = [f"func[{b:#x},{e:#x}] len={e-b:#x}"]
+    out = [f"unwind fragment[{b:#x},{e:#x}] len={e-b:#x}"]
+    if end_rva is not None:
+        out.append(f"explicit range[{start:#x},{end:#x}]")
     for ins in cap.disasm(code, ibase + start):
         r = ins.address - ibase
         note = ""
@@ -124,6 +131,10 @@ def main():
                 print(f"{pat!r} rva={rva:#x} lea_hits={[hex(h) for h in hits[:12]]}")
     elif a[:1] == ['--func'] and len(a) == 2:
         print(disasm_func(cap, pe, img, tbase, traw, iat, ibase, int(a[1], 16), full=True))
+    elif a[:1] == ['--range'] and len(a) == 2:
+        start, end = (int(v, 16) for v in a[1].split(':'))
+        print(disasm_func(cap, pe, img, tbase, traw, iat, ibase,
+                          start, end_rva=end))
     elif a[:1] == ['--around'] and len(a) == 2:
         bpat = a[1].encode()
         offs = find_string(img, bpat)[:4]

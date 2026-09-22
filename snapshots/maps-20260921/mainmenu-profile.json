@@ -1,0 +1,11 @@
+{
+  "file": "/tmp/claude-1000/lv/mainmenu.dynamicslice",
+  "entity_array_length": 218,
+  "has_nested_slice_instances": false,
+  "controllers": {
+    "MatchPhaseController": [],
+    "GameMode": [],
+    "MatchDataStore": []
+  },
+  "named": []
+}

@@ -1,0 +1,16 @@
+{
+  "pid": 190535,
+  "image_base": "0x6ffff4300000",
+  "game_state": 8,
+  "connection_status": 4,
+  "server_time_ms": 2000,
+  "replicator_id": "0xfe000081",
+  "entity_state": 4,
+  "activation_queue_count": 0,
+  "local_player_handle": {
+    "generation": 0,
+    "entity_pointer": "0x0",
+    "network_id": "0x0"
+  },
+  "practice_configuration_index": 6
+}

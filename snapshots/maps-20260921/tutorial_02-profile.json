@@ -1,0 +1,270 @@
+{
+  "file": "/tmp/claude-1000/lv/tutorial_02.dynamicslice",
+  "entity_array_length": 2303,
+  "has_nested_slice_instances": false,
+  "controllers": {
+    "MatchPhaseController": [
+      {
+        "entry": 57,
+        "name": "MatchPhaseController"
+      }
+    ],
+    "GameMode": [
+      {
+        "entry": 61,
+        "name": "GameMode"
+      }
+    ],
+    "MatchDataStore": [
+      {
+        "entry": 67,
+        "name": "MatchDataStore"
+      }
+    ]
+  },
+  "named": [
+    {
+      "entry": 1,
+      "name": "SpawnNode_Snurtle_AIOverlord",
+      "translation": [
+        494.11474609375,
+        627.7561645507812,
+        37.5
+      ]
+    },
+    {
+      "entry": 2,
+      "name": "SpawnNode_Snurtle_AIOverlord",
+      "translation": [
+        508.67449951171875,
+        631.4744262695312,
+        37.5
+      ]
+    },
+    {
+      "entry": 3,
+      "name": "SpawnNode_Snurtle_AIOverlord",
+      "translation": [
+        528.39404296875,
+        580.937255859375,
+        37.5
+      ]
+    },
+    {
+      "entry": 40,
+      "name": "SpawnNode_Spitter_AIOverlord",
+      "translation": [
+        513.9404296875,
+        613.5897827148438,
+        39.0
+      ]
+    },
+    {
+      "entry": 41,
+      "name": "SpawnNode_Spitter_AIOverlord",
+      "translation": [
+        521.5875854492188,
+        603.2568359375,
+        39.0
+      ]
+    },
+    {
+      "entry": 42,
+      "name": "SpawnNode_Spitter_AIOverlord",
+      "translation": [
+        508.8968505859375,
+        579.965087890625,
+        42.75
+      ]
+    },
+    {
+      "entry": 43,
+      "name": "SpawnNode_Spitter_AIOverlord",
+      "translation": [
+        519.53369140625,
+        592.2526245117188,
+        39.0
+      ]
+    },
+    {
+      "entry": 44,
+      "name": "SpawnNode_Spitter_AIOverlord",
+      "translation": [
+        519.0008544921875,
+        586.1726684570312,
+        41.25
+      ]
+    },
+    {
+      "entry": 45,
+      "name": "SpawnNode_Spitter_AIOverlord",
+      "translation": [
+        518.3770751953125,
+        609.5410766601562,
+        39.0
+      ]
+    },
+    {
+      "entry": 46,
+      "name": "SpawnNode_Spitter_AIOverlord",
+      "translation": [
+        519.5247802734375,
+        580.18505859375,
+        42.75
+      ]
+    },
+    {
+      "entry": 47,
+      "name": "SpawnNode_Spitter_AIOverlord",
+      "translation": [
+        521.62939453125,
+        596.6947631835938,
+        39.0
+      ]
+    },
+    {
+      "entry": 48,
+      "name": "SpawnNode_Spitter_AIOverlord",
+      "translation": [
+        514.2108154296875,
+        580.0750732421875,
+        42.76903533935547
+      ]
+    },
+    {
+      "entry": 49,
+      "name": "TutorialMedkitSpawn",
+      "translation": [
+        476.75823974609375,
+        758.8175659179688,
+        39.1416130065918
+      ]
+    },
+    {
+      "entry": 50,
+      "name": "TutorialMedkitSpawn",
+      "translation": [
+        545.5718994140625,
+        934.7918701171875,
+        39.453125
+      ]
+    },
+    {
+      "entry": 51,
+      "name": "TutorialMedkitSpawn",
+      "translation": [
+        508.7184753417969,
+        923.2744140625,
+        37.490962982177734
+      ]
+    },
+    {
+      "entry": 52,
+      "name": "TutorialMedkitSpawn",
+      "translation": [
+        522.9619140625,
+        686.1837158203125,
+        37.45308303833008
+      ]
+    },
+    {
+      "entry": 53,
+      "name": "TutorialMedkitSpawn",
+      "translation": [
+        529.1373291015625,
+        785.34033203125,
+        39.8010139465332
+      ]
+    },
+    {
+      "entry": 54,
+      "name": "TutorialMedkitSpawn",
+      "translation": [
+        543.8703002929688,
+        898.761962890625,
+        44.91634750366211
+      ]
+    },
+    {
+      "entry": 55,
+      "name": "TutorialMedkitSpawn",
+      "translation": [
+        526.4503173828125,
+        920.849365234375,
+        37.49095916748047
+      ]
+    },
+    {
+      "entry": 74,
+      "name": "MedicalStation Spawner",
+      "translation": [
+        503.2572326660156,
+        795.6587524414062,
+        37.599998474121094
+      ]
+    },
+    {
+      "entry": 523,
+      "name": "Tutorial_Respawn_2ndHallway",
+      "translation": [
+        515.6400146484375,
+        819.0327758789062,
+        37.490962982177734
+      ]
+    },
+    {
+      "entry": 900,
+      "name": "Tutorial_Respawn_HarvesterRoom",
+      "translation": [
+        520.4891967773438,
+        698.1233520507812,
+        37.51591491699219
+      ]
+    },
+    {
+      "entry": 974,
+      "name": "Tutorial_Respawn_1stHallway",
+      "translation": [
+        492.8433532714844,
+        631.639892578125,
+        37.49095916748047
+      ]
+    },
+    {
+      "entry": 1340,
+      "name": "Tutorial_Respawn_SnurtleRoom",
+      "translation": [
+        494.8832092285156,
+        572.2752075195312,
+        41.4921875
+      ]
+    },
+    {
+      "entry": 1388,
+      "name": "Tutorial_Respawn_HiveRoom",
+      "translation": [
+        548.121337890625,
+        914.5120239257812,
+        37.490962982177734
+      ]
+    },
+    {
+      "entry": 1453,
+      "name": "CheckpointsAndRespawnPoints",
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "entry": 2084,
+      "name": "SpawnNode_Player_DropPoint",
+      "translation": [
+        501.59393310546875,
+        516.8480224609375,
+        41.57218933105469
+      ]
+    }
+  ]
+}

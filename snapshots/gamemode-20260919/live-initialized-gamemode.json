@@ -1,0 +1,12 @@
+{
+  "pid": 165946,
+  "image_base": "0x6ffff4300000",
+  "server_time_ms": 2000,
+  "replicator_id": "0xfe000081",
+  "activation_queue_count": 0,
+  "slice_hash": 1289380704,
+  "slice_entry": 127,
+  "entity_state": 2,
+  "gamemode_type_getter_rva": "0x75df90 -> 0x724810",
+  "configuration_index": 6
+}

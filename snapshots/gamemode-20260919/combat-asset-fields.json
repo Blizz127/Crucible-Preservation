@@ -1,0 +1,99 @@
+[
+  {
+    "asset": "ai/spitter.ai",
+    "sha256": "e8433ab347fea20170abe5821e9e68a0f25d924d1f27ea9d18e64739283fcb7d",
+    "fields": [
+      {
+        "field": "SensingRadius",
+        "offset": "0xc6",
+        "raw": "41a00000",
+        "value": 20.0
+      },
+      {
+        "field": "CanPatrol",
+        "offset": "0x205",
+        "raw": "00",
+        "value": false
+      },
+      {
+        "field": "MovementEnabled",
+        "offset": "0x702",
+        "raw": "00",
+        "value": false
+      },
+      {
+        "field": "AggroRadiusNear",
+        "offset": "0x1003",
+        "raw": "40a00000",
+        "value": 5.0
+      },
+      {
+        "field": "AggroRadiusFar",
+        "offset": "0x101d",
+        "raw": "41a00000",
+        "value": 20.0
+      },
+      {
+        "field": "DeaggroRadius",
+        "offset": "0x1051",
+        "raw": "41c80000",
+        "value": 25.0
+      },
+      {
+        "field": "AttackDelayForNewTargets",
+        "offset": "0x123e",
+        "raw": "3f800000",
+        "value": 1.0
+      },
+      {
+        "field": "RangeMin",
+        "offset": "0x12d1",
+        "raw": "3dcccccd",
+        "value": 0.10000000149011612
+      },
+      {
+        "field": "RangeMax",
+        "offset": "0x12eb",
+        "raw": "42200000",
+        "value": 40.0
+      }
+    ]
+  },
+  {
+    "asset": "assets/player/marine/marine_projectile_primary.projectile",
+    "sha256": "56722f39699a7fc50494ac0ab0801a003afcaf2277f011512b1b7ca0e46adb91",
+    "fields": [
+      {
+        "field": "SpeedUnitsPerSecond",
+        "offset": "0x54",
+        "raw": "441c4000",
+        "value": 625.0
+      },
+      {
+        "field": "TargetFilter",
+        "offset": "0x323",
+        "raw": "01ffffff00000007456e656d696573"
+      },
+      {
+        "field": "HealthChangeImmediateOnHit",
+        "offset": "0x392",
+        "raw": "41a0000041200000",
+        "values": [
+          20.0,
+          10.0
+        ]
+      },
+      {
+        "field": "CriticalMultiplier",
+        "offset": "0x3d4",
+        "raw": "40000000",
+        "value": 2.0
+      },
+      {
+        "field": "CreateProjectileType",
+        "offset": "0xaf8",
+        "raw": "01ffffff00000006487962726964"
+      }
+    ]
+  }
+]

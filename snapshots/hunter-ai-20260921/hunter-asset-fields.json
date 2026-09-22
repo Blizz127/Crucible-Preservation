@@ -1,0 +1,2073 @@
+[
+ {
+  "asset": "ai/guide_dummies/duelist_guide.ai",
+  "pak": "misc.pak",
+  "sha256": "8b249e95187d3ebd0a962764adb61f66568ebd3d944f9ce718a1759b4e53b093",
+  "fields": [
+   {
+    "field": "ControlMode",
+    "offset": "0x2e",
+    "raw": "01ffffff0000001353706f6f666564506c61796572496e70757473",
+    "value": "SpoofedPlayerInputs"
+   },
+   {
+    "field": "SentryTransitionParams/SensingRadius",
+    "offset": "0xd3",
+    "raw": "41a00000",
+    "value": 20.0
+   },
+   {
+    "field": "WakeUpParams/Duration",
+    "offset": "0x180",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "PatrolParams/CanPatrol",
+    "offset": "0x294",
+    "raw": "00",
+    "value": false
+   },
+   {
+    "field": "PatrolParams/MaxAttemptsForFindingPatrolDestination",
+    "offset": "0x2ab",
+    "raw": "05",
+    "value": 5
+   },
+   {
+    "field": "PatrolParams/MinDistance",
+    "offset": "0x2c2",
+    "raw": "40a00000",
+    "value": 5.0
+   },
+   {
+    "field": "PatrolParams/MaxDistance",
+    "offset": "0x2dc",
+    "raw": "41700000",
+    "value": 15.0
+   },
+   {
+    "field": "PatrolParams/MaxDistanceFromCurrent",
+    "offset": "0x310",
+    "raw": "42480000",
+    "value": 50.0
+   },
+   {
+    "field": "MovementPararams/MovementEnabled",
+    "offset": "0x791",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "MovementPararams/SpeedWander",
+    "offset": "0x7a8",
+    "raw": "40f00000",
+    "value": 7.5
+   },
+   {
+    "field": "MovementPararams/SpeedChase",
+    "offset": "0x7c2",
+    "raw": "40f00000",
+    "value": 7.5
+   },
+   {
+    "field": "MovementPararams/FleeingSpeed",
+    "offset": "0x7dc",
+    "raw": "40f00000",
+    "value": 7.5
+   },
+   {
+    "field": "MovementPararams/MaxSpeedMultiplier",
+    "offset": "0x82a",
+    "raw": "3f8ccccd",
+    "value": 1.100000023841858
+   },
+   {
+    "field": "MovementPararams/NavigationParams/MoverRadius",
+    "offset": "0x8c7",
+    "raw": "3f000000",
+    "value": 0.5
+   },
+   {
+    "field": "MovementPararams/TargetApproachParams/StopDesiredDistance",
+    "offset": "0x9f6",
+    "raw": "3fe66666",
+    "value": 1.7999999523162842
+   },
+   {
+    "field": "MovementPararams/TargetApproachParams/StopAllowedDistance",
+    "offset": "0xa10",
+    "raw": "40400000",
+    "value": 3.0
+   },
+   {
+    "field": "MovementPararams/StrafeParams/Speed",
+    "offset": "0xb39",
+    "raw": "40900000",
+    "value": 4.5
+   },
+   {
+    "field": "MovementPararams/StrafeParams/Acceleration",
+    "offset": "0xb98",
+    "raw": "41200000",
+    "value": 10.0
+   },
+   {
+    "field": "MovementPararams/BackUpParams/Speed",
+    "offset": "0xc14",
+    "raw": "40600000",
+    "value": 3.5
+   },
+   {
+    "field": "MovementPararams/BackUpParams/Acceleration",
+    "offset": "0xc2e",
+    "raw": "41200000",
+    "value": 10.0
+   },
+   {
+    "field": "MovementPararams/PassiveTurnParams/TurnInPlaceSpeed",
+    "offset": "0xc93",
+    "raw": "42b40000",
+    "value": 90.0
+   },
+   {
+    "field": "AggroCheckLineOfSight",
+    "offset": "0x107b",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "AggroRadiusNear",
+    "offset": "0x1092",
+    "raw": "41f00000",
+    "value": 30.0
+   },
+   {
+    "field": "AggroRadiusFar",
+    "offset": "0x10ac",
+    "raw": "42200000",
+    "value": 40.0
+   },
+   {
+    "field": "AggroAngleFar",
+    "offset": "0x10c6",
+    "raw": "43340000",
+    "value": 180.0
+   },
+   {
+    "field": "DeaggroRadius",
+    "offset": "0x10e0",
+    "raw": "42480000",
+    "value": 50.0
+   },
+   {
+    "field": "ForcedAggroDurationOnDamage",
+    "offset": "0x1114",
+    "raw": "40c00000",
+    "value": 6.0
+   },
+   {
+    "field": "AttackDelayForNewTargets",
+    "offset": "0x130d",
+    "raw": "3e800000",
+    "value": 0.25
+   },
+   {
+    "field": "MinTimeBetweenAttacks",
+    "offset": "0x1327",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "TimeWithoutLoSToForgetCurrentTarget",
+    "offset": "0x1341",
+    "raw": "41000000",
+    "value": 8.0
+   },
+   {
+    "field": "Attacks/ELEMENT/Angle",
+    "offset": "0x1386",
+    "raw": "42b40000",
+    "value": 90.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeMin",
+    "offset": "0x13a0",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeMax",
+    "offset": "0x13ba",
+    "raw": "41f00000",
+    "value": 30.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeVerticalMax",
+    "offset": "0x13d4",
+    "raw": "41a00000",
+    "value": 20.0
+   },
+   {
+    "field": "Attacks/ELEMENT/Duration",
+    "offset": "0x13ee",
+    "raw": "40000000",
+    "value": 2.0
+   }
+  ]
+ },
+ {
+  "asset": "ai/guide_dummies/hero_guide_dummy.ai",
+  "pak": "misc.pak",
+  "sha256": "e15b1ed632e158c0659afbd191be87aa4c56aed4be5081e5029ddf1f860f357a",
+  "fields": [
+   {
+    "field": "ControlMode",
+    "offset": "0x2e",
+    "raw": "01ffffff0000001353706f6f666564506c61796572496e70757473",
+    "value": "SpoofedPlayerInputs"
+   },
+   {
+    "field": "SentryTransitionParams/SensingRadius",
+    "offset": "0xd3",
+    "raw": "41a00000",
+    "value": 20.0
+   },
+   {
+    "field": "WakeUpParams/Duration",
+    "offset": "0x180",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "PatrolParams/CanPatrol",
+    "offset": "0x294",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "PatrolParams/MaxAttemptsForFindingPatrolDestination",
+    "offset": "0x2ab",
+    "raw": "05",
+    "value": 5
+   },
+   {
+    "field": "PatrolParams/MinDistance",
+    "offset": "0x2c2",
+    "raw": "40a00000",
+    "value": 5.0
+   },
+   {
+    "field": "PatrolParams/MaxDistance",
+    "offset": "0x2dc",
+    "raw": "41700000",
+    "value": 15.0
+   },
+   {
+    "field": "PatrolParams/MaxDistanceFromCurrent",
+    "offset": "0x310",
+    "raw": "42480000",
+    "value": 50.0
+   },
+   {
+    "field": "MovementPararams/MovementEnabled",
+    "offset": "0x791",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "MovementPararams/SpeedWander",
+    "offset": "0x7a8",
+    "raw": "40d00000",
+    "value": 6.5
+   },
+   {
+    "field": "MovementPararams/SpeedChase",
+    "offset": "0x7c2",
+    "raw": "40d00000",
+    "value": 6.5
+   },
+   {
+    "field": "MovementPararams/FleeingSpeed",
+    "offset": "0x7dc",
+    "raw": "40d00000",
+    "value": 6.5
+   },
+   {
+    "field": "MovementPararams/MaxSpeedMultiplier",
+    "offset": "0x82a",
+    "raw": "3f8ccccd",
+    "value": 1.100000023841858
+   },
+   {
+    "field": "MovementPararams/NavigationParams/MoverRadius",
+    "offset": "0x8c7",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/TargetApproachParams/StopDesiredDistance",
+    "offset": "0x9f6",
+    "raw": "3fc00000",
+    "value": 1.5
+   },
+   {
+    "field": "MovementPararams/TargetApproachParams/StopAllowedDistance",
+    "offset": "0xa10",
+    "raw": "40200000",
+    "value": 2.5
+   },
+   {
+    "field": "MovementPararams/StrafeParams/Speed",
+    "offset": "0xb39",
+    "raw": "40900000",
+    "value": 4.5
+   },
+   {
+    "field": "MovementPararams/StrafeParams/Acceleration",
+    "offset": "0xb98",
+    "raw": "41200000",
+    "value": 10.0
+   },
+   {
+    "field": "MovementPararams/BackUpParams/Speed",
+    "offset": "0xc14",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/BackUpParams/Acceleration",
+    "offset": "0xc2e",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/PassiveTurnParams/TurnInPlaceSpeed",
+    "offset": "0xc93",
+    "raw": "42b40000",
+    "value": 90.0
+   },
+   {
+    "field": "AggroCheckLineOfSight",
+    "offset": "0x107b",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "AggroRadiusNear",
+    "offset": "0x1092",
+    "raw": "41f00000",
+    "value": 30.0
+   },
+   {
+    "field": "AggroRadiusFar",
+    "offset": "0x10ac",
+    "raw": "42200000",
+    "value": 40.0
+   },
+   {
+    "field": "AggroAngleFar",
+    "offset": "0x10c6",
+    "raw": "43340000",
+    "value": 180.0
+   },
+   {
+    "field": "DeaggroRadius",
+    "offset": "0x10e0",
+    "raw": "41f00000",
+    "value": 30.0
+   },
+   {
+    "field": "ForcedAggroDurationOnDamage",
+    "offset": "0x1114",
+    "raw": "40c00000",
+    "value": 6.0
+   },
+   {
+    "field": "AttackDelayForNewTargets",
+    "offset": "0x130d",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "MinTimeBetweenAttacks",
+    "offset": "0x1327",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "TimeWithoutLoSToForgetCurrentTarget",
+    "offset": "0x1341",
+    "raw": "41000000",
+    "value": 8.0
+   },
+   {
+    "field": "Attacks/ELEMENT/Angle",
+    "offset": "0x1386",
+    "raw": "42b40000",
+    "value": 90.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeMin",
+    "offset": "0x13a0",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeMax",
+    "offset": "0x13ba",
+    "raw": "41f00000",
+    "value": 30.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeVerticalMax",
+    "offset": "0x13d4",
+    "raw": "41a00000",
+    "value": 20.0
+   },
+   {
+    "field": "Attacks/ELEMENT/Duration",
+    "offset": "0x13ee",
+    "raw": "40600000",
+    "value": 3.5
+   }
+  ]
+ },
+ {
+  "asset": "ai/guide_dummies/inventor_guide_dummy.ai",
+  "pak": "misc.pak",
+  "sha256": "577a7324476aa3301eb933827bfaf8c64b6a30f2831c0e907c393efabf1bdcec",
+  "fields": [
+   {
+    "field": "ControlMode",
+    "offset": "0x2e",
+    "raw": "01ffffff0000001353706f6f666564506c61796572496e70757473",
+    "value": "SpoofedPlayerInputs"
+   },
+   {
+    "field": "SentryTransitionParams/SensingRadius",
+    "offset": "0xd3",
+    "raw": "41a00000",
+    "value": 20.0
+   },
+   {
+    "field": "WakeUpParams/Duration",
+    "offset": "0x180",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "PatrolParams/CanPatrol",
+    "offset": "0x294",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "PatrolParams/MaxAttemptsForFindingPatrolDestination",
+    "offset": "0x2ab",
+    "raw": "05",
+    "value": 5
+   },
+   {
+    "field": "PatrolParams/MinDistance",
+    "offset": "0x2c2",
+    "raw": "40a00000",
+    "value": 5.0
+   },
+   {
+    "field": "PatrolParams/MaxDistance",
+    "offset": "0x2dc",
+    "raw": "41700000",
+    "value": 15.0
+   },
+   {
+    "field": "PatrolParams/MaxDistanceFromCurrent",
+    "offset": "0x310",
+    "raw": "42480000",
+    "value": 50.0
+   },
+   {
+    "field": "MovementPararams/MovementEnabled",
+    "offset": "0x791",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "MovementPararams/SpeedWander",
+    "offset": "0x7a8",
+    "raw": "40b00000",
+    "value": 5.5
+   },
+   {
+    "field": "MovementPararams/SpeedChase",
+    "offset": "0x7c2",
+    "raw": "40b00000",
+    "value": 5.5
+   },
+   {
+    "field": "MovementPararams/FleeingSpeed",
+    "offset": "0x7dc",
+    "raw": "40b00000",
+    "value": 5.5
+   },
+   {
+    "field": "MovementPararams/MaxSpeedMultiplier",
+    "offset": "0x82a",
+    "raw": "3f8ccccd",
+    "value": 1.100000023841858
+   },
+   {
+    "field": "MovementPararams/NavigationParams/MoverRadius",
+    "offset": "0x8c7",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/TargetApproachParams/StopDesiredDistance",
+    "offset": "0x9f6",
+    "raw": "3fc00000",
+    "value": 1.5
+   },
+   {
+    "field": "MovementPararams/TargetApproachParams/StopAllowedDistance",
+    "offset": "0xa10",
+    "raw": "40200000",
+    "value": 2.5
+   },
+   {
+    "field": "MovementPararams/StrafeParams/Speed",
+    "offset": "0xb39",
+    "raw": "40900000",
+    "value": 4.5
+   },
+   {
+    "field": "MovementPararams/StrafeParams/Acceleration",
+    "offset": "0xb98",
+    "raw": "41200000",
+    "value": 10.0
+   },
+   {
+    "field": "MovementPararams/BackUpParams/Speed",
+    "offset": "0xc14",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/BackUpParams/Acceleration",
+    "offset": "0xc2e",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/PassiveTurnParams/TurnInPlaceSpeed",
+    "offset": "0xc93",
+    "raw": "42b40000",
+    "value": 90.0
+   },
+   {
+    "field": "AggroCheckLineOfSight",
+    "offset": "0x107b",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "AggroRadiusNear",
+    "offset": "0x1092",
+    "raw": "41f00000",
+    "value": 30.0
+   },
+   {
+    "field": "AggroRadiusFar",
+    "offset": "0x10ac",
+    "raw": "42200000",
+    "value": 40.0
+   },
+   {
+    "field": "AggroAngleFar",
+    "offset": "0x10c6",
+    "raw": "43340000",
+    "value": 180.0
+   },
+   {
+    "field": "DeaggroRadius",
+    "offset": "0x10e0",
+    "raw": "42200000",
+    "value": 40.0
+   },
+   {
+    "field": "ForcedAggroDurationOnDamage",
+    "offset": "0x1114",
+    "raw": "40c00000",
+    "value": 6.0
+   },
+   {
+    "field": "AttackDelayForNewTargets",
+    "offset": "0x130d",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "MinTimeBetweenAttacks",
+    "offset": "0x1327",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "TimeWithoutLoSToForgetCurrentTarget",
+    "offset": "0x1341",
+    "raw": "41000000",
+    "value": 8.0
+   },
+   {
+    "field": "Attacks/ELEMENT/Angle",
+    "offset": "0x1386",
+    "raw": "42b40000",
+    "value": 90.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeMin",
+    "offset": "0x13a0",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeMax",
+    "offset": "0x13ba",
+    "raw": "41f00000",
+    "value": 30.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeVerticalMax",
+    "offset": "0x13d4",
+    "raw": "41a00000",
+    "value": 20.0
+   },
+   {
+    "field": "Attacks/ELEMENT/Duration",
+    "offset": "0x13ee",
+    "raw": "40000000",
+    "value": 2.0
+   }
+  ]
+ },
+ {
+  "asset": "ai/guide_dummies/marine_guide_dummy.ai",
+  "pak": "misc.pak",
+  "sha256": "e739463bad9c9fa4eae7984e3c23983b208034f7ab7e6c27b632364c8ef6fea6",
+  "fields": [
+   {
+    "field": "ControlMode",
+    "offset": "0x2e",
+    "raw": "01ffffff0000001353706f6f666564506c61796572496e70757473",
+    "value": "SpoofedPlayerInputs"
+   },
+   {
+    "field": "SentryTransitionParams/SensingRadius",
+    "offset": "0xd3",
+    "raw": "41a00000",
+    "value": 20.0
+   },
+   {
+    "field": "WakeUpParams/Duration",
+    "offset": "0x180",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "PatrolParams/CanPatrol",
+    "offset": "0x294",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "PatrolParams/MaxAttemptsForFindingPatrolDestination",
+    "offset": "0x2ab",
+    "raw": "05",
+    "value": 5
+   },
+   {
+    "field": "PatrolParams/MinDistance",
+    "offset": "0x2c2",
+    "raw": "40a00000",
+    "value": 5.0
+   },
+   {
+    "field": "PatrolParams/MaxDistance",
+    "offset": "0x2dc",
+    "raw": "41700000",
+    "value": 15.0
+   },
+   {
+    "field": "PatrolParams/MaxDistanceFromCurrent",
+    "offset": "0x310",
+    "raw": "42480000",
+    "value": 50.0
+   },
+   {
+    "field": "MovementPararams/MovementEnabled",
+    "offset": "0x791",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "MovementPararams/SpeedWander",
+    "offset": "0x7a8",
+    "raw": "41000000",
+    "value": 8.0
+   },
+   {
+    "field": "MovementPararams/SpeedChase",
+    "offset": "0x7c2",
+    "raw": "41000000",
+    "value": 8.0
+   },
+   {
+    "field": "MovementPararams/FleeingSpeed",
+    "offset": "0x7dc",
+    "raw": "41000000",
+    "value": 8.0
+   },
+   {
+    "field": "MovementPararams/MaxSpeedMultiplier",
+    "offset": "0x82a",
+    "raw": "3f8ccccd",
+    "value": 1.100000023841858
+   },
+   {
+    "field": "MovementPararams/NavigationParams/MoverRadius",
+    "offset": "0x8c7",
+    "raw": "3f000000",
+    "value": 0.5
+   },
+   {
+    "field": "MovementPararams/TargetApproachParams/StopDesiredDistance",
+    "offset": "0x9f6",
+    "raw": "3fe66666",
+    "value": 1.7999999523162842
+   },
+   {
+    "field": "MovementPararams/TargetApproachParams/StopAllowedDistance",
+    "offset": "0xa10",
+    "raw": "40400000",
+    "value": 3.0
+   },
+   {
+    "field": "MovementPararams/StrafeParams/Speed",
+    "offset": "0xb39",
+    "raw": "40900000",
+    "value": 4.5
+   },
+   {
+    "field": "MovementPararams/StrafeParams/Acceleration",
+    "offset": "0xb98",
+    "raw": "41200000",
+    "value": 10.0
+   },
+   {
+    "field": "MovementPararams/BackUpParams/Speed",
+    "offset": "0xc14",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/BackUpParams/Acceleration",
+    "offset": "0xc2e",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/PassiveTurnParams/TurnInPlaceSpeed",
+    "offset": "0xc93",
+    "raw": "42b40000",
+    "value": 90.0
+   },
+   {
+    "field": "AggroCheckLineOfSight",
+    "offset": "0x107b",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "AggroRadiusNear",
+    "offset": "0x1092",
+    "raw": "40a00000",
+    "value": 5.0
+   },
+   {
+    "field": "AggroRadiusFar",
+    "offset": "0x10ac",
+    "raw": "42200000",
+    "value": 40.0
+   },
+   {
+    "field": "AggroAngleFar",
+    "offset": "0x10c6",
+    "raw": "42f00000",
+    "value": 120.0
+   },
+   {
+    "field": "DeaggroRadius",
+    "offset": "0x10e0",
+    "raw": "42480000",
+    "value": 50.0
+   },
+   {
+    "field": "ForcedAggroDurationOnDamage",
+    "offset": "0x1114",
+    "raw": "40c00000",
+    "value": 6.0
+   },
+   {
+    "field": "AttackDelayForNewTargets",
+    "offset": "0x12a6",
+    "raw": "3e800000",
+    "value": 0.25
+   },
+   {
+    "field": "MinTimeBetweenAttacks",
+    "offset": "0x12c0",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "TimeWithoutLoSToForgetCurrentTarget",
+    "offset": "0x12da",
+    "raw": "41000000",
+    "value": 8.0
+   },
+   {
+    "field": "Attacks/ELEMENT/Angle",
+    "offset": "0x131f",
+    "raw": "42b40000",
+    "value": 90.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeMin",
+    "offset": "0x1339",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeMax",
+    "offset": "0x1353",
+    "raw": "41f00000",
+    "value": 30.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeVerticalMax",
+    "offset": "0x136d",
+    "raw": "41a00000",
+    "value": 20.0
+   },
+   {
+    "field": "Attacks/ELEMENT/Duration",
+    "offset": "0x1387",
+    "raw": "40000000",
+    "value": 2.0
+   }
+  ]
+ },
+ {
+  "asset": "ai/guide_dummies/saboteur_guide.ai",
+  "pak": "misc.pak",
+  "sha256": "1d11e1f2a0ede14169274eb1676c8b2f8fd7b0730fdb7ff76c95309dd1dde73b",
+  "fields": [
+   {
+    "field": "ControlMode",
+    "offset": "0x2e",
+    "raw": "01ffffff0000001353706f6f666564506c61796572496e70757473",
+    "value": "SpoofedPlayerInputs"
+   },
+   {
+    "field": "SentryTransitionParams/SensingRadius",
+    "offset": "0xd3",
+    "raw": "41a00000",
+    "value": 20.0
+   },
+   {
+    "field": "WakeUpParams/Duration",
+    "offset": "0x180",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "PatrolParams/CanPatrol",
+    "offset": "0x294",
+    "raw": "00",
+    "value": false
+   },
+   {
+    "field": "PatrolParams/MaxAttemptsForFindingPatrolDestination",
+    "offset": "0x2ab",
+    "raw": "05",
+    "value": 5
+   },
+   {
+    "field": "PatrolParams/MinDistance",
+    "offset": "0x2c2",
+    "raw": "40a00000",
+    "value": 5.0
+   },
+   {
+    "field": "PatrolParams/MaxDistance",
+    "offset": "0x2dc",
+    "raw": "41700000",
+    "value": 15.0
+   },
+   {
+    "field": "PatrolParams/MaxDistanceFromCurrent",
+    "offset": "0x310",
+    "raw": "42480000",
+    "value": 50.0
+   },
+   {
+    "field": "MovementPararams/MovementEnabled",
+    "offset": "0x791",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "MovementPararams/SpeedWander",
+    "offset": "0x7a8",
+    "raw": "40d00000",
+    "value": 6.5
+   },
+   {
+    "field": "MovementPararams/SpeedChase",
+    "offset": "0x7c2",
+    "raw": "40d00000",
+    "value": 6.5
+   },
+   {
+    "field": "MovementPararams/FleeingSpeed",
+    "offset": "0x7dc",
+    "raw": "40d00000",
+    "value": 6.5
+   },
+   {
+    "field": "MovementPararams/MaxSpeedMultiplier",
+    "offset": "0x82a",
+    "raw": "3f8ccccd",
+    "value": 1.100000023841858
+   },
+   {
+    "field": "MovementPararams/NavigationParams/MoverRadius",
+    "offset": "0x8c7",
+    "raw": "3f000000",
+    "value": 0.5
+   },
+   {
+    "field": "MovementPararams/TargetApproachParams/StopDesiredDistance",
+    "offset": "0x9f6",
+    "raw": "3fe66666",
+    "value": 1.7999999523162842
+   },
+   {
+    "field": "MovementPararams/TargetApproachParams/StopAllowedDistance",
+    "offset": "0xa10",
+    "raw": "40400000",
+    "value": 3.0
+   },
+   {
+    "field": "MovementPararams/StrafeParams/Speed",
+    "offset": "0xb39",
+    "raw": "40900000",
+    "value": 4.5
+   },
+   {
+    "field": "MovementPararams/StrafeParams/Acceleration",
+    "offset": "0xb98",
+    "raw": "41200000",
+    "value": 10.0
+   },
+   {
+    "field": "MovementPararams/BackUpParams/Speed",
+    "offset": "0xc14",
+    "raw": "40600000",
+    "value": 3.5
+   },
+   {
+    "field": "MovementPararams/BackUpParams/Acceleration",
+    "offset": "0xc2e",
+    "raw": "41200000",
+    "value": 10.0
+   },
+   {
+    "field": "MovementPararams/PassiveTurnParams/TurnInPlaceSpeed",
+    "offset": "0xc93",
+    "raw": "42b40000",
+    "value": 90.0
+   },
+   {
+    "field": "AggroCheckLineOfSight",
+    "offset": "0x107b",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "AggroRadiusNear",
+    "offset": "0x1092",
+    "raw": "41f00000",
+    "value": 30.0
+   },
+   {
+    "field": "AggroRadiusFar",
+    "offset": "0x10ac",
+    "raw": "42700000",
+    "value": 60.0
+   },
+   {
+    "field": "AggroAngleFar",
+    "offset": "0x10c6",
+    "raw": "43340000",
+    "value": 180.0
+   },
+   {
+    "field": "DeaggroRadius",
+    "offset": "0x10e0",
+    "raw": "42700000",
+    "value": 60.0
+   },
+   {
+    "field": "ForcedAggroDurationOnDamage",
+    "offset": "0x1114",
+    "raw": "41200000",
+    "value": 10.0
+   },
+   {
+    "field": "AttackDelayForNewTargets",
+    "offset": "0x12a6",
+    "raw": "3e800000",
+    "value": 0.25
+   },
+   {
+    "field": "MinTimeBetweenAttacks",
+    "offset": "0x12c0",
+    "raw": "3f99999a",
+    "value": 1.2000000476837158
+   },
+   {
+    "field": "TimeWithoutLoSToForgetCurrentTarget",
+    "offset": "0x12da",
+    "raw": "41000000",
+    "value": 8.0
+   },
+   {
+    "field": "Attacks/ELEMENT/Angle",
+    "offset": "0x131f",
+    "raw": "42b40000",
+    "value": 90.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeMin",
+    "offset": "0x1339",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeMax",
+    "offset": "0x1353",
+    "raw": "41f00000",
+    "value": 30.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeVerticalMax",
+    "offset": "0x136d",
+    "raw": "41a00000",
+    "value": 20.0
+   },
+   {
+    "field": "Attacks/ELEMENT/Duration",
+    "offset": "0x1387",
+    "raw": "40000000",
+    "value": 2.0
+   }
+  ]
+ },
+ {
+  "asset": "ai/dummy_player_guide.ai",
+  "pak": "misc.pak",
+  "sha256": "23ae1fa746709b0fd61e38f12b708ed61be785167c1a2fd6f5128f99d9fdf7e6",
+  "fields": [
+   {
+    "field": "ControlMode",
+    "offset": "0x2e",
+    "raw": "01ffffff0000001353706f6f666564506c61796572496e70757473",
+    "value": "SpoofedPlayerInputs"
+   },
+   {
+    "field": "SentryTransitionParams/SensingRadius",
+    "offset": "0xd3",
+    "raw": "41a00000",
+    "value": 20.0
+   },
+   {
+    "field": "WakeUpParams/Duration",
+    "offset": "0x180",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "PatrolParams/CanPatrol",
+    "offset": "0x294",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "PatrolParams/MaxAttemptsForFindingPatrolDestination",
+    "offset": "0x2ab",
+    "raw": "05",
+    "value": 5
+   },
+   {
+    "field": "PatrolParams/MinDistance",
+    "offset": "0x2c2",
+    "raw": "40a00000",
+    "value": 5.0
+   },
+   {
+    "field": "PatrolParams/MaxDistance",
+    "offset": "0x2dc",
+    "raw": "41700000",
+    "value": 15.0
+   },
+   {
+    "field": "PatrolParams/MaxDistanceFromCurrent",
+    "offset": "0x310",
+    "raw": "42480000",
+    "value": 50.0
+   },
+   {
+    "field": "MovementPararams/MovementEnabled",
+    "offset": "0x791",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "MovementPararams/SpeedWander",
+    "offset": "0x7a8",
+    "raw": "40a00000",
+    "value": 5.0
+   },
+   {
+    "field": "MovementPararams/SpeedChase",
+    "offset": "0x7c2",
+    "raw": "40c00000",
+    "value": 6.0
+   },
+   {
+    "field": "MovementPararams/FleeingSpeed",
+    "offset": "0x7dc",
+    "raw": "40c00000",
+    "value": 6.0
+   },
+   {
+    "field": "MovementPararams/MaxSpeedMultiplier",
+    "offset": "0x82a",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/NavigationParams/MoverRadius",
+    "offset": "0x8c7",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/TargetApproachParams/StopDesiredDistance",
+    "offset": "0x9f6",
+    "raw": "3fc00000",
+    "value": 1.5
+   },
+   {
+    "field": "MovementPararams/TargetApproachParams/StopAllowedDistance",
+    "offset": "0xa10",
+    "raw": "40200000",
+    "value": 2.5
+   },
+   {
+    "field": "MovementPararams/StrafeParams/Speed",
+    "offset": "0xb39",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/StrafeParams/Acceleration",
+    "offset": "0xb98",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/BackUpParams/Speed",
+    "offset": "0xc14",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/BackUpParams/Acceleration",
+    "offset": "0xc2e",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/PassiveTurnParams/TurnInPlaceSpeed",
+    "offset": "0xc93",
+    "raw": "42b40000",
+    "value": 90.0
+   },
+   {
+    "field": "AggroCheckLineOfSight",
+    "offset": "0x107b",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "AggroRadiusNear",
+    "offset": "0x1092",
+    "raw": "40a00000",
+    "value": 5.0
+   },
+   {
+    "field": "AggroRadiusFar",
+    "offset": "0x10ac",
+    "raw": "41700000",
+    "value": 15.0
+   },
+   {
+    "field": "AggroAngleFar",
+    "offset": "0x10c6",
+    "raw": "42f00000",
+    "value": 120.0
+   },
+   {
+    "field": "DeaggroRadius",
+    "offset": "0x10e0",
+    "raw": "41f00000",
+    "value": 30.0
+   },
+   {
+    "field": "ForcedAggroDurationOnDamage",
+    "offset": "0x1114",
+    "raw": "40c00000",
+    "value": 6.0
+   },
+   {
+    "field": "AttackDelayForNewTargets",
+    "offset": "0x12a6",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "MinTimeBetweenAttacks",
+    "offset": "0x12c0",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "TimeWithoutLoSToForgetCurrentTarget",
+    "offset": "0x12da",
+    "raw": "41000000",
+    "value": 8.0
+   },
+   {
+    "field": "Attacks/ELEMENT/Angle",
+    "offset": "0x131f",
+    "raw": "42b40000",
+    "value": 90.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeMin",
+    "offset": "0x1339",
+    "raw": "41200000",
+    "value": 10.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeMax",
+    "offset": "0x1353",
+    "raw": "41f00000",
+    "value": 30.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeVerticalMax",
+    "offset": "0x136d",
+    "raw": "42480000",
+    "value": 50.0
+   },
+   {
+    "field": "Attacks/ELEMENT/Duration",
+    "offset": "0x1387",
+    "raw": "4049999a",
+    "value": 3.1500000953674316
+   }
+  ]
+ },
+ {
+  "asset": "ai/spitter.ai",
+  "pak": "misc.pak",
+  "sha256": "e8433ab347fea20170abe5821e9e68a0f25d924d1f27ea9d18e64739283fcb7d",
+  "fields": [
+   {
+    "field": "ControlMode",
+    "offset": "0x2e",
+    "raw": "01ffffff000000064e6f726d616c",
+    "value": "Normal"
+   },
+   {
+    "field": "SentryTransitionParams/SensingRadius",
+    "offset": "0xc6",
+    "raw": "41a00000",
+    "value": 20.0
+   },
+   {
+    "field": "WakeUpParams/Duration",
+    "offset": "0x173",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "PatrolParams/CanPatrol",
+    "offset": "0x205",
+    "raw": "00",
+    "value": false
+   },
+   {
+    "field": "PatrolParams/MaxAttemptsForFindingPatrolDestination",
+    "offset": "0x21c",
+    "raw": "05",
+    "value": 5
+   },
+   {
+    "field": "PatrolParams/MinDistance",
+    "offset": "0x233",
+    "raw": "41200000",
+    "value": 10.0
+   },
+   {
+    "field": "PatrolParams/MaxDistance",
+    "offset": "0x24d",
+    "raw": "41a00000",
+    "value": 20.0
+   },
+   {
+    "field": "PatrolParams/MaxDistanceFromCurrent",
+    "offset": "0x281",
+    "raw": "42480000",
+    "value": 50.0
+   },
+   {
+    "field": "MovementPararams/MovementEnabled",
+    "offset": "0x702",
+    "raw": "00",
+    "value": false
+   },
+   {
+    "field": "MovementPararams/SpeedWander",
+    "offset": "0x719",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/SpeedChase",
+    "offset": "0x733",
+    "raw": "40000000",
+    "value": 2.0
+   },
+   {
+    "field": "MovementPararams/FleeingSpeed",
+    "offset": "0x74d",
+    "raw": "40a00000",
+    "value": 5.0
+   },
+   {
+    "field": "MovementPararams/MaxSpeedMultiplier",
+    "offset": "0x79b",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/NavigationParams/MoverRadius",
+    "offset": "0x838",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/TargetApproachParams/StopDesiredDistance",
+    "offset": "0x967",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/TargetApproachParams/StopAllowedDistance",
+    "offset": "0x981",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/StrafeParams/Speed",
+    "offset": "0xaaa",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/StrafeParams/Acceleration",
+    "offset": "0xb09",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/BackUpParams/Speed",
+    "offset": "0xb85",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/BackUpParams/Acceleration",
+    "offset": "0xb9f",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MovementPararams/PassiveTurnParams/TurnInPlaceSpeed",
+    "offset": "0xc04",
+    "raw": "43340000",
+    "value": 180.0
+   },
+   {
+    "field": "AggroCheckLineOfSight",
+    "offset": "0xfec",
+    "raw": "01",
+    "value": true
+   },
+   {
+    "field": "AggroRadiusNear",
+    "offset": "0x1003",
+    "raw": "40a00000",
+    "value": 5.0
+   },
+   {
+    "field": "AggroRadiusFar",
+    "offset": "0x101d",
+    "raw": "41a00000",
+    "value": 20.0
+   },
+   {
+    "field": "AggroAngleFar",
+    "offset": "0x1037",
+    "raw": "43b40000",
+    "value": 360.0
+   },
+   {
+    "field": "DeaggroRadius",
+    "offset": "0x1051",
+    "raw": "41c80000",
+    "value": 25.0
+   },
+   {
+    "field": "ForcedAggroDurationOnDamage",
+    "offset": "0x1085",
+    "raw": "40800000",
+    "value": 4.0
+   },
+   {
+    "field": "AttackDelayForNewTargets",
+    "offset": "0x123e",
+    "raw": "3f800000",
+    "value": 1.0
+   },
+   {
+    "field": "MinTimeBetweenAttacks",
+    "offset": "0x1258",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "TimeWithoutLoSToForgetCurrentTarget",
+    "offset": "0x1272",
+    "raw": "41000000",
+    "value": 8.0
+   },
+   {
+    "field": "Attacks/ELEMENT/Angle",
+    "offset": "0x12b7",
+    "raw": "41700000",
+    "value": 15.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeMin",
+    "offset": "0x12d1",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeMax",
+    "offset": "0x12eb",
+    "raw": "42200000",
+    "value": 40.0
+   },
+   {
+    "field": "Attacks/ELEMENT/RangeVerticalMax",
+    "offset": "0x1305",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "Attacks/ELEMENT/Duration",
+    "offset": "0x131f",
+    "raw": "40400000",
+    "value": 3.0
+   }
+  ]
+ },
+ {
+  "asset": "assets/character/default.movementconfig",
+  "pak": "misc.pak",
+  "sha256": "b9b48c11109d4b014a521c68c436025304108421e7e92db9adf6e61f1580da1b",
+  "fields": [
+   {
+    "field": "Simplified NPC Movement",
+    "offset": "0x3d",
+    "raw": "00",
+    "value": false
+   },
+   {
+    "field": "Movement Speeds",
+    "offset": "0x54",
+    "raw": "40b000004090000040600000",
+    "value": [
+     5.5,
+     4.5,
+     3.5
+    ]
+   },
+   {
+    "field": "Acceleration",
+    "offset": "0x77",
+    "raw": "3fa000003fa000003fa00000",
+    "value": [
+     1.25,
+     1.25,
+     1.25
+    ]
+   },
+   {
+    "field": "Brake Friction/m_Value",
+    "offset": "0xb0",
+    "raw": "42c80000",
+    "value": 100.0
+   },
+   {
+    "field": "Overspeed Deceleration Rate/m_Value",
+    "offset": "0xe1",
+    "raw": "41400000",
+    "value": 12.0
+   },
+   {
+    "field": "Air Drag/m_Value",
+    "offset": "0x112",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "Max Turn Speed/m_Value",
+    "offset": "0x143",
+    "raw": "43c80000",
+    "value": 400.0
+   },
+   {
+    "field": "Turn Acceleration/m_Value",
+    "offset": "0x174",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   },
+   {
+    "field": "Turn Deceleration/m_Value",
+    "offset": "0x1a5",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   }
+  ]
+ },
+ {
+  "asset": "assets/character/sprint.movementconfig",
+  "pak": "misc.pak",
+  "sha256": "2b87c4b950f061ee081d51f406f8f13fa16fbc0455d977dfc361876f4de793f1",
+  "fields": [
+   {
+    "field": "Simplified NPC Movement",
+    "offset": "0x3c",
+    "raw": "00",
+    "value": false
+   },
+   {
+    "field": "Movement Speeds",
+    "offset": "0x53",
+    "raw": "410800004090000040600000",
+    "value": [
+     8.5,
+     4.5,
+     3.5
+    ]
+   },
+   {
+    "field": "Acceleration",
+    "offset": "0x76",
+    "raw": "3f8e147b3f8e147b3f8e147b",
+    "value": [
+     1.1100000143051147,
+     1.1100000143051147,
+     1.1100000143051147
+    ]
+   },
+   {
+    "field": "Brake Friction/m_Value",
+    "offset": "0xaf",
+    "raw": "42c80000",
+    "value": 100.0
+   },
+   {
+    "field": "Overspeed Deceleration Rate/m_Value",
+    "offset": "0xe0",
+    "raw": "41400000",
+    "value": 12.0
+   },
+   {
+    "field": "Air Drag/m_Value",
+    "offset": "0x111",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "Max Turn Speed/m_Value",
+    "offset": "0x142",
+    "raw": "43c80000",
+    "value": 400.0
+   },
+   {
+    "field": "Turn Acceleration/m_Value",
+    "offset": "0x173",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   },
+   {
+    "field": "Turn Deceleration/m_Value",
+    "offset": "0x1a4",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   }
+  ]
+ },
+ {
+  "asset": "assets/player/marine/marine_aimdownsights.movementconfig",
+  "pak": "misc.pak",
+  "sha256": "c419da34782f4a89c9fc9fe6bdf8360b9ca6ce4721ea9ab9beb7f1986ea3b94a",
+  "fields": [
+   {
+    "field": "Simplified NPC Movement",
+    "offset": "0x43",
+    "raw": "00",
+    "value": false
+   },
+   {
+    "field": "Movement Speeds",
+    "offset": "0x5a",
+    "raw": "402000004020000040200000",
+    "value": [
+     2.5,
+     2.5,
+     2.5
+    ]
+   },
+   {
+    "field": "Acceleration",
+    "offset": "0x7d",
+    "raw": "3dcccccd3dcccccd3dcccccd",
+    "value": [
+     0.10000000149011612,
+     0.10000000149011612,
+     0.10000000149011612
+    ]
+   },
+   {
+    "field": "Brake Friction/m_Value",
+    "offset": "0xb6",
+    "raw": "42c80000",
+    "value": 100.0
+   },
+   {
+    "field": "Overspeed Deceleration Rate/m_Value",
+    "offset": "0xe7",
+    "raw": "41400000",
+    "value": 12.0
+   },
+   {
+    "field": "Air Drag/m_Value",
+    "offset": "0x118",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "Max Turn Speed/m_Value",
+    "offset": "0x149",
+    "raw": "44b40000",
+    "value": 1440.0
+   },
+   {
+    "field": "Turn Acceleration/m_Value",
+    "offset": "0x17a",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   },
+   {
+    "field": "Turn Deceleration/m_Value",
+    "offset": "0x1ab",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   }
+  ]
+ },
+ {
+  "asset": "assets/player/marine/marine_crouch.movementconfig",
+  "pak": "misc.pak",
+  "sha256": "7a976709ba378946287a51a7dcccb5d9931fec50393387419542df3f3352c2f4",
+  "fields": [
+   {
+    "field": "Simplified NPC Movement",
+    "offset": "0x3c",
+    "raw": "00",
+    "value": false
+   },
+   {
+    "field": "Movement Speeds",
+    "offset": "0x53",
+    "raw": "402000004020000040200000",
+    "value": [
+     2.5,
+     2.5,
+     2.5
+    ]
+   },
+   {
+    "field": "Acceleration",
+    "offset": "0x76",
+    "raw": "3e8000003e8000003e800000",
+    "value": [
+     0.25,
+     0.25,
+     0.25
+    ]
+   },
+   {
+    "field": "Brake Friction/m_Value",
+    "offset": "0xaf",
+    "raw": "42c80000",
+    "value": 100.0
+   },
+   {
+    "field": "Overspeed Deceleration Rate/m_Value",
+    "offset": "0xe0",
+    "raw": "41400000",
+    "value": 12.0
+   },
+   {
+    "field": "Air Drag/m_Value",
+    "offset": "0x111",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "Max Turn Speed/m_Value",
+    "offset": "0x142",
+    "raw": "44b40000",
+    "value": 1440.0
+   },
+   {
+    "field": "Turn Acceleration/m_Value",
+    "offset": "0x173",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   },
+   {
+    "field": "Turn Deceleration/m_Value",
+    "offset": "0x1a4",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   }
+  ]
+ },
+ {
+  "asset": "assets/player/marine/marine_default.movementconfig",
+  "pak": "misc.pak",
+  "sha256": "749e737f720dfb7160df7b3dfb3896463a7d7cda727dac0a8bdc39490ff7a59a",
+  "fields": [
+   {
+    "field": "Simplified NPC Movement",
+    "offset": "0x3d",
+    "raw": "00",
+    "value": false
+   },
+   {
+    "field": "Movement Speeds",
+    "offset": "0x54",
+    "raw": "40b000004090000040600000",
+    "value": [
+     5.5,
+     4.5,
+     3.5
+    ]
+   },
+   {
+    "field": "Acceleration",
+    "offset": "0x77",
+    "raw": "3e19999a3e19999a3e19999a",
+    "value": [
+     0.15000000596046448,
+     0.15000000596046448,
+     0.15000000596046448
+    ]
+   },
+   {
+    "field": "Brake Friction/m_Value",
+    "offset": "0xb0",
+    "raw": "42c80000",
+    "value": 100.0
+   },
+   {
+    "field": "Overspeed Deceleration Rate/m_Value",
+    "offset": "0xe1",
+    "raw": "41400000",
+    "value": 12.0
+   },
+   {
+    "field": "Air Drag/m_Value",
+    "offset": "0x112",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "Max Turn Speed/m_Value",
+    "offset": "0x143",
+    "raw": "44b40000",
+    "value": 1440.0
+   },
+   {
+    "field": "Turn Acceleration/m_Value",
+    "offset": "0x174",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   },
+   {
+    "field": "Turn Deceleration/m_Value",
+    "offset": "0x1a5",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   }
+  ]
+ },
+ {
+  "asset": "assets/player/marine/marine_heal.movementconfig",
+  "pak": "misc.pak",
+  "sha256": "e556128cfd6d1349748c0785aa1a49e67400d555c3da43cdbd5fdffd5fc321a9",
+  "fields": [
+   {
+    "field": "Simplified NPC Movement",
+    "offset": "0x3a",
+    "raw": "00",
+    "value": false
+   },
+   {
+    "field": "Movement Speeds",
+    "offset": "0x51",
+    "raw": "402000004020000040200000",
+    "value": [
+     2.5,
+     2.5,
+     2.5
+    ]
+   },
+   {
+    "field": "Acceleration",
+    "offset": "0x74",
+    "raw": "3e8000003e8000003e800000",
+    "value": [
+     0.25,
+     0.25,
+     0.25
+    ]
+   },
+   {
+    "field": "Brake Friction/m_Value",
+    "offset": "0xad",
+    "raw": "42c80000",
+    "value": 100.0
+   },
+   {
+    "field": "Overspeed Deceleration Rate/m_Value",
+    "offset": "0xde",
+    "raw": "41400000",
+    "value": 12.0
+   },
+   {
+    "field": "Air Drag/m_Value",
+    "offset": "0x10f",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "Max Turn Speed/m_Value",
+    "offset": "0x140",
+    "raw": "44b40000",
+    "value": 1440.0
+   },
+   {
+    "field": "Turn Acceleration/m_Value",
+    "offset": "0x171",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   },
+   {
+    "field": "Turn Deceleration/m_Value",
+    "offset": "0x1a2",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   }
+  ]
+ },
+ {
+  "asset": "assets/player/marine/marine_sprint.movementconfig",
+  "pak": "misc.pak",
+  "sha256": "4c1391bc0744d4c87c5b6fb6b78dde78c9bb71259a0d01cb66bf95adbc8700fe",
+  "fields": [
+   {
+    "field": "Simplified NPC Movement",
+    "offset": "0x3c",
+    "raw": "00",
+    "value": false
+   },
+   {
+    "field": "Movement Speeds",
+    "offset": "0x53",
+    "raw": "410800004090000040600000",
+    "value": [
+     8.5,
+     4.5,
+     3.5
+    ]
+   },
+   {
+    "field": "Acceleration",
+    "offset": "0x76",
+    "raw": "3e19999a3e19999a3e19999a",
+    "value": [
+     0.15000000596046448,
+     0.15000000596046448,
+     0.15000000596046448
+    ]
+   },
+   {
+    "field": "Brake Friction/m_Value",
+    "offset": "0xaf",
+    "raw": "42c80000",
+    "value": 100.0
+   },
+   {
+    "field": "Overspeed Deceleration Rate/m_Value",
+    "offset": "0xe0",
+    "raw": "41400000",
+    "value": 12.0
+   },
+   {
+    "field": "Air Drag/m_Value",
+    "offset": "0x111",
+    "raw": "00000000",
+    "value": 0.0
+   },
+   {
+    "field": "Max Turn Speed/m_Value",
+    "offset": "0x142",
+    "raw": "44b40000",
+    "value": 1440.0
+   },
+   {
+    "field": "Turn Acceleration/m_Value",
+    "offset": "0x173",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   },
+   {
+    "field": "Turn Deceleration/m_Value",
+    "offset": "0x1a4",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   }
+  ]
+ },
+ {
+  "asset": "assets/player/marine/marine_sprint_charge.movementconfig",
+  "pak": "misc.pak",
+  "sha256": "e64cb52b43e194d5f913904746aba453326da1794497c8368e466e8a92e46055",
+  "fields": [
+   {
+    "field": "Simplified NPC Movement",
+    "offset": "0x42",
+    "raw": "00",
+    "value": false
+   },
+   {
+    "field": "Movement Speeds",
+    "offset": "0x59",
+    "raw": "411000004090000040600000",
+    "value": [
+     9.0,
+     4.5,
+     3.5
+    ]
+   },
+   {
+    "field": "Acceleration",
+    "offset": "0x7c",
+    "raw": "3e19999a3e19999a3e19999a",
+    "value": [
+     0.15000000596046448,
+     0.15000000596046448,
+     0.15000000596046448
+    ]
+   },
+   {
+    "field": "Brake Friction/m_Value",
+    "offset": "0xb5",
+    "raw": "42c80000",
+    "value": 100.0
+   },
+   {
+    "field": "Overspeed Deceleration Rate/m_Value",
+    "offset": "0xe6",
+    "raw": "41400000",
+    "value": 12.0
+   },
+   {
+    "field": "Air Drag/m_Value",
+    "offset": "0x117",
+    "raw": "3d851eb8",
+    "value": 0.06499999761581421
+   },
+   {
+    "field": "Max Turn Speed/m_Value",
+    "offset": "0x148",
+    "raw": "44b40000",
+    "value": 1440.0
+   },
+   {
+    "field": "Turn Acceleration/m_Value",
+    "offset": "0x179",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   },
+   {
+    "field": "Turn Deceleration/m_Value",
+    "offset": "0x1aa",
+    "raw": "3dcccccd",
+    "value": 0.10000000149011612
+   }
+  ]
+ }
+]

@@ -68,6 +68,10 @@ import struct
 import subprocess
 import threading
 import time
+import uuid
+
+import local_sessions
+import solo_modes
 
 HOST = "127.0.0.1"
 PORT = int(os.environ.get("CRUCIBLE_MATCH_PORT", "18877"))
@@ -309,7 +313,7 @@ def connect_success():
       bool ShouldLoadDebugComponents }
     """
     return (ranged_uint(ERESULT_SUCCESS, 0, ERESULT_MAX)
-            + hub_str(os.environ.get("CRUCIBLE_HUB_LEVEL", HUB_DEFAULT_LEVEL))
+            + hub_str(os.environ.get("CRUCIBLE_HUB_LEVEL", solo_modes.selected().level))
             + hub_str(os.environ.get("CRUCIBLE_HUB_RULES", HUB_DEFAULT_RULES))
             + hub_session(int(os.environ.get("CRUCIBLE_HUB_SHARD_ID", "0")),
                           os.environ.get("CRUCIBLE_HUB_SHARD_HOST", ""),
@@ -425,11 +429,45 @@ def shard_probe_index():
     return i
 
 
-def hubrpc_reply(frame):
+def track_local_session(parsed, session):
+    directory = os.environ.get('CRUCIBLE_LOCAL_SESSIONS')
+    if not directory or session is None:
+        return
+    msg_id, _, _, payload = parsed
+    if msg_id == HUB_CONNECT_REQ:
+        local_sessions.remove(directory, session['key'])
+        session['advertised'] = False
+        session['user_id'] = int.from_bytes(payload[:4], 'big') if len(payload) >= 4 else 0
+    elif msg_id == HUB_HEARTBEAT_REQ:
+        if len(payload) != 4 or int.from_bytes(payload, 'big') != session.get('user_id'):
+            local_sessions.remove(directory, session['key'])
+            session['advertised'] = False
+            session['user_id'] = 0
+    elif (msg_id == HUB_SHARDADDR_REQ
+          and os.environ.get('CRUCIBLE_HUB_SHARDADDR') == 'reply'
+          and os.environ.get('CRUCIBLE_HUB_SHARD_PROBE') != '1'):
+        session['advertised'] = True
+    if session.get('advertised') and session.get('user_id'):
+        local_sessions.publish(directory, session['key'], session['peer'], session['user_id'])
+
+
+def finish_local_session(session):
+    directory = os.environ.get('CRUCIBLE_LOCAL_SESSIONS')
+    if not directory:
+        return
+    # Retail closes the hub immediately after switching to the shard. Keep
+    # its advertised identity within the existing 60-second handoff window.
+    # Do not refresh its timestamp on disconnect or extend expired sessions.
+    if not session.get('advertised') or not session.get('user_id'):
+        local_sessions.remove(directory, session['key'])
+
+
+def hubrpc_reply(frame, session=None):
     """Response for one hub frame, or None to stay silent."""
     parsed = parse_hub(frame)
     if parsed is None:
         return None
+    track_local_session(parsed, session)
     msg_id, req_id, _has_handler, _payload = parsed
     # HasHandler must be 1 on a RESPONSE too. Proven on the wire 2026-09-17
     # 15:40 by cycling 12 response-envelope variants across the client's 1 Hz
@@ -608,7 +646,7 @@ def make_reply(data, mode):
     return None
 
 
-def drain(tls, addr, label, reply=None, srv_seq=None):
+def drain(tls, addr, label, reply=None, srv_seq=None, session=None):
     """Read until the peer closes, logging every chunk. The whole point: we do
     not know the framing, so we record bytes rather than parse them.
 
@@ -640,7 +678,7 @@ def drain(tls, addr, label, reply=None, srv_seq=None):
                 pid = int.from_bytes(frame[0:2], "big")
                 if reply == "hubrpc":
                     log_hub_frame(frame)
-                    out = hubrpc_reply(frame)
+                    out = hubrpc_reply(frame, session)
                     if out is not None:
                         try:
                             tls.sendall(out)
@@ -724,6 +762,7 @@ def probe(tls, first_frame):
 
 
 def handle(conn, addr, ctx):
+    session = {'key': uuid.uuid4().hex, 'peer': addr[0]}
     try:
         conn.settimeout(60)
         try:
@@ -766,7 +805,7 @@ def handle(conn, addr, ctx):
                     out = None
                     if frame is not None:
                         log_hub_frame(frame)
-                        out = hubrpc_reply(frame)
+                        out = hubrpc_reply(frame, session)
                 elif reply == "hub":
                     frame, _ = split_frame(first)
                     out = hub_reply(frame, srv_seq[0]) \
@@ -786,13 +825,15 @@ def handle(conn, addr, ctx):
                         return
             probe(tls, first)
             drain(tls, addr, "after-probe", reply=reply,
-                  srv_seq=srv_seq if reply in ("hub", "hubrpc") else None)
+                  srv_seq=srv_seq if reply in ("hub", "hubrpc") else None,
+                  session=session)
         finally:
             try:
                 tls.close()
             except OSError:
                 pass
     finally:
+        finish_local_session(session)
         log("--- connection from %s closed ---" % (addr,))
 
 

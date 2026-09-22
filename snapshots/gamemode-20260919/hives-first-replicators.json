@@ -1,0 +1,50 @@
+[
+  {
+    "key": "0x1000004",
+    "slice_hash": 9256072,
+    "entry": 0,
+    "active": 4
+  },
+  {
+    "key": "0xfe00098f",
+    "slice_hash": 161882647,
+    "entry": 1660,
+    "active": 2
+  },
+  {
+    "key": "0xfe000995",
+    "slice_hash": 161882647,
+    "entry": 1666,
+    "active": 2
+  },
+  {
+    "key": "0xfe00098b",
+    "slice_hash": 161882647,
+    "entry": 1656,
+    "active": 2
+  },
+  {
+    "key": "0x1000005",
+    "slice_hash": 9256072,
+    "entry": 0,
+    "active": 4
+  },
+  {
+    "key": "0x1000002",
+    "slice_hash": 9256072,
+    "entry": 0,
+    "active": 4
+  },
+  {
+    "key": "0x1000003",
+    "slice_hash": 9256072,
+    "entry": 0,
+    "active": 4
+  },
+  {
+    "key": "0x1000001",
+    "slice_hash": 646954285,
+    "entry": 0,
+    "active": 4
+  }
+]

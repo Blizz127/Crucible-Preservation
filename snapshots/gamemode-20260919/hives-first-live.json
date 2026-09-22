@@ -1,0 +1,5417 @@
+{
+  "last_server_game_time_ms": 55692,
+  "pid": 96477,
+  "game_state": 8,
+  "connection_status": 4,
+  "entities": [
+    {
+      "network_id": "0x1000004",
+      "slice_hash": 9256072,
+      "slice_entry": 0,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6d3c758",
+          "type_getter": "0x4b93830",
+          "getter_bytes": "e99bfeffffcc"
+        },
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x688c160",
+          "type_getter": "0x51fd50",
+          "getter_bytes": "40534883ec20"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66eb970",
+          "type_getter": "0x8d2710",
+          "getter_bytes": "b033c3cccccc"
+        },
+        {
+          "vtable": "0x66e61a0",
+          "type_getter": "0x8a26f0",
+          "getter_bytes": "b02cc3cccccc"
+        },
+        {
+          "vtable": "0x670c508",
+          "type_getter": "0x9d23b0",
+          "getter_bytes": "b071c3cccccc"
+        },
+        {
+          "vtable": "0x66ddcb8",
+          "type_getter": "0x86d8e0",
+          "getter_bytes": "b024c3cccccc"
+        },
+        {
+          "vtable": "0x670f6a0",
+          "type_getter": "0x9e6030",
+          "getter_bytes": "b075c3cccccc"
+        },
+        {
+          "vtable": "0x66efe58",
+          "type_getter": "0x8eff00",
+          "getter_bytes": "b03dc3cccccc"
+        },
+        {
+          "vtable": "0x67135b8",
+          "type_getter": "0xa04100",
+          "getter_bytes": "b080c3cccccc"
+        },
+        {
+          "vtable": "0x6717758",
+          "type_getter": "0xa22080",
+          "getter_bytes": "b087c3cccccc"
+        },
+        {
+          "vtable": "0x66bd030",
+          "type_getter": "0x4fdfb0",
+          "getter_bytes": "32c0c3cccccc"
+        },
+        {
+          "vtable": "0x66ea3c0",
+          "type_getter": "0x8c67b0",
+          "getter_bytes": "b030c3cccccc"
+        },
+        {
+          "vtable": "0x66f27d8",
+          "type_getter": "0x90bb60",
+          "getter_bytes": "b042c3cccccc"
+        },
+        {
+          "vtable": "0x66cea00",
+          "type_getter": "0x7fa750",
+          "getter_bytes": "b00ec3cccccc"
+        },
+        {
+          "vtable": "0x66f23e8",
+          "type_getter": "0x908f10",
+          "getter_bytes": "b041c3cccccc"
+        },
+        {
+          "vtable": "0x66b2098",
+          "type_getter": "0x71e380",
+          "getter_bytes": "b023c3cccccc"
+        },
+        {
+          "vtable": "0x671e518",
+          "type_getter": "0xa55460",
+          "getter_bytes": "b08cc3cccccc"
+        },
+        {
+          "vtable": "0x66f2ba8",
+          "type_getter": "0x90d920",
+          "getter_bytes": "b043c3cccccc"
+        },
+        {
+          "vtable": "0x6716db0",
+          "type_getter": "0xa1c230",
+          "getter_bytes": "b085c3cccccc"
+        },
+        {
+          "vtable": "0x66b2958",
+          "type_getter": "0x740d60",
+          "getter_bytes": "b0a5c3cccccc"
+        },
+        {
+          "vtable": "0x675ceb8",
+          "type_getter": "0xa9e4d0",
+          "getter_bytes": "b091c3cccccc",
+          "authoritative_position": [
+            1313.4705810546875,
+            1264.9761962890625,
+            23.623966217041016
+          ],
+          "authoritative_rotation": [
+            0.9999992847442627,
+            0.0006912350654602051,
+            0.0006912350654602051,
+            0.0006912350654602051
+          ]
+        },
+        {
+          "vtable": "0x66d36a8",
+          "type_getter": "0x821460",
+          "getter_bytes": "b016c3cccccc"
+        },
+        {
+          "vtable": "0x66fe2e8",
+          "type_getter": "0x965670",
+          "getter_bytes": "b056c3cccccc"
+        },
+        {
+          "vtable": "0x671f098",
+          "type_getter": "0xa5b620",
+          "getter_bytes": "b08ec3cccccc"
+        },
+        {
+          "vtable": "0x66c9128",
+          "type_getter": "0x7adfd0",
+          "getter_bytes": "b00ac3cccccc"
+        },
+        {
+          "vtable": "0x66caf20",
+          "type_getter": "0x7db870",
+          "getter_bytes": "b00dc3cccccc"
+        },
+        {
+          "vtable": "0x66eb1c0",
+          "type_getter": "0x8ce780",
+          "getter_bytes": "b032c3cccccc"
+        },
+        {
+          "vtable": "0x66ec550",
+          "type_getter": "0x8d9cd0",
+          "getter_bytes": "b036c3cccccc"
+        },
+        {
+          "vtable": "0x66fa0c8",
+          "type_getter": "0x942fc0",
+          "getter_bytes": "b050c3cccccc"
+        },
+        {
+          "vtable": "0x66f3830",
+          "type_getter": "0x911160",
+          "getter_bytes": "b045c3cccccc"
+        },
+        {
+          "vtable": "0x66f4968",
+          "type_getter": "0x914b30",
+          "getter_bytes": "b046c3cccccc"
+        },
+        {
+          "vtable": "0x674bc80",
+          "type_getter": "0x9d0d90",
+          "getter_bytes": "b070c3cccccc"
+        },
+        {
+          "vtable": "0x66b2ff0",
+          "type_getter": "0x7316c0",
+          "getter_bytes": "b06cc3cccccc"
+        },
+        {
+          "vtable": "0x66d1fb8",
+          "type_getter": "0x816680",
+          "getter_bytes": "b015c3cccccc"
+        },
+        {
+          "vtable": "0x6702410",
+          "type_getter": "0x9813c0",
+          "getter_bytes": "b05ec3cccccc"
+        },
+        {
+          "vtable": "0x66e9320",
+          "type_getter": "0x8ad9f0",
+          "getter_bytes": "b02ec3cccccc"
+        },
+        {
+          "vtable": "0x67142b8",
+          "type_getter": "0xa06760",
+          "getter_bytes": "b081c3cccccc"
+        },
+        {
+          "vtable": "0x6706890",
+          "type_getter": "0x998680",
+          "getter_bytes": "b063c3cccccc"
+        },
+        {
+          "vtable": "0x68912e8",
+          "type_getter": "0x1b93020",
+          "getter_bytes": "e99bffffffcc"
+        },
+        {
+          "vtable": "0x67046c8",
+          "type_getter": "0x992ac0",
+          "getter_bytes": "b061c3cccccc"
+        },
+        {
+          "vtable": "0x688a4b0",
+          "network_getter": false
+        },
+        {
+          "vtable": "0x675b0e0",
+          "type_getter": "0xa885d0",
+          "getter_bytes": "b09bc3cccccc"
+        },
+        {
+          "vtable": "0x6716340",
+          "type_getter": "0xa13700",
+          "getter_bytes": "b084c3cccccc"
+        },
+        {
+          "vtable": "0x66b3148",
+          "type_getter": "0x72f4f0",
+          "getter_bytes": "b065c3cccccc"
+        },
+        {
+          "vtable": "0x66fa8e8",
+          "type_getter": "0x945c10",
+          "getter_bytes": "b051c3cccccc"
+        },
+        {
+          "vtable": "0x674c7f0",
+          "type_getter": "0x9d89c0",
+          "getter_bytes": "b073c3cccccc",
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0
+            ],
+            [
+              2,
+              7,
+              4,
+              1,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              6,
+              11,
+              8,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              0,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              0,
+              0
+            ],
+            [
+              9,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              10,
+              15,
+              12,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              0,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              0,
+              0
+            ],
+            [
+              13,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              14,
+              19,
+              16,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              0,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              0,
+              0
+            ],
+            [
+              17,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              18,
+              23,
+              20,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              0,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              0,
+              0
+            ],
+            [
+              21,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              22,
+              27,
+              24,
+              1,
+              0
+            ],
+            [
+              23,
+              25,
+              0,
+              0,
+              0
+            ],
+            [
+              24,
+              26,
+              0,
+              0,
+              0
+            ],
+            [
+              25,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              31,
+              28,
+              1,
+              0
+            ],
+            [
+              27,
+              29,
+              0,
+              0,
+              0
+            ],
+            [
+              28,
+              30,
+              0,
+              0,
+              0
+            ],
+            [
+              29,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              30,
+              35,
+              32,
+              1,
+              0
+            ],
+            [
+              31,
+              33,
+              0,
+              0,
+              0
+            ],
+            [
+              32,
+              34,
+              0,
+              0,
+              0
+            ],
+            [
+              33,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              34,
+              39,
+              36,
+              1,
+              0
+            ],
+            [
+              35,
+              37,
+              0,
+              0,
+              0
+            ],
+            [
+              36,
+              38,
+              0,
+              0,
+              0
+            ],
+            [
+              37,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              38,
+              0,
+              40,
+              1,
+              0
+            ],
+            [
+              39,
+              41,
+              0,
+              0,
+              0
+            ],
+            [
+              40,
+              42,
+              0,
+              0,
+              0
+            ],
+            [
+              41,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1
+          ]
+        },
+        {
+          "vtable": "0x671f750",
+          "type_getter": "0xa5d170",
+          "getter_bytes": "b08fc3cccccc"
+        },
+        {
+          "vtable": "0x66b2ab8",
+          "type_getter": "0x73a900",
+          "getter_bytes": "b090c3cccccc"
+        },
+        {
+          "vtable": "0x6d50698",
+          "type_getter": "0x4cc5550",
+          "getter_bytes": "48895c242056"
+        },
+        {
+          "vtable": "0x6d4ce78",
+          "type_getter": "0x4ca9550",
+          "getter_bytes": "48895c242057"
+        },
+        {
+          "vtable": "0x672b8c0",
+          "type_getter": "0xab0e60",
+          "getter_bytes": "b0a3c3cccccc"
+        },
+        {
+          "vtable": "0x66cfbb8",
+          "type_getter": "0x803350",
+          "getter_bytes": "b011c3cccccc"
+        },
+        {
+          "vtable": "0x672c050",
+          "type_getter": "0xab4c50",
+          "getter_bytes": "b0a4c3cccccc"
+        },
+        {
+          "vtable": "0x67205c8",
+          "type_getter": "0xa60ec0",
+          "getter_bytes": "b092c3cccccc"
+        },
+        {
+          "vtable": "0x675d428",
+          "type_getter": "0xab9780",
+          "getter_bytes": "b0a6c3cccccc"
+        },
+        {
+          "vtable": "0x675b718",
+          "type_getter": "0xa89bd0",
+          "getter_bytes": "b09cc3cccccc"
+        },
+        {
+          "vtable": "0x6724940",
+          "type_getter": "0xa86470",
+          "getter_bytes": "b09ac3cccccc"
+        },
+        {
+          "vtable": "0x674b490",
+          "type_getter": "0x9bc390",
+          "getter_bytes": "b06bc3cccccc"
+        },
+        {
+          "vtable": "0x66e9af8",
+          "type_getter": "0x8c4b70",
+          "getter_bytes": "b02fc3cccccc"
+        },
+        {
+          "vtable": "0x68746e0",
+          "type_getter": "0x19895f0",
+          "getter_bytes": "48895c240857"
+        },
+        {
+          "vtable": "0x66dcdc0",
+          "type_getter": "0x868c40",
+          "getter_bytes": "b022c3cccccc"
+        },
+        {
+          "vtable": "0x6727830",
+          "type_getter": "0xa951e0",
+          "getter_bytes": "b09ec3cccccc",
+          "following_entity_id": "0x0",
+          "controlling_entity_id": "0x0",
+          "hierarchy_kind": 1,
+          "child_count": 0,
+          "child_ids": [],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2
+          ],
+          "autonomous_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "vtable": "0x6727c80",
+          "type_getter": "0xa99790",
+          "getter_bytes": "b09fc3cccccc"
+        },
+        {
+          "vtable": "0x66abd60",
+          "type_getter": "0x70d920",
+          "getter_bytes": "b01ac3cccccc"
+        },
+        {
+          "vtable": "0x670b2c0",
+          "type_getter": "0x9c2c10",
+          "getter_bytes": "b06ec3cccccc"
+        },
+        {
+          "vtable": "0x66fb018",
+          "type_getter": "0x949df0",
+          "getter_bytes": "b052c3cccccc"
+        },
+        {
+          "vtable": "0x66b2380",
+          "type_getter": "0x718d60",
+          "getter_bytes": "b012c3cccccc"
+        },
+        {
+          "vtable": "0x67a6448",
+          "type_getter": "0xe457d4",
+          "getter_bytes": "4881e9f00000"
+        },
+        {
+          "vtable": "0x66d9628",
+          "type_getter": "0x83dd40",
+          "getter_bytes": "b01bc3cccccc"
+        },
+        {
+          "vtable": "0x66d5f30",
+          "type_getter": "0x832d10",
+          "getter_bytes": "b019c3cccccc"
+        },
+        {
+          "vtable": "0x66f7f90",
+          "type_getter": "0x932430",
+          "getter_bytes": "b04fc3cccccc",
+          "rpc_handler": "0x935940",
+          "state_delta_serializer": "0x9355f0",
+          "health_value_triplet": [
+            0.0,
+            800.0,
+            800.0
+          ],
+          "health_rate": 0.0,
+          "health_timing_fields": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              4,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              24,
+              7,
+              0,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              1,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              1,
+              0
+            ],
+            [
+              21,
+              23,
+              0,
+              1,
+              0
+            ],
+            [
+              22,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              23,
+              0,
+              25,
+              0,
+              0
+            ],
+            [
+              24,
+              0,
+              26,
+              1,
+              0
+            ],
+            [
+              25,
+              27,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            23
+          ]
+        },
+        {
+          "vtable": "0x67109b0",
+          "type_getter": "0x9f0740",
+          "getter_bytes": "b078c3cccccc"
+        },
+        {
+          "vtable": "0x66d4008",
+          "type_getter": "0x826000",
+          "getter_bytes": "b018c3cccccc"
+        },
+        {
+          "vtable": "0x6707dc0",
+          "type_getter": "0x9b1580",
+          "getter_bytes": "b066c3cccccc"
+        },
+        {
+          "vtable": "0x66d1828",
+          "type_getter": "0x80ea90",
+          "getter_bytes": "b014c3cccccc"
+        },
+        {
+          "vtable": "0x66fcc58",
+          "type_getter": "0x958e50",
+          "getter_bytes": "b054c3cccccc"
+        },
+        {
+          "vtable": "0x66c1f38",
+          "type_getter": "0x794130",
+          "getter_bytes": "b006c3cccccc"
+        },
+        {
+          "vtable": "0x6704ea0",
+          "type_getter": "0x994800",
+          "getter_bytes": "b062c3cccccc"
+        },
+        {
+          "vtable": "0x6712838",
+          "type_getter": "0x9fe4d0",
+          "getter_bytes": "b07dc3cccccc",
+          "last_processed_game_time_ms": 0
+        }
+      ]
+    },
+    {
+      "network_id": "0x1000005",
+      "slice_hash": 9256072,
+      "slice_entry": 0,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6d3c758",
+          "type_getter": "0x4b93830",
+          "getter_bytes": "e99bfeffffcc"
+        },
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x688c160",
+          "type_getter": "0x51fd50",
+          "getter_bytes": "40534883ec20"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66eb970",
+          "type_getter": "0x8d2710",
+          "getter_bytes": "b033c3cccccc"
+        },
+        {
+          "vtable": "0x66e61a0",
+          "type_getter": "0x8a26f0",
+          "getter_bytes": "b02cc3cccccc"
+        },
+        {
+          "vtable": "0x670c508",
+          "type_getter": "0x9d23b0",
+          "getter_bytes": "b071c3cccccc"
+        },
+        {
+          "vtable": "0x66ddcb8",
+          "type_getter": "0x86d8e0",
+          "getter_bytes": "b024c3cccccc"
+        },
+        {
+          "vtable": "0x670f6a0",
+          "type_getter": "0x9e6030",
+          "getter_bytes": "b075c3cccccc"
+        },
+        {
+          "vtable": "0x66efe58",
+          "type_getter": "0x8eff00",
+          "getter_bytes": "b03dc3cccccc"
+        },
+        {
+          "vtable": "0x67135b8",
+          "type_getter": "0xa04100",
+          "getter_bytes": "b080c3cccccc"
+        },
+        {
+          "vtable": "0x6717758",
+          "type_getter": "0xa22080",
+          "getter_bytes": "b087c3cccccc"
+        },
+        {
+          "vtable": "0x66bd030",
+          "type_getter": "0x4fdfb0",
+          "getter_bytes": "32c0c3cccccc"
+        },
+        {
+          "vtable": "0x66ea3c0",
+          "type_getter": "0x8c67b0",
+          "getter_bytes": "b030c3cccccc"
+        },
+        {
+          "vtable": "0x66f27d8",
+          "type_getter": "0x90bb60",
+          "getter_bytes": "b042c3cccccc"
+        },
+        {
+          "vtable": "0x66cea00",
+          "type_getter": "0x7fa750",
+          "getter_bytes": "b00ec3cccccc"
+        },
+        {
+          "vtable": "0x66f23e8",
+          "type_getter": "0x908f10",
+          "getter_bytes": "b041c3cccccc"
+        },
+        {
+          "vtable": "0x66b2098",
+          "type_getter": "0x71e380",
+          "getter_bytes": "b023c3cccccc"
+        },
+        {
+          "vtable": "0x671e518",
+          "type_getter": "0xa55460",
+          "getter_bytes": "b08cc3cccccc"
+        },
+        {
+          "vtable": "0x66f2ba8",
+          "type_getter": "0x90d920",
+          "getter_bytes": "b043c3cccccc"
+        },
+        {
+          "vtable": "0x6716db0",
+          "type_getter": "0xa1c230",
+          "getter_bytes": "b085c3cccccc"
+        },
+        {
+          "vtable": "0x66b2958",
+          "type_getter": "0x740d60",
+          "getter_bytes": "b0a5c3cccccc"
+        },
+        {
+          "vtable": "0x675ceb8",
+          "type_getter": "0xa9e4d0",
+          "getter_bytes": "b091c3cccccc",
+          "authoritative_position": [
+            1318.48095703125,
+            1248.3271484375,
+            20.87413787841797
+          ],
+          "authoritative_rotation": [
+            0.9999992847442627,
+            0.0006912350654602051,
+            0.0006912350654602051,
+            0.0006912350654602051
+          ]
+        },
+        {
+          "vtable": "0x66d36a8",
+          "type_getter": "0x821460",
+          "getter_bytes": "b016c3cccccc"
+        },
+        {
+          "vtable": "0x66fe2e8",
+          "type_getter": "0x965670",
+          "getter_bytes": "b056c3cccccc"
+        },
+        {
+          "vtable": "0x671f098",
+          "type_getter": "0xa5b620",
+          "getter_bytes": "b08ec3cccccc"
+        },
+        {
+          "vtable": "0x66c9128",
+          "type_getter": "0x7adfd0",
+          "getter_bytes": "b00ac3cccccc"
+        },
+        {
+          "vtable": "0x66caf20",
+          "type_getter": "0x7db870",
+          "getter_bytes": "b00dc3cccccc"
+        },
+        {
+          "vtable": "0x66eb1c0",
+          "type_getter": "0x8ce780",
+          "getter_bytes": "b032c3cccccc"
+        },
+        {
+          "vtable": "0x66ec550",
+          "type_getter": "0x8d9cd0",
+          "getter_bytes": "b036c3cccccc"
+        },
+        {
+          "vtable": "0x66fa0c8",
+          "type_getter": "0x942fc0",
+          "getter_bytes": "b050c3cccccc"
+        },
+        {
+          "vtable": "0x66f3830",
+          "type_getter": "0x911160",
+          "getter_bytes": "b045c3cccccc"
+        },
+        {
+          "vtable": "0x66f4968",
+          "type_getter": "0x914b30",
+          "getter_bytes": "b046c3cccccc"
+        },
+        {
+          "vtable": "0x674bc80",
+          "type_getter": "0x9d0d90",
+          "getter_bytes": "b070c3cccccc"
+        },
+        {
+          "vtable": "0x66b2ff0",
+          "type_getter": "0x7316c0",
+          "getter_bytes": "b06cc3cccccc"
+        },
+        {
+          "vtable": "0x66d1fb8",
+          "type_getter": "0x816680",
+          "getter_bytes": "b015c3cccccc"
+        },
+        {
+          "vtable": "0x6702410",
+          "type_getter": "0x9813c0",
+          "getter_bytes": "b05ec3cccccc"
+        },
+        {
+          "vtable": "0x66e9320",
+          "type_getter": "0x8ad9f0",
+          "getter_bytes": "b02ec3cccccc"
+        },
+        {
+          "vtable": "0x67142b8",
+          "type_getter": "0xa06760",
+          "getter_bytes": "b081c3cccccc"
+        },
+        {
+          "vtable": "0x6706890",
+          "type_getter": "0x998680",
+          "getter_bytes": "b063c3cccccc"
+        },
+        {
+          "vtable": "0x68912e8",
+          "type_getter": "0x1b93020",
+          "getter_bytes": "e99bffffffcc"
+        },
+        {
+          "vtable": "0x67046c8",
+          "type_getter": "0x992ac0",
+          "getter_bytes": "b061c3cccccc"
+        },
+        {
+          "vtable": "0x688a4b0",
+          "network_getter": false
+        },
+        {
+          "vtable": "0x675b0e0",
+          "type_getter": "0xa885d0",
+          "getter_bytes": "b09bc3cccccc"
+        },
+        {
+          "vtable": "0x6716340",
+          "type_getter": "0xa13700",
+          "getter_bytes": "b084c3cccccc"
+        },
+        {
+          "vtable": "0x66b3148",
+          "type_getter": "0x72f4f0",
+          "getter_bytes": "b065c3cccccc"
+        },
+        {
+          "vtable": "0x66fa8e8",
+          "type_getter": "0x945c10",
+          "getter_bytes": "b051c3cccccc"
+        },
+        {
+          "vtable": "0x674c7f0",
+          "type_getter": "0x9d89c0",
+          "getter_bytes": "b073c3cccccc",
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0
+            ],
+            [
+              2,
+              7,
+              4,
+              1,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              6,
+              11,
+              8,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              0,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              0,
+              0
+            ],
+            [
+              9,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              10,
+              15,
+              12,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              0,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              0,
+              0
+            ],
+            [
+              13,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              14,
+              19,
+              16,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              0,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              0,
+              0
+            ],
+            [
+              17,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              18,
+              23,
+              20,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              0,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              0,
+              0
+            ],
+            [
+              21,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              22,
+              27,
+              24,
+              1,
+              0
+            ],
+            [
+              23,
+              25,
+              0,
+              0,
+              0
+            ],
+            [
+              24,
+              26,
+              0,
+              0,
+              0
+            ],
+            [
+              25,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              31,
+              28,
+              1,
+              0
+            ],
+            [
+              27,
+              29,
+              0,
+              0,
+              0
+            ],
+            [
+              28,
+              30,
+              0,
+              0,
+              0
+            ],
+            [
+              29,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              30,
+              35,
+              32,
+              1,
+              0
+            ],
+            [
+              31,
+              33,
+              0,
+              0,
+              0
+            ],
+            [
+              32,
+              34,
+              0,
+              0,
+              0
+            ],
+            [
+              33,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              34,
+              39,
+              36,
+              1,
+              0
+            ],
+            [
+              35,
+              37,
+              0,
+              0,
+              0
+            ],
+            [
+              36,
+              38,
+              0,
+              0,
+              0
+            ],
+            [
+              37,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              38,
+              0,
+              40,
+              1,
+              0
+            ],
+            [
+              39,
+              41,
+              0,
+              0,
+              0
+            ],
+            [
+              40,
+              42,
+              0,
+              0,
+              0
+            ],
+            [
+              41,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1
+          ]
+        },
+        {
+          "vtable": "0x671f750",
+          "type_getter": "0xa5d170",
+          "getter_bytes": "b08fc3cccccc"
+        },
+        {
+          "vtable": "0x66b2ab8",
+          "type_getter": "0x73a900",
+          "getter_bytes": "b090c3cccccc"
+        },
+        {
+          "vtable": "0x6d50698",
+          "type_getter": "0x4cc5550",
+          "getter_bytes": "48895c242056"
+        },
+        {
+          "vtable": "0x6d4ce78",
+          "type_getter": "0x4ca9550",
+          "getter_bytes": "48895c242057"
+        },
+        {
+          "vtable": "0x672b8c0",
+          "type_getter": "0xab0e60",
+          "getter_bytes": "b0a3c3cccccc"
+        },
+        {
+          "vtable": "0x66cfbb8",
+          "type_getter": "0x803350",
+          "getter_bytes": "b011c3cccccc"
+        },
+        {
+          "vtable": "0x672c050",
+          "type_getter": "0xab4c50",
+          "getter_bytes": "b0a4c3cccccc"
+        },
+        {
+          "vtable": "0x67205c8",
+          "type_getter": "0xa60ec0",
+          "getter_bytes": "b092c3cccccc"
+        },
+        {
+          "vtable": "0x675d428",
+          "type_getter": "0xab9780",
+          "getter_bytes": "b0a6c3cccccc"
+        },
+        {
+          "vtable": "0x675b718",
+          "type_getter": "0xa89bd0",
+          "getter_bytes": "b09cc3cccccc"
+        },
+        {
+          "vtable": "0x6724940",
+          "type_getter": "0xa86470",
+          "getter_bytes": "b09ac3cccccc"
+        },
+        {
+          "vtable": "0x674b490",
+          "type_getter": "0x9bc390",
+          "getter_bytes": "b06bc3cccccc"
+        },
+        {
+          "vtable": "0x66e9af8",
+          "type_getter": "0x8c4b70",
+          "getter_bytes": "b02fc3cccccc"
+        },
+        {
+          "vtable": "0x68746e0",
+          "type_getter": "0x19895f0",
+          "getter_bytes": "48895c240857"
+        },
+        {
+          "vtable": "0x66dcdc0",
+          "type_getter": "0x868c40",
+          "getter_bytes": "b022c3cccccc"
+        },
+        {
+          "vtable": "0x6727830",
+          "type_getter": "0xa951e0",
+          "getter_bytes": "b09ec3cccccc",
+          "following_entity_id": "0x0",
+          "controlling_entity_id": "0x0",
+          "hierarchy_kind": 1,
+          "child_count": 0,
+          "child_ids": [],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2
+          ],
+          "autonomous_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "vtable": "0x6727c80",
+          "type_getter": "0xa99790",
+          "getter_bytes": "b09fc3cccccc"
+        },
+        {
+          "vtable": "0x66abd60",
+          "type_getter": "0x70d920",
+          "getter_bytes": "b01ac3cccccc"
+        },
+        {
+          "vtable": "0x670b2c0",
+          "type_getter": "0x9c2c10",
+          "getter_bytes": "b06ec3cccccc"
+        },
+        {
+          "vtable": "0x66fb018",
+          "type_getter": "0x949df0",
+          "getter_bytes": "b052c3cccccc"
+        },
+        {
+          "vtable": "0x66b2380",
+          "type_getter": "0x718d60",
+          "getter_bytes": "b012c3cccccc"
+        },
+        {
+          "vtable": "0x67a6448",
+          "type_getter": "0xe457d4",
+          "getter_bytes": "4881e9f00000"
+        },
+        {
+          "vtable": "0x66d9628",
+          "type_getter": "0x83dd40",
+          "getter_bytes": "b01bc3cccccc"
+        },
+        {
+          "vtable": "0x66d5f30",
+          "type_getter": "0x832d10",
+          "getter_bytes": "b019c3cccccc"
+        },
+        {
+          "vtable": "0x66f7f90",
+          "type_getter": "0x932430",
+          "getter_bytes": "b04fc3cccccc",
+          "rpc_handler": "0x935940",
+          "state_delta_serializer": "0x9355f0",
+          "health_value_triplet": [
+            0.0,
+            800.0,
+            800.0
+          ],
+          "health_rate": 0.0,
+          "health_timing_fields": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              4,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              24,
+              7,
+              0,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              1,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              1,
+              0
+            ],
+            [
+              21,
+              23,
+              0,
+              1,
+              0
+            ],
+            [
+              22,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              23,
+              0,
+              25,
+              0,
+              0
+            ],
+            [
+              24,
+              0,
+              26,
+              1,
+              0
+            ],
+            [
+              25,
+              27,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            23
+          ]
+        },
+        {
+          "vtable": "0x67109b0",
+          "type_getter": "0x9f0740",
+          "getter_bytes": "b078c3cccccc"
+        },
+        {
+          "vtable": "0x66d4008",
+          "type_getter": "0x826000",
+          "getter_bytes": "b018c3cccccc"
+        },
+        {
+          "vtable": "0x6707dc0",
+          "type_getter": "0x9b1580",
+          "getter_bytes": "b066c3cccccc"
+        },
+        {
+          "vtable": "0x66d1828",
+          "type_getter": "0x80ea90",
+          "getter_bytes": "b014c3cccccc"
+        },
+        {
+          "vtable": "0x66fcc58",
+          "type_getter": "0x958e50",
+          "getter_bytes": "b054c3cccccc"
+        },
+        {
+          "vtable": "0x66c1f38",
+          "type_getter": "0x794130",
+          "getter_bytes": "b006c3cccccc"
+        },
+        {
+          "vtable": "0x6704ea0",
+          "type_getter": "0x994800",
+          "getter_bytes": "b062c3cccccc"
+        },
+        {
+          "vtable": "0x6712838",
+          "type_getter": "0x9fe4d0",
+          "getter_bytes": "b07dc3cccccc",
+          "last_processed_game_time_ms": 0
+        }
+      ]
+    },
+    {
+      "network_id": "0x1000002",
+      "slice_hash": 9256072,
+      "slice_entry": 0,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6d3c758",
+          "type_getter": "0x4b93830",
+          "getter_bytes": "e99bfeffffcc"
+        },
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x688c160",
+          "type_getter": "0x51fd50",
+          "getter_bytes": "40534883ec20"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66eb970",
+          "type_getter": "0x8d2710",
+          "getter_bytes": "b033c3cccccc"
+        },
+        {
+          "vtable": "0x66e61a0",
+          "type_getter": "0x8a26f0",
+          "getter_bytes": "b02cc3cccccc"
+        },
+        {
+          "vtable": "0x670c508",
+          "type_getter": "0x9d23b0",
+          "getter_bytes": "b071c3cccccc"
+        },
+        {
+          "vtable": "0x66ddcb8",
+          "type_getter": "0x86d8e0",
+          "getter_bytes": "b024c3cccccc"
+        },
+        {
+          "vtable": "0x670f6a0",
+          "type_getter": "0x9e6030",
+          "getter_bytes": "b075c3cccccc"
+        },
+        {
+          "vtable": "0x66efe58",
+          "type_getter": "0x8eff00",
+          "getter_bytes": "b03dc3cccccc"
+        },
+        {
+          "vtable": "0x67135b8",
+          "type_getter": "0xa04100",
+          "getter_bytes": "b080c3cccccc"
+        },
+        {
+          "vtable": "0x6717758",
+          "type_getter": "0xa22080",
+          "getter_bytes": "b087c3cccccc"
+        },
+        {
+          "vtable": "0x66bd030",
+          "type_getter": "0x4fdfb0",
+          "getter_bytes": "32c0c3cccccc"
+        },
+        {
+          "vtable": "0x66ea3c0",
+          "type_getter": "0x8c67b0",
+          "getter_bytes": "b030c3cccccc"
+        },
+        {
+          "vtable": "0x66f27d8",
+          "type_getter": "0x90bb60",
+          "getter_bytes": "b042c3cccccc"
+        },
+        {
+          "vtable": "0x66cea00",
+          "type_getter": "0x7fa750",
+          "getter_bytes": "b00ec3cccccc"
+        },
+        {
+          "vtable": "0x66f23e8",
+          "type_getter": "0x908f10",
+          "getter_bytes": "b041c3cccccc"
+        },
+        {
+          "vtable": "0x66b2098",
+          "type_getter": "0x71e380",
+          "getter_bytes": "b023c3cccccc"
+        },
+        {
+          "vtable": "0x671e518",
+          "type_getter": "0xa55460",
+          "getter_bytes": "b08cc3cccccc"
+        },
+        {
+          "vtable": "0x66f2ba8",
+          "type_getter": "0x90d920",
+          "getter_bytes": "b043c3cccccc"
+        },
+        {
+          "vtable": "0x6716db0",
+          "type_getter": "0xa1c230",
+          "getter_bytes": "b085c3cccccc"
+        },
+        {
+          "vtable": "0x66b2958",
+          "type_getter": "0x740d60",
+          "getter_bytes": "b0a5c3cccccc"
+        },
+        {
+          "vtable": "0x675ceb8",
+          "type_getter": "0xa9e4d0",
+          "getter_bytes": "b091c3cccccc",
+          "authoritative_position": [
+            1312.7109375,
+            1271.156005859375,
+            23.66115951538086
+          ],
+          "authoritative_rotation": [
+            0.9999992847442627,
+            0.0006912350654602051,
+            0.0006912350654602051,
+            0.0006912350654602051
+          ]
+        },
+        {
+          "vtable": "0x66d36a8",
+          "type_getter": "0x821460",
+          "getter_bytes": "b016c3cccccc"
+        },
+        {
+          "vtable": "0x66fe2e8",
+          "type_getter": "0x965670",
+          "getter_bytes": "b056c3cccccc"
+        },
+        {
+          "vtable": "0x671f098",
+          "type_getter": "0xa5b620",
+          "getter_bytes": "b08ec3cccccc"
+        },
+        {
+          "vtable": "0x66c9128",
+          "type_getter": "0x7adfd0",
+          "getter_bytes": "b00ac3cccccc"
+        },
+        {
+          "vtable": "0x66caf20",
+          "type_getter": "0x7db870",
+          "getter_bytes": "b00dc3cccccc"
+        },
+        {
+          "vtable": "0x66eb1c0",
+          "type_getter": "0x8ce780",
+          "getter_bytes": "b032c3cccccc"
+        },
+        {
+          "vtable": "0x66ec550",
+          "type_getter": "0x8d9cd0",
+          "getter_bytes": "b036c3cccccc"
+        },
+        {
+          "vtable": "0x66fa0c8",
+          "type_getter": "0x942fc0",
+          "getter_bytes": "b050c3cccccc"
+        },
+        {
+          "vtable": "0x66f3830",
+          "type_getter": "0x911160",
+          "getter_bytes": "b045c3cccccc"
+        },
+        {
+          "vtable": "0x66f4968",
+          "type_getter": "0x914b30",
+          "getter_bytes": "b046c3cccccc"
+        },
+        {
+          "vtable": "0x674bc80",
+          "type_getter": "0x9d0d90",
+          "getter_bytes": "b070c3cccccc"
+        },
+        {
+          "vtable": "0x66b2ff0",
+          "type_getter": "0x7316c0",
+          "getter_bytes": "b06cc3cccccc"
+        },
+        {
+          "vtable": "0x66d1fb8",
+          "type_getter": "0x816680",
+          "getter_bytes": "b015c3cccccc"
+        },
+        {
+          "vtable": "0x6702410",
+          "type_getter": "0x9813c0",
+          "getter_bytes": "b05ec3cccccc"
+        },
+        {
+          "vtable": "0x66e9320",
+          "type_getter": "0x8ad9f0",
+          "getter_bytes": "b02ec3cccccc"
+        },
+        {
+          "vtable": "0x67142b8",
+          "type_getter": "0xa06760",
+          "getter_bytes": "b081c3cccccc"
+        },
+        {
+          "vtable": "0x6706890",
+          "type_getter": "0x998680",
+          "getter_bytes": "b063c3cccccc"
+        },
+        {
+          "vtable": "0x68912e8",
+          "type_getter": "0x1b93020",
+          "getter_bytes": "e99bffffffcc"
+        },
+        {
+          "vtable": "0x67046c8",
+          "type_getter": "0x992ac0",
+          "getter_bytes": "b061c3cccccc"
+        },
+        {
+          "vtable": "0x688a4b0",
+          "network_getter": false
+        },
+        {
+          "vtable": "0x675b0e0",
+          "type_getter": "0xa885d0",
+          "getter_bytes": "b09bc3cccccc"
+        },
+        {
+          "vtable": "0x6716340",
+          "type_getter": "0xa13700",
+          "getter_bytes": "b084c3cccccc"
+        },
+        {
+          "vtable": "0x66b3148",
+          "type_getter": "0x72f4f0",
+          "getter_bytes": "b065c3cccccc"
+        },
+        {
+          "vtable": "0x66fa8e8",
+          "type_getter": "0x945c10",
+          "getter_bytes": "b051c3cccccc"
+        },
+        {
+          "vtable": "0x674c7f0",
+          "type_getter": "0x9d89c0",
+          "getter_bytes": "b073c3cccccc",
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0
+            ],
+            [
+              2,
+              7,
+              4,
+              1,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              6,
+              11,
+              8,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              0,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              0,
+              0
+            ],
+            [
+              9,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              10,
+              15,
+              12,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              0,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              0,
+              0
+            ],
+            [
+              13,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              14,
+              19,
+              16,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              0,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              0,
+              0
+            ],
+            [
+              17,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              18,
+              23,
+              20,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              0,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              0,
+              0
+            ],
+            [
+              21,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              22,
+              27,
+              24,
+              1,
+              0
+            ],
+            [
+              23,
+              25,
+              0,
+              0,
+              0
+            ],
+            [
+              24,
+              26,
+              0,
+              0,
+              0
+            ],
+            [
+              25,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              31,
+              28,
+              1,
+              0
+            ],
+            [
+              27,
+              29,
+              0,
+              0,
+              0
+            ],
+            [
+              28,
+              30,
+              0,
+              0,
+              0
+            ],
+            [
+              29,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              30,
+              35,
+              32,
+              1,
+              0
+            ],
+            [
+              31,
+              33,
+              0,
+              0,
+              0
+            ],
+            [
+              32,
+              34,
+              0,
+              0,
+              0
+            ],
+            [
+              33,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              34,
+              39,
+              36,
+              1,
+              0
+            ],
+            [
+              35,
+              37,
+              0,
+              0,
+              0
+            ],
+            [
+              36,
+              38,
+              0,
+              0,
+              0
+            ],
+            [
+              37,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              38,
+              0,
+              40,
+              1,
+              0
+            ],
+            [
+              39,
+              41,
+              0,
+              0,
+              0
+            ],
+            [
+              40,
+              42,
+              0,
+              0,
+              0
+            ],
+            [
+              41,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1
+          ]
+        },
+        {
+          "vtable": "0x671f750",
+          "type_getter": "0xa5d170",
+          "getter_bytes": "b08fc3cccccc"
+        },
+        {
+          "vtable": "0x66b2ab8",
+          "type_getter": "0x73a900",
+          "getter_bytes": "b090c3cccccc"
+        },
+        {
+          "vtable": "0x6d50698",
+          "type_getter": "0x4cc5550",
+          "getter_bytes": "48895c242056"
+        },
+        {
+          "vtable": "0x6d4ce78",
+          "type_getter": "0x4ca9550",
+          "getter_bytes": "48895c242057"
+        },
+        {
+          "vtable": "0x672b8c0",
+          "type_getter": "0xab0e60",
+          "getter_bytes": "b0a3c3cccccc"
+        },
+        {
+          "vtable": "0x66cfbb8",
+          "type_getter": "0x803350",
+          "getter_bytes": "b011c3cccccc"
+        },
+        {
+          "vtable": "0x672c050",
+          "type_getter": "0xab4c50",
+          "getter_bytes": "b0a4c3cccccc"
+        },
+        {
+          "vtable": "0x67205c8",
+          "type_getter": "0xa60ec0",
+          "getter_bytes": "b092c3cccccc"
+        },
+        {
+          "vtable": "0x675d428",
+          "type_getter": "0xab9780",
+          "getter_bytes": "b0a6c3cccccc"
+        },
+        {
+          "vtable": "0x675b718",
+          "type_getter": "0xa89bd0",
+          "getter_bytes": "b09cc3cccccc"
+        },
+        {
+          "vtable": "0x6724940",
+          "type_getter": "0xa86470",
+          "getter_bytes": "b09ac3cccccc"
+        },
+        {
+          "vtable": "0x674b490",
+          "type_getter": "0x9bc390",
+          "getter_bytes": "b06bc3cccccc"
+        },
+        {
+          "vtable": "0x66e9af8",
+          "type_getter": "0x8c4b70",
+          "getter_bytes": "b02fc3cccccc"
+        },
+        {
+          "vtable": "0x68746e0",
+          "type_getter": "0x19895f0",
+          "getter_bytes": "48895c240857"
+        },
+        {
+          "vtable": "0x66dcdc0",
+          "type_getter": "0x868c40",
+          "getter_bytes": "b022c3cccccc"
+        },
+        {
+          "vtable": "0x6727830",
+          "type_getter": "0xa951e0",
+          "getter_bytes": "b09ec3cccccc",
+          "following_entity_id": "0x0",
+          "controlling_entity_id": "0x0",
+          "hierarchy_kind": 1,
+          "child_count": 0,
+          "child_ids": [],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2
+          ],
+          "autonomous_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "vtable": "0x6727c80",
+          "type_getter": "0xa99790",
+          "getter_bytes": "b09fc3cccccc"
+        },
+        {
+          "vtable": "0x66abd60",
+          "type_getter": "0x70d920",
+          "getter_bytes": "b01ac3cccccc"
+        },
+        {
+          "vtable": "0x670b2c0",
+          "type_getter": "0x9c2c10",
+          "getter_bytes": "b06ec3cccccc"
+        },
+        {
+          "vtable": "0x66fb018",
+          "type_getter": "0x949df0",
+          "getter_bytes": "b052c3cccccc"
+        },
+        {
+          "vtable": "0x66b2380",
+          "type_getter": "0x718d60",
+          "getter_bytes": "b012c3cccccc"
+        },
+        {
+          "vtable": "0x67a6448",
+          "type_getter": "0xe457d4",
+          "getter_bytes": "4881e9f00000"
+        },
+        {
+          "vtable": "0x66d9628",
+          "type_getter": "0x83dd40",
+          "getter_bytes": "b01bc3cccccc"
+        },
+        {
+          "vtable": "0x66d5f30",
+          "type_getter": "0x832d10",
+          "getter_bytes": "b019c3cccccc"
+        },
+        {
+          "vtable": "0x66f7f90",
+          "type_getter": "0x932430",
+          "getter_bytes": "b04fc3cccccc",
+          "rpc_handler": "0x935940",
+          "state_delta_serializer": "0x9355f0",
+          "health_value_triplet": [
+            0.0,
+            800.0,
+            800.0
+          ],
+          "health_rate": 0.0,
+          "health_timing_fields": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              4,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              24,
+              7,
+              0,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              1,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              1,
+              0
+            ],
+            [
+              21,
+              23,
+              0,
+              1,
+              0
+            ],
+            [
+              22,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              23,
+              0,
+              25,
+              0,
+              0
+            ],
+            [
+              24,
+              0,
+              26,
+              1,
+              0
+            ],
+            [
+              25,
+              27,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            23
+          ]
+        },
+        {
+          "vtable": "0x67109b0",
+          "type_getter": "0x9f0740",
+          "getter_bytes": "b078c3cccccc"
+        },
+        {
+          "vtable": "0x66d4008",
+          "type_getter": "0x826000",
+          "getter_bytes": "b018c3cccccc"
+        },
+        {
+          "vtable": "0x6707dc0",
+          "type_getter": "0x9b1580",
+          "getter_bytes": "b066c3cccccc"
+        },
+        {
+          "vtable": "0x66d1828",
+          "type_getter": "0x80ea90",
+          "getter_bytes": "b014c3cccccc"
+        },
+        {
+          "vtable": "0x66fcc58",
+          "type_getter": "0x958e50",
+          "getter_bytes": "b054c3cccccc"
+        },
+        {
+          "vtable": "0x66c1f38",
+          "type_getter": "0x794130",
+          "getter_bytes": "b006c3cccccc"
+        },
+        {
+          "vtable": "0x6704ea0",
+          "type_getter": "0x994800",
+          "getter_bytes": "b062c3cccccc"
+        },
+        {
+          "vtable": "0x6712838",
+          "type_getter": "0x9fe4d0",
+          "getter_bytes": "b07dc3cccccc",
+          "last_processed_game_time_ms": 0
+        }
+      ]
+    },
+    {
+      "network_id": "0x1000003",
+      "slice_hash": 9256072,
+      "slice_entry": 0,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6d3c758",
+          "type_getter": "0x4b93830",
+          "getter_bytes": "e99bfeffffcc"
+        },
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x688c160",
+          "type_getter": "0x51fd50",
+          "getter_bytes": "40534883ec20"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66eb970",
+          "type_getter": "0x8d2710",
+          "getter_bytes": "b033c3cccccc"
+        },
+        {
+          "vtable": "0x66e61a0",
+          "type_getter": "0x8a26f0",
+          "getter_bytes": "b02cc3cccccc"
+        },
+        {
+          "vtable": "0x670c508",
+          "type_getter": "0x9d23b0",
+          "getter_bytes": "b071c3cccccc"
+        },
+        {
+          "vtable": "0x66ddcb8",
+          "type_getter": "0x86d8e0",
+          "getter_bytes": "b024c3cccccc"
+        },
+        {
+          "vtable": "0x670f6a0",
+          "type_getter": "0x9e6030",
+          "getter_bytes": "b075c3cccccc"
+        },
+        {
+          "vtable": "0x66efe58",
+          "type_getter": "0x8eff00",
+          "getter_bytes": "b03dc3cccccc"
+        },
+        {
+          "vtable": "0x67135b8",
+          "type_getter": "0xa04100",
+          "getter_bytes": "b080c3cccccc"
+        },
+        {
+          "vtable": "0x6717758",
+          "type_getter": "0xa22080",
+          "getter_bytes": "b087c3cccccc"
+        },
+        {
+          "vtable": "0x66bd030",
+          "type_getter": "0x4fdfb0",
+          "getter_bytes": "32c0c3cccccc"
+        },
+        {
+          "vtable": "0x66ea3c0",
+          "type_getter": "0x8c67b0",
+          "getter_bytes": "b030c3cccccc"
+        },
+        {
+          "vtable": "0x66f27d8",
+          "type_getter": "0x90bb60",
+          "getter_bytes": "b042c3cccccc"
+        },
+        {
+          "vtable": "0x66cea00",
+          "type_getter": "0x7fa750",
+          "getter_bytes": "b00ec3cccccc"
+        },
+        {
+          "vtable": "0x66f23e8",
+          "type_getter": "0x908f10",
+          "getter_bytes": "b041c3cccccc"
+        },
+        {
+          "vtable": "0x66b2098",
+          "type_getter": "0x71e380",
+          "getter_bytes": "b023c3cccccc"
+        },
+        {
+          "vtable": "0x671e518",
+          "type_getter": "0xa55460",
+          "getter_bytes": "b08cc3cccccc"
+        },
+        {
+          "vtable": "0x66f2ba8",
+          "type_getter": "0x90d920",
+          "getter_bytes": "b043c3cccccc"
+        },
+        {
+          "vtable": "0x6716db0",
+          "type_getter": "0xa1c230",
+          "getter_bytes": "b085c3cccccc"
+        },
+        {
+          "vtable": "0x66b2958",
+          "type_getter": "0x740d60",
+          "getter_bytes": "b0a5c3cccccc"
+        },
+        {
+          "vtable": "0x675ceb8",
+          "type_getter": "0xa9e4d0",
+          "getter_bytes": "b091c3cccccc",
+          "authoritative_position": [
+            1316.27294921875,
+            1257.57763671875,
+            22.709009170532227
+          ],
+          "authoritative_rotation": [
+            0.9999992847442627,
+            0.0006912350654602051,
+            0.0006912350654602051,
+            0.0006912350654602051
+          ]
+        },
+        {
+          "vtable": "0x66d36a8",
+          "type_getter": "0x821460",
+          "getter_bytes": "b016c3cccccc"
+        },
+        {
+          "vtable": "0x66fe2e8",
+          "type_getter": "0x965670",
+          "getter_bytes": "b056c3cccccc"
+        },
+        {
+          "vtable": "0x671f098",
+          "type_getter": "0xa5b620",
+          "getter_bytes": "b08ec3cccccc"
+        },
+        {
+          "vtable": "0x66c9128",
+          "type_getter": "0x7adfd0",
+          "getter_bytes": "b00ac3cccccc"
+        },
+        {
+          "vtable": "0x66caf20",
+          "type_getter": "0x7db870",
+          "getter_bytes": "b00dc3cccccc"
+        },
+        {
+          "vtable": "0x66eb1c0",
+          "type_getter": "0x8ce780",
+          "getter_bytes": "b032c3cccccc"
+        },
+        {
+          "vtable": "0x66ec550",
+          "type_getter": "0x8d9cd0",
+          "getter_bytes": "b036c3cccccc"
+        },
+        {
+          "vtable": "0x66fa0c8",
+          "type_getter": "0x942fc0",
+          "getter_bytes": "b050c3cccccc"
+        },
+        {
+          "vtable": "0x66f3830",
+          "type_getter": "0x911160",
+          "getter_bytes": "b045c3cccccc"
+        },
+        {
+          "vtable": "0x66f4968",
+          "type_getter": "0x914b30",
+          "getter_bytes": "b046c3cccccc"
+        },
+        {
+          "vtable": "0x674bc80",
+          "type_getter": "0x9d0d90",
+          "getter_bytes": "b070c3cccccc"
+        },
+        {
+          "vtable": "0x66b2ff0",
+          "type_getter": "0x7316c0",
+          "getter_bytes": "b06cc3cccccc"
+        },
+        {
+          "vtable": "0x66d1fb8",
+          "type_getter": "0x816680",
+          "getter_bytes": "b015c3cccccc"
+        },
+        {
+          "vtable": "0x6702410",
+          "type_getter": "0x9813c0",
+          "getter_bytes": "b05ec3cccccc"
+        },
+        {
+          "vtable": "0x66e9320",
+          "type_getter": "0x8ad9f0",
+          "getter_bytes": "b02ec3cccccc"
+        },
+        {
+          "vtable": "0x67142b8",
+          "type_getter": "0xa06760",
+          "getter_bytes": "b081c3cccccc"
+        },
+        {
+          "vtable": "0x6706890",
+          "type_getter": "0x998680",
+          "getter_bytes": "b063c3cccccc"
+        },
+        {
+          "vtable": "0x68912e8",
+          "type_getter": "0x1b93020",
+          "getter_bytes": "e99bffffffcc"
+        },
+        {
+          "vtable": "0x67046c8",
+          "type_getter": "0x992ac0",
+          "getter_bytes": "b061c3cccccc"
+        },
+        {
+          "vtable": "0x688a4b0",
+          "network_getter": false
+        },
+        {
+          "vtable": "0x675b0e0",
+          "type_getter": "0xa885d0",
+          "getter_bytes": "b09bc3cccccc"
+        },
+        {
+          "vtable": "0x6716340",
+          "type_getter": "0xa13700",
+          "getter_bytes": "b084c3cccccc"
+        },
+        {
+          "vtable": "0x66b3148",
+          "type_getter": "0x72f4f0",
+          "getter_bytes": "b065c3cccccc"
+        },
+        {
+          "vtable": "0x66fa8e8",
+          "type_getter": "0x945c10",
+          "getter_bytes": "b051c3cccccc"
+        },
+        {
+          "vtable": "0x674c7f0",
+          "type_getter": "0x9d89c0",
+          "getter_bytes": "b073c3cccccc",
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0
+            ],
+            [
+              2,
+              7,
+              4,
+              1,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              6,
+              11,
+              8,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              0,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              0,
+              0
+            ],
+            [
+              9,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              10,
+              15,
+              12,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              0,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              0,
+              0
+            ],
+            [
+              13,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              14,
+              19,
+              16,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              0,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              0,
+              0
+            ],
+            [
+              17,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              18,
+              23,
+              20,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              0,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              0,
+              0
+            ],
+            [
+              21,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              22,
+              27,
+              24,
+              1,
+              0
+            ],
+            [
+              23,
+              25,
+              0,
+              0,
+              0
+            ],
+            [
+              24,
+              26,
+              0,
+              0,
+              0
+            ],
+            [
+              25,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              31,
+              28,
+              1,
+              0
+            ],
+            [
+              27,
+              29,
+              0,
+              0,
+              0
+            ],
+            [
+              28,
+              30,
+              0,
+              0,
+              0
+            ],
+            [
+              29,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              30,
+              35,
+              32,
+              1,
+              0
+            ],
+            [
+              31,
+              33,
+              0,
+              0,
+              0
+            ],
+            [
+              32,
+              34,
+              0,
+              0,
+              0
+            ],
+            [
+              33,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              34,
+              39,
+              36,
+              1,
+              0
+            ],
+            [
+              35,
+              37,
+              0,
+              0,
+              0
+            ],
+            [
+              36,
+              38,
+              0,
+              0,
+              0
+            ],
+            [
+              37,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              38,
+              0,
+              40,
+              1,
+              0
+            ],
+            [
+              39,
+              41,
+              0,
+              0,
+              0
+            ],
+            [
+              40,
+              42,
+              0,
+              0,
+              0
+            ],
+            [
+              41,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1
+          ]
+        },
+        {
+          "vtable": "0x671f750",
+          "type_getter": "0xa5d170",
+          "getter_bytes": "b08fc3cccccc"
+        },
+        {
+          "vtable": "0x66b2ab8",
+          "type_getter": "0x73a900",
+          "getter_bytes": "b090c3cccccc"
+        },
+        {
+          "vtable": "0x6d50698",
+          "type_getter": "0x4cc5550",
+          "getter_bytes": "48895c242056"
+        },
+        {
+          "vtable": "0x6d4ce78",
+          "type_getter": "0x4ca9550",
+          "getter_bytes": "48895c242057"
+        },
+        {
+          "vtable": "0x672b8c0",
+          "type_getter": "0xab0e60",
+          "getter_bytes": "b0a3c3cccccc"
+        },
+        {
+          "vtable": "0x66cfbb8",
+          "type_getter": "0x803350",
+          "getter_bytes": "b011c3cccccc"
+        },
+        {
+          "vtable": "0x672c050",
+          "type_getter": "0xab4c50",
+          "getter_bytes": "b0a4c3cccccc"
+        },
+        {
+          "vtable": "0x67205c8",
+          "type_getter": "0xa60ec0",
+          "getter_bytes": "b092c3cccccc"
+        },
+        {
+          "vtable": "0x675d428",
+          "type_getter": "0xab9780",
+          "getter_bytes": "b0a6c3cccccc"
+        },
+        {
+          "vtable": "0x675b718",
+          "type_getter": "0xa89bd0",
+          "getter_bytes": "b09cc3cccccc"
+        },
+        {
+          "vtable": "0x6724940",
+          "type_getter": "0xa86470",
+          "getter_bytes": "b09ac3cccccc"
+        },
+        {
+          "vtable": "0x674b490",
+          "type_getter": "0x9bc390",
+          "getter_bytes": "b06bc3cccccc"
+        },
+        {
+          "vtable": "0x66e9af8",
+          "type_getter": "0x8c4b70",
+          "getter_bytes": "b02fc3cccccc"
+        },
+        {
+          "vtable": "0x68746e0",
+          "type_getter": "0x19895f0",
+          "getter_bytes": "48895c240857"
+        },
+        {
+          "vtable": "0x66dcdc0",
+          "type_getter": "0x868c40",
+          "getter_bytes": "b022c3cccccc"
+        },
+        {
+          "vtable": "0x6727830",
+          "type_getter": "0xa951e0",
+          "getter_bytes": "b09ec3cccccc",
+          "following_entity_id": "0x0",
+          "controlling_entity_id": "0x0",
+          "hierarchy_kind": 1,
+          "child_count": 0,
+          "child_ids": [],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2
+          ],
+          "autonomous_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "vtable": "0x6727c80",
+          "type_getter": "0xa99790",
+          "getter_bytes": "b09fc3cccccc"
+        },
+        {
+          "vtable": "0x66abd60",
+          "type_getter": "0x70d920",
+          "getter_bytes": "b01ac3cccccc"
+        },
+        {
+          "vtable": "0x670b2c0",
+          "type_getter": "0x9c2c10",
+          "getter_bytes": "b06ec3cccccc"
+        },
+        {
+          "vtable": "0x66fb018",
+          "type_getter": "0x949df0",
+          "getter_bytes": "b052c3cccccc"
+        },
+        {
+          "vtable": "0x66b2380",
+          "type_getter": "0x718d60",
+          "getter_bytes": "b012c3cccccc"
+        },
+        {
+          "vtable": "0x67a6448",
+          "type_getter": "0xe457d4",
+          "getter_bytes": "4881e9f00000"
+        },
+        {
+          "vtable": "0x66d9628",
+          "type_getter": "0x83dd40",
+          "getter_bytes": "b01bc3cccccc"
+        },
+        {
+          "vtable": "0x66d5f30",
+          "type_getter": "0x832d10",
+          "getter_bytes": "b019c3cccccc"
+        },
+        {
+          "vtable": "0x66f7f90",
+          "type_getter": "0x932430",
+          "getter_bytes": "b04fc3cccccc",
+          "rpc_handler": "0x935940",
+          "state_delta_serializer": "0x9355f0",
+          "health_value_triplet": [
+            0.0,
+            800.0,
+            800.0
+          ],
+          "health_rate": 0.0,
+          "health_timing_fields": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              4,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              24,
+              7,
+              0,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              1,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              1,
+              0
+            ],
+            [
+              21,
+              23,
+              0,
+              1,
+              0
+            ],
+            [
+              22,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              23,
+              0,
+              25,
+              0,
+              0
+            ],
+            [
+              24,
+              0,
+              26,
+              1,
+              0
+            ],
+            [
+              25,
+              27,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            23
+          ]
+        },
+        {
+          "vtable": "0x67109b0",
+          "type_getter": "0x9f0740",
+          "getter_bytes": "b078c3cccccc"
+        },
+        {
+          "vtable": "0x66d4008",
+          "type_getter": "0x826000",
+          "getter_bytes": "b018c3cccccc"
+        },
+        {
+          "vtable": "0x6707dc0",
+          "type_getter": "0x9b1580",
+          "getter_bytes": "b066c3cccccc"
+        },
+        {
+          "vtable": "0x66d1828",
+          "type_getter": "0x80ea90",
+          "getter_bytes": "b014c3cccccc"
+        },
+        {
+          "vtable": "0x66fcc58",
+          "type_getter": "0x958e50",
+          "getter_bytes": "b054c3cccccc"
+        },
+        {
+          "vtable": "0x66c1f38",
+          "type_getter": "0x794130",
+          "getter_bytes": "b006c3cccccc"
+        },
+        {
+          "vtable": "0x6704ea0",
+          "type_getter": "0x994800",
+          "getter_bytes": "b062c3cccccc"
+        },
+        {
+          "vtable": "0x6712838",
+          "type_getter": "0x9fe4d0",
+          "getter_bytes": "b07dc3cccccc",
+          "last_processed_game_time_ms": 0
+        }
+      ]
+    },
+    {
+      "network_id": "0x1000001",
+      "slice_hash": 646954285,
+      "slice_entry": 0,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66eb970",
+          "type_getter": "0x8d2710",
+          "getter_bytes": "b033c3cccccc"
+        },
+        {
+          "vtable": "0x66e61a0",
+          "type_getter": "0x8a26f0",
+          "getter_bytes": "b02cc3cccccc"
+        },
+        {
+          "vtable": "0x67121d8",
+          "type_getter": "0x9fcb60",
+          "getter_bytes": "b07cc3cccccc"
+        },
+        {
+          "vtable": "0x66fdca0",
+          "type_getter": "0x95e380",
+          "getter_bytes": "b055c3cccccc",
+          "loadout_character": 8,
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              11,
+              3,
+              0,
+              0
+            ],
+            [
+              2,
+              4,
+              0,
+              1,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              20,
+              12,
+              0,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              0,
+              21,
+              0,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              1,
+              0
+            ],
+            [
+              21,
+              23,
+              0,
+              1,
+              0
+            ],
+            [
+              22,
+              24,
+              0,
+              1,
+              0
+            ],
+            [
+              23,
+              25,
+              0,
+              1,
+              0
+            ],
+            [
+              24,
+              26,
+              0,
+              1,
+              0
+            ],
+            [
+              25,
+              27,
+              0,
+              1,
+              0
+            ],
+            [
+              26,
+              28,
+              0,
+              1,
+              0
+            ],
+            [
+              27,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            10,
+            19
+          ],
+          "autonomous_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              7,
+              4,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              16,
+              10,
+              0,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              0,
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "vtable": "0x66b2958",
+          "type_getter": "0x740d60",
+          "getter_bytes": "b0a5c3cccccc"
+        },
+        {
+          "vtable": "0x675ceb8",
+          "type_getter": "0xa9e4d0",
+          "getter_bytes": "b091c3cccccc",
+          "authoritative_position": [
+            0.001072883838787675,
+            0.001072883838787675,
+            0.0012397777754813433
+          ],
+          "authoritative_rotation": [
+            0.9999992847442627,
+            0.0006912350654602051,
+            0.0006912350654602051,
+            0.0006912350654602051
+          ]
+        },
+        {
+          "vtable": "0x675dc38",
+          "type_getter": "0xac2e40",
+          "getter_bytes": "b0a9c3cccccc"
+        },
+        {
+          "vtable": "0x672f840",
+          "type_getter": "0xac9f20",
+          "getter_bytes": "b0acc3cccccc",
+          "input_autonomous_vtable": "0x675fce8",
+          "input_server_time_ms": 55634,
+          "input_server_multiplier": 2,
+          "input_client_offset": 5
+        },
+        {
+          "vtable": "0x66bd5d8",
+          "type_getter": "0x5333b0",
+          "getter_bytes": "b001c3cccccc"
+        },
+        {
+          "vtable": "0x66d0e58",
+          "type_getter": "0x80cfb0",
+          "getter_bytes": "b013c3cccccc"
+        },
+        {
+          "vtable": "0x66dc248",
+          "type_getter": "0x85e690",
+          "getter_bytes": "b020c3cccccc"
+        },
+        {
+          "vtable": "0x66dcdc0",
+          "type_getter": "0x868c40",
+          "getter_bytes": "b022c3cccccc"
+        },
+        {
+          "vtable": "0x6727830",
+          "type_getter": "0xa951e0",
+          "getter_bytes": "b09ec3cccccc",
+          "following_entity_id": "0x1000002",
+          "controlling_entity_id": "0x1000002",
+          "hierarchy_kind": 0,
+          "child_count": 1,
+          "child_ids": [
+            "0x1000002"
+          ],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2
+          ],
+          "autonomous_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "vtable": "0x675beb0",
+          "type_getter": "0xa8e710",
+          "getter_bytes": "b09dc3cccccc"
+        },
+        {
+          "vtable": "0x670bd18",
+          "type_getter": "0x9ce660",
+          "getter_bytes": "b06fc3cccccc"
+        },
+        {
+          "vtable": "0x66db2b8",
+          "type_getter": "0x85c330",
+          "getter_bytes": "b01fc3cccccc"
+        },
+        {
+          "vtable": "0x66ff060",
+          "type_getter": "0x969090",
+          "getter_bytes": "b058c3cccccc",
+          "match_player_id": 1,
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1
+          ],
+          "autonomous_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0
+            ],
+            [
+              2,
+              4,
+              0,
+              1,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              0,
+              0,
+              1,
+              0
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "local_entity_slots": [
+    {
+      "entity_id": "0x1000001fffffffe",
+      "network_id": "0x1000001"
+    },
+    {
+      "entity_id": "0x1000002fffffffe",
+      "network_id": "0x1000002"
+    },
+    {
+      "entity_id": "0xffffffff",
+      "network_id": "0x0"
+    },
+    {
+      "entity_id": "0xffffffff",
+      "network_id": "0x0"
+    },
+    {
+      "entity_id": "0xffffffff",
+      "network_id": "0x0"
+    },
+    {
+      "entity_id": "0xffffffff",
+      "network_id": "0x0"
+    },
+    {
+      "entity_id": "0xffffffff",
+      "network_id": "0x0"
+    }
+  ]
+}

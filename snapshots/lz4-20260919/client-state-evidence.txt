@@ -1,0 +1,12 @@
+[09-19-2026:16:02:31.639870-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from Disconnected to ConnectingToGameRegistry
+[09-19-2026:16:02:31.639877-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToGameRegistry to ConnectingToHub
+[09-19-2026:16:02:38.948832-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToHub to LoadingLevel
+[09-19-2026:16:02:46.418714-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from LoadingLevel to LevelLoaded
+[09-19-2026:16:02:50.197262-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from LevelLoaded to ConnectingToServerShard
+[09-19-2026:16:02:50.758027-GMT] NovaGameClientPackets::DispatchPacket(): [Debug_DispatchPackets] NovaGameClientPackets::DispatchPacket: Received packet Accept
+[09-19-2026:16:02:50.758031-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to Connected
+[09-19-2026:16:02:51.560727-GMT] NovaNet::NovaGameServiceClient::OnDisconnect(): Client is connected to game server shard, allowing hub connection to close
+[09-19-2026:16:02:51.561441-GMT] NovaNet::ClientNetworkAgent::OnConnectTimeout(): [Debug_ClientConnect] ClientNetworkAgent::OnConnectTimeout() Fully connected to game server shard, allowing connect retry timer to expire
+[09-19-2026:16:02:51.570497-GMT] NovaGameClientPackets::DispatchPacket(): [Debug_DispatchPackets] NovaGameClientPackets::DispatchPacket: Received packet Accept
+[09-19-2026:16:02:51.570500-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from Connected to Connected
+[09-19-2026:16:02:51.570502-GMT] NovaNet::Fail(): d:\workspace\crucible_hotfix\crucible_hotfix-build-release\dev\Code\NovaNet\Game\NovaGameClient\GameDll\Nova\Network\NovaGameClient.cpp:615 Assertion failed! (Invalid state transition requested)

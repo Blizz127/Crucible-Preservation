@@ -1,0 +1,1653 @@
+[09-19-2026:17:07:53.550896-GMT] NovaNet::Watchdog::UpdateThread(): Watchdog:Thread Watchdog (1) HealthChecks has been *Registered*
+[09-19-2026:17:07:53.550898-GMT] NovaNet::Watchdog::SuppressHealthChecks(): Watchdog:Thread Watchdog (1) HealthChecks has been suppressed
+[09-19-2026:17:07:53.560898-GMT] NovaNet::Watchdog::UpdateThread(): Watchdog:Thread Logger (2) HealthChecks has been *Registered*
+[09-19-2026:17:07:53.599270-GMT] Info(): executableVersion: 5.3.1515.1132017
+[09-19-2026:17:07:53.600433-GMT] Info(): Using C:/users/steamuser/AppData/Local/AGS/Crucible/cache folder for asset cache.
+[09-19-2026:17:07:53.601267-GMT] Info(): Loading system configuration from system_windows_pc.cfg...
+[09-19-2026:17:07:53.601272-GMT] Info(): GameDir: NvGameSDK
+[09-19-2026:17:07:53.847938-GMT] Info(): Total number of logical processors: 24
+[09-19-2026:17:07:53.847945-GMT] Info(): Number of available logical processors: 24
+[09-19-2026:17:07:53.851820-GMT] Info(): Total number of system cores: 24
+[09-19-2026:17:07:53.851822-GMT] Info(): Number of cores available to process: 24
+[09-19-2026:17:07:53.851831-GMT] Info():  
+[09-19-2026:17:07:53.851833-GMT] Info(): Processor 0:
+[09-19-2026:17:07:53.851836-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.851836-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.851839-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.851841-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.851841-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.851844-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.851846-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.851846-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.851849-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.851851-GMT] Info():  
+[09-19-2026:17:07:53.851852-GMT] Info(): Processor 1:
+[09-19-2026:17:07:53.851853-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.851855-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.851857-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.851857-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.851860-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.851862-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.851862-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.851865-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.851867-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.851867-GMT] Info():  
+[09-19-2026:17:07:53.851869-GMT] Info(): Processor 2:
+[09-19-2026:17:07:53.851872-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.851873-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.851873-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.851876-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.851877-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.851878-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.851880-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.851882-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.851882-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.851887-GMT] Info():  
+[09-19-2026:17:07:53.851889-GMT] Info(): Processor 3:
+[09-19-2026:17:07:53.851891-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.851891-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.851893-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.851894-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.851894-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.851896-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.851898-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.851898-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.851900-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.851902-GMT] Info():  
+[09-19-2026:17:07:53.851903-GMT] Info(): Processor 4:
+[09-19-2026:17:07:53.851904-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.851906-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.851908-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.851908-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.851910-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.851911-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.851912-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.851914-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.851916-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.851916-GMT] Info():  
+[09-19-2026:17:07:53.851918-GMT] Info(): Processor 5:
+[09-19-2026:17:07:53.851920-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.851921-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.851921-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.851923-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.851925-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.851925-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.851927-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.851928-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.851929-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.851931-GMT] Info():  
+[09-19-2026:17:07:53.851933-GMT] Info(): Processor 6:
+[09-19-2026:17:07:53.851933-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.851935-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.851937-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.851938-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.851939-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.851941-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.851942-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.851943-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.851945-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.851948-GMT] Info():  
+[09-19-2026:17:07:53.851949-GMT] Info(): Processor 7:
+[09-19-2026:17:07:53.851951-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.851953-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.851954-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.851954-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.851956-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.851958-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.851958-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.851960-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.851961-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.851962-GMT] Info():  
+[09-19-2026:17:07:53.851964-GMT] Info(): Processor 8:
+[09-19-2026:17:07:53.851966-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.851966-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.851968-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.851970-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.851971-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.851972-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.851974-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.851975-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.851975-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.851978-GMT] Info():  
+[09-19-2026:17:07:53.851980-GMT] Info(): Processor 9:
+[09-19-2026:17:07:53.851980-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.851983-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.851985-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.851987-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.851987-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.851989-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.851990-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.851991-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.851992-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.851994-GMT] Info():  
+[09-19-2026:17:07:53.851994-GMT] Info(): Processor 10:
+[09-19-2026:17:07:53.851996-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.851999-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.851999-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.852001-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.852003-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.852005-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.852005-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.852007-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.852009-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.852009-GMT] Info():  
+[09-19-2026:17:07:53.852013-GMT] Info(): Processor 11:
+[09-19-2026:17:07:53.852015-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.852015-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.852017-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.852020-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.852020-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.852022-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.852024-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.852026-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.852026-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.852028-GMT] Info():  
+[09-19-2026:17:07:53.852030-GMT] Info(): Processor 12:
+[09-19-2026:17:07:53.852030-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.852033-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.852035-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.852035-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.852037-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.852039-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.852040-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.852041-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.852044-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.852045-GMT] Info():  
+[09-19-2026:17:07:53.852045-GMT] Info(): Processor 13:
+[09-19-2026:17:07:53.852047-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.852050-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.852050-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.852053-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.852055-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.852055-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.852057-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.852059-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.852060-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.852060-GMT] Info():  
+[09-19-2026:17:07:53.852063-GMT] Info(): Processor 14:
+[09-19-2026:17:07:53.852064-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.852065-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.852067-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.852069-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.852069-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.852071-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.852073-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.852074-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.852074-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.852077-GMT] Info():  
+[09-19-2026:17:07:53.852079-GMT] Info(): Processor 15:
+[09-19-2026:17:07:53.852080-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.852082-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.852084-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.852085-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.852087-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.852089-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.852089-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.852091-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.852093-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.852095-GMT] Info():  
+[09-19-2026:17:07:53.852095-GMT] Info(): Processor 16:
+[09-19-2026:17:07:53.852098-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.852099-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.852099-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.852102-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.852104-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.852104-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.852106-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.852108-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.852109-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.852110-GMT] Info():  
+[09-19-2026:17:07:53.852112-GMT] Info(): Processor 17:
+[09-19-2026:17:07:53.852113-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.852113-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.852116-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.852118-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.852118-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.852120-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.852122-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.852123-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.852124-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.852127-GMT] Info():  
+[09-19-2026:17:07:53.852128-GMT] Info(): Processor 18:
+[09-19-2026:17:07:53.852128-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.852131-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.852132-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.852132-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.852135-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.852137-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.852137-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.852140-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.852142-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.852144-GMT] Info():  
+[09-19-2026:17:07:53.852144-GMT] Info(): Processor 19:
+[09-19-2026:17:07:53.852148-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.852150-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.852150-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.852153-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.852157-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.852158-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.852160-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.852162-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.852162-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.852165-GMT] Info():  
+[09-19-2026:17:07:53.852168-GMT] Info(): Processor 20:
+[09-19-2026:17:07:53.852169-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.852170-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.852172-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.852174-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.852174-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.852176-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.852179-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.852179-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.852182-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.852184-GMT] Info():  
+[09-19-2026:17:07:53.852186-GMT] Info(): Processor 21:
+[09-19-2026:17:07:53.852186-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.852188-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.852190-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.852190-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.852193-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.852194-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.852195-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.852197-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.852199-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.852199-GMT] Info():  
+[09-19-2026:17:07:53.852201-GMT] Info(): Processor 22:
+[09-19-2026:17:07:53.852203-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.852205-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.852205-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.852208-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.852209-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.852210-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.852212-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.852214-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.852214-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.852217-GMT] Info():  
+[09-19-2026:17:07:53.852219-GMT] Info(): Processor 23:
+[09-19-2026:17:07:53.852220-GMT] Info():   CPU: Intel Intel(R) Core(TM) Ultra 9 290HX Plus
+[09-19-2026:17:07:53.852223-GMT] Info():   Family: 6, Model: 6, Stepping: 2
+[09-19-2026:17:07:53.852225-GMT] Info():   FPU: On-Chip
+[09-19-2026:17:07:53.852226-GMT] Info():   3DNow!: not present
+[09-19-2026:17:07:53.852227-GMT] Info():   MMX: not present
+[09-19-2026:17:07:53.852229-GMT] Info():   SSE: present
+[09-19-2026:17:07:53.852230-GMT] Info():   SSE2: present
+[09-19-2026:17:07:53.852231-GMT] Info():   SSE3: present
+[09-19-2026:17:07:53.852234-GMT] Info():   Serial number not present or disabled
+[09-19-2026:17:07:53.852236-GMT] Info():  
+[09-19-2026:17:07:53.955490-GMT] Info(): Logging video adapters:
+[09-19-2026:17:07:54.287363-GMT] Info(): - NVIDIA GeForce RTX 5070 Ti Laptop GPU (vendor = 0x10de, device = 0x2f58)
+[09-19-2026:17:07:54.287367-GMT] Info():   - Adapter index: 0
+[09-19-2026:17:07:54.287369-GMT] Info():   - Dedicated video memory: 12227 MB
+[09-19-2026:17:07:54.287370-GMT] Info():   - Feature level: DX11 (SM 5.0)
+[09-19-2026:17:07:54.287373-GMT] Info():   - Displays connected: yes
+[09-19-2026:17:07:54.287374-GMT] Info():   - Suitable rendering device: yes
+[09-19-2026:17:07:54.356852-GMT] Info(): - Intel(R) Graphics (ARL) (vendor = 0x8086, device = 0x7d67)
+[09-19-2026:17:07:54.356859-GMT] Info():   - Adapter index: 1
+[09-19-2026:17:07:54.356862-GMT] Info():   - Dedicated video memory: 512 MB
+[09-19-2026:17:07:54.356862-GMT] Info():   - Feature level: DX11 (SM 5.0)
+[09-19-2026:17:07:54.356865-GMT] Info():   - Displays connected: no
+[09-19-2026:17:07:54.356868-GMT] Info():   - Suitable rendering device: no
+[09-19-2026:17:07:54.369466-GMT] Info(): Stream Engine Initialization
+[09-19-2026:17:07:54.370078-GMT] Info(): Physics initialization
+[09-19-2026:17:07:54.370652-GMT] Info(): Renderer initialization
+[09-19-2026:17:07:54.394918-GMT] Info(): Logging video adapters:
+[09-19-2026:17:07:54.567066-GMT] Info(): - NVIDIA GeForce RTX 5070 Ti Laptop GPU (vendor = 0x10de, device = 0x2f58)
+[09-19-2026:17:07:54.567070-GMT] Info():   - Adapter index: 0
+[09-19-2026:17:07:54.567072-GMT] Info():   - Dedicated video memory: 12227 MB
+[09-19-2026:17:07:54.567073-GMT] Info():   - Feature level: DX11 (SM 5.0)
+[09-19-2026:17:07:54.567075-GMT] Info():   - Displays connected: yes
+[09-19-2026:17:07:54.567077-GMT] Info():   - Suitable rendering device: yes
+[09-19-2026:17:07:54.651892-GMT] Info(): - Intel(R) Graphics (ARL) (vendor = 0x8086, device = 0x7d67)
+[09-19-2026:17:07:54.651896-GMT] Info():   - Adapter index: 1
+[09-19-2026:17:07:54.651899-GMT] Info():   - Dedicated video memory: 512 MB
+[09-19-2026:17:07:54.651901-GMT] Info():   - Feature level: DX11 (SM 5.0)
+[09-19-2026:17:07:54.651902-GMT] Info():   - Displays connected: no
+[09-19-2026:17:07:54.651904-GMT] Info():   - Suitable rendering device: no
+[09-19-2026:17:07:56.462730-GMT] Info(): Font initialization
+[09-19-2026:17:07:57.148954-GMT] Info(): Time initialization
+[09-19-2026:17:07:57.148974-GMT] Info(): Input initialization
+[09-19-2026:17:07:57.149231-GMT] Info(): UI system initialization
+[09-19-2026:17:07:57.151533-GMT] Info(): Initializing AI System
+[09-19-2026:17:07:57.151560-GMT] Info(): The deprecated CryAISystem was not created, if you depend on it please enable the CryLegacy Gem
+[09-19-2026:17:07:57.151620-GMT] Info(): Initializing Animation System
+[09-19-2026:17:07:57.151955-GMT] Info(): Initializing 3D Engine
+[09-19-2026:17:07:57.153769-GMT] Info(): Initializing Gems System
+[09-19-2026:17:07:57.158860-GMT] Info(): Script System Initialization
+[09-19-2026:17:07:57.159100-GMT] Info(): Entity system initialization
+[09-19-2026:17:07:57.159683-GMT] Info(): Network initialization
+[09-19-2026:17:07:57.159952-GMT] Info(): Initializing additional systems
+[09-19-2026:17:07:57.159955-GMT] Info(): Dynamic Response System initialization
+[09-19-2026:17:07:57.159956-GMT] Info(): No Dynamic Response System was loaded from a module, the system will use the NULL DynamicResponseSystem.
+[09-19-2026:17:07:57.825316-GMT] Warning(): [Warning][BakedName] Failed to load BakedName asset(s) for 'AwarenessGainDisableReason'
+[09-19-2026:17:07:57.826025-GMT] Warning(): [Warning][BakedName] Duplicate name 'Emote' found for MovementConfigValue
+[09-19-2026:17:07:57.848533-GMT] Info(): CGameObjectSystem::LoadSerializationOrderFile() - Cannot find 'Scripts/GameObjectSerializationOrder.xml'. sorting disabled.
+[09-19-2026:17:07:57.853131-GMT] NovaNet::NovaEACGameClient::LoadEAC(): EAC Client failed to start
+[09-19-2026:17:07:57.853940-GMT] NovaNet::Watchdog::UpdateThread(): Watchdog:Thread TcpClientManager (3) HealthChecks has been *Registered*
+[09-19-2026:17:07:57.864738-GMT] NovaNet::PacketHandlerMetrics::SetPacketToStringFunction(): Register PacketGroup Id:0, total number of Packet Groups : 1
+[09-19-2026:17:07:57.874733-GMT] MatchPhaseComponent::Common::Common(): MatchPhase Entity created
+[09-19-2026:17:07:58.032585-GMT] NovaNet::ClientEntityManager::OnSystemEvent(): Removing all entities for level unload
+[09-19-2026:17:07:58.035900-GMT] NovaNet::ClientEntityManager::OnSystemEvent(): Removing all entities for level unload
+[09-19-2026:17:08:02.020335-GMT] Warning(): [Warning][BakedName] Unrecognized EntityResourceType 'megadrone_beam_charge' in stream 'assets/creature/common_creature.resourcesdata' will result in mismatched values between client and server. Remove references or add to 'entityresourcetype.names'.
+[09-19-2026:17:08:02.347128-GMT] Info():   Window resolution: 1280x720x32 (Windowed)
+[09-19-2026:17:08:02.347130-GMT] Info():   Render resolution: 1280x720
+[09-19-2026:17:08:02.349698-GMT] Info(): [Info][ClientHouseKeeping] LogRejoinData from 'Clear()'
+[09-19-2026:17:08:02.349701-GMT] Info(): [Info][ClientHouseKeeping]   m_hasValidRejoinData = 0
+[09-19-2026:17:08:02.349703-GMT] Info(): [Info][ClientHouseKeeping]   m_hubIp = ''
+[09-19-2026:17:08:02.349704-GMT] Info(): [Info][ClientHouseKeeping]   m_hubPort = 0
+[09-19-2026:17:08:02.349706-GMT] Info(): [Info][ClientHouseKeeping]   m_sessionId = ''
+[09-19-2026:17:08:02.349708-GMT] Info(): [Info][ClientHouseKeeping]   m_timePointUntilCanRejoinInMicroSecs = 0
+[09-19-2026:17:08:02.349711-GMT] Info(): [Info][ClientHouseKeeping]   m_gameMode = 'Invalid'
+[09-19-2026:17:08:02.929242-GMT] Info(): [Info][ClientHouseKeeping] LogRejoinData from 'Clear()'
+[09-19-2026:17:08:02.929247-GMT] Info(): [Info][ClientHouseKeeping]   m_hasValidRejoinData = 0
+[09-19-2026:17:08:02.929248-GMT] Info(): [Info][ClientHouseKeeping]   m_hubIp = ''
+[09-19-2026:17:08:02.929250-GMT] Info(): [Info][ClientHouseKeeping]   m_hubPort = 0
+[09-19-2026:17:08:02.929251-GMT] Info(): [Info][ClientHouseKeeping]   m_sessionId = ''
+[09-19-2026:17:08:02.929254-GMT] Info(): [Info][ClientHouseKeeping]   m_timePointUntilCanRejoinInMicroSecs = 0
+[09-19-2026:17:08:02.929260-GMT] Info(): [Info][ClientHouseKeeping]   m_gameMode = 'Invalid'
+[09-19-2026:17:08:03.215685-GMT] Warning(): [Warning][BakedName] Unrecognized EntityFlagValue 'AICombatTarget' in stream 'cdl/creatures/creature_onspawn_anchor.cdl' will result in mismatched values between client and server. Remove references or add to 'entityflagvalue.names'.
+[09-19-2026:17:08:03.215697-GMT] Warning(): [Warning][BakedName] Unrecognized GameModeType 'HORDE' in stream 'cdl/creatures/creature_onspawn_anchor.cdl' will result in mismatched values between client and server. Remove references or add to 'gamemodetype.names'.
+[09-19-2026:17:08:04.535253-GMT] Warning(): [Warning][BakedName] Unrecognized EntityTypeValue 'MegaDroneCampAnchor' in stream 'cdl/creatures/camp_megadrone_onspawn.cdl' will result in mismatched values between client and server. Remove references or add to 'entitytypevalue.names'.
+[09-19-2026:17:08:04.986546-GMT] Warning(): [Warning][BakedName] Unrecognized EntityFlagValue 'SentryBeacons' in stream 'cdl/gameplay/interaction/sentrybeacon_heartbeat.cdl' will result in mismatched values between client and server. Remove references or add to 'entityflagvalue.names'.
+[09-19-2026:17:08:05.022256-GMT] Warning(): [Warning][BakedName] Unrecognized EntityFlagValue 'MegadroneGathering' in stream 'cdl/planetaryevents/event_major_megadronegathering.cdl' will result in mismatched values between client and server. Remove references or add to 'entityflagvalue.names'.
+[09-19-2026:17:08:05.111101-GMT] Info(): No configs found for: stage
+[09-19-2026:17:08:05.234499-GMT] Info(): [Info][ClientHouseKeeping] LogRejoinData from 'Clear()'
+[09-19-2026:17:08:05.234508-GMT] Info(): [Info][ClientHouseKeeping]   m_hasValidRejoinData = 0
+[09-19-2026:17:08:05.234513-GMT] Info(): [Info][ClientHouseKeeping]   m_hubIp = ''
+[09-19-2026:17:08:05.234517-GMT] Info(): [Info][ClientHouseKeeping]   m_hubPort = 0
+[09-19-2026:17:08:05.234521-GMT] Info(): [Info][ClientHouseKeeping]   m_sessionId = ''
+[09-19-2026:17:08:05.234526-GMT] Info(): [Info][ClientHouseKeeping]   m_timePointUntilCanRejoinInMicroSecs = 0
+[09-19-2026:17:08:05.234533-GMT] Info(): [Info][ClientHouseKeeping]   m_gameMode = 'Invalid'
+[09-19-2026:17:08:05.234702-GMT] Info(): [Info][ClientHouseKeeping] LogRejoinData from 'LoadRejoinDataFromDisk()'
+[09-19-2026:17:08:05.234706-GMT] Info(): [Info][ClientHouseKeeping]   m_hasValidRejoinData = 0
+[09-19-2026:17:08:05.234710-GMT] Info(): [Info][ClientHouseKeeping]   m_hubIp = ''
+[09-19-2026:17:08:05.234713-GMT] Info(): [Info][ClientHouseKeeping]   m_hubPort = 0
+[09-19-2026:17:08:05.234717-GMT] Info(): [Info][ClientHouseKeeping]   m_sessionId = ''
+[09-19-2026:17:08:05.234721-GMT] Info(): [Info][ClientHouseKeeping]   m_timePointUntilCanRejoinInMicroSecs = 0
+[09-19-2026:17:08:05.234725-GMT] Info(): [Info][ClientHouseKeeping]   m_gameMode = 'Invalid'
+[09-19-2026:17:08:05.513909-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'actionQuickCommsMoveToPing' to value ''
+[09-19-2026:17:08:05.514000-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'actionUiVoiceMuteAll' to value ''
+[09-19-2026:17:08:05.514002-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'actionUiVoiceMuteSelf' to value ''
+[09-19-2026:17:08:05.514026-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'allianceBreakHoldDuration' to value ''
+[09-19-2026:17:08:05.514038-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'crouchActionTrigger' to value 'Toggle'
+[09-19-2026:17:08:05.514080-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'mouseLookEnabled' to value ''
+[09-19-2026:17:08:05.514098-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'sprintActionTrigger' to value 'Toggle'
+[09-19-2026:17:08:05.514102-GMT] Warning(): [Warning][Preferences] Couldn't set preference 'useQuickCommsGestures' to value ''
+[09-19-2026:17:08:05.517917-GMT] Info(): [Info][UI] Initializing Coherent UI GT ver. 2.9.4.0
+[09-19-2026:17:08:05.517928-GMT] Info(): [Info][UI] Coherent Renoir library initialized!
+[09-19-2026:17:08:05.571419-GMT] Info():   Window resolution: 1280x720x32 (Windowed)
+[09-19-2026:17:08:05.571421-GMT] Info():   Render resolution: 1280x720
+[09-19-2026:17:08:05.878518-GMT] Info(): [CruciComms] Initializing Vivox Connection!
+[09-19-2026:17:08:06.083770-GMT] Info(): [CruciComms] Vivox instance initialized successfully.
+[09-19-2026:17:08:06.083918-GMT] Warning(): [Warning][Analytics] Could not connect to Live Services! Emitting metrics to log.
+[09-19-2026:17:08:06.089569-GMT] Warning(): [Warning][UI] Unable to load font face from file: C:\windows\Fonts\msyhbd.ttf
+[09-19-2026:17:08:06.089573-GMT] Warning(): [Warning][UI] Unable to load font face from file: C:\windows\Fonts\simsun.ttc
+[09-19-2026:17:08:06.450418-GMT] Info():   Window resolution: 1680x1050x32 (Windowed)
+[09-19-2026:17:08:06.450421-GMT] Info():   Render resolution: 1680x1050
+[09-19-2026:17:08:06.626041-GMT] Info(): [Info][LiveAPI] ServicesRequestWrapper: Sending request class Crucible::LivePlatform::PlayerAuthorizer::CrucibleLivePlayerAuthorizerCall : {0224FDDE-5F54-4291-95E9-D2FE103E301E} attempt 1/3
+[09-19-2026:17:08:06.626055-GMT] Info(): [Info][LiveAPI] Adding request {0224FDDE-5F54-4291-95E9-D2FE103E301E}.
+[09-19-2026:17:08:06.626486-GMT] Info(): [Info][LiveAPI] Applying update for request {0224FDDE-5F54-4291-95E9-D2FE103E301E}.
+[09-19-2026:17:08:06.631551-GMT] Warning(): [AWS] WinHttpSyncHttpClient - Send request failed: 3'
+[09-19-2026:17:08:06.641525-GMT] Error(): [Error][LiveAPI] Request<struct CrucibleLivePlayerAuthorizerService::ClientAPI::CrucibleLivePlayerAuthorizerResponse> {0224FDDE-5F54-4291-95E9-D2FE103E301E} failed: An unknown error occured while making the request.
+[09-19-2026:17:08:06.642781-GMT] Info(): [Info][LiveAPI] Applying update for request {0224FDDE-5F54-4291-95E9-D2FE103E301E}.
+[09-19-2026:17:08:06.657910-GMT] Error(): [Error][PlayerAuthorizer] Error authenticating player with PlayerAuthorizer. Reason: An unknown error occured while making the request.
+[09-19-2026:17:08:06.657920-GMT] Info(): [Info][LiveAPI] ServicesRequestWrapper: Sending request class Crucible::LivePlatform::PlayerAuthorizer::CrucibleLivePlayerAuthorizerCall : {0754EC61-5CA8-48CC-990D-852907054A07} attempt 2/3
+[09-19-2026:17:08:06.657930-GMT] Info(): [Info][LiveAPI] Adding request {0754EC61-5CA8-48CC-990D-852907054A07}.
+[09-19-2026:17:08:06.657948-GMT] Info(): [Info][LiveAPI] Applying update for request {0754EC61-5CA8-48CC-990D-852907054A07}.
+[09-19-2026:17:08:06.659689-GMT] Warning(): [AWS] WinHttpSyncHttpClient - Send request failed: 3'
+[09-19-2026:17:08:06.672010-GMT] Error(): [Error][LiveAPI] Request<struct CrucibleLivePlayerAuthorizerService::ClientAPI::CrucibleLivePlayerAuthorizerResponse> {0754EC61-5CA8-48CC-990D-852907054A07} failed: An unknown error occured while making the request.
+[09-19-2026:17:08:06.674881-GMT] Info(): [Info][LiveAPI] Applying update for request {0754EC61-5CA8-48CC-990D-852907054A07}.
+[09-19-2026:17:08:06.688532-GMT] Error(): [Error][PlayerAuthorizer] Error authenticating player with PlayerAuthorizer. Reason: An unknown error occured while making the request.
+[09-19-2026:17:08:06.688545-GMT] Info(): [Info][LiveAPI] ServicesRequestWrapper: Sending request class Crucible::LivePlatform::PlayerAuthorizer::CrucibleLivePlayerAuthorizerCall : {3FAE5B1D-484F-4D26-9C2C-2B2FF1DD912A} attempt 3/3
+[09-19-2026:17:08:06.688555-GMT] Info(): [Info][LiveAPI] Adding request {3FAE5B1D-484F-4D26-9C2C-2B2FF1DD912A}.
+[09-19-2026:17:08:06.688566-GMT] Info(): [Info][LiveAPI] Applying update for request {3FAE5B1D-484F-4D26-9C2C-2B2FF1DD912A}.
+[09-19-2026:17:08:06.691113-GMT] Warning(): [AWS] WinHttpSyncHttpClient - Send request failed: 3'
+[09-19-2026:17:08:06.703473-GMT] Error(): [Error][LiveAPI] Request<struct CrucibleLivePlayerAuthorizerService::ClientAPI::CrucibleLivePlayerAuthorizerResponse> {3FAE5B1D-484F-4D26-9C2C-2B2FF1DD912A} failed: An unknown error occured while making the request.
+[09-19-2026:17:08:06.704983-GMT] Info(): [Info][LiveAPI] Applying update for request {3FAE5B1D-484F-4D26-9C2C-2B2FF1DD912A}.
+[09-19-2026:17:08:06.751670-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:13421: Crucible UI :: jenkins-crucible_hotfix-crucible_hotfix-ui-259
+[09-19-2026:17:08:06.751683-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:82958: PASSES: []
+[09-19-2026:17:08:06.751686-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"bootup":"locale"}
+[09-19-2026:17:08:06.751690-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:1 GET:http://127.0.0.1:18876/CrucibleLiveCharacterLevelService/characterxp 
+[09-19-2026:17:08:06.751692-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:2 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/entitlements 
+[09-19-2026:17:08:06.751694-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:3 POST:http://127.0.0.1:18876/CrucibleLiveOfferService/getuserinfo {"body":{}}
+[09-19-2026:17:08:06.751696-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:4 POST:http://127.0.0.1:18876/CrucibleLiveOfferService/offers/list {"body":{}}
+[09-19-2026:17:08:06.751698-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:5 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/seasons 
+[09-19-2026:17:08:06.751701-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:6 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-challenge-stars 
+[09-19-2026:17:08:06.783790-GMT] Info(): [Info][ClientHouseKeeping] Rejoin.get found and invalid session to rejoin.  Sending empty data to UI.
+[09-19-2026:17:08:06.783802-GMT] Warning(): [Warning][UI] Failed to open connection. No endpoint named 'vendor.get'
+[09-19-2026:17:08:06.783898-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:1 GET:http://127.0.0.1:18876/CrucibleLiveCharacterLevelService/characterxp {"xp":[]}
+[09-19-2026:17:08:06.783906-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:2 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/entitlements {"data":"[{\"entitlementId\": \"mode_initial_unlock\", \"category\": \"Gamemode\", \"amount\": 0, \"maxAmount\": 1}, {\"entitlementId\": \"mode_tutorial_unlock\", \"category\": \"Gamemode\", \"amount\": 0, \"maxAmount\": 1}, {\"entitlementId\": \"mode_standard_unlock\", \"category\": \"Gamemode\", \"amount\": 0, \"maxAmount\": 1}, {\"entitlementId\": \"mode_practiceArena_unlock\", \"category\": \"Gamemode\", \"amount\": 0, \"maxAmount\": 1}, {\"entitlementId\": \"mode_alphaHunterDoubles_unlock\", \"category\": \"Gamemode\", \"amount\": 0, \"maxAmount\": 1}, {\"entitlementId\": \"mode_heartOfTheHives_unlock\", \"category\": \"Gamemode\", \"amount\": 0, \"maxAmount\": 1}, {\"entitlementId\": \"mode_harvesterCommand_unlock\", \"category\": \"Gamemode\", \"amount\": 0, \"maxAmount\": 1}]"}
+[09-19-2026:17:08:06.783910-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:3 POST:http://127.0.0.1:18876/CrucibleLiveOfferService/getuserinfo {"purchasingInfo":{"currency":{"credits":2500}}}
+[09-19-2026:17:08:06.783917-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:4 POST:http://127.0.0.1:18876/CrucibleLiveOfferService/offers/list {"offers":[{"offerId":"credits_pack_500","type":"CURRENCY","providerName":"STEAM","entitlements":[{"entitlementId":"currency_credits","amount":500}],"metadata":["credits","pack_small"],"price":{"amount":499,"currency":"USD"}},{"offerId":"credits_pack_1000","type":"CURRENCY","providerName":"STEAM","entitlements":[{"entitlementId":"currency_credits","amount":1000}],"metadata":["credits","pack_medium"],"price":{"amount":999,"currency":"USD"}},{"offerId":"credits_pack_2500","type":"CURRENCY","providerName":"STEAM","entitlements":[{"entitlementId":"currency_credits","amount":2500}],"metadata":["credits","pack_large"],"price":{"amount":1999,"currency":"USD"}},{"offerId":"battlepass_s1_pass","type":"BATTLEPASS","providerName":"STEAM","entitlements":[{"entitlementId":"battlepass_s1","amount":1}],"metadata":["battlepass","season1"],"price":{"amount":1000,"currency":"credits"}}]}
+[09-19-2026:17:08:06.783920-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:82958: PASSES: [{"offerId":"battlepass_s1_pass","type":"BATTLEPASS","providerName":"STEAM","entitlements":[{"entitlementId":"battlepass_s1","amount":1}],"metadata":["battlepass","season1"],"price":{"amount":1000,"currency":"credits"},"tags":{}}]
+[09-19-2026:17:08:06.783923-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:7 POST:http://127.0.0.1:18876/CrucibleLiveEntitlementService/entitlements/list {"body":{}}
+[09-19-2026:17:08:06.799598-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:5 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/seasons {"data":"[{\"StartDate\": \"2026-08-03T00:00:00.000Z\", \"EndDate\": \"2027-02-01T00:00:00.000Z\", \"Currency\": \"currency_battlepassxp\", \"Entitlement\": \"battlepass_s1\", \"SeasonId\": \"crucible-season1\", \"Name\": \"Season 1\"}]"}
+[09-19-2026:17:08:06.799607-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:6 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-challenge-stars {"data":"{\"crucible-season1\": [{\"ChallengeId\": \"s1_w1_collect_essence\", \"ProgressionId\": \"prog_s1_w1_collect_essence\", \"Count\": 3000, \"Permanence\": \"Weekly\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 2}, {\"ChallengeId\": \"s1_w1_deal_damage\", \"ProgressionId\": \"prog_s1_w1_deal_damage\", \"Count\": 5000, \"Permanence\": \"Weekly\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 2}, {\"ChallengeId\": \"s1_w1_win_games\", \"ProgressionId\": \"prog_s1_w1_win_games\", \"Count\": 3, \"Permanence\": \"Weekly\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 2}, {\"ChallengeId\": \"s1_w2_collect_essence\", \"ProgressionId\": \"prog_s1_w2_collect_essence\", \"Count\": 3000, \"Permanence\": \"Weekly\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 1, \"St
+[09-19-2026:17:08:06.799613-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:7 POST:http://127.0.0.1:18876/CrucibleLiveEntitlementService/entitlements/list {"entitlementQuantities":[{"entitlementId":"currency_battlepassxp","amount":23,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"currency_battlepasskeys","amount":3,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"currency_credits","amount":2500,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0000_world_cruciblelogo","amount":1,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0014_world_flagbannersilhouette","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0019_world_hivesilhouette","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0012_world_enemykilllogo","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"ent
+[09-19-2026:17:08:06.799617-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:8 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/dailyChallenges 
+[09-19-2026:17:08:06.799627-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:9 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars 
+[09-19-2026:17:08:06.799630-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:10 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars 
+[09-19-2026:17:08:06.830104-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:8 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/dailyChallenges {"challenges":["daily_play_matches","daily_deal_damage_to_players","daily_earn_essence"],"rerollsLeft":3}
+[09-19-2026:17:08:06.830116-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:9 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars {"data":"{\"daily_play_matches\": {\"ChallengeId\": \"daily_play_matches\", \"ProgressionId\": \"prog_daily_play_matches\", \"Count\": 2, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_deal_damage_to_players\": {\"ChallengeId\": \"daily_deal_damage_to_players\", \"ProgressionId\": \"prog_daily_deal_damage_to_players\", \"Count\": 2500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_earn_essence\": {\"ChallengeId\": \"daily_earn_essence\", \"ProgressionId\": \"prog_daily_earn_essence\", \"Count\": 1500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_defeat_players\": {\"ChallengeId\": \"daily_defeat_players\", \"ProgressionId\": \"prog_daily_defeat_players\", 
+[09-19-2026:17:08:06.830123-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:10 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars {"data":"{\"daily_play_matches\": {\"ChallengeId\": \"daily_play_matches\", \"ProgressionId\": \"prog_daily_play_matches\", \"Count\": 2, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_deal_damage_to_players\": {\"ChallengeId\": \"daily_deal_damage_to_players\", \"ProgressionId\": \"prog_daily_deal_damage_to_players\", \"Count\": 2500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_earn_essence\": {\"ChallengeId\": \"daily_earn_essence\", \"ProgressionId\": \"prog_daily_earn_essence\", \"Count\": 1500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_defeat_players\": {\"ChallengeId\": \"daily_defeat_players\", \"ProgressionId\": \"prog_daily_defeat_players\",
+[09-19-2026:17:08:06.830128-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:11 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars 
+[09-19-2026:17:08:06.830134-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:12 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/challenges {"body":{"progressionIds":["prog_s1_w1_collect_essence","prog_s1_w1_deal_damage","prog_s1_w1_win_games","prog_s1_w2_collect_essence","prog_s1_w2_defeat_enemy_hunters","prog_s1_w2_win_games","prog_s1_w3_collect_essence","prog_s1_w3_gain_essence","prog_s1_w3_win_games","prog_s1_w4_collect_essence","prog_s1_w4_deal_damage","prog_s1_w4_win_games","prog_s1_w5_collect_essence","prog_s1_w5_gain_levels","prog_s1_w5_win_games","prog_s1_w6_collect_essence","prog_s1_w6_gain_levels","prog_s1_w6_win_games","prog_s1_w7_collect_essence","prog_s1_w7_gain_levels","prog_s1_w7_win_games","prog_s1_w8_collect_essence","prog_s1_w8_gain_levels","prog_s1_w8_win_games","prog_s1_w9_collect_essence","prog_s1_w9_gain_levels","prog_s1_w9_win_games","prog_s1_w10_collect_essence","prog_s1_w10_gain_levels","prog_s1_w10_win_games","prog_s1_w11_collect_essence","prog_s1_w11_gain_levels","prog_s1_w11_win_games","prog_s
+[09-19-2026:17:08:06.861790-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:11 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars {"data":"{\"daily_play_matches\": {\"ChallengeId\": \"daily_play_matches\", \"ProgressionId\": \"prog_daily_play_matches\", \"Count\": 2, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_deal_damage_to_players\": {\"ChallengeId\": \"daily_deal_damage_to_players\", \"ProgressionId\": \"prog_daily_deal_damage_to_players\", \"Count\": 2500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_earn_essence\": {\"ChallengeId\": \"daily_earn_essence\", \"ProgressionId\": \"prog_daily_earn_essence\", \"Count\": 1500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_defeat_players\": {\"ChallengeId\": \"daily_defeat_players\", \"ProgressionId\": \"prog_daily_defeat_players\",
+[09-19-2026:17:08:06.861805-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:13 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/challenges {"body":{"progressionIds":["prog_daily_play_matches","prog_daily_deal_damage_to_players","prog_daily_earn_essence","prog_s1_w1_collect_essence","prog_s1_w1_deal_damage","prog_s1_w1_win_games","prog_s1_w2_collect_essence","prog_s1_w2_defeat_enemy_hunters","prog_s1_w2_win_games","prog_s1_w3_collect_essence","prog_s1_w3_gain_essence","prog_s1_w3_win_games","prog_s1_w4_collect_essence","prog_s1_w4_deal_damage","prog_s1_w4_win_games","prog_s1_w5_collect_essence","prog_s1_w5_gain_levels","prog_s1_w5_win_games","prog_s1_w6_collect_essence","prog_s1_w6_gain_levels","prog_s1_w6_win_games","prog_s1_w7_collect_essence","prog_s1_w7_gain_levels","prog_s1_w7_win_games","prog_s1_w8_collect_essence","prog_s1_w8_gain_levels","prog_s1_w8_win_games","prog_s1_w9_collect_essence","prog_s1_w9_gain_levels","prog_s1_w9_win_games","prog_s1_w10_collect_essence","prog_s1_w10_gain_levels","prog_s1_w10_win_games"
+[09-19-2026:17:08:06.861813-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"bootup":{"environment":{"lan":"checking","booted":"checking"}}}
+[09-19-2026:17:08:06.893406-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"bootup":{"environment":{"booted":"done","lan":"checking"}}}
+[09-19-2026:17:08:06.939781-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"matchmaking":"lan","content":{"home":{"general":"lobby"}},"overlay":"hidden","connection":"hidden"}}
+[09-19-2026:17:08:06.956065-GMT] Info(): [Info][Skinning] Setting mesh asset {C29A9585-F0A6-5F62-BA0F-E31FBA50D93E}:d3ff8946 for entity 'marine_character':356482285565
+[09-19-2026:17:08:06.956384-GMT] Info(): [Info][Skinning] Actor for entity 'marine_character':356482285565 has been created
+[09-19-2026:17:08:06.957530-GMT] Info(): [Info][Skinning] Setting material animations/characters/player/marine/character/marine_actor.mtl for entity 'marine_character':356482285565
+[09-19-2026:17:08:07.081241-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:14 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-achievements 
+[09-19-2026:17:08:07.081245-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:15 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-battlepass-tier-entitlements 
+[09-19-2026:17:08:07.096608-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\modes\doubles_casual_icon.svg
+[09-19-2026:17:08:07.096627-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\menu-sprite.svg
+[09-19-2026:17:08:07.096635-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\menu\shared\img\currency_credits.svg
+[09-19-2026:17:08:07.096646-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\unknown.svg
+[09-19-2026:17:08:07.096669-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\icons\locked-icon.svg
+[09-19-2026:17:08:07.096674-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\icons\challenge-swap-icon.svg
+[09-19-2026:17:08:07.096684-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\menu\shared\img\battlepass\free-large.svg
+[09-19-2026:17:08:07.096688-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\menu\shared\img\battlepass\premium-large.svg
+[09-19-2026:17:08:07.111413-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\menu\shared\img\battlepass\free-large.svg
+[09-19-2026:17:08:07.111487-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\menu\shared\img\battlepass\premium-large.svg
+[09-19-2026:17:08:07.111515-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\menu\shared\img\currency_credits.svg
+[09-19-2026:17:08:07.111566-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\icons\challenge-swap-icon.svg
+[09-19-2026:17:08:07.111648-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\icons\locked-icon.svg
+[09-19-2026:17:08:07.113696-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:14 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-achievements {"data":"{}"}
+[09-19-2026:17:08:07.127924-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\modes\doubles_casual_icon.svg
+[09-19-2026:17:08:07.131561-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\unknown.svg
+[09-19-2026:17:08:07.131577-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\menu-sprite.svg
+[09-19-2026:17:08:07.135912-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:15 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-battlepass-tier-entitlements {"data":"{\"tiers\": [{\"ChallengeId\": \"BATTLEPASS_S1_FREE_TIER_01\", \"Count\": 0, \"Entitlements\": [{\"entitlementId\": \"icon_0000_world_cruciblelogo\", \"category\": \"accounticon\"}]}, {\"ChallengeId\": \"BATTLEPASS_S1_PAID_TIER_01\", \"Count\": 0, \"Entitlements\": [{\"entitlementId\": \"commando_t1_default_02\", \"category\": \"skin\"}]}, {\"ChallengeId\": \"BATTLEPASS_S1_FREE_TIER_02\", \"Count\": 10, \"Entitlements\": [{\"entitlementId\": \"currency_battlepasskey\", \"category\": \"currency\"}]}, {\"ChallengeId\": \"BATTLEPASS_S1_PAID_TIER_02\", \"Count\": 10, \"Entitlements\": [{\"entitlementId\": \"currency_battlepasskey\", \"category\": \"currency\"}]}, {\"ChallengeId\": \"BATTLEPASS_S1_FREE_TIER_03\", \"Count\": 20, \"Entitlements\": [{\"entitlementId\": \"icon_0005_world_cosmicstorm\", \"category\": \"accounticon\"}]}, {\"Challenge
+[09-19-2026:17:08:07.880893-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:12 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/challenges {"runningTotals":[{"progressionId":"prog_s1_w1_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w1_deal_damage","runningTotal":2350},{"progressionId":"prog_s1_w1_win_games","runningTotal":0},{"progressionId":"prog_s1_w2_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w2_defeat_enemy_hunters","runningTotal":0},{"progressionId":"prog_s1_w2_win_games","runningTotal":0},{"progressionId":"prog_s1_w3_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w3_gain_essence","runningTotal":0},{"progressionId":"prog_s1_w3_win_games","runningTotal":0},{"progressionId":"prog_s1_w4_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w4_deal_damage","runningTotal":0},{"progressionId":"prog_s1_w4_win_games","runningTotal":0},{"progressionId":"prog_s1_w5_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w5_gain_levels","runningTotal":0},{"progression
+[09-19-2026:17:08:07.913396-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:13 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/challenges {"runningTotals":[{"progressionId":"prog_daily_play_matches","runningTotal":1},{"progressionId":"prog_daily_deal_damage_to_players","runningTotal":1130},{"progressionId":"prog_daily_earn_essence","runningTotal":640},{"progressionId":"prog_s1_w1_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w1_deal_damage","runningTotal":2350},{"progressionId":"prog_s1_w1_win_games","runningTotal":0},{"progressionId":"prog_s1_w2_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w2_defeat_enemy_hunters","runningTotal":0},{"progressionId":"prog_s1_w2_win_games","runningTotal":0},{"progressionId":"prog_s1_w3_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w3_gain_essence","runningTotal":0},{"progressionId":"prog_s1_w3_win_games","runningTotal":0},{"progressionId":"prog_s1_w4_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w4_deal_damage","runningTotal":
+[09-19-2026:17:08:08.213359-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\icons\controls\mouse_button_left.svg
+[09-19-2026:17:08:08.227822-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\icons\controls\mouse_button_left.svg
+[09-19-2026:17:08:08.856709-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"content":{"home":{"general":"mode"}},"matchmaking":"lan","overlay":"hidden","connection":"hidden"}}
+[09-19-2026:17:08:08.920230-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\menu\shared\img\player.svg
+[09-19-2026:17:08:08.920295-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\modes\crucihearts_casual_icon.svg
+[09-19-2026:17:08:08.920316-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\icons\video-play-icon.svg
+[09-19-2026:17:08:08.920335-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\modes\tutorial_icon.svg
+[09-19-2026:17:08:08.920350-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\modes\hoth_guide_icon.svg
+[09-19-2026:17:08:08.920363-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\modes\custom_crucihearts_icon.svg
+[09-19-2026:17:08:08.934209-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\menu\shared\img\player.svg
+[09-19-2026:17:08:08.934280-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\icons\video-play-icon.svg
+[09-19-2026:17:08:08.934318-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\modes\crucihearts_casual_icon.svg
+[09-19-2026:17:08:08.934349-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\modes\custom_crucihearts_icon.svg
+[09-19-2026:17:08:08.949846-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\modes\hoth_guide_icon.svg
+[09-19-2026:17:08:08.949878-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\modes\tutorial_icon.svg
+[09-19-2026:17:08:08.955149-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: coui:///dist/preloader.js:20:26017
+asyncFunctionResume@[native code]
+[native code]
+promiseReactionJob@[native code]
+[09-19-2026:17:08:08.955157-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/primary-modes.js:9:662: Error: 404: Not Found for http://127.0.0.1:18876/CrucibleLiveSystemMessages/betaschedule.json
+[09-19-2026:17:08:09.580157-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:16 POST:http://127.0.0.1:18876/CrucibleLivePartyService/gameRule/PRACTICE {"body":{"gameRule":"PRACTICE"}}
+[09-19-2026:17:08:09.643138-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:16 POST:http://127.0.0.1:18876/CrucibleLivePartyService/gameRule/PRACTICE {"gameRule":"PRACTICE"}
+[09-19-2026:17:08:09.643144-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"content":{"home":{"general":"lobby"}},"matchmaking":"lan","overlay":"hidden","connection":"hidden"}}
+[09-19-2026:17:08:10.100488-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"matchmaking":"lan","overlay":"hidden","connection":"hidden","content":{"home":{"general":"lobby"}}}}
+[09-19-2026:17:08:10.129744-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"main":{"overlay":"connecting","matchmaking":"lan","connection":"hidden","content":{"home":{"general":"lobby"}}}}
+[09-19-2026:17:08:10.145804-GMT] Info(): [Info][Matchmaking] MatchServer.Connect running LAN, grabbing a new playerId 1499629104
+[09-19-2026:17:08:10.145814-GMT] Info(): [Info][Matchmaking] Attempting to connect to 127.0.0.1:18877 with player info: [GameSparksId = 1499629104, NovaNetUserId = (4020588005 : 0xefa54de5), PlayerSessionId = ]
+[09-19-2026:17:08:10.145816-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from Disconnected to ConnectingToGameRegistry
+[09-19-2026:17:08:10.145820-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToGameRegistry to ConnectingToHub
+[09-19-2026:17:08:10.145821-GMT] NovaNet::NovaGameServiceClient::SetLoggedInUserDetails(): SetLoggedInUserDetails with userId (4020588005 : 0xefa54de5) and userName 1499629104
+[09-19-2026:17:08:10.145823-GMT] NovaNet::NovaGameServiceClient::ClientConnect(): User 1499629104(4020588005) is connecting to the NovaGameHub at: 127.0.0.1:18877
+[09-19-2026:17:08:10.145913-GMT] NovaGameHubClient::ClientManager::Connect(): NovaGameHubClient::ClientManager::Connect: Sending connect request to 127.0.0.1:18877
+[09-19-2026:17:08:10.145928-GMT] Info(): [Info][ClientHouseKeeping] SetSessionData() clearing rejoin data.
+[09-19-2026:17:08:10.145931-GMT] Info(): [Info][ClientHouseKeeping] LogRejoinData from 'Clear()'
+[09-19-2026:17:08:10.145933-GMT] Info(): [Info][ClientHouseKeeping]   m_hasValidRejoinData = 0
+[09-19-2026:17:08:10.145935-GMT] Info(): [Info][ClientHouseKeeping]   m_hubIp = ''
+[09-19-2026:17:08:10.145937-GMT] Info(): [Info][ClientHouseKeeping]   m_hubPort = 0
+[09-19-2026:17:08:10.145938-GMT] Info(): [Info][ClientHouseKeeping]   m_sessionId = ''
+[09-19-2026:17:08:10.145940-GMT] Info(): [Info][ClientHouseKeeping]   m_timePointUntilCanRejoinInMicroSecs = 0
+[09-19-2026:17:08:10.145945-GMT] Info(): [Info][ClientHouseKeeping]   m_gameMode = 'Invalid'
+[09-19-2026:17:08:10.145947-GMT] Info(): [Info][ClientHouseKeeping] LogRejoinData from 'SetSessionData()'
+[09-19-2026:17:08:10.145949-GMT] Info(): [Info][ClientHouseKeeping]   m_hasValidRejoinData = 0
+[09-19-2026:17:08:10.145951-GMT] Info(): [Info][ClientHouseKeeping]   m_hubIp = '127.0.0.1'
+[09-19-2026:17:08:10.145952-GMT] Info(): [Info][ClientHouseKeeping]   m_hubPort = 18877
+[09-19-2026:17:08:10.145954-GMT] Info(): [Info][ClientHouseKeeping]   m_sessionId = ''
+[09-19-2026:17:08:10.145955-GMT] Info(): [Info][ClientHouseKeeping]   m_timePointUntilCanRejoinInMicroSecs = 0
+[09-19-2026:17:08:10.145957-GMT] Info(): [Info][ClientHouseKeeping]   m_gameMode = 'Invalid'
+[09-19-2026:17:08:10.221476-GMT] ValidateCertificateCallback(): OpenSSL preverification failed with (18: self signed certificate)
+[09-19-2026:17:08:10.221477-GMT] ValidateCertificateCallback(): net_SslAllowSelfSigned is *enabled*, clearing X509 certificate validation failure
+[09-19-2026:17:08:10.221493-GMT] ValidateCertificateCallback(): Certificate validation passed
+[09-19-2026:17:08:10.221510-GMT] ValidateCertificateCallback(): Certificate validation passed
+[09-19-2026:17:08:10.286029-GMT] NovaNet::NovaGameServiceClient::OnCallback(): Client not in same debug state as server. Server expected 1
+[09-19-2026:17:08:10.286099-GMT] NovaNet::NovaGameServiceClient::OnCallback(): Received level practicearena from server and game rules CombatGameRules
+[09-19-2026:17:08:10.286100-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToHub to LoadingLevel
+[09-19-2026:17:08:10.317818-GMT] NovaNet::ClientEntityManager::OnSystemEvent(): Removing all entities for level unload
+[09-19-2026:17:08:10.623746-GMT] NovaNet::ClientEntityManager::OnSystemEvent(): Removing all entities for level unload
+[09-19-2026:17:08:10.683608-GMT] NovaNet::ClientEntityManager::OnSystemEvent(): Removing all entities for level unload
+[09-19-2026:17:08:13.218862-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from LoadingLevel to LevelLoaded
+[09-19-2026:17:08:13.218872-GMT] NovaNet::LevelLoader::LevelLoader(): Loading Level: 'practicearena'...
+[09-19-2026:17:08:13.218878-GMT] NovaNet::LevelLoader::LevelLoader(): Session Entering: {54189401-73dd-435a-bed2-b48bf4e80d4f}
+[09-19-2026:17:08:13.219337-GMT] NovaNet::ArchetypeAssetLibrary::LoadArchetypeFiles(): Unable to load xml doc for @assets@\Libs\StandaloneArchetypes\/clienteffect.xml
+[09-19-2026:17:08:13.219416-GMT] NovaNet::ArchetypeAssetLibrary::LoadArchetypeFiles(): Unable to load xml doc for @assets@\Libs\StandaloneArchetypes\/customactivationdata.xml
+[09-19-2026:17:08:13.219493-GMT] NovaNet::ArchetypeAssetLibrary::LoadArchetypeFiles(): Unable to load xml doc for @assets@\Libs\StandaloneArchetypes\/weaponparams.xml
+[09-19-2026:17:08:14.533768-GMT] Warning(): [Warning][BakedName] Unrecognized EntityFlagValue 'BioticConverter' in stream 'assets/gamesystems/gameplaystats/endmatchstats/endmatchstats_bioticconvertercaptures.gameplaystatdefs' will result in mismatched values between client and server. Remove references or add to 'entityflagvalue.names'.
+[09-19-2026:17:08:14.549269-GMT] MatchPhaseComponent::Common::Common(): MatchPhase Entity created
+[09-19-2026:17:08:14.561924-GMT] MatchPhaseComponent::Common::Common(): MatchPhase Entity created
+[09-19-2026:17:08:14.634732-GMT] NovaNet::NovaGameClient::SetClientGameState(): Level load duration was 4348 milliseconds
+[09-19-2026:17:08:14.634733-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client level loaded
+[09-19-2026:17:08:14.993173-GMT] NovaNet::NovaGameServiceClient::OnCallback(): [Debug_Nonce] Received connect nonce and pre-shared key
+[09-19-2026:17:08:14.993179-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from LevelLoaded to ConnectingToServerShard
+[09-19-2026:17:08:14.993337-GMT] NovaNet::ClientNetworkAgent::ConnectToServerShard(): Connecting to Nova Server Shard at: 127.0.0.1:18878
+[09-19-2026:17:08:14.995620-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:17 POST:https://kinesis.us-east-1.amazonaws.com {"body":{"Records":[{"Data":"eyJhcHAuc2Vzc2lvbi4xIjp7ImlkIjoiVU5TRVRfU0VTU0lPTklEIiwiY3VycmVudF9kdXJhdGlvbiI6MjUyfSwiYXBwLmluZm8uMSI6eyJpZCI6IlVOU0VUX0FQUExJQ0FUSU9OX0lEIiwidmVyc2lvbiI6IlVOU0VUX1ZFUlNJT04iLCJzdGFnZSI6IlVOU0VUX1NUQUdFIn0sImV2ZW50LmluZm8uMSI6eyJ0eXBlIjoiY3VzdG9tLm1lbnVWaWV3LjEiLCJ0cmFjZV9pZCI6ImN1c3RvbS5tZW51Vmlldy4xIiwic291cmNlIjoiQ3J1Y2libGUiLCJpZCI6ImM2OTJjYmNkLWJmNGEtNDRjZC1hNDhiLTY3ZjhhYzQyOWJhYS0wIiwiY3JlYXRlZCI6IjIwMjYtMDktMTlUMTc6MDg6MDYuOTIwWiIsInN1Ym1pdHRlZCI6IjIwMjYtMDktMTlUMTc6MDg6MTQuNjY1WiJ9LCJjdXN0b20ubWVudUxvYWQuMSI6eyJkZXN0aW5hdGlvbiI6ImxvYmJ5Iiwic291cmNlIjoiVU5TRVRfUEFHRSJ9LCJjdXN0b20ucGxheWVySUQuMSI6eyJnc0lEIjoiVU5TRVRfR0FNRVNQQVJLU0lEIn19","PartitionKey":"test"},{"Data":"eyJhcHAuaW5mby4xIjp7ImlkIjoiVU5TRVRfQVBQTElDQVRJT05fSUQiLCJ2ZXJzaW9uIjoiVU5TRVRfVkVSU0lPTiIsInN0YWdlIjoiVU5TRVRfU1RBR0UifSwiYXBwLnNlc3Npb24uMSI6eyJpZCI6IlVOU0VUX1NFU1NJT05JRCIsImN1cnJlbnRfZHVyYXRpb24iOjM4M
+[09-19-2026:17:08:14.998534-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_Debug] Sending local sequence id 1, remote sequence id 0, reliable, reliable id: 0, ack vector 0
+[09-19-2026:17:08:14.998538-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_DebugDtls] Connection is sending packet type 5
+[09-19-2026:17:08:15.194374-GMT] Error(): [Error][UI] ConsoleAPI coui:///dist/preloader.js:20:26203: 
+[09-19-2026:17:08:15.195386-GMT] NovaNet::UdpClientConnection::Update(): [NET_Debug] Receiving local sequence id 1, remote sequence id 1, unreliable, reliable id: 65535, ack vector 1
+[09-19-2026:17:08:15.195397-GMT] NovaGameClientPackets::DispatchPacket(): [Debug_DispatchPackets] NovaGameClientPackets::DispatchPacket: Received packet Accept
+[09-19-2026:17:08:15.195401-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to Connected
+[09-19-2026:17:08:15.195403-GMT] NovaGameHubClient::ClientManager::Disconnect(): NovaGameHubClient::ClientManager::Disconnect: Disconnecting from service
+[09-19-2026:17:08:15.458507-GMT] NovaNet::NovaGameServiceClient::OnDisconnect(): Client has been disconnected from the hub due to TerminatedByClient
+[09-19-2026:17:08:15.458508-GMT] NovaNet::NovaGameServiceClient::OnDisconnect(): Client is connected to game server shard, allowing hub connection to close
+[09-19-2026:17:08:15.459564-GMT] NovaNet::UdpBaseConnection::UpdateHeartbeat(): [NET_Acks] Connection timeout exceeded, sending client heartbeat (curr 21909 ms : last 21448 ms)
+[09-19-2026:17:08:15.459580-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_Debug] Sending local sequence id 2, remote sequence id 1, unreliable, reliable id: 65535, ack vector 1
+[09-19-2026:17:08:15.459581-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_DebugDtls] Connection is sending packet type 2
+[09-19-2026:17:08:15.461057-GMT] NovaNet::UdpClientConnection::Update(): [NET_Debug] Receiving local sequence id 2, remote sequence id 2, unreliable, reliable id: 65535, ack vector 3
+[09-19-2026:17:08:15.461059-GMT] NovaNet::UdpBaseConnection::HandleCorePacket(): [NET_CorePackets] NovaNet::UdpBaseConnection::HandleCorePacket: Received core packet Heartbeat
+[09-19-2026:17:08:15.596472-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:13421: Crucible UI :: jenkins-crucible_hotfix-crucible_hotfix-ui-259
+[09-19-2026:17:08:15.596482-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"flags":"fetch","datareset":"reset","connection":"connecting","match":"locale","chat":"strings","overlay":{"main":"hidden","afk":"hidden"}}
+[09-19-2026:17:08:15.596486-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:1 GET:http://127.0.0.1:18876/CrucibleLiveCharacterLevelService/characterxp 
+[09-19-2026:17:08:15.596489-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:2 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/entitlements 
+[09-19-2026:17:08:15.596491-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:3 POST:http://127.0.0.1:18876/CrucibleLiveOfferService/getuserinfo {"body":{}}
+[09-19-2026:17:08:15.596494-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:4 POST:http://127.0.0.1:18876/CrucibleLiveOfferService/offers/list {"body":{}}
+[09-19-2026:17:08:15.596496-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:5 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/seasons 
+[09-19-2026:17:08:15.596500-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:6 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-challenge-stars 
+[09-19-2026:17:08:15.596502-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:7 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/feature-flags 
+[09-19-2026:17:08:15.610511-GMT] Info(): [Info][Meta] Match Phase is unknown (client not connected) and client state is Connecting, last disconnect reason 'None'
+[09-19-2026:17:08:15.610521-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.612413-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.613171-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.615622-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.617091-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.618342-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.620070-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.621330-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.623271-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.624434-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.625905-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.627557-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.628975-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.631475-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.632688-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.633732-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.635940-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.637981-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.639073-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.640631-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.641555-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.644099-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.645292-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.646166-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.647392-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.648992-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.650532-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.652007-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.653489-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.655047-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.656567-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.658168-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.659691-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.659703-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/hud.js:21:4549: client.state.updates: false->Connecting, timeRemaining: -1
+[09-19-2026:17:08:15.659709-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"datareset":"done","flags":"fetch","connection":"connecting","match":"locale","chat":"strings","overlay":{"main":"hidden","afk":"hidden"}}
+[09-19-2026:17:08:15.659713-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:1 GET:http://127.0.0.1:18876/CrucibleLiveCharacterLevelService/characterxp {"xp":[]}
+[09-19-2026:17:08:15.659722-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:2 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/entitlements {"data":"[{\"entitlementId\": \"mode_initial_unlock\", \"category\": \"Gamemode\", \"amount\": 0, \"maxAmount\": 1}, {\"entitlementId\": \"mode_tutorial_unlock\", \"category\": \"Gamemode\", \"amount\": 0, \"maxAmount\": 1}, {\"entitlementId\": \"mode_standard_unlock\", \"category\": \"Gamemode\", \"amount\": 0, \"maxAmount\": 1}, {\"entitlementId\": \"mode_practiceArena_unlock\", \"category\": \"Gamemode\", \"amount\": 0, \"maxAmount\": 1}, {\"entitlementId\": \"mode_alphaHunterDoubles_unlock\", \"category\": \"Gamemode\", \"amount\": 0, \"maxAmount\": 1}, {\"entitlementId\": \"mode_heartOfTheHives_unlock\", \"category\": \"Gamemode\", \"amount\": 0, \"maxAmount\": 1}, {\"entitlementId\": \"mode_harvesterCommand_unlock\", \"category\": \"Gamemode\", \"amount\": 0, \"maxAmount\": 1}]"}
+[09-19-2026:17:08:15.659725-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:3 POST:http://127.0.0.1:18876/CrucibleLiveOfferService/getuserinfo {"purchasingInfo":{"currency":{"credits":2500}}}
+[09-19-2026:17:08:15.659732-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:4 POST:http://127.0.0.1:18876/CrucibleLiveOfferService/offers/list {"offers":[{"offerId":"credits_pack_500","type":"CURRENCY","providerName":"STEAM","entitlements":[{"entitlementId":"currency_credits","amount":500}],"metadata":["credits","pack_small"],"price":{"amount":499,"currency":"USD"}},{"offerId":"credits_pack_1000","type":"CURRENCY","providerName":"STEAM","entitlements":[{"entitlementId":"currency_credits","amount":1000}],"metadata":["credits","pack_medium"],"price":{"amount":999,"currency":"USD"}},{"offerId":"credits_pack_2500","type":"CURRENCY","providerName":"STEAM","entitlements":[{"entitlementId":"currency_credits","amount":2500}],"metadata":["credits","pack_large"],"price":{"amount":1999,"currency":"USD"}},{"offerId":"battlepass_s1_pass","type":"BATTLEPASS","providerName":"STEAM","entitlements":[{"entitlementId":"battlepass_s1","amount":1}],"metadata":["battlepass","season1"],"price":{"amount":1000,"currency":"credits"}}]}
+[09-19-2026:17:08:15.659737-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:5 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/seasons {"data":"[{\"StartDate\": \"2026-08-03T00:00:00.000Z\", \"EndDate\": \"2027-02-01T00:00:00.000Z\", \"Currency\": \"currency_battlepassxp\", \"Entitlement\": \"battlepass_s1\", \"SeasonId\": \"crucible-season1\", \"Name\": \"Season 1\"}]"}
+[09-19-2026:17:08:15.659744-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:6 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-challenge-stars {"data":"{\"crucible-season1\": [{\"ChallengeId\": \"s1_w1_collect_essence\", \"ProgressionId\": \"prog_s1_w1_collect_essence\", \"Count\": 3000, \"Permanence\": \"Weekly\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 2}, {\"ChallengeId\": \"s1_w1_deal_damage\", \"ProgressionId\": \"prog_s1_w1_deal_damage\", \"Count\": 5000, \"Permanence\": \"Weekly\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 2}, {\"ChallengeId\": \"s1_w1_win_games\", \"ProgressionId\": \"prog_s1_w1_win_games\", \"Count\": 3, \"Permanence\": \"Weekly\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 2}, {\"ChallengeId\": \"s1_w2_collect_essence\", \"ProgressionId\": \"prog_s1_w2_collect_essence\", \"Count\": 3000, \"Permanence\": \"Weekly\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 1, \"St
+[09-19-2026:17:08:15.659749-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:7 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/feature-flags {"data":"{\"uiBattlepassEnabled\": true, \"uiSurrenderEnabled\": true}"}
+[09-19-2026:17:08:15.659752-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"flags":"done","datareset":"done","connection":"connecting","match":"locale","chat":"strings","overlay":{"main":"hidden","afk":"hidden"}}
+[09-19-2026:17:08:15.659754-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:8 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/dailyChallenges 
+[09-19-2026:17:08:15.659757-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:9 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars 
+[09-19-2026:17:08:15.659760-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:10 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars 
+[09-19-2026:17:08:15.659762-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:11 POST:http://127.0.0.1:18876/CrucibleLiveEntitlementService/entitlements/list {"body":{}}
+[09-19-2026:17:08:15.659765-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"chat":"chat","flags":"done","datareset":"done","connection":"connecting","match":"locale","overlay":{"main":"hidden","afk":"hidden"}}
+[09-19-2026:17:08:15.659769-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:34:65463: {"match":{"phases":"idle"},"flags":"done","datareset":"done","connection":"connecting","chat":"chat","overlay":{"main":"hidden","afk":"hidden"}}
+[09-19-2026:17:08:15.659772-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:12 POST:http://127.0.0.1:18876/CrucibleLiveEntitlementService/entitlements/list {"body":{"category":"AccountIcon"}}
+[09-19-2026:17:08:15.659774-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:13 POST:http://127.0.0.1:18876/CrucibleLiveEntitlementService/entitlements/list {"body":{"category":"Gamemode"}}
+[09-19-2026:17:08:15.659776-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:14 POST:http://127.0.0.1:18876/CrucibleLiveEntitlementService/entitlements/list {"body":{"category":"Currency"}}
+[09-19-2026:17:08:15.660017-GMT] NovaNet::UdpBaseConnection::UpdateHeartbeat(): [NET_Acks] Connection timeout exceeded, sending client heartbeat (curr 22110 ms : last 21909 ms)
+[09-19-2026:17:08:15.660027-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_Debug] Sending local sequence id 3, remote sequence id 2, unreliable, reliable id: 65535, ack vector 3
+[09-19-2026:17:08:15.660027-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_DebugDtls] Connection is sending packet type 2
+[09-19-2026:17:08:15.661333-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.661586-GMT] NovaNet::UdpClientConnection::Update(): [NET_Debug] Receiving local sequence id 3, remote sequence id 3, unreliable, reliable id: 65535, ack vector 7
+[09-19-2026:17:08:15.661587-GMT] NovaNet::UdpBaseConnection::HandleCorePacket(): [NET_CorePackets] NovaNet::UdpBaseConnection::HandleCorePacket: Received core packet Heartbeat
+[09-19-2026:17:08:15.662674-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.664202-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.665854-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.667279-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.668886-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.671915-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.674580-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.675504-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.677190-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.677209-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:10 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars {"data":"{\"daily_play_matches\": {\"ChallengeId\": \"daily_play_matches\", \"ProgressionId\": \"prog_daily_play_matches\", \"Count\": 2, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_deal_damage_to_players\": {\"ChallengeId\": \"daily_deal_damage_to_players\", \"ProgressionId\": \"prog_daily_deal_damage_to_players\", \"Count\": 2500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_earn_essence\": {\"ChallengeId\": \"daily_earn_essence\", \"ProgressionId\": \"prog_daily_earn_essence\", \"Count\": 1500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_defeat_players\": {\"ChallengeId\": \"daily_defeat_players\", \"ProgressionId\": \"prog_daily_defeat_players\",
+[09-19-2026:17:08:15.677218-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:8 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/dailyChallenges {"challenges":["daily_play_matches","daily_deal_damage_to_players","daily_earn_essence"],"rerollsLeft":3}
+[09-19-2026:17:08:15.677224-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:9 GET:http://127.0.0.1:18876/CrucibleLiveGameConfigService/gameConfigData/ui-daily-challenge-stars {"data":"{\"daily_play_matches\": {\"ChallengeId\": \"daily_play_matches\", \"ProgressionId\": \"prog_daily_play_matches\", \"Count\": 2, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_deal_damage_to_players\": {\"ChallengeId\": \"daily_deal_damage_to_players\", \"ProgressionId\": \"prog_daily_deal_damage_to_players\", \"Count\": 2500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_earn_essence\": {\"ChallengeId\": \"daily_earn_essence\", \"ProgressionId\": \"prog_daily_earn_essence\", \"Count\": 1500, \"Permanence\": \"Daily\", \"Visibility\": \"Visible\", \"RelativeStartToSeason\": 0, \"StarAmount\": 1}, \"daily_defeat_players\": {\"ChallengeId\": \"daily_defeat_players\", \"ProgressionId\": \"prog_daily_defeat_players\", 
+[09-19-2026:17:08:15.677229-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:11 POST:http://127.0.0.1:18876/CrucibleLiveEntitlementService/entitlements/list {"entitlementQuantities":[{"entitlementId":"currency_battlepassxp","amount":23,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"currency_battlepasskeys","amount":3,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"currency_credits","amount":2500,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0000_world_cruciblelogo","amount":1,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0014_world_flagbannersilhouette","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0019_world_hivesilhouette","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0012_world_enemykilllogo","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"en
+[09-19-2026:17:08:15.677234-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:15 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/challenges {"body":{"progressionIds":["prog_s1_w1_collect_essence","prog_s1_w1_deal_damage","prog_s1_w1_win_games","prog_s1_w2_collect_essence","prog_s1_w2_defeat_enemy_hunters","prog_s1_w2_win_games","prog_s1_w3_collect_essence","prog_s1_w3_gain_essence","prog_s1_w3_win_games","prog_s1_w4_collect_essence","prog_s1_w4_deal_damage","prog_s1_w4_win_games","prog_s1_w5_collect_essence","prog_s1_w5_gain_levels","prog_s1_w5_win_games","prog_s1_w6_collect_essence","prog_s1_w6_gain_levels","prog_s1_w6_win_games","prog_s1_w7_collect_essence","prog_s1_w7_gain_levels","prog_s1_w7_win_games","prog_s1_w8_collect_essence","prog_s1_w8_gain_levels","prog_s1_w8_win_games","prog_s1_w9_collect_essence","prog_s1_w9_gain_levels","prog_s1_w9_win_games","prog_s1_w10_collect_essence","prog_s1_w10_gain_levels","prog_s1_w10_win_games","prog_s1_w11_collect_essence","prog_s1_w11_gain_levels","prog_s1_w11_win_games","prog_s
+[09-19-2026:17:08:15.677239-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:28741: SVCSREQ:16 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/challenges {"body":{"progressionIds":["prog_daily_play_matches","prog_daily_deal_damage_to_players","prog_daily_earn_essence","prog_s1_w1_collect_essence","prog_s1_w1_deal_damage","prog_s1_w1_win_games","prog_s1_w2_collect_essence","prog_s1_w2_defeat_enemy_hunters","prog_s1_w2_win_games","prog_s1_w3_collect_essence","prog_s1_w3_gain_essence","prog_s1_w3_win_games","prog_s1_w4_collect_essence","prog_s1_w4_deal_damage","prog_s1_w4_win_games","prog_s1_w5_collect_essence","prog_s1_w5_gain_levels","prog_s1_w5_win_games","prog_s1_w6_collect_essence","prog_s1_w6_gain_levels","prog_s1_w6_win_games","prog_s1_w7_collect_essence","prog_s1_w7_gain_levels","prog_s1_w7_win_games","prog_s1_w8_collect_essence","prog_s1_w8_gain_levels","prog_s1_w8_win_games","prog_s1_w9_collect_essence","prog_s1_w9_gain_levels","prog_s1_w9_win_games","prog_s1_w10_collect_essence","prog_s1_w10_gain_levels","prog_s1_w10_win_games"
+[09-19-2026:17:08:15.678533-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.680204-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.681842-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.683356-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.684780-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.686317-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.688487-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.689417-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.689434-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:12 POST:http://127.0.0.1:18876/CrucibleLiveEntitlementService/entitlements/list {"entitlementQuantities":[{"entitlementId":"currency_battlepassxp","amount":23,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"currency_battlepasskeys","amount":3,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"currency_credits","amount":2500,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0000_world_cruciblelogo","amount":1,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0014_world_flagbannersilhouette","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0019_world_hivesilhouette","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0012_world_enemykilllogo","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"en
+[09-19-2026:17:08:15.689441-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:13 POST:http://127.0.0.1:18876/CrucibleLiveEntitlementService/entitlements/list {"entitlementQuantities":[{"entitlementId":"currency_battlepassxp","amount":23,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"currency_battlepasskeys","amount":3,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"currency_credits","amount":2500,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0000_world_cruciblelogo","amount":1,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0014_world_flagbannersilhouette","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0019_world_hivesilhouette","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0012_world_enemykilllogo","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"en
+[09-19-2026:17:08:15.689448-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:14 POST:http://127.0.0.1:18876/CrucibleLiveEntitlementService/entitlements/list {"entitlementQuantities":[{"entitlementId":"currency_battlepassxp","amount":23,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"currency_battlepasskeys","amount":3,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"currency_credits","amount":2500,"category":"Currency","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0000_world_cruciblelogo","amount":1,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0014_world_flagbannersilhouette","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0019_world_hivesilhouette","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"entitlementId":"icon_0012_world_enemykilllogo","amount":0,"maxAmount":1,"category":"AccountIcon","sourceTransactionId":"DEFAULT"},{"en
+[09-19-2026:17:08:15.690989-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.692586-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.693895-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.695349-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.696804-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.698345-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.700437-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.702166-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.703635-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.705632-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.706695-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.708250-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.708297-GMT] Info(): [Info][UI] Coherent SVG Loading: @assets@\UI\dist\shared\img\logos\logo.svg
+[09-19-2026:17:08:15.709669-GMT] Info(): [Info][UI] Coherent SVG Succeeded: @assets@\UI\dist\shared\img\logos\logo.svg
+[09-19-2026:17:08:15.709821-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.711388-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.713203-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.714923-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.716569-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.717705-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.719707-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.720598-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.722108-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.723712-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.725130-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.727457-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.728402-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.729808-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.731399-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.733132-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.734477-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.736152-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.737859-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.739173-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.740702-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.742210-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.743810-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.745407-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.746991-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.748786-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.750447-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.752244-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.753413-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.754877-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.758702-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.759644-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.760377-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.761461-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.762989-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.764600-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.766386-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.767766-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.769282-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.770881-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.772563-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.774057-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.777639-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.779372-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.780710-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.782332-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.783490-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.785185-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.786608-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.788339-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.790188-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.791336-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.792903-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.798275-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.800068-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.803582-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.806023-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.807921-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.810554-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.812029-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.813038-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.815214-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.816034-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.817599-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.820716-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.821461-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.822357-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.824411-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.825662-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.827161-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.828848-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.830267-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.831791-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.833340-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.834934-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.836452-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.838392-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.840032-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.843038-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.844048-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.845643-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.849375-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.850342-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.850970-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.852669-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.854449-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.855900-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.857314-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.858380-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.859893-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.861663-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.861860-GMT] NovaNet::UdpBaseConnection::UpdateHeartbeat(): [NET_Acks] Connection timeout exceeded, sending client heartbeat (curr 22312 ms : last 22110 ms)
+[09-19-2026:17:08:15.861870-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_Debug] Sending local sequence id 4, remote sequence id 3, unreliable, reliable id: 65535, ack vector 7
+[09-19-2026:17:08:15.861871-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_DebugDtls] Connection is sending packet type 2
+[09-19-2026:17:08:15.863078-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.863222-GMT] NovaNet::UdpClientConnection::Update(): [NET_Debug] Receiving local sequence id 4, remote sequence id 4, unreliable, reliable id: 65535, ack vector f
+[09-19-2026:17:08:15.863223-GMT] NovaNet::UdpBaseConnection::HandleCorePacket(): [NET_CorePackets] NovaNet::UdpBaseConnection::HandleCorePacket: Received core packet Heartbeat
+[09-19-2026:17:08:15.864554-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.866135-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.867673-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.869725-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.871664-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.872489-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.873934-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.875459-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.877161-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.878663-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.880215-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.881839-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.883891-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.885535-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.886444-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.888817-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.889770-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.891403-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.893577-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.897190-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.898407-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.899216-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.900353-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.902529-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.904331-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.906641-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.907491-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.908904-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.909850-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.911979-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.913054-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.914567-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.916219-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.917684-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.919364-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.920932-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.922360-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.923950-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.925492-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.927214-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.928986-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.930257-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.931860-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.933270-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.934812-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.936692-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.937939-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.939558-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.941196-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.943406-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.944227-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.946486-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.948072-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.949158-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.950652-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.952372-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.953741-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.955605-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.957038-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.958587-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.960157-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.961815-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.963561-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.964948-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.966461-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.968255-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.969978-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.971828-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.973050-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.974609-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.975975-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.977543-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.979092-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.981621-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.984423-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.985360-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.986041-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.987502-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.989092-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.990681-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.992147-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.993793-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.995366-GMT] NovaNet::ClientNetworkAgent::OnConnectTimeout(): [Debug_ClientConnect] ClientNetworkAgent::OnConnectTimeout() Fully connected to game server shard, allowing connect retry timer to expire
+[09-19-2026:17:08:15.995397-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.997983-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:15.999299-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.001135-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.002545-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.004047-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.005668-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.008018-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.008854-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.010415-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.011978-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.013500-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.015761-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.016786-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.018509-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.019881-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.021517-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.023119-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.024731-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.026245-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.027820-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.029389-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.031090-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.033050-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.034695-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.036163-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.037658-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.039570-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.040637-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.042174-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.043711-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.045263-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.047485-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.048805-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.050895-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.051833-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.053259-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.054940-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.056426-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.058056-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.060662-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.061671-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.062734-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.062884-GMT] NovaNet::UdpBaseConnection::UpdateHeartbeat(): [NET_Acks] Connection timeout exceeded, sending client heartbeat (curr 22513 ms : last 22312 ms)
+[09-19-2026:17:08:16.062893-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_Debug] Sending local sequence id 5, remote sequence id 4, unreliable, reliable id: 65535, ack vector f
+[09-19-2026:17:08:16.062894-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_DebugDtls] Connection is sending packet type 2
+[09-19-2026:17:08:16.064594-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.064813-GMT] NovaNet::UdpClientConnection::Update(): [NET_Debug] Receiving local sequence id 5, remote sequence id 5, unreliable, reliable id: 65535, ack vector 1f
+[09-19-2026:17:08:16.064814-GMT] NovaNet::UdpBaseConnection::HandleCorePacket(): [NET_CorePackets] NovaNet::UdpBaseConnection::HandleCorePacket: Received core packet Heartbeat
+[09-19-2026:17:08:16.065867-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.068008-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.070334-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.071047-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.072891-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.074212-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.075699-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.078496-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.079359-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.080339-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.081961-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.083592-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.085217-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.086580-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.088463-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.089736-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.091613-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.093273-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.096987-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.097896-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.098883-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.102428-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.104420-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.105175-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.106344-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.107751-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.111675-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.112752-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.113899-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.116596-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.117705-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.119439-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.120605-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.122377-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.131746-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.133593-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.134388-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.136357-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.137640-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.138938-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.141108-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.142146-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.144942-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.145780-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.148165-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.149186-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.151585-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.152626-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.154257-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.156930-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.158635-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.159319-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.160887-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.162381-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.164116-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.166097-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.168320-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.169132-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.170455-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.172061-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.174052-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.175348-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.176679-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.178199-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.179739-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.181334-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.183095-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.184641-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.186261-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.187773-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.189300-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.191038-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.193881-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.194821-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.195673-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.199287-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.200267-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.201500-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.203099-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.205045-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.207585-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.209739-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.210455-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.211643-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.213813-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.214645-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.216861-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.217939-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.219457-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.221195-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.222865-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.224659-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.225906-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.227790-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.228944-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.230678-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.232855-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.234176-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.235407-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.237133-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.238782-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.242672-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.243950-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.244932-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.246849-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.247670-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.249241-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.250644-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.252163-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.253683-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.255422-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.256970-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.258387-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.260043-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.261817-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.263219-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.264709-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.264858-GMT] NovaNet::UdpBaseConnection::UpdateHeartbeat(): [NET_Acks] Connection timeout exceeded, sending client heartbeat (curr 22715 ms : last 22513 ms)
+[09-19-2026:17:08:16.264868-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_Debug] Sending local sequence id 6, remote sequence id 5, unreliable, reliable id: 65535, ack vector 1f
+[09-19-2026:17:08:16.264868-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_DebugDtls] Connection is sending packet type 2
+[09-19-2026:17:08:16.266396-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.266591-GMT] NovaNet::UdpClientConnection::Update(): [NET_Debug] Receiving local sequence id 6, remote sequence id 6, unreliable, reliable id: 65535, ack vector 3f
+[09-19-2026:17:08:16.266592-GMT] NovaNet::UdpBaseConnection::HandleCorePacket(): [NET_CorePackets] NovaNet::UdpBaseConnection::HandleCorePacket: Received core packet Heartbeat
+[09-19-2026:17:08:16.267864-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.272809-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.274178-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.274976-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.277510-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.278388-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.279900-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.281430-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.283789-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.284597-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.286592-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.288241-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.289705-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.292492-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.294226-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.296076-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.297080-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.298096-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.299805-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.301242-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.302781-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.304587-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.306094-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.307629-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.309226-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.310748-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.312636-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.315499-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.316410-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.317399-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.318977-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.320735-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.322101-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.323978-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.325205-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.326731-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.328994-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.330467-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.331336-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.332936-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.334457-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.336185-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.337720-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.339238-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.340915-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.342394-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.343829-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.345398-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.348159-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.349077-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.350040-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.351842-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.353289-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.354986-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.356471-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.358002-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.359651-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.361035-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.362494-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.364015-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.365685-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.367192-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.368927-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.370254-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.371771-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.373374-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.374989-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.376481-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.378661-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.379557-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.381097-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.383013-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.384874-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.386269-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.388247-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.389396-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.391142-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.393198-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.394040-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.395548-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.398634-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.399265-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.400448-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.401751-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.403337-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.404947-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.407127-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.408213-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.409788-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.411489-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.413339-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.414734-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.416678-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.418234-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.420072-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.421903-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.423520-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.424545-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.426852-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.428437-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.429977-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.433147-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.434033-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.434855-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.436245-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.438348-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.439954-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.440780-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.443218-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.445666-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.446965-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.448403-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.449167-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.450642-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.452106-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.453570-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.455130-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.456629-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.458356-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.459780-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.461271-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.462808-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.464509-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.466642-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.466759-GMT] NovaNet::UdpBaseConnection::UpdateHeartbeat(): [NET_Acks] Connection timeout exceeded, sending client heartbeat (curr 22916 ms : last 22715 ms)
+[09-19-2026:17:08:16.466765-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_Debug] Sending local sequence id 7, remote sequence id 6, unreliable, reliable id: 65535, ack vector 3f
+[09-19-2026:17:08:16.466765-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_DebugDtls] Connection is sending packet type 2
+[09-19-2026:17:08:16.468129-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.468354-GMT] NovaNet::UdpClientConnection::Update(): [NET_Debug] Receiving local sequence id 7, remote sequence id 7, unreliable, reliable id: 65535, ack vector 7f
+[09-19-2026:17:08:16.468355-GMT] NovaNet::UdpBaseConnection::HandleCorePacket(): [NET_CorePackets] NovaNet::UdpBaseConnection::HandleCorePacket: Received core packet Heartbeat
+[09-19-2026:17:08:16.469706-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.471356-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.474573-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.476504-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.477944-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.478785-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.480614-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.482370-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.484023-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.486052-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.487615-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.489438-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.491306-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.493038-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.495592-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.497315-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.498360-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.500058-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.502727-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.504796-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.505705-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.507569-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.509494-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.510966-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.512288-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.514018-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.515767-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.517639-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.519415-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.520911-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.522699-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.524269-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.525976-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.528704-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.529786-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.531095-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.533617-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.534803-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.536366-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.538074-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.540321-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.541667-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.543722-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.546015-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.546991-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.548948-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.550476-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.552311-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.553930-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.555598-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.557473-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.559453-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.561135-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.562851-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.564490-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.566301-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.567790-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.569529-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.571238-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.573236-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.575020-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.576483-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.578185-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.579761-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.584236-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.587300-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.588359-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.589413-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.590963-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.592755-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.594283-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.596024-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.598680-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.600032-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.601129-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.602890-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.604537-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.606999-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.609776-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.611269-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.612054-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.613523-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.615354-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.617542-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.618644-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.620352-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.621941-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.623635-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.625413-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.626953-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.628640-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.630419-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.632181-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.633721-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.635560-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.637155-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.638800-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.640553-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.642675-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.643732-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.645887-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.646902-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.648613-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.651653-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.652379-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.653497-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.655269-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.656920-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.658747-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.660388-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.661997-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.664218-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.665302-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.668825-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.669057-GMT] NovaNet::UdpBaseConnection::UpdateHeartbeat(): [NET_Acks] Connection timeout exceeded, sending client heartbeat (curr 23119 ms : last 22917 ms)
+[09-19-2026:17:08:16.669064-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_Debug] Sending local sequence id 8, remote sequence id 7, unreliable, reliable id: 65535, ack vector 7f
+[09-19-2026:17:08:16.669065-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_DebugDtls] Connection is sending packet type 2
+[09-19-2026:17:08:16.671517-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.671843-GMT] NovaNet::UdpClientConnection::Update(): [NET_Debug] Receiving local sequence id 8, remote sequence id 8, unreliable, reliable id: 65535, ack vector ff
+[09-19-2026:17:08:16.671844-GMT] NovaNet::UdpBaseConnection::HandleCorePacket(): [NET_CorePackets] NovaNet::UdpBaseConnection::HandleCorePacket: Received core packet Heartbeat
+[09-19-2026:17:08:16.673978-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.674746-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.676098-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.677767-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.679472-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.681206-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.683224-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.684451-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.686069-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.687723-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.689394-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.691004-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.692807-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.694350-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.696041-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.697761-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.699387-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.701010-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.701025-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:15 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/challenges {"runningTotals":[{"progressionId":"prog_s1_w1_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w1_deal_damage","runningTotal":2350},{"progressionId":"prog_s1_w1_win_games","runningTotal":0},{"progressionId":"prog_s1_w2_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w2_defeat_enemy_hunters","runningTotal":0},{"progressionId":"prog_s1_w2_win_games","runningTotal":0},{"progressionId":"prog_s1_w3_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w3_gain_essence","runningTotal":0},{"progressionId":"prog_s1_w3_win_games","runningTotal":0},{"progressionId":"prog_s1_w4_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w4_deal_damage","runningTotal":0},{"progressionId":"prog_s1_w4_win_games","runningTotal":0},{"progressionId":"prog_s1_w5_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w5_gain_levels","runningTotal":0},{"progression
+[09-19-2026:17:08:16.704914-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.706158-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.708809-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.709747-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.709765-GMT] Warning(): [Warning][UI] ConsoleAPI coui:///dist/preloader.js:20:29029: SVCSRESP:16 POST:http://127.0.0.1:18876/CrucibleLiveChallengeService/challenges {"runningTotals":[{"progressionId":"prog_daily_play_matches","runningTotal":1},{"progressionId":"prog_daily_deal_damage_to_players","runningTotal":1130},{"progressionId":"prog_daily_earn_essence","runningTotal":640},{"progressionId":"prog_s1_w1_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w1_deal_damage","runningTotal":2350},{"progressionId":"prog_s1_w1_win_games","runningTotal":0},{"progressionId":"prog_s1_w2_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w2_defeat_enemy_hunters","runningTotal":0},{"progressionId":"prog_s1_w2_win_games","runningTotal":0},{"progressionId":"prog_s1_w3_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w3_gain_essence","runningTotal":0},{"progressionId":"prog_s1_w3_win_games","runningTotal":0},{"progressionId":"prog_s1_w4_collect_essence","runningTotal":0},{"progressionId":"prog_s1_w4_deal_damage","runningTotal":
+[09-19-2026:17:08:16.711445-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.713140-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.714738-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.716408-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.718023-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.719882-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.721397-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.725382-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.726562-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.730635-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.731586-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.732389-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.734000-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.736940-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.737767-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.739414-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.741055-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.742783-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.745122-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.746034-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.747532-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.749456-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.750819-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.753266-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.754454-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.755878-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.757414-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.759108-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.762022-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.763361-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.764329-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.765948-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.768235-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.769584-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.770967-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.772720-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.774260-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.775985-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.777550-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.779106-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.780758-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.782312-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.783950-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.785600-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.788235-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.788973-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.791037-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.792049-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.794376-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.795340-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.798571-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.800128-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.800866-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.802379-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.804746-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.806260-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.807492-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.809074-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.810610-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.812311-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.814930-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.816334-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.817834-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.819504-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.821000-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.822407-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.824526-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.825520-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.827173-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.829031-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.830458-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.832022-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.833762-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.836315-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.837281-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.838704-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.840176-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.841746-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.843413-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.845048-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.846621-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.848245-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.849870-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.851473-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.853064-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.856762-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.857716-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.859179-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.859961-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.861454-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.863081-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.864663-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.866209-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.867844-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.870686-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.870900-GMT] NovaNet::UdpBaseConnection::UpdateHeartbeat(): [NET_Acks] Connection timeout exceeded, sending client heartbeat (curr 23321 ms : last 23119 ms)
+[09-19-2026:17:08:16.870913-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_Debug] Sending local sequence id 9, remote sequence id 8, unreliable, reliable id: 65535, ack vector ff
+[09-19-2026:17:08:16.870914-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_DebugDtls] Connection is sending packet type 2
+[09-19-2026:17:08:16.871922-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.872091-GMT] NovaNet::UdpClientConnection::Update(): [NET_Debug] Receiving local sequence id 9, remote sequence id 9, unreliable, reliable id: 65535, ack vector 1ff
+[09-19-2026:17:08:16.872092-GMT] NovaNet::UdpBaseConnection::HandleCorePacket(): [NET_CorePackets] NovaNet::UdpBaseConnection::HandleCorePacket: Received core packet Heartbeat
+[09-19-2026:17:08:16.872778-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.874596-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.876565-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.878406-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.879390-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.881781-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.883252-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.885041-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.886638-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.888049-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.889627-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.891329-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.892918-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.894430-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.896006-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.897673-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.899478-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.901640-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.903275-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.904733-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.906392-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.907718-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.909585-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.912580-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.914241-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.914970-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.916781-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.917777-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.919268-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.922348-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.923383-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.924187-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.926639-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.927644-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.928997-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.930448-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.931923-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.933445-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.934997-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.936730-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.938069-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.939603-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.941133-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.942852-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.944529-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.946027-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.947634-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.949144-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.950590-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.952192-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.953769-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.955108-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.958151-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.960119-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.960865-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.962035-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.963581-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.965112-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.968163-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.969097-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.970054-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.971641-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.973110-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.974905-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.976265-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.978228-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.979613-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.981223-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.983115-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.984378-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.985650-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.987516-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.989418-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.990341-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.991893-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.993390-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.994953-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:16.996495-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.000287-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.002754-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.003992-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.004808-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.007064-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.008430-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.009342-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.011696-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.012740-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.014014-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.015530-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.017117-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.019045-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.020287-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.021935-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.023630-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.024996-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.026548-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.028082-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.029725-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.031161-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.032707-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.034650-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.035786-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.039433-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.040118-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.040886-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.042477-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.044117-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.045717-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.047299-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.048855-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.050999-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.052307-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.053875-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.055681-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.056497-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.059142-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.060143-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.061375-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.062756-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.064280-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.065901-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.067719-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.068917-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.070442-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.072049-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.072169-GMT] NovaNet::UdpBaseConnection::UpdateHeartbeat(): [NET_Acks] Connection timeout exceeded, sending client heartbeat (curr 23522 ms : last 23321 ms)
+[09-19-2026:17:08:17.072176-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_Debug] Sending local sequence id 10, remote sequence id 9, unreliable, reliable id: 65535, ack vector 1ff
+[09-19-2026:17:08:17.072176-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_DebugDtls] Connection is sending packet type 2
+[09-19-2026:17:08:17.073574-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.075202-GMT] NovaNet::UdpClientConnection::Update(): [NET_Debug] Receiving local sequence id 10, remote sequence id 10, unreliable, reliable id: 65535, ack vector 3ff
+[09-19-2026:17:08:17.075204-GMT] NovaNet::UdpBaseConnection::HandleCorePacket(): [NET_CorePackets] NovaNet::UdpBaseConnection::HandleCorePacket: Received core packet Heartbeat
+[09-19-2026:17:08:17.075906-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.076725-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.078719-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.079750-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.081276-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.083537-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.084403-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.085911-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.088052-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.089007-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.090595-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.092817-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.094542-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.095370-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.096784-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.098311-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.100036-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.101467-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.104579-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.105581-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.106551-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.107639-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.109383-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.110829-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.112368-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.113917-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.115628-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.117054-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.118586-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.120120-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.121679-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.123234-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.124883-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.126357-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.128107-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.129511-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.131001-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.132769-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.134238-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.135714-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.137251-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.138777-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.140290-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.141826-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.143364-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.144947-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.146603-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.148104-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.149853-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.151214-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.153304-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.154361-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.156058-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.157348-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.158904-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.160409-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.162046-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.163596-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.165224-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.167847-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.169197-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.169909-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.171347-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.173077-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.174437-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.175936-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.177460-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.179031-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.180623-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.182400-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.183704-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.185252-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.186787-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.188482-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.190162-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.191659-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.193049-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.194569-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.196099-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.197796-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.199450-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.200805-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.202452-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.203970-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.205487-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.207043-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.208566-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.210141-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.211707-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.213305-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.214903-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.216316-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.218016-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.219535-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.221045-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.222488-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.224046-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.225659-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.227202-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.228725-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.230278-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.232265-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.233433-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.234950-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.236420-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.238008-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.239551-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.241107-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.242683-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.244304-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.245775-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.247392-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.249464-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.250409-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.252011-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.253514-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.255049-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.256606-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.258321-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.259873-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.261372-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.262835-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.264492-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.266153-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.267476-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.269450-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.270532-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.272131-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.273662-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.273795-GMT] NovaNet::UdpBaseConnection::UpdateHeartbeat(): [NET_Acks] Connection timeout exceeded, sending client heartbeat (curr 23723 ms : last 23522 ms)
+[09-19-2026:17:08:17.273801-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_Debug] Sending local sequence id 11, remote sequence id 10, unreliable, reliable id: 65535, ack vector 3ff
+[09-19-2026:17:08:17.273802-GMT] NovaNet::UdpSocketWrapper::SendPacket(): [NET_DebugDtls] Connection is sending packet type 2
+[09-19-2026:17:08:17.275238-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:17:08:17.275415-GMT] NovaNet::UdpClientConnection::Update(): [NET_Debug] Receiving local sequence id 11, remote sequence id 11, unreliable, reliable id: 65535, ack vector 7ff
+[09-19-2026:17:08:17.275416-GMT] NovaNet::UdpBaseConnection::HandleCorePacket(): [NET_CorePackets] NovaNet::UdpBaseConnection::HandleCorePacket: Received core packet Heartbeat
+[09-19-2026:17:08:17.275422-GMT] NovaNet::UdpClientConnection::Update(): [NET_Debug] Receiving local sequence id 12, remote sequence id 11, unreliable, reliable id: 65535, ack vector 7ff
+[09-19-2026:17:08:17.275424-GMT] NovaGameClientPackets::DispatchPacket(): [Debug_DispatchPackets] NovaGameClientPackets::DispatchPacket: Received packet EntityUpdates
+[09-19-2026:17:08:17.275559-GMT] NovaNet::Fail(): d:\workspace\crucible_hotfix\crucible_hotfix-build-release\dev\Code\NovaNet\Core\NovaNetCommon\NetworkEntity/EntityCommon.h:79 Assertion failed! (Requested Id out of range)

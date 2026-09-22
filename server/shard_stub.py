@@ -14,39 +14,39 @@ The hub hands the client a shard address in GetServerShardAddress::Success
 so the shard link is **UDP**, not TLS/TCP like the hub. A TCP listener on
 18878 sees nothing at all, which is what happened on the first attempt.
 
-What speaks here
-----------------
-This is the `NovaGameClientPackets` stream - the protocol docs/10 recovered
-the dispatch table for, and which docs/11 established does NOT belong to the
-hub port. `NovaGameClientPackets::DispatchPacket` (rva 0xe24300) handles
-packet ids 5..12:
+Wire format (verified 2026-09-19)
+---------------------------------
+The retail client sends raw LZ4 blocks containing header, payload and a
+big-endian CRC32. Replies prepend BasePacket::Unencrypted (00) to that same
+compressed block. See docs/15-shard-lz4.md for live Connected evidence.
 
-    5 Connect, 6 Accept, 7 SyncConsole, 8 SyncConnectionCvars,
-    9 ServerConsoleCommand, 10 EntityUpdates, 11 EntityRpcs, 12 ClientMigration
-
-and every packet carries the base `Packet` header (rva 0x4f212f0):
-
-    u16 PacketType, u16 LocalSequence, u16 RemoteSequence,
-    u32 SequenceWindow, bool IsReliable, [u16 ReliableSequence if IsReliable]
-
-with the same range-compressed integer encoding as the hub - so those widths
-are nominal until each field's descriptor is read. `Accept` (rva 0xe25eb0) is
-the base header plus a single `u8 ServerShardId`.
-
-This stub's job is narrow, like match_stub.py's was: record exactly what the
-client sends so the handshake can be worked out from real bytes rather than
-guesses. It replies only when asked to.
+Packet ids 5..12 below are SERVER-to-client ids; client EntityRpcs is also
+11 (retail getter 1a97350); other client game-packet ids remain unestablished. A transport connection alone does not implement game mode,
+player replication, possession or simulation.
 
 Usage:
   python3 server/shard_stub.py                 # capture only
   CRUCIBLE_SHARD_REPLY=accept python3 server/shard_stub.py
+
+Historical probe helpers below are retained for reproducing old experiments;
+their checksum/framing theories are superseded. Leave CRUCIBLE_SHARD_PROBE
+unset for the verified LZ4 path. Entity probes are opt-in and unverified.
 """
+from dataclasses import dataclass
 import datetime
 import os
 import socket
+import struct
 import threading
 import time
 import zlib
+
+import lz4.block
+import client_input
+import hero_loadout
+import local_sessions
+import solo_modes
+import math
 
 HOST = "127.0.0.1"
 PORT = int(os.environ.get("CRUCIBLE_SHARD_PORT", "18878"))
@@ -91,30 +91,18 @@ BASE_PACKET_TYPES = {
 
 
 def describe(data):
-    """Best-effort read of the leading bytes, without over-committing.
-
-    The first byte is the transport's BasePacket type (switch at rva
-    0x4fbbb90): 0x00 Unencrypted, 0xCC DtlsHandshake, 0xFF Encrypted. Only
-    Unencrypted datagrams can be read here - with net_UdpUseEncryption 0 in
-    user.cfg the client should never send the other two.
-    """
-    if not data:
-        return "empty datagram"
-    kind = BASE_PACKET_TYPES.get(data[0], "unknown(%#04x)" % data[0])
-    parts = ["BasePacket::%s" % kind]
-    if data[0] != UNENCRYPTED:
-        parts.append("encrypted or handshake - not decodable here")
-        return ", ".join(parts)
-    body = data[1:]
-    if len(body) < 11:
-        parts.append("body %d bytes, shorter than the 11-byte header" % len(body))
-        return ", ".join(parts)
+    """Describe a validated, decompressed client packet."""
+    parsed = parse_shard(data)
+    if parsed is None:
+        return "invalid LZ4 packet or CRC"
+    _, body, _ = parsed
+    parts = ["LZ4 (%d wire bytes)" % len(data)]
     ptype = int.from_bytes(body[0:2], "big")
     parts.append("PacketType=%d (%s)" % (ptype, PACKET_NAMES.get(ptype, "?")))
     parts.append("LocalSeq=%d" % int.from_bytes(body[2:4], "big"))
     parts.append("RemoteSeq=%d" % int.from_bytes(body[4:6], "big"))
     parts.append("SeqWindow=%#x" % int.from_bytes(body[6:10], "big"))
-    reliable = body[10]
+    reliable = body[10] & 1
     parts.append("IsReliable=%d" % reliable)
     off = 11
     if reliable:
@@ -129,17 +117,22 @@ def describe(data):
 # ---------------------------------------------------------------------------
 # Entity replication primitives (docs/13)
 # ---------------------------------------------------------------------------
-# Entity RelativeId is a zigzag-encoded LEB128 varint - protobuf's sint32.
-# Read path at rva 0x4a13ac0:
-#     mov eax,[raw]; mov ecx,eax; and eax,1; shr ecx,1; neg eax; xor ecx,eax
-# i.e. value = (raw >> 1) ^ -(raw & 1). The raw value comes from the varint
-# reader at rva 0x4fafcd0, which is a textbook LEB128:
-#     and eax,0x7f; shl eax,cl; or [acc],eax; test dl,dl; jns done;
-#     add rbx,7; cmp rbx,0x23
-# so 7 bits per byte, high bit as the continuation flag, and a 35-bit ceiling
-# (five bytes). The caller asserts against 0xffffff - "Requested Id out of
-# range" - so ids themselves are 24-bit.
-ENTITY_ID_MAX = 0xFFFFFF
+# Entity counter deltas first pack a category bit (0x4b9daa0), then use
+# signed zigzag and LEB128 (0x4a13ac0 / 0x4fafcd0). Counter zero and 0xffffff
+# are reserved. See docs/16 for the live assertion that exposed the missing
+# outer transform; zigzag alone maps the first counter 1 back to zero.
+ENTITY_ID_MAX = 0xFFFFFE  # zero and 0xffffff are reserved (0x4b9db53).
+
+# Solo-session entity ids, as spawned by the bootstrap (docs/16, docs/18).
+PLAYER_CONNECTION_ID = 0x01000001   # carries the client's input RPC
+PLAYER_CHARACTER_ID = 0x01000002    # the controlled hero
+HUNTER_BOT_IDS = (0x01000003, 0x01000004, 0x01000005)
+# Ascending network component types shared by the installed marine_character
+# slice (docs/16); Health is 79, Location is 145.
+MARINE_SHARED_TYPES = (0, 10, 13, 18, 21, 24, 27, 44, 46, 48, 69, 79, 80,
+                       98, 99, 101, 102, 107, 110, 115, 120, 125, 128, 132,
+                       133, 143, 145, 146, 156, 158, 163, 165, 166)
+MARINE_HEALTH_MAX = 800.0   # observed live, live-alpha-entry.json (docs/18)
 
 
 def encode_varint(value):
@@ -174,16 +167,26 @@ def decode_varint(data, offset=0):
     raise ValueError("varint did not terminate within the 35-bit ceiling")
 
 
-def encode_entity_id(value):
-    """Zigzag then varint, as RelativeId is written."""
-    if abs(value) > ENTITY_ID_MAX:
-        raise ValueError("entity id out of the engine's 24-bit range")
-    return encode_varint((value << 1) ^ (value >> 31 if value < 0 else 0))
+def encode_entity_id(value, previous_id=0, local=False):
+    """Encode ((counter delta << 1) | kind), THEN zigzag and LEB128.
+
+    The outer transform is at 0x4b9daa0; 0x4a13ac0 only encodes its signed
+    intermediate. Kind 0 is category 0x01; kind 1 is category 0xfe.
+    The previous counter starts at zero for each EntityMessages vector.
+    """
+    if not 1 <= value <= ENTITY_ID_MAX or not 0 <= previous_id <= ENTITY_ID_MAX:
+        raise ValueError("entity counter must be 1..0xfffffe; previous may be zero")
+    relative = ((value - previous_id) << 1) | int(bool(local))
+    return encode_varint((relative << 1) ^ (relative >> 31))
 
 
-def decode_entity_id(data, offset=0):
+def decode_entity_id(data, offset=0, previous_id=0):
     raw, offset = decode_varint(data, offset)
-    return (raw >> 1) ^ -(raw & 1), offset
+    relative = (raw >> 1) ^ -(raw & 1)
+    counter = (relative >> 1) + previous_id
+    if not 1 <= counter <= ENTITY_ID_MAX:
+        raise ValueError("decoded entity counter is reserved or out of range")
+    return counter, offset
 
 
 # TypeAndFlags is one byte, unpacked by the client at rva 0x4b9dc20:
@@ -192,17 +195,16 @@ def decode_entity_id(data, offset=0):
 #     shr dl,7           -> +0x0c
 #     shr al,5  ; and al,1 -> +0x0e
 #     shr al,4  ; and al,1 -> +0x0f
-#     and eax,0x0f         -> +0x00 (the update type, a dword)
+#     and eax,0x0f         -> +0x00 (destination network role, a dword)
 # so:
-ENTITY_TYPE_MASK = 0x0F     # low nibble: update type
-# The only two values ValidateUpdate (rva 0x4bb4f80) will accept, one per
-# connection role. See pack_type_and_flags.
-ENTITY_UPDATE_TYPE_3 = 3
-ENTITY_UPDATE_TYPE_4 = 4
-# Order the spawn probe walks: the two ValidateUpdate calls out first, then
-# the rest of the plausible low nibble, so an early trial is likely to be the
-# right one but nothing is excluded.
-ENTITY_UPDATE_TYPE_SWEEP = (3, 4, 0, 1, 2, 5, 6, 7)
+ENTITY_TYPE_MASK = 0x0F     # low nibble: destination network role
+# The nibble is the destination network role, not an arbitrary update type.
+# Retail role-name dispatcher 0x4f4b450 and consumer 0x4bb484f confirm these.
+ENTITY_ROLE_INVALID = 0
+ENTITY_ROLE_CLIENT_SIMULATION = 1
+ENTITY_ROLE_CLIENT_AUTONOMOUS = 2
+ENTITY_ROLE_SERVER_PROXY = 3
+ENTITY_ROLE_SERVER_AUTHORITY = 4
 ENTITY_FLAG_BIT4 = 0x10     # -> +0x0f; gates the field at +0x10 (the slice ref)
 ENTITY_FLAG_BIT5 = 0x20     # -> +0x0e
 ENTITY_FLAG_BIT6 = 0x40     # -> +0x0d
@@ -212,20 +214,11 @@ ENTITY_FLAG_BIT7 = 0x80     # -> +0x0c; checked FIRST and routed to 0x4bb41f0
 
 def pack_type_and_flags(update_type, bit4=False, bit5=False, bit6=False,
                         bit7=False):
-    """Build the TypeAndFlags byte.
+    """Build TypeAndFlags; the historical update_type argument is a role.
 
-    `update_type` is the low nibble. EntityReplicationManager::ValidateUpdate
-    (rva 0x4bb4f80) branches on a role at [this+0x48] and accepts exactly two
-    values:
-
-        role 1: type must be 3, else "Unexpected update type coming from
-                peer server" (rva 0x4bb4fc8)
-        role 0: type must be 4                       (rva 0x4bb50a8)
-
-    so the candidates are ENTITY_UPDATE_TYPE_3 and _4 rather than any of the
-    sixteen the nibble allows. Which of the two a server->client spawn should
-    carry is the one thing left to settle, and it is a two-way choice the
-    client answers in a single run.
+    1=ClientSimulation, 2=ClientAutonomous, 3=ServerProxy, 4=ServerAuthority.
+    The consumer changes the entity's local network role to this value.
+    Do not sweep values as spawn candidates (0x4bb484f..0x4bb4921).
     """
     if not 0 <= update_type <= 0x0F:
         raise ValueError("update type must fit the low nibble")
@@ -248,58 +241,68 @@ def unpack_type_and_flags(byte):
     }
 
 
-def build_slice_entry_id(asset_hash):
-    """`SliceEntryId` — the reference that makes the client build an entity
-    from a slice it already has on disk.
+def build_slice_entry_id(asset_hash, entry_index):
+    """Asset hash followed by the slice's compact entry index.
 
-    Resolved by following the types rather than guessing from the name:
-    `SliceEntryId` (body rva 0x4bfb1d0) serialises exactly ONE field, named
-    `Slice`, of type `StringAsset`. `StringAsset` (rva 0xa88e90) in turn
-    serialises one field named `HashString` through the ranged-integer slot
-    (+0x38), and its descriptor (rva 0x7480dd0) declares the full uint32
-    range — so it is **four bytes big endian**, not a varint.
-
-    (The 0x7f / 0x3fff / 0x1fffff / 0xfffffff comparisons further down
-    0x4bfb1d0 are a separate varint length computed over a different field at
-    +0x90; they are not this id. Mistaking them for it is what produced the
-    first, wrong version of this function.)
-
-    The hash is resolved against the level's own AssetHashMap
-    (`levels/<level>/commondata/stringhashlibrary.xml`), e.g. 501823405 =
-    slices/player/hero/hero_character in practicearena.
+    Retail RVA 0x4bfb1d0 continues across multiple .pdata records. Its tail
+    (0x4bfb24f..0x4bfb61f) serializes the entry at object offset +0x90;
+    stopping at the first unwind fragment incorrectly omitted this field.
+    The index uses leading length bits, not LEB128. -1 is the F0 sentinel.
     """
     if not 0 <= asset_hash <= 0xFFFFFFFF:
         raise ValueError("asset hash must fit a uint32")
-    return asset_hash.to_bytes(4, "big")
+    if entry_index == -1:
+        encoded = b"\xf0"
+    elif 0 <= entry_index <= 0x7F:
+        encoded = bytes([entry_index])
+    elif entry_index <= 0x3FFF and entry_index >= 0:
+        encoded = (0x8000 | entry_index).to_bytes(2, "big")
+    elif entry_index <= 0x1FFFFF and entry_index >= 0:
+        encoded = (0xC00000 | entry_index).to_bytes(3, "big")
+    elif entry_index <= 0x0FFFFFFF and entry_index >= 0:
+        encoded = (0xE0000000 | entry_index).to_bytes(4, "big")
+    else:
+        raise ValueError("slice entry index must be -1 or a 28-bit unsigned integer")
+    return asset_hash.to_bytes(4, "big") + encoded
+
+
+@dataclass(frozen=True)
+class EntityMessage:
+    """Header and data occupy separate sections in EntitiesUpdatedMessage."""
+    header: bytes
+    payload: bytes
 
 
 def build_entity_message(entity_id, type_and_flags, slice_hash=None,
-                         payload=b""):
+                         payload=b"", *, slice_entry_index=None, previous_id=0, local=False):
     """One element of the EntityMessages vector.
 
         RelativeId (zigzag varint)
         u8 TypeAndFlags
         SliceEntryId              -- ONLY when bit7 is clear and bit4 is set
         u16 PayloadSize
-        <payload>
+
+    Returns separate header and payload for the packet-level PackingBuffer.
 
     The conditional is the client's own, at rva 0x4b9dc5b: it tests the
     delete flag (bit 7) first and skips everything, then tests bit 4 and only
     then calls the SliceEntryId serialiser (0x4b9e620) into +0x10.
     """
     flags = type_and_flags[0]
-    out = encode_entity_id(entity_id) + type_and_flags
+    out = encode_entity_id(entity_id, previous_id, local=local) + type_and_flags
     wants_slice = (not flags & ENTITY_FLAG_BIT7) and (flags & ENTITY_FLAG_BIT4)
     if wants_slice:
         if slice_hash is None:
             raise ValueError("bit 4 is set, so a slice hash is required")
-        out += build_slice_entry_id(slice_hash)
-    elif slice_hash is not None:
+        if slice_entry_index is None:
+            raise ValueError("a slice reference requires an explicit entry index")
+        out += build_slice_entry_id(slice_hash, slice_entry_index)
+    elif slice_hash is not None or slice_entry_index is not None:
         raise ValueError("a slice hash needs bit 4 set, or the client will "
                          "not read it")
     if len(payload) > 0xFFFF:
         raise ValueError("payload exceeds the u16 PayloadSize field")
-    return out + len(payload).to_bytes(2, "big") + payload
+    return EntityMessage(out + len(payload).to_bytes(2, "big"), bytes(payload))
 
 
 # EntityMessages.Size is declared 0..2048 (descriptor at rva 0x7481d60), so it
@@ -308,20 +311,775 @@ ENTITY_MESSAGES_MAX = 2048
 
 
 def build_entity_updates(prefix, local_seq, remote_seq, messages,
-                         game_time_ms=0):
+                         game_time_ms=0, seq_window=0):
     """A complete EntityUpdates packet (id 10, serialiser rva 0xe262e0).
 
         base Packet header
         ServerGameTimePoint { u32 BE GameTimeMs }   (rva 0x77d1d0)
-        EntityMessages: u16 BE Size | element[Size]
+        EntityMessages: u16 BE Size | header[Size]
+        PackingBuffer: u16 BE total payload size | concatenated payloads
     """
     if len(messages) > ENTITY_MESSAGES_MAX:
         raise ValueError("at most %d entity messages per packet"
                          % ENTITY_MESSAGES_MAX)
+    # Retail 4b9df30 reads ALL headers, then 4aa8380 reads a bounded
+    # PackingBuffer through NetworkInputSerializer::Serialize (4f56910).
+    # Its range 0..0x1800 gives a two-byte BE length (4f57140).
+    packed = b"".join(message.payload for message in messages)
+    if len(packed) > 0x1800:
+        raise ValueError("entity payload buffer exceeds retail capacity 6144")
     payload = (ranged_uint32(game_time_ms)
                + len(messages).to_bytes(2, "big")
-               + b"".join(messages))
-    return build_shard(prefix, 10, local_seq, remote_seq, payload)
+               + b"".join(message.header for message in messages)
+               + len(packed).to_bytes(2, "big") + packed)
+    return build_shard(prefix, 10, local_seq, remote_seq, payload,
+                       seq_window=seq_window)
+
+
+def build_replication_record(bits):
+    """LEB128 bit count then LSB-first bytes (retail 0x4a930f0).
+
+    With net_CompressHeaders=1 these are traversal decisions, not the full
+    component schema: children of absent components/arrays are omitted.
+    """
+    if len(bits) > 1024:
+        raise ValueError("replication record exceeds retail bitset capacity")
+    data = bytearray((len(bits) + 7) // 8)
+    for i, enabled in enumerate(bits):
+        if enabled:
+            data[i // 8] |= 1 << (i % 8)
+    return encode_varint(len(bits)) + data
+
+
+def build_practice_gamemode_probe():
+    """Bounded source-derived probe, NOT a complete arena bootstrap.
+
+    Practice level's baked GameMode entity is entry 127 (1198 entries, no
+    nested slice references). GameMode is the sole replicated component.
+    Its compressed traversal visits the component, ConfigurationIndex,
+    AlliancesEnabled, StaticAllianceMode, TeamInfo, UsesSequentialGM.
+    Only ConfigurationIndex changes; retail config-list entry 6 is PRACTICE.
+    Signed ranged int16 encodes value-minus-minimum, hence 0x8006.
+    See docs/16-entity-bootstrap.md for source addresses and limitations.
+    """
+    properties = build_replication_record([True, True, False, False, False, False])
+    properties += (solo_modes.selected().configuration + 32768).to_bytes(2, "big")
+    return build_entity_message(
+        # Live retail slice remapping produced FE000081 for this baked entity.
+        # Using ordinary network counter 1 queued activation under 01000001,
+        # but the replicator was keyed by FE000081 (4bb2030..4bb20ca).
+        solo_modes.selected().mode_entry + solo_modes.selected().baked_counter_bias, pack_type_and_flags(ENTITY_ROLE_CLIENT_SIMULATION, bit4=True),
+        slice_hash=solo_modes.selected().level_hash, slice_entry_index=solo_modes.selected().mode_entry, payload=properties,
+        local=True)
+
+
+def build_composite_client_probe(user_id, *, previous_id=0):
+    """Opt-in candidate; requires a live hub identity before transmission.
+
+    Retail slices/characters/compositecliententity entry 0 contains the actual
+    connection/loadout/player components. Live descriptors captured 17:52 GMT
+    establish these nonempty directions, in ascending component type order:
+      shared: 44, 85, 88, 145, 157, 158, 165, 169
+      autonomous: 32, 85, 88, 111, 145, 158
+    Keep authored defaults except PlayerComponent.UserId. Player's shared
+    traversal is root, UserId, Name (ac4920); UserId is full-range BE uint32
+    (7cb2c0). Counts here are compressed traversal counts, not expanded sizes.
+    This is only a local-player activation probe, not hero/gameplay bootstrap.
+    """
+    if not 1 <= user_id <= 0xFFFFFFFF:
+        raise ValueError("probe requires the connected session's nonzero uint32 user ID")
+    shared = [False] * 7 + [True, True, False]
+    autonomous = [False] * 6
+    properties = (build_replication_record(shared)
+                  + build_replication_record(autonomous)
+                  + ranged_uint32(user_id))
+    return build_entity_message(
+        1, pack_type_and_flags(ENTITY_ROLE_CLIENT_AUTONOMOUS, bit4=True),
+        slice_hash=646954285, slice_entry_index=0, payload=properties,
+        previous_id=previous_id)
+
+
+def bootstrap_reply(data, state):
+    """Opt-in, once per accepted peer after ten acknowledged heartbeats."""
+    mode = os.environ.get("CRUCIBLE_SHARD_BOOTSTRAP")
+    if mode not in ("practice-gamemode", "practice-client", "practice-solo", "practice-roster", "practice-character"):
+        return None
+    if "accept" not in state or state.get("bootstrap_sent"):
+        return None
+    parsed = parse_shard(data)
+    if parsed is None:
+        return None
+    region = parsed[1]
+    if int.from_bytes(region[:2], "big") != 2:
+        return None
+    accept_region = lz4.block.decompress(state["accept"][1:], uncompressed_size=4096)
+    accepted_seq = int.from_bytes(accept_region[2:4], "big")
+    ack = int.from_bytes(region[4:6], "big")
+    delta = (ack - accepted_seq) & 0xFFFF
+    if not state.get("accept_acknowledged"):
+        window = int.from_bytes(region[6:10], "big")
+        if delta >= 32 or not window & (1 << delta):
+            return None
+        state["accept_acknowledged"] = True
+    client_seq = int.from_bytes(region[2:4], "big")
+    previous = state.get("bootstrap_last_heartbeat")
+    if previous is not None and not 0 < ((client_seq - previous) & 0xFFFF) < 0x8000:
+        return None
+    state["bootstrap_last_heartbeat"] = client_seq
+    state["bootstrap_heartbeats"] = state.get("bootstrap_heartbeats", 0) + 1
+    if state["bootstrap_heartbeats"] < 10:
+        return None
+    messages = [build_practice_gamemode_probe()]
+    if mode in ('practice-client', 'practice-solo', 'practice-roster', 'practice-character'):
+        directory = os.environ.get('CRUCIBLE_LOCAL_SESSIONS')
+        user_id = local_sessions.claim(directory, state.get('peer_ip')) if directory else None
+        if user_id is None:
+            if not state.get('identity_wait_logged'):
+                log('      BOOTSTRAP waiting for one fresh local hub identity')
+                state['identity_wait_logged'] = True
+            return None
+        messages.append(build_composite_client_probe(user_id,
+            previous_id=solo_modes.selected().mode_entry + solo_modes.selected().baked_counter_bias))
+    state["seq"] = (state["seq"] + 1) & 0xFFFF
+    state["bootstrap_sent"] = True
+    return build_entity_updates(
+        shard_bpt(), state["seq"], state["received_seq"],
+        messages, game_time_ms=2000,
+        seq_window=state["received_window"])
+
+
+def build_practice_match_store_probe():
+    """Activate the baked store with defaults to inspect its replication graph.
+
+    Two shared roots: DataStoreMatch type 37 and EntityFlags type 44.
+    Script has only autonomous data, which role 1 does not deserialize.
+    This does NOT populate PlayerList or claim roster completion.
+    """
+    return build_entity_message(
+        solo_modes.selected().store_entry + solo_modes.selected().baked_counter_bias, pack_type_and_flags(ENTITY_ROLE_CLIENT_SIMULATION, bit4=True),
+        slice_hash=solo_modes.selected().level_hash, slice_entry_index=solo_modes.selected().store_entry,
+        payload=build_replication_record([False, False]), local=True)
+
+
+def build_single_player_roster_probe(player_name, *, spawned_character=False):
+    """One actual connection, optionally linked to the verified native spawn.
+
+    Live store graph captured 18:49: root 0, PlayerList 538, Size 539,
+    entry 0 at 540, NumPlayersInMatch 579. Other field roots are absent.
+    PlayerData 4ab8110 serializes each selected entry atomically.
+    """
+    if not isinstance(player_name, bytes) or len(player_name) > 127 or b'\0' in player_name:
+        raise ValueError('player name must be at most 127 non-NUL bytes')
+    entries = []
+    names = [player_name]
+    if spawned_character:
+        names += [('Hunter %d' % (i + 1)).encode()
+                  for i in range(len(solo_modes.selected().bot_positions))]
+    count = len(names)
+    for slot, name in enumerate(names, 1):
+        identity = b'local-hunter' if slot == 1 else ('solo-hunter-%d' % slot).encode()
+        team = 1 if slot == 1 else 2
+        entries.append(bytes([slot, len(identity)]) + identity
+            + bytes([len(name)]) + name + b'\x00'
+            # CharacterClass (.rdata name table 0x6c1de08; 8 is "Marine").
+            # Only the local player follows CRUCIBLE_SOLO_HERO; slots 2..4 are
+            # the Marine bots. b'\x00\x00' is the Unknown class before spawn.
+            + ((hero_loadout.character_class_bytes() if slot == 1 else b'\x00\x08')
+               if spawned_character else b'\x00\x00')
+            + bytes([team, team])
+            # Reader 4f565d0 shares one cached byte per eight bools across
+            # PlayerData entries. Only the local player is DropMaster.
+            + (bytes([int(slot == 1)]) if (slot - 1) % 8 == 0 else b'')
+            + b'\x7f\xff' + (b'\x03' if spawned_character else b'\x00'))
+    bits = ([True] + [False] * 6 + [True, True] + [True] * count
+            + [False] * 3 + [True, False, False] + [False])
+    if spawned_character:
+        # Fixed 16-slot CharacterIds: no wire size; one value per selected slot.
+        bits = bits[:-2] + [True] + [True] * count + [False] * (16-count) + [False]
+    properties = (build_replication_record(bits) + bytes([count])
+                  + b''.join(entries) + ranged_uint32(count))
+    if spawned_character:
+        properties += b''.join(ranged_uint32(0x01000002+i) for i in range(count))
+        return build_entity_message(solo_modes.selected().store_entry + solo_modes.selected().baked_counter_bias, pack_type_and_flags(ENTITY_ROLE_CLIENT_SIMULATION),
+                                    payload=properties, local=True)
+    return build_entity_message(
+        solo_modes.selected().store_entry + solo_modes.selected().baked_counter_bias, pack_type_and_flags(ENTITY_ROLE_CLIENT_SIMULATION, bit4=True),
+        slice_hash=solo_modes.selected().level_hash, slice_entry_index=solo_modes.selected().store_entry, payload=properties,
+        local=True)
+
+
+def build_local_match_slot_probe(*, previous_id=0):
+    """Assign the one local connection slot 1, retaining other properties.
+
+    MatchDataReceiver shared serializer 96a644 names MyId, using 89f740's
+    signed int8 range (-128..127). Reader 4f56640 copies its raw byte,
+    unlike the wider signed ranged readers. Expanded size 2 is root and MyId.
+    UI safely returns Unknown until this slot also exists in PlayerList.
+    """
+    shared = [False, False, True, True, False, False, False, False, False]
+    properties = (build_replication_record(shared)
+                  + build_replication_record([False] * 6) + b'\x01')
+    return build_entity_message(1, pack_type_and_flags(ENTITY_ROLE_CLIENT_AUTONOMOUS),
+                                payload=properties, previous_id=previous_id)
+
+
+def match_store_reply(state):
+    if (os.environ.get('CRUCIBLE_SHARD_BOOTSTRAP') not in ('practice-roster', 'practice-character')
+            or not state.get('bootstrap_sent')
+            or not state.get('local_player_activation_received')
+            or state.get('match_store_sent')):
+        return None
+    state['seq'] = (state['seq'] + 1) & 0xffff
+    state['match_store_sent'] = True
+    return build_entity_updates(
+        shard_bpt(), state['seq'], state['received_seq'],
+        [build_single_player_roster_probe(state.get('local_player_name', b'')),
+         build_local_match_slot_probe(previous_id=solo_modes.selected().store_entry + solo_modes.selected().baked_counter_bias)],
+        game_time_ms=2000, seq_window=state['received_window'])
+
+
+def solo_phase_reply(state):
+    """Practice's authored WaitForPlayers -> GamePlay path for one local peer.
+
+    This opt-in phase probe follows the client's own activation RPC; no other
+    peer or population count is involved. It does not prove character loading,
+    possession or simulation. CurrentPhase alone cannot dismiss the UI when
+    DataStoreMatch/local character data are missing (retail c8d700/c8de40).
+    """
+    if (os.environ.get('CRUCIBLE_SHARD_BOOTSTRAP') not in ('practice-solo', 'practice-roster', 'practice-character')
+            or not state.get('bootstrap_sent')
+            or not state.get('local_player_activation_received')
+            or state.get('solo_phase_sent')):
+        return None
+    # Baked Practice entry 123, local counter 125 (entry + 2). Its sole
+    # replicated component is MatchPhase: root, TimeRemaining, CurrentPhase,
+    # StartTimeSeconds (96dccc). Enum serializer 42c3990 is full BE u16.
+    # Installed practice.gamemodeconfig has GamePlay after WaitForPlayers,
+    # AutoSkipPhaseToGameplay, DoNotSpawnDropPod, and unlimited phase time.
+    properties = build_replication_record([True, False, True, False]) + b'\0\x08'
+    message = build_entity_message(
+        solo_modes.selected().phase_entry + solo_modes.selected().baked_counter_bias, pack_type_and_flags(ENTITY_ROLE_CLIENT_SIMULATION, bit4=True),
+        slice_hash=solo_modes.selected().level_hash, slice_entry_index=solo_modes.selected().phase_entry, payload=properties,
+        local=True)
+    state['seq'] = (state['seq'] + 1) & 0xffff
+    state['solo_phase_sent'] = True
+    return build_entity_updates(shard_bpt(), state['seq'], state['received_seq'],
+                                [message], game_time_ms=2000,
+                                seq_window=state['received_window'])
+
+
+def pack_practice_spawn_transform(position=None):
+    """Retail packed Location transform at Practice's authored PlayerStartSpawn.
+
+    4f47e10 packs X/Y into 22 bits over +/-4500 and Z into 20 over
+    +/-1300; constants were verified in the running client. 4f45700 packs
+    the identity rotation using largest-index 0 (WXYZ) and three round(511.5)
+    components. Network readers consume a BE u64 then a BE u32.
+    """
+    position = solo_modes.selected().player_position if position is None else position
+    x, y = (int((v + 4500) * 2097151.5 / 4500 + 0.5) for v in position[:2])
+    z = int((position[2] + 1300) * 524287.5 / 1300 + 0.5)
+    packed = (x << 42) | (y << 20) | z
+    rotation = (512 << 20) | (512 << 10) | 512
+    return packed.to_bytes(8, 'big') + rotation.to_bytes(4, 'big')
+
+
+def build_practice_character_probe(*, counter=2, position=None, autonomous=True,
+                                   previous_id=0, hero=None):
+    """Spawn authored Marine entry 0 as autonomous counter 2, still unverified.
+
+    Nonempty directions come from the installed marine_character slice and
+    captured descriptor table. Location.InternalTransform is atomic. The
+    EntityHierarchy parent is the existing connection's full network ID.
+    Hierarchy's CharacterEntity kind is authored in this slice; its normal
+    autonomous OnActivate registers the local character (c3c940).
+    This probe does not invent health, Alive status or simulation acceptance.
+    """
+    # Every one of the ten shipped hunters has this exact replication layout
+    # (docs/24); only the slice hash differs. So the hero is a two-value
+    # substitution, not a different packet.
+    hero = hero_loadout.selected() if hero is None else hero
+    shared_types = hero_loadout.SHARED_TYPES
+    bits = []
+    for component in shared_types:
+        if component == 145:
+            bits.extend((True, False, False, True, False, False))
+        elif component == 158 and autonomous:
+            bits.extend((True, True, False))
+        else:
+            bits.append(False)
+    properties = (build_replication_record(bits)
+                  + (build_replication_record([False] * hero_loadout.AUTONOMOUS_ROOTS)
+                     if autonomous else b'')
+                  + pack_practice_spawn_transform(position)
+                  + (ranged_uint32(0x01000001) if autonomous else b''))
+    return build_entity_message(
+        counter, pack_type_and_flags(ENTITY_ROLE_CLIENT_AUTONOMOUS if autonomous else ENTITY_ROLE_CLIENT_SIMULATION, bit4=True),
+        slice_hash=hero.slice_hash, slice_entry_index=hero.slice_entry,
+        payload=properties, previous_id=previous_id)
+
+
+def character_spawn_reply(state):
+    """Bounded opt-in character probe after this one player's startup."""
+    if (os.environ.get('CRUCIBLE_SHARD_BOOTSTRAP') != 'practice-character'
+            or not all(state.get(flag) for flag in (
+                'bootstrap_sent', 'local_player_activation_received',
+                'match_store_sent', 'solo_phase_sent'))
+            or state.get('character_spawn_sent')):
+        return None
+    state['seq'] = (state['seq'] + 1) & 0xffff
+    state['character_spawn_sent'] = True
+    state['character_spawn_seq'] = state['seq']
+    return build_entity_updates(shard_bpt(), state['seq'], state['received_seq'],
+                                [build_practice_character_probe()], game_time_ms=2000,
+                                seq_window=state['received_window'])
+
+
+def build_character_connection_links(*, previous_id=0):
+    """Link the connection's loadout and prediction children to its Marine.
+
+    Values serialize by component ID across directions: LoadoutSetup's
+    autonomous Character (85) precedes Hierarchy's shared child list (158).
+    Hierarchy's autonomous following/controlling targets both reference that
+    same native character. Its captured autonomous graph is root plus these
+    two atomic properties. The already verified MyId stays intact.
+    """
+    shared = [False] * 5 + [True, False, True, True, True] + [False] * 2
+    autonomous = [False, True, True] + [False] * 10 + [True, True, True]
+    properties = (build_replication_record(shared)
+                  + build_replication_record(autonomous)
+                  # LoadoutSetup.Character, then the ChildEntityIds size.
+                  + hero_loadout.loadout_character_bytes() + b'\x01'
+                  + ranged_uint32(0x01000002)
+                  # Hierarchy autonomous FollowingEntityId / ControllingEntityId.
+                  # Both use full BE u32 (a97090/a970ba -> 7cb2c0).
+                  + ranged_uint32(0x01000002) + ranged_uint32(0x01000002))
+    return build_entity_message(1, pack_type_and_flags(ENTITY_ROLE_CLIENT_AUTONOMOUS),
+                                payload=properties, previous_id=previous_id)
+
+
+def character_links_reply(data, state):
+    """Publish spawned roster after delivery of the native character packet.
+
+    Packet ACK is delivery evidence only, not a gameplay/activation receipt.
+    Native activation, local character registration, authored spawn transform
+    and 800/800 health were separately verified in the 19:18 live capture.
+    """
+    if (os.environ.get('CRUCIBLE_SHARD_BOOTSTRAP') != 'practice-character'
+            or not state.get('character_spawn_sent')
+            or 'character_spawn_seq' not in state
+            or state.get('character_links_sent')):
+        return None
+    parsed = parse_shard(data)
+    if parsed is None:
+        return None
+    region = parsed[1]
+    ack = int.from_bytes(region[4:6], 'big')
+    window = int.from_bytes(region[6:10], 'big')
+    behind = (ack - state['character_spawn_seq']) & 0xffff
+    if behind >= 32 or not window & (1 << behind):
+        return None
+    state['seq'] = (state['seq'] + 1) & 0xffff
+    state['character_links_sent'] = True
+    state['clock_epoch'] = time.monotonic()
+    state['clock_last_sent'] = state['clock_epoch']
+    return build_entity_updates(
+        shard_bpt(), state['seq'], state['received_seq'],
+        [build_single_player_roster_probe(state.get('local_player_name', b''),
+                                         spawned_character=True),
+         build_character_connection_links(previous_id=solo_modes.selected().store_entry + solo_modes.selected().baked_counter_bias)],
+        game_time_ms=2000, seq_window=state['received_window'])
+
+
+def build_solo_hunter_probes():
+    messages = []
+    previous = 0
+    positions = solo_modes.selected().bot_positions
+    if positions and os.environ.get('CRUCIBLE_SOLO_PATROL') == '1':
+        from hunter_patrol import routes
+        positions = tuple(route[0] for route in routes())
+    # The three hunters stay Marine whatever CRUCIBLE_SOLO_HERO says: they are
+    # the screenshot-accepted Alpha Hunters baseline (docs/18).
+    marine = hero_loadout.get('marine')
+    for counter, position in enumerate(positions, 3):
+        messages.append(build_practice_character_probe(counter=counter, position=position,
+            autonomous=False, previous_id=previous, hero=marine))
+        previous = counter
+    return messages
+
+
+def location_bits(shared_types):
+    """Traversal selecting only Location.InternalTransform on an entity.
+
+    Location is network component type 145; its third property is the atomic
+    packed InternalTransform (six decisions: root, two skipped, transform,
+    two skipped). Every other shared component root is one False.
+    """
+    bits = []
+    for component in shared_types:
+        if component == 145:
+            bits.extend((True, False, False, True, False, False))
+        else:
+            bits.append(False)
+    return bits
+
+
+def pack_upright_rotation(direction):
+    """Packed WXYZ smallest-three quaternion for an upright facing.
+
+    Cry's forward axis is +Y. The 723.37 scale and 512 bias are the retail
+    packer's (docs/17, WXYZ order correction).
+    """
+    yaw = math.atan2(-direction[0], direction[1])
+    quat = (math.cos(yaw/2), 0., 0., math.sin(yaw/2))
+    largest = max(range(4), key=lambda i: abs(quat[i]))
+    sign = 1 if quat[largest] >= 0 else -1
+    rotation = largest << 30
+    for shift, i in zip((20, 10, 0), (i for i in range(4) if i != largest)):
+        rotation |= max(0, min(1023, int(quat[i]*sign*723.3699951171875+512))) << shift
+    return rotation.to_bytes(4, 'big')
+
+
+def build_location_update(entity_id, shared_types, transform, *, local=False,
+                          previous_id=0):
+    """Simulation-role Location delta carrying a 12-byte packed transform."""
+    return build_entity_message(
+        entity_id & 0xffffff, pack_type_and_flags(ENTITY_ROLE_CLIENT_SIMULATION),
+        payload=build_replication_record(location_bits(shared_types)) + transform,
+        previous_id=previous_id, local=local)
+
+
+def build_bot_location_message(counter, position, direction, *, previous_id=0):
+    """One simulation hunter's native Location delta, facing `direction`."""
+    # Same 33 shared component roots as the Marine spawn; only Location is
+    # selected.
+    transform = pack_practice_spawn_transform(position)[:8] + pack_upright_rotation(direction)
+    return build_location_update(counter, MARINE_SHARED_TYPES, transform,
+                                 previous_id=previous_id)
+
+
+def build_hunter_patrol_updates(seconds, *, previous_id=0):
+    """Native Location deltas for the three simulation hunters only."""
+    from hunter_patrol import routes, sample
+    messages = []
+    for counter, route in enumerate(routes(), 3):
+        position, direction = sample(route, seconds)
+        messages.append(build_bot_location_message(counter, position, direction,
+                                                   previous_id=previous_id))
+        previous_id = counter
+    return messages
+
+
+def build_hunter_ai_updates(squad, now, player_position, *, previous_id=0):
+    """Location deltas driven by the hunter_ai state machine.
+
+    Unlike the stateless patrol this pursues: `player_position` is the
+    position decoded from the client's own input stream (client_input), so
+    the bots react to where the player actually is. Bots are entities
+    01000003..05, i.e. RelativeId counters 3..5, in the order squad holds.
+    """
+    messages = []
+    steps = squad.update(now, PLAYER_CHARACTER_ID if player_position else None,
+                         player_position)
+    for counter, step in enumerate(steps, 3):
+        messages.append(build_bot_location_message(
+            counter, step.position, step.facing, previous_id=previous_id))
+        previous_id = counter
+    return messages, steps
+
+
+def build_practice_npc_probes():
+    """Authored population activation, not AI or combat simulation proof."""
+    from practice_population import (SPITTER_SLICE_HASH, SPITTER_SHARED_TYPES,
+                                     DUMMY_SHARED_TYPES, SPITTER_POSITIONS,
+                                     DUMMY_POSITIONS)
+    messages = []
+    previous = 0
+    for index, position in enumerate(SPITTER_POSITIONS + DUMMY_POSITIONS):
+        dummy = index >= len(SPITTER_POSITIONS)
+        types = DUMMY_SHARED_TYPES if dummy else SPITTER_SHARED_TYPES
+        bits = []
+        for component in types:
+            bits.extend((True, False, False, True, False, False)
+                        if component == 145 else (False,))
+        x, y = (int((v + 4500) * 2097151.5 / 4500 + 0.5) for v in position[:2])
+        z = int((position[2] + 1300) * 524287.5 / 1300 + 0.5)
+        packed = (x << 42) | (y << 20) | z
+        # CryQuat order is WXYZ: identity W=1, authored target rotation Z=1.
+        rotation = ((3 if dummy else 0) << 30) | (512 << 20) | (512 << 10) | 512
+        properties = (build_replication_record(bits) + packed.to_bytes(8, 'big')
+                      + rotation.to_bytes(4, 'big'))
+        entry = 73 + index - len(SPITTER_POSITIONS) if dummy else 0
+        counter = entry + 2 if dummy else index + 3
+        messages.append(build_entity_message(
+            counter, pack_type_and_flags(ENTITY_ROLE_CLIENT_SIMULATION, bit4=True),
+            slice_hash=1289380704 if dummy else SPITTER_SLICE_HASH,
+            slice_entry_index=entry, payload=properties,
+            previous_id=previous, local=dummy))
+        previous = counter
+    return messages
+
+
+def practice_npcs_reply(state):
+    if (os.environ.get('CRUCIBLE_PRACTICE_NPCS') != '1'
+            or os.environ.get('CRUCIBLE_SHARD_BOOTSTRAP') != 'practice-character'
+            or not state.get('character_links_sent') or state.get('practice_npcs_sent')):
+        return None
+    state['practice_npcs_sent'] = True   # once per connection, whatever we send
+    profile = solo_modes.selected()
+    # The population is per MAP. build_practice_npc_probes() hardcodes the
+    # Training Arena's spitters, RoboDummies and practicearena's level hash,
+    # so it must never run on another level - a map with no hunters that is
+    # not Practice (tutorial_02/03, a HotH_02 profile without bots) would
+    # otherwise have arena NPCs injected into it under the wrong slice hash.
+    if profile.bot_positions:
+        messages = build_solo_hunter_probes()
+    elif profile.level == 'practicearena':
+        messages = build_practice_npc_probes()
+    else:
+        messages = []
+    if not messages:
+        # Nothing authored for this map yet; say nothing rather than send an
+        # empty update the client would have to parse.
+        log('      SOLO POPULATION: none audited for %s, sending nothing'
+            % profile.level)
+        start_solo_simulation(state)
+        return None
+    state['seq'] = (state['seq'] + 1) & 0xffff
+    start_solo_simulation(state)
+    # Called immediately after the initial character links, before clock ticks.
+    return build_entity_updates(shard_bpt(), state['seq'], state['received_seq'],
+                                messages, game_time_ms=2000,
+                                seq_window=state['received_window'])
+
+
+# ---------------------------------------------------------------------------
+# Solo session simulation: authoritative combat and AI (docs/20..22, docs/25)
+# ---------------------------------------------------------------------------
+# Both are opt-in and off by default so the visually accepted stationary
+# baselines (docs/17, docs/18) are untouched unless asked for.
+#   CRUCIBLE_SOLO_COMBAT=1  combat.Combat replaces the nonlethal probe:
+#                           asset damage/falloff, death at 0, authored respawn.
+#   CRUCIBLE_SOLO_AI=1      hunter_ai drives the hunters (pursuit toward the
+#                           player's decoded input position) instead of the
+#                           stateless patrol; creature_ai turns creatures to
+#                           face the player on their authored aggro radii.
+def solo_combat_enabled():
+    return os.environ.get('CRUCIBLE_SOLO_COMBAT') == '1'
+
+
+def solo_ai_enabled():
+    return os.environ.get('CRUCIBLE_SOLO_AI') == '1'
+
+
+def start_solo_simulation(state):
+    """Build per-connection combat/AI state for the population just sent."""
+    import combat
+    import practice_population
+    profile = solo_modes.selected()
+    if solo_combat_enabled():
+        arena = combat.Combat()
+        arena.register(PLAYER_CHARACTER_ID, MARINE_SHARED_TYPES,
+                       maximum=MARINE_HEALTH_MAX, team=1)
+        if profile.bot_positions:
+            for entity in HUNTER_BOT_IDS[:len(profile.bot_positions)]:
+                arena.register(entity, MARINE_SHARED_TYPES,
+                               maximum=MARINE_HEALTH_MAX, team=2)
+        for place in practice_population.population(profile.level):
+            respawn = (combat.PRACTICE_SPITTER_RESPAWN_SECONDS if place.profile
+                       else combat.PRACTICE_TARGET_RESPAWN_SECONDS)
+            telegraph = (combat.PRACTICE_SPITTER_TELEGRAPH_SECONDS if place.profile
+                         else combat.PRACTICE_TARGET_TELEGRAPH_SECONDS)
+            arena.register(place.entity_id, place.shared_types,
+                           maximum=place.health_max, team=2, local=place.local_id,
+                           respawn_seconds=respawn, telegraph_seconds=telegraph)
+        state['combat'] = arena
+    if solo_ai_enabled():
+        if profile.bot_positions:
+            import hunter_patrol
+            state['squad'] = hunter_patrol.squad(
+                HUNTER_BOT_IDS[:len(profile.bot_positions)])
+        placements = practice_population.creatures(profile.level)
+        if placements:
+            import creature_ai
+            state['creatures'] = creature_ai.CreatureDirector(placements)
+            state['creature_types'] = {p.entity_id: (p.shared_types, p.local_id)
+                                       for p in placements}
+
+
+def observe_solo_combat(message, state):
+    """Route the player's ClientProjectileResult into authoritative combat."""
+    arena = state.get('combat')
+    if (arena is None
+            or (message.delivery, message.entity_id, message.component, message.rpc)
+                != (3, PLAYER_CHARACTER_ID, 115, 4)):
+        return
+    try:
+        projectile, reported = parse_projectile_result(message.data)
+    except ValueError:
+        return
+    now = time.monotonic()
+    hit = arena.apply_reported_hit(PLAYER_CHARACTER_ID, projectile, reported, now=now)
+    if hit is None:
+        return
+    log('      SOLO COMBAT hit target=%08x damage=%.0f health=%.0f%s' %
+        (hit.target, hit.damage, hit.health, ' KILLED' if hit.killed else ''))
+    director = state.get('creatures')
+    if director is not None:
+        if hit.killed:
+            creature = director.creatures.get(hit.target)
+            if creature is not None:
+                creature.kill(now)
+        else:
+            director.note_damage(now, hit.target, PLAYER_CHARACTER_ID)
+
+
+def solo_simulation_messages(state, now, *, previous_id=0):
+    """AI and combat entity messages for one clock tick, chained by RelativeId."""
+    messages = []
+    player = state.get('player_position')
+    squad = state.get('squad')
+    if squad is not None:
+        updates, steps = build_hunter_ai_updates(squad, now, player, previous_id=previous_id)
+        messages.extend(updates)
+        if updates:
+            previous_id = HUNTER_BOT_IDS[len(updates) - 1] & 0xffffff
+        for step in steps:
+            for shot in step.shots:
+                # Bots aim and "fire" on the authored cadence, but no
+                # server->client fire message has been decoded (docs/21), so
+                # this is logged, not replicated, and does no damage.
+                log('      HUNTER AI %08x fired at %08x (range %.1f m)' %
+                    (shot.shooter, shot.target, shot.range))
+        for step in steps:
+            last = state.setdefault('hunter_states', {})
+            if last.get(step.entity) != step.state:
+                last[step.entity] = step.state
+                log('      HUNTER AI %08x -> %s' % (step.entity, step.state))
+    director = state.get('creatures')
+    if director is not None:
+        targets = {PLAYER_CHARACTER_ID: player} if player else {}
+        for event in director.step(now, targets):
+            kind = getattr(event, 'kind', 'attack')
+            log('      CREATURE AI %08x %s target=%08x' %
+                (event.creature_id, kind, event.target_id))
+        for entity, transform in director.rotations().items():
+            types, local = state['creature_types'][entity]
+            messages.append(build_location_update(entity, types, transform,
+                                                  local=local, previous_id=previous_id))
+            previous_id = entity & 0xffffff
+    arena = state.get('combat')
+    if arena is not None:
+        health = arena.build_messages(arena.tick(now), previous_id=previous_id)
+        messages.extend(health)
+    return messages
+
+
+def build_practice_health_update(entity_id, health, *, previous_id=0):
+    """Candidate nonlethal NPC delta; native graph captured in live-combat-layout.
+
+    Health records 23/24 enter Resource/DefaultResource, 25 skips timing,
+    26 selects min/max/current (35dc910). Do not replace regeneration fields.
+    """
+    from practice_population import SPITTER_SHARED_TYPES, DUMMY_SHARED_TYPES
+    if entity_id in (0x1000003, 0x1000004):
+        types, maximum, local = SPITTER_SHARED_TYPES, 400.0, False
+    elif 0xfe00004b <= entity_id <= 0xfe000052:
+        types, maximum, local = DUMMY_SHARED_TYPES, 600.0, True
+    else:
+        raise ValueError('unknown practice NPC')
+    if not 1 <= health <= maximum:
+        raise ValueError('nonlethal probe health out of range')
+    bits = []
+    for component in types:
+        bits.extend((True, False, False, False, False, False, True, True, False, True)
+                    if component == 79 else (False,))
+    return build_entity_message(entity_id & 0xffffff, pack_type_and_flags(ENTITY_ROLE_CLIENT_SIMULATION),
+        payload=build_replication_record(bits) + struct.pack('>fff', 0, maximum, health),
+        previous_id=previous_id, local=local)
+
+
+def observe_practice_damage(message, state):
+    """Opt-in client-reported body-hit experiment, not authoritative combat.
+
+    Fixed 20 damage is the Marine near body-hit value. No crit/falloff,
+    lethal damage or death handling is claimed by this bounded probe.
+    """
+    if (solo_modes.selected() != solo_modes.PRACTICE
+            or os.environ.get('CRUCIBLE_PRACTICE_DAMAGE') != '1'
+            or not state.get('practice_npcs_sent')
+            or (message.delivery, message.entity_id, message.component, message.rpc)
+                != (3, 0x1000002, 115, 4)):
+        return
+    try:
+        projectile, reported = parse_projectile_result(message.data)
+    except ValueError:
+        return
+    previous = state.get('damage_last_projectile')
+    if previous is not None and not 0 < (projectile - previous) % 256 < 128:
+        return
+    state['damage_last_projectile'] = projectile
+    targets = set(reported) & {0x1000003, 0x1000004, *range(0xfe00004b, 0xfe000053)}
+    # Marine primary despawns on collision; ambiguous multi-target reports
+    # cannot establish one valid target for this experiment.
+    if len(targets) != 1:
+        return
+    target = targets.pop()
+    health = state.setdefault('npc_health', {})
+    maximum = 400.0 if target in (0x1000003, 0x1000004) else 600.0
+    health[target] = max(1.0, health.get(target, maximum) - 20.0)
+    log('      SOLO DAMAGE PROBE target=%08x health=%.0f projectile=%d' %
+        (target, health[target], projectile))
+
+
+def game_clock_reply(state, *, now=None):
+    """Advance ServerGameTimePoint at up to 20 Hz after solo startup.
+
+    Retail input IDs have an 8-bit client offset which saturates at 254 when
+    the server time stays fixed (c4b671..c4b6a8). Empty EntityUpdates carry
+    time without changing positions or claiming server-processed inputs.
+    """
+    if (os.environ.get('CRUCIBLE_SHARD_BOOTSTRAP') != 'practice-character'
+            or not state.get('character_links_sent') or 'clock_epoch' not in state):
+        return None
+    now = time.monotonic() if now is None else now
+    if now - state['clock_last_sent'] < 0.05:
+        return None
+    elapsed_ms = int((now - state['clock_epoch']) * 1000)
+    game_time_ms = 2000 + elapsed_ms
+    if not 2000 <= game_time_ms < 0xffffffff:
+        return None
+    state['seq'] = (state['seq'] + 1) & 0xffff
+    state['clock_last_sent'] = now
+    messages = []
+    previous = 0
+    if (os.environ.get('CRUCIBLE_SOLO_PATROL') == '1' and 'squad' not in state
+            and solo_modes.selected().bot_positions and state.get('practice_npcs_sent')):
+        messages.extend(build_hunter_patrol_updates(elapsed_ms / 1000.))
+        previous = 5
+    if (os.environ.get('CRUCIBLE_PRACTICE_DAMAGE') == '1' and 'combat' not in state
+            and state.get('practice_npcs_sent')):
+        # Repeat absolute health state so a dropped UDP update cannot lose a hit.
+        for entity, health in sorted(state.get('npc_health', {}).items()):
+            messages.append(build_practice_health_update(entity, health, previous_id=previous))
+            previous = entity & 0xffffff
+    if state.get('practice_npcs_sent'):
+        messages.extend(solo_simulation_messages(state, elapsed_ms / 1000., previous_id=previous))
+    return build_entity_updates(shard_bpt(), state['seq'], state['received_seq'],
+                                messages, game_time_ms=game_time_ms,
+                                seq_window=state['received_window'])
+
+
+def send_game_clocks(sock, states, *, idle_reset, now=None):
+    """Timer-driven so input silence cannot deadlock the prediction clock."""
+    now = time.monotonic() if now is None else now
+    for addr, state in states.items():
+        last_valid = state.get('last_valid_monotonic')
+        if last_valid is None or now - last_valid > idle_reset:
+            continue
+        packet = game_clock_reply(state, now=now)
+        if packet is not None:
+            sock.sendto(packet, addr)
 
 
 def ranged_uint32(value):
@@ -330,70 +1088,158 @@ def ranged_uint32(value):
     return value.to_bytes(4, "big")
 
 
-def parse_shard(data):
-    """Split a datagram into (prefix, region, crc) or None.
+@dataclass(frozen=True)
+class EntityRpc:
+    delivery: int
+    entity_id: int
+    component: int
+    rpc: int
+    data: bytes
 
-    Verified layout, from the send path (NovaNet::UdpSocketWrapper::SendPacket,
-    rva 0x4f22d30) and from live captures:
 
-        [transport prefix, 1 or 2 bytes] [serialised UdpPacketHeader] [u32 Crc32]
+def parse_entity_rpcs(payload):
+    """Client packet 11: bounded vector of interleaved RPC headers and data.
 
-    The Crc32 field is the last thing serialised (rva 0x4f23057), and the value
-    is a standard zlib CRC-32 - init 0xFFFFFFFF, table at rva 0x6616060 whose
-    first entries are the usual 0x77073096..., final complement - computed over
-    the serialised buffer (rva 0x4f23038).
-
-    The prefix length varies: the Connect datagram used one byte (0x51) and the
-    type-2 control datagram used two (0xf0 0x01). It is found by locating the
-    offset at which the base Packet header parses sanely, which is how the
-    two were told apart in the first place. That is a heuristic, not a
-    recovered rule - the byte's meaning is still unknown.
+    Retail 4ba16f0: count 0..2048 (u16 BE). 4aa80c0: delivery 0..4,
+    full u32 entity, u8 component, u8 RPC; 4aa8380: u16 size <=6144.
+    Parse completely before returning, so truncated batches cannot dispatch.
     """
-    if len(data) < 16:
-        return None
-    for plen in (1, 2):
-        region = data[plen:-4]
-        if len(region) < 11:
+    if len(payload) < 2:
+        raise ValueError('missing RPC count')
+    count = int.from_bytes(payload[:2], 'big')
+    if count > 2048:
+        raise ValueError('RPC count exceeds retail bound')
+    offset, messages = 2, []
+    for _ in range(count):
+        if len(payload) - offset < 9:
+            raise ValueError('truncated RPC header')
+        delivery, entity, component, rpc, size = struct.unpack_from('>BIBBH', payload, offset)
+        offset += 9
+        if delivery > 4 or size > 6144 or size > len(payload) - offset:
+            raise ValueError('invalid RPC range or truncated data')
+        messages.append(EntityRpc(delivery, entity, component, rpc, payload[offset:offset + size]))
+        offset += size
+    if offset != len(payload):
+        raise ValueError('trailing RPC bytes')
+    return messages
+
+
+def parse_projectile_result(data):
+    """Decode ClientProjectileResult, without treating it as damage authority.
+
+    Retail 9d9120: projectileId u8 followed by prevHitEntities vector.
+    883530 -> 889840 bounds that vector to eight full network IDs.
+    Captures include the shooter itself; the list is not a damage command.
+    """
+    if len(data) < 2 or data[1] > 8 or len(data) != 2 + 4 * data[1]:
+        raise ValueError('invalid projectile result vector')
+    return data[0], tuple(int.from_bytes(data[i:i + 4], 'big')
+                          for i in range(2, len(data), 4))
+
+
+def observe_client_input(message, state):
+    """Track the player's live position from its own input stream (docs/25).
+
+    Recorded unconditionally: it is a read of a message the client already
+    sends, it changes nothing on the wire, and every AI behaviour needs it.
+    An undecodable shape is counted and dropped, never guessed at.
+    """
+    if (message.delivery, message.entity_id) != (client_input.INPUT_DELIVERY,
+                                                 PLAYER_CONNECTION_ID):
+        return
+    if not client_input.is_input(message):
+        return
+    try:
+        position = client_input.latest_position(message.data)
+    except ValueError:
+        state['input_unknown_shape'] = state.get('input_unknown_shape', 0) + 1
+        return
+    state['player_position'] = position
+    if not state.get('player_position_logged'):
+        state['player_position_logged'] = True
+        log('      CLIENT INPUT decoded: player at (%.2f, %.2f, %.2f)' % position)
+
+
+def observe_client_rpcs(region, state):
+    """Record valid requests from this peer's activated player once.
+
+    This does not equate AcknowledgeControlledEntity with a spawned hero:
+    OnActivate calls that RPC even before a controlled entity exists.
+    """
+    if not state.get('bootstrap_sent'):
+        return
+    reliable = bool(region[10] & 1)
+    offset = 13 if reliable else 11
+    try:
+        messages = parse_entity_rpcs(region[offset:])
+    except ValueError:
+        state['invalid_rpc_packets'] = state.get('invalid_rpc_packets', 0) + 1
+        return
+    sequence = int.from_bytes(region[11:13] if reliable else region[2:4], 'big')
+    key = 'rpc_reliable' if reliable else 'rpc_unreliable'
+    previous = state.get(key)
+    window = state.get(key + '_window', 0)
+    if previous is None:
+        state[key], state[key + '_window'] = sequence, 1
+    else:
+        ahead = (sequence - previous) & 0xffff
+        if 0 < ahead < 0x8000:
+            state[key] = sequence
+            state[key + '_window'] = 1 if ahead >= 32 else ((window << ahead) | 1) & 0xffffffff
+        else:
+            behind = (previous - sequence) & 0xffff
+            if behind >= 32 or window & (1 << behind):
+                return
+            state[key + '_window'] = window | (1 << behind)
+    counts = state.setdefault('client_rpc_counts', {})
+    for message in messages:
+        if 'combat' in state:
+            observe_solo_combat(message, state)
+        else:
+            observe_practice_damage(message, state)
+        observe_client_input(message, state)
+        if message.entity_id != PLAYER_CONNECTION_ID:
             continue
-        ptype = int.from_bytes(region[0:2], "big")
-        if ptype in PACKET_NAMES or ptype <= 4:
-            return data[:plen], region, data[-4:]
-    return None
+        if (message.delivery == 3 and message.component == 169
+                and message.rpc == 1 and message.data
+                and message.data[0] == len(message.data) - 1
+                and message.data[0] <= 127 and b'\0' not in message.data[1:]):
+            state['local_player_name'] = message.data[1:]
+        if (message.delivery == 3 and message.component == 169
+                and message.rpc == 2 and not message.data):
+            state['local_player_activation_received'] = True
+        key = (message.component, message.rpc)
+        counts[key] = counts.get(key, 0) + 1
+        if counts[key] == 1:
+            log('      CLIENT RPC component=%d rpc=%d size=%d' %
+                (message.component, message.rpc, len(message.data)))
 
 
-# ---------------------------------------------------------------------------
-# BasePacketType - the real meaning of the leading byte, found 2026-09-19
-# ---------------------------------------------------------------------------
-# With every NET_* log channel forced on (tools/patch_log_channels.py), the
-# client finally said what it does with our datagrams:
-#
-#     UdpSocketReader::ReadDataFromSocket(): Received BasePacketType of
-#       invalid header 81       <- 0x51, our 51-channel replies
-#     ... invalid header 240    <- 0xf0, our f0 01 replies
-#
-# Every reply we have ever sent was thrown away on its FIRST BYTE, before
-# ProcessReceived, before the checksum, before the sequence window. That is
-# why seventeen Accept shapes, three checksum theories and the CRC-gate patch
-# all produced identical behaviour: none of them ever got that far.
-#
-# The leading byte is not a channel id. It is a BasePacketType, and
-# ReadDataFromSocket accepts exactly three values (rva 0x4f2478f):
-#
-#     test r9b, r9b   / je valid      -> 0x00
-#     sub edx, 0xcc   / je valid      -> 0xCC
-#     cmp edx, 0x33   / je valid      -> 0xFF
-#
-# On the valid path it does `inc rsi` and records size-1, so the byte is
-# consumed and the rest is the packet:
-#
-#     [1 byte BasePacketType][base header + payload][4 byte Crc32]
-#
-# which is precisely what build_shard already produces - it was only ever
-# handed the wrong first byte, copied from the client's own datagrams.
-#
-# Note the asymmetry: the client SENDS 0x51 / 0xf0 but will not ACCEPT them.
-# Its outbound framing is not its inbound expectation, which is also why the
-# 51-channel checksum never reproduced as a contiguous range.
+def parse_shard(data):
+    """Decode the retail client's raw LZ4 block and validate its CRC.
+
+    Captures beginning 51, 53 and f0 are LZ4 tokens, not transport ids.
+    The receive path uses a 4096-byte decompression buffer (0x4f1ead7).
+    Unlike server-to-client datagrams, captured client sends have no BPT.
+    Return a logical unencrypted prefix for reply builders.
+    """
+    try:
+        raw = lz4.block.decompress(data, uncompressed_size=4096)
+    except lz4.block.LZ4BlockError:
+        return None
+    if len(raw) < 15:
+        return None
+    region, crc = raw[:-4], raw[-4:]
+    if zlib.crc32(region) != int.from_bytes(crc, "big"):
+        return None
+    if region[10] & 1 and len(region) < 13:
+        return None
+    return bytes([UNENCRYPTED]), region, crc
+
+
+# The client reader consumes a BasePacketType byte BEFORE LZ4 decoding.
+# Captured client sends omit this byte. The asymmetry is observed, not a
+# reason to treat their LZ4 tokens as transport identifiers.
 def shard_bpt():
     """The BasePacketType byte to put in front of every reply."""
     return bytes([int(os.environ.get("CRUCIBLE_SHARD_BPT", "0"), 0) & 0xFF])
@@ -401,7 +1247,7 @@ def shard_bpt():
 
 def build_shard(prefix, packet_type, local_seq, remote_seq, payload=b"",
                 seq_window=0, reliable=0):
-    """One datagram in the layout above, with a correct CRC32.
+    """BasePacketType plus a raw LZ4 block containing packet and CRC32.
 
     Base Packet header (rva 0x4f212f0), widths from each field's declared
     range: u16 PacketType, u16 LocalSequence, u16 RemoteSequence,
@@ -416,7 +1262,8 @@ def build_shard(prefix, packet_type, local_seq, remote_seq, payload=b"",
         region += local_seq.to_bytes(2, "big")
     region += payload
     crc = zlib.crc32(region) & 0xFFFFFFFF
-    return prefix + region + crc.to_bytes(4, "big")
+    return prefix + lz4.block.compress(
+        region + crc.to_bytes(4, "big"), store_size=False)
 
 
 # ---------------------------------------------------------------------------
@@ -793,7 +1640,20 @@ def shard_reply(data, state):
     prefix, region, _crc = parsed
     ptype = int.from_bytes(region[0:2], "big")
     their_seq = int.from_bytes(region[2:4], "big")
-    state["seq"] = state.get("seq", 0) + 1
+    previous = state.get("received_seq")
+    if previous is None:
+        state["received_seq"], state["received_window"] = their_seq, 1
+    else:
+        ahead = (their_seq - previous) & 0xFFFF
+        if 0 < ahead < 0x8000:
+            state["received_window"] = (1 if ahead >= 32 else
+                ((state["received_window"] << ahead) | 1) & 0xFFFFFFFF)
+            state["received_seq"] = their_seq
+        else:
+            behind = (previous - their_seq) & 0xFFFF
+            if behind < 32:
+                state["received_window"] |= 1 << behind
+    state["seq"] = (state.get("seq", 0) + 1) & 0xFFFF
     if ptype == 2:
         # The control channel is the only place our checksum is provably
         # right (crc32(region), matching the client's own packets), so it is
@@ -831,40 +1691,19 @@ def shard_reply(data, state):
                     % (n % len(variants), name))
             return out
         # Reply with a VALID BasePacketType, not the client's 0xf0 echo.
-        return build_shard(shard_bpt(), 2, state["seq"], their_seq,
-                           payload=region[11:12] or b"\x00")
-    # Anything that is not the type-2 control packet or a Connect retry means
-    # the client accepted our Accept and moved on - that is the only evidence
-    # available that the handshake landed, since nothing else is logged. Use
-    # it to try a spawn, alternating the two update types ValidateUpdate
-    # allows, so one run answers the last open question instead of two.
-    # Was `ptype not in (2, 5)`, which also caught **type 1**. Type 1 is
-    # ECorePackets_TerminateConnection - the client's disconnect, identified
-    # 2026-09-18 from the core-packet enum and confirmed by it appearing
-    # exactly once per connection, immediately before teardown. So every
-    # "SPAWN probe" line in every log to date fired at a client that was
-    # hanging up, never at a connected one. The spawn path has still never
-    # been exercised for real. Only game-packet ids (the dispatcher covers
-    # 5..12) mean the client actually moved on.
-    if 6 <= ptype <= 12 and os.environ.get("CRUCIBLE_SHARD_SPAWN", "1") == "1":
-        n = state.get("spawn", 0)
-        state["spawn"] = n + 1
-        # ValidateUpdate only constrains the nibble to 3 or 4 for roles 0
-        # and 1, and the replicator constructor (0x4bb1500) sets the role to
-        # 2, which takes neither branch - so the narrowing is not safe. The
-        # nibble IS read downstream (mov edi,[msg] at 0x4bb5538), so sweep the
-        # low values, leading with the two ValidateUpdate names.
-        update_type = ENTITY_UPDATE_TYPE_SWEEP[n % len(ENTITY_UPDATE_TYPE_SWEEP)]
-        slice_hash = int(os.environ.get("CRUCIBLE_SPAWN_SLICE", "501823405"))
-        msg = build_entity_message(
-            state.get("next_entity", 1),
-            pack_type_and_flags(update_type, bit4=True),
-            slice_hash=slice_hash)
-        state["next_entity"] = state.get("next_entity", 1) + 1
-        log("      SPAWN probe: update type %d, slice %d, entity %d"
-            % (update_type, slice_hash, state.get("next_entity", 1) - 1))
-        return build_entity_updates(prefix, state["seq"], their_seq, [msg],
-                                    game_time_ms=state.get("game_time", 0))
+        return build_shard(shard_bpt(), 2, state["seq"], state["received_seq"],
+                           payload=region[11:12] or b"\x00",
+                           seq_window=state["received_window"])
+    if ptype == 11 and 'accept' in state:
+        # Verified NovaGameServerPackets::EntityRpcs (getter 1a97350).
+        # Keep ACKs flowing when RPC traffic replaces transport heartbeats.
+        # The transport ACK confirms receipt, not gameplay completion.
+        observe_client_rpcs(region, state)
+        return build_shard(shard_bpt(), 2, state['seq'], state['received_seq'],
+                           payload=b'\x00', seq_window=state['received_window'])
+    # No unsolicited spawn on client packet ids: the earlier 6..12 trigger
+    # incorrectly reused the SERVER-to-client dispatcher table. Spawning
+    # requires a verified slice entry and component payload, not a role sweep.
 
     if ptype == 5:
         shard_id = int(os.environ.get("CRUCIBLE_SHARD_ID", "0"))
@@ -880,8 +1719,14 @@ def shard_reply(data, state):
                     "index %d of %d, %s" % (i, len(variants), name))
             log("      ACCEPT PROBE variant %s (%d bytes)" % (name, len(out)))
             return out
-        return build_shard(shard_bpt(), 6, state["seq"], their_seq,
-                           payload=bytes([shard_id & 0xFF]))
+        # Retransmit the SAME packet id: the client asserts if a second
+        # Accept is dispatched after it has transitioned to Connected.
+        if "accept" not in state:
+            state["accept"] = build_shard(
+                shard_bpt(), 6, state["seq"], their_seq,
+                payload=bytes([shard_id & 0xFF]),
+                seq_window=state["received_window"])
+        return state["accept"]
     return None
 
 
@@ -892,9 +1737,26 @@ def main():
     log("listening on %s:%d (UDP, log: %s)" % (HOST, PORT, LOG))
     log("expect: NovaGameClientPackets after the hub hands out this address")
 
+    # Parsing the 43,130-triangle navmesh costs ~1.2 s. Pay it before any
+    # client connects: on demand it lands inside the population reply, which
+    # is mid-handshake and would stall the clock ticks the client is waiting
+    # on. Failure here must not take the shard down - the bots simply stay on
+    # whatever path they can build.
+    if solo_ai_enabled() and solo_modes.selected().bot_positions:
+        try:
+            start = time.monotonic()
+            import hunter_patrol
+            hunter_patrol.circuits()
+            log("prewarmed hunter navigation in %.2fs" % (time.monotonic() - start))
+        except Exception as error:      # noqa: BLE001 - diagnostic only
+            log("hunter navigation prewarm FAILED: %r" % (error,))
+
     reply = os.environ.get("CRUCIBLE_SHARD_REPLY", "").strip() or None
     if reply:
         log("reply mode: %s" % reply)
+
+    if os.environ.get('CRUCIBLE_SHARD_BOOTSTRAP') == 'practice-character':
+        sock.settimeout(0.05)
 
     total = 0
     # Per-connection state, keyed on the client's source port. A shard
@@ -906,7 +1768,12 @@ def main():
     idle_reset = float(os.environ.get("CRUCIBLE_SHARD_PEER_IDLE", "10"))
     try:
         while True:
-            data, addr = sock.recvfrom(65535)
+            try:
+                data, addr = sock.recvfrom(65535)
+            except socket.timeout:
+                if reply == 'accept':
+                    send_game_clocks(sock, states, idle_reset=idle_reset)
+                continue
             total += len(data)
             now = time.time()
             st = states.get(addr)
@@ -916,12 +1783,15 @@ def main():
                 st = None
             if st is None:
                 st = new_connection_state()
+                st['peer_ip'] = addr[0]
                 states[addr] = st
                 log("--- first datagram from %s ---" % (addr,))
                 if "variant" in st:
                     log("      (connection pinned to probe index %d)"
                         % st["variant"])
             st["last"] = now
+            if parse_shard(data) is not None:
+                st["last_valid_monotonic"] = time.monotonic()
             log("  <- %d bytes from %s (total %d)" % (len(data), addr, total))
             log("      %s" % describe(data))
             log("      hex: %s" % data[:1024].hex())
@@ -934,6 +1804,34 @@ def main():
                 if out is not None:
                     sock.sendto(out, addr)
                     log("      reply(accept) -> %s" % out.hex())
+                bootstrap = bootstrap_reply(data, st)
+                if bootstrap is not None:
+                    sock.sendto(bootstrap, addr)
+                    log("      BOOTSTRAP PROBE %s -> %s" %
+                        (os.environ.get('CRUCIBLE_SHARD_BOOTSTRAP'), bootstrap.hex()))
+                match_store = match_store_reply(st)
+                if match_store is not None:
+                    sock.sendto(match_store, addr)
+                    log('      MATCH STORE PROBE -> %s' % match_store.hex())
+                phase = solo_phase_reply(st)
+                if phase is not None:
+                    sock.sendto(phase, addr)
+                    log('      SOLO PHASE PROBE GamePlay -> %s' % phase.hex())
+                character = character_spawn_reply(st)
+                if character is not None:
+                    sock.sendto(character, addr)
+                    log('      CHARACTER SPAWN PROBE %s -> %s' % (hero_loadout.selected().display, character.hex()))
+                links = character_links_reply(data, st)
+                if links is not None:
+                    sock.sendto(links, addr)
+                    log('      CHARACTER LINKS %s slot 1 -> %s' % (hero_loadout.selected().display, links.hex()))
+                npcs = practice_npcs_reply(st)
+                if npcs is not None:
+                    sock.sendto(npcs, addr)
+                    log('      SOLO POPULATION PROBE: %s' %
+                        ('three Marine hunters' if solo_modes.selected().bot_positions
+                         else 'two spitters, eight targets'))
+                send_game_clocks(sock, states, idle_reset=idle_reset)
     except KeyboardInterrupt:
         pass
     finally:

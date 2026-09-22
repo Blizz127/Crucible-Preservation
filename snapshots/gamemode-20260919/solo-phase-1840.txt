@@ -1,0 +1,3 @@
+[09-19-2026:18:40:33.342947-GMT] Info(): [Info][MatchComponentLogging] Activating GameModeComponent Entity 4261412993
+[09-19-2026:18:40:33.343210-GMT] PlayerComponent::Autonomous::OnActivate(): Player Entity activated EntityId=16777217 UserId=1266325952
+[09-19-2026:18:40:33.350782-GMT] MatchPhaseComponent::Common::OnCommonActivateImpl(): MatchPhase Entity activated EntityId=4261412989

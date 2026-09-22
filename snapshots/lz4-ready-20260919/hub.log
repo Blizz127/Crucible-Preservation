@@ -1,0 +1,2 @@
+[2026-09-19T11:10:50.785] listening on 127.0.0.1:18877 (TLS, log: /var/home/blizz/Projects/Crucible Revival/snapshots/lz4-ready-20260919/hub.log)
+[2026-09-19T11:10:50.785] expect: matchserver.connect {type:'lan'} after PLAY -> mode -> READY

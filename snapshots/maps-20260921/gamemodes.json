@@ -1,0 +1,782 @@
+{
+  "pak": "/home/blizz/.local/share/Steam/steamapps/common/Crucible/misc.pak",
+  "list": "design/gamemodes/gamemodes.gamemodeconfiglist",
+  "default_game_mode": "SOLO_CASUAL",
+  "modes": [
+    {
+      "index": 0,
+      "mode": "SOLO_CASUAL",
+      "config": "design/gamemodes/singlesunranked.gamemodeconfig",
+      "phases": [
+        {
+          "phase": "WaitForPlayers",
+          "time": 0
+        },
+        {
+          "phase": "PerkPreview",
+          "time": 30
+        },
+        {
+          "phase": "PerkSelect",
+          "time": 20
+        },
+        {
+          "phase": "DropPreview",
+          "time": 5
+        },
+        {
+          "phase": "DropSelect",
+          "time": 30
+        },
+        {
+          "phase": "GamePlay",
+          "time": -1
+        },
+        {
+          "phase": "GameOver",
+          "time": 300
+        },
+        {
+          "phase": "Shutdown",
+          "time": -1
+        }
+      ],
+      "flags": [
+        "Music_SpectatorEnabled",
+        "FreeForAll",
+        "UsesPassivePlayPrevention"
+      ],
+      "values": {
+        "MaxGameDuration": 30
+      },
+      "minimum_players": 8,
+      "EnableRespawn": false,
+      "AlliancesEnabled": true,
+      "StaticAllianceMode": false,
+      "EnableMultipleDropMasters": true,
+      "ui_mode_override": "Invalid",
+      "target_score": 0,
+      "match_point_threshold": 0,
+      "UseRespawnPointsAsDropPoints": false
+    },
+    {
+      "index": 1,
+      "mode": "DOUBLES_CASUAL",
+      "config": "design/gamemodes/doublescasual.gamemodeconfig",
+      "phases": [
+        {
+          "phase": "WaitForPlayers",
+          "time": 0
+        },
+        {
+          "phase": "PerkPreview",
+          "time": 240
+        },
+        {
+          "phase": "PerkSelect",
+          "time": 20
+        },
+        {
+          "phase": "DropPreview",
+          "time": 5
+        },
+        {
+          "phase": "DropSelect",
+          "time": 30
+        },
+        {
+          "phase": "GamePlay",
+          "time": -1
+        },
+        {
+          "phase": "GameOver",
+          "time": 300
+        },
+        {
+          "phase": "Shutdown",
+          "time": -1
+        }
+      ],
+      "flags": [
+        "CanFormDynamicAlliancesAfterPartnerDies",
+        "TransferOwnershipOfOwnableInteractablesOnPlayerDeath",
+        "Music_SpectatorEnabled",
+        "FreeForAll",
+        "UsesPassivePlayPrevention",
+        "KillsAwardPrestige"
+      ],
+      "values": {
+        "MaxGameDuration": 30
+      },
+      "minimum_players": 16,
+      "EnableRespawn": false,
+      "AlliancesEnabled": true,
+      "StaticAllianceMode": true,
+      "EnableMultipleDropMasters": false,
+      "ui_mode_override": "Invalid",
+      "target_score": 0,
+      "match_point_threshold": 0,
+      "UseRespawnPointsAsDropPoints": false
+    },
+    {
+      "index": 2,
+      "mode": "SOLO_BOTS",
+      "config": "design/gamemodes/singlesunranked.gamemodeconfig",
+      "phases": [
+        {
+          "phase": "WaitForPlayers",
+          "time": 0
+        },
+        {
+          "phase": "PerkPreview",
+          "time": 30
+        },
+        {
+          "phase": "PerkSelect",
+          "time": 20
+        },
+        {
+          "phase": "DropPreview",
+          "time": 5
+        },
+        {
+          "phase": "DropSelect",
+          "time": 30
+        },
+        {
+          "phase": "GamePlay",
+          "time": -1
+        },
+        {
+          "phase": "GameOver",
+          "time": 300
+        },
+        {
+          "phase": "Shutdown",
+          "time": -1
+        }
+      ],
+      "flags": [
+        "Music_SpectatorEnabled",
+        "FreeForAll",
+        "UsesPassivePlayPrevention"
+      ],
+      "values": {
+        "MaxGameDuration": 30
+      },
+      "minimum_players": 8,
+      "EnableRespawn": false,
+      "AlliancesEnabled": true,
+      "StaticAllianceMode": false,
+      "EnableMultipleDropMasters": true,
+      "ui_mode_override": "Invalid",
+      "target_score": 0,
+      "match_point_threshold": 0,
+      "UseRespawnPointsAsDropPoints": false
+    },
+    {
+      "index": 3,
+      "mode": "CRUCIHEARTS",
+      "config": "design/gamemodes/crucihearts.gamemodeconfig",
+      "phases": [
+        {
+          "phase": "WaitForPlayers",
+          "time": 0
+        },
+        {
+          "phase": "PerkPreview",
+          "time": 240
+        },
+        {
+          "phase": "TeamInfo",
+          "time": 10
+        },
+        {
+          "phase": "PerkSelect",
+          "time": 20
+        },
+        {
+          "phase": "DropPreview",
+          "time": 5
+        },
+        {
+          "phase": "DropSelect",
+          "time": 20
+        },
+        {
+          "phase": "GamePlay",
+          "time": -1
+        },
+        {
+          "phase": "GameOver",
+          "time": 300
+        },
+        {
+          "phase": "Shutdown",
+          "time": -1
+        }
+      ],
+      "flags": [
+        "HiveNoEssence",
+        "AddRespawnTimeByStage",
+        "RetainOwnershipOfOwnableInteractablesOnPlayerDeath",
+        "NoPlayersLeftCount",
+        "KeepMedpacksUponRespawn",
+        "HarvesterMedStations",
+        "FlatKillEssence",
+        "PulsingSwarm",
+        "TeamModeEventConfiguration",
+        "ScenariosAndEvents",
+        "HivesSpawnHearts"
+      ],
+      "values": {
+        "PlayerDeathEssencePercent": 50,
+        "SolarFlareDeltaShields": -3,
+        "SwarmDeltaBubbles": 5,
+        "MaxGameDuration": 60,
+        "SpittersDeltaPatches": 2,
+        "PortableSiphonEssenceOverrideAmount": 75,
+        "AlwaysNAmps": 2,
+        "AmpRequiredBuffer": 110,
+        "AmpTelegraphOverride": 240,
+        "DamageAmpPercentBuffOverrideAmount": 4,
+        "HealthAmpPercentBuffOverrideAmount": 6
+      },
+      "minimum_players": 8,
+      "EnableRespawn": true,
+      "AlliancesEnabled": false,
+      "StaticAllianceMode": true,
+      "EnableMultipleDropMasters": false,
+      "ui_mode_override": "Invalid",
+      "target_score": 3,
+      "match_point_threshold": 2,
+      "UseRespawnPointsAsDropPoints": false
+    },
+    {
+      "index": 4,
+      "mode": "CONQUEST_8V8",
+      "config": "design/gamemodes/conquest_8v8.gamemodeconfig",
+      "phases": [
+        {
+          "phase": "WaitForPlayers",
+          "time": 0
+        },
+        {
+          "phase": "PerkPreview",
+          "time": 240
+        },
+        {
+          "phase": "TeamInfo",
+          "time": 10
+        },
+        {
+          "phase": "PerkSelect",
+          "time": 20
+        },
+        {
+          "phase": "DropPreview",
+          "time": 5
+        },
+        {
+          "phase": "DropSelect",
+          "time": 20
+        },
+        {
+          "phase": "GamePlay",
+          "time": -1
+        },
+        {
+          "phase": "GameOver",
+          "time": 300
+        },
+        {
+          "phase": "Shutdown",
+          "time": -1
+        }
+      ],
+      "flags": [
+        "RetainOwnershipOfOwnableInteractablesOnPlayerDeath",
+        "AddRespawnTimeByStage",
+        "NoPlayersLeftCount",
+        "KeepMedpacksUponRespawn",
+        "HarvesterMedStations",
+        "HarvesterDifferentialScoring",
+        "TeamModeEventConfiguration"
+      ],
+      "values": {
+        "PlayerDeathEssencePercent": 0,
+        "InitialScore": 0,
+        "PointsForKill": 1,
+        "PointsPerHarvesterInDifferentialScoring": 1,
+        "HarvesterEssenceOverrideAmount": 30,
+        "MaxGameDuration": 60,
+        "TargetScore": 100,
+        "AlwaysNAmps": 2,
+        "AmpRequiredBuffer": 80,
+        "AmpTelegraphOverride": 180
+      },
+      "minimum_players": 16,
+      "EnableRespawn": true,
+      "AlliancesEnabled": false,
+      "StaticAllianceMode": true,
+      "EnableMultipleDropMasters": true,
+      "ui_mode_override": "CONQUEST",
+      "target_score": 0,
+      "match_point_threshold": 0,
+      "UseRespawnPointsAsDropPoints": false
+    },
+    {
+      "index": 5,
+      "mode": "TUTORIAL",
+      "config": "design/gamemodes/tutorial.gamemodeconfig",
+      "phases": [
+        {
+          "phase": "WaitForPlayers",
+          "time": 1
+        },
+        {
+          "phase": "GamePlay",
+          "time": -1
+        },
+        {
+          "phase": "GameOver",
+          "time": 300
+        },
+        {
+          "phase": "Shutdown",
+          "time": -1
+        }
+      ],
+      "flags": [
+        "RespawnInPlace",
+        "RetainOwnershipOfOwnableInteractablesOnPlayerDeath",
+        "KeepMedpacksUponRespawn",
+        "AutoSkipPhaseToGameplay",
+        "DoNotSpawnDropPod"
+      ],
+      "values": {
+        "PlayerDeathEssencePercent": 0,
+        "MaxGameDuration": 60
+      },
+      "minimum_players": 1,
+      "EnableRespawn": true,
+      "AlliancesEnabled": false,
+      "StaticAllianceMode": false,
+      "EnableMultipleDropMasters": false,
+      "ui_mode_override": "Invalid",
+      "target_score": 0,
+      "match_point_threshold": 0,
+      "UseRespawnPointsAsDropPoints": false
+    },
+    {
+      "index": 6,
+      "mode": "PRACTICE",
+      "config": "design/gamemodes/practice.gamemodeconfig",
+      "phases": [
+        {
+          "phase": "WaitForPlayers",
+          "time": -1
+        },
+        {
+          "phase": "GamePlay",
+          "time": -1
+        },
+        {
+          "phase": "GameOver",
+          "time": 1
+        },
+        {
+          "phase": "Shutdown",
+          "time": -1
+        }
+      ],
+      "flags": [
+        "RespawnInPlace",
+        "RetainOwnershipOfOwnableInteractablesOnPlayerDeath",
+        "KeepMedpacksUponRespawn",
+        "AutoSkipPhaseToGameplay",
+        "DoNotSpawnDropPod",
+        "MinimalModeCamps",
+        "CampIconsAlwaysOn"
+      ],
+      "values": {
+        "PlayerDeathEssencePercent": 0,
+        "MaxGameDuration": 60,
+        "CampRespawnTime": 10,
+        "CampRespawnTelegraph": 5
+      },
+      "minimum_players": 1,
+      "EnableRespawn": true,
+      "AlliancesEnabled": false,
+      "StaticAllianceMode": false,
+      "EnableMultipleDropMasters": false,
+      "ui_mode_override": "Invalid",
+      "target_score": 0,
+      "match_point_threshold": 0,
+      "UseRespawnPointsAsDropPoints": false
+    },
+    {
+      "index": 7,
+      "mode": "1v1",
+      "config": "design/gamemodes/1v1.gamemodeconfig",
+      "phases": [
+        {
+          "phase": "WaitForPlayers",
+          "time": 0
+        },
+        {
+          "phase": "PerkPreview",
+          "time": 20
+        },
+        {
+          "phase": "TeamInfo",
+          "time": 5
+        },
+        {
+          "phase": "PerkSelect",
+          "time": 15
+        },
+        {
+          "phase": "DropPreview",
+          "time": 1
+        },
+        {
+          "phase": "DropSelect",
+          "time": 10
+        },
+        {
+          "phase": "GamePlay",
+          "time": -1
+        },
+        {
+          "phase": "GameOver",
+          "time": 300
+        },
+        {
+          "phase": "Shutdown",
+          "time": -1
+        }
+      ],
+      "flags": [
+        "AddRespawnTimeByStage",
+        "RetainOwnershipOfOwnableInteractablesOnPlayerDeath",
+        "NoPlayersLeftCount",
+        "KeepMedpacksUponRespawn",
+        "Always3Amps"
+      ],
+      "values": {
+        "PlayerDeathEssencePercent": 100,
+        "MaxGameDuration": 60,
+        "PortableSiphonEssenceOverrideAmount": 100
+      },
+      "minimum_players": 3,
+      "EnableRespawn": true,
+      "AlliancesEnabled": false,
+      "StaticAllianceMode": true,
+      "EnableMultipleDropMasters": false,
+      "ui_mode_override": "Invalid",
+      "target_score": 10,
+      "match_point_threshold": 9,
+      "UseRespawnPointsAsDropPoints": false
+    },
+    {
+      "index": 8,
+      "mode": "HEART_OF_THE_HIVES",
+      "config": "design/gamemodes/heart_of_the_hives.gamemodeconfig",
+      "phases": [
+        {
+          "phase": "WaitForPlayers",
+          "time": 0
+        },
+        {
+          "phase": "PerkPreview",
+          "time": 240
+        },
+        {
+          "phase": "TeamInfo",
+          "time": 10
+        },
+        {
+          "phase": "PerkSelect",
+          "time": 5
+        },
+        {
+          "phase": "DropPreview",
+          "time": 5
+        },
+        {
+          "phase": "DropSelect",
+          "time": 5
+        },
+        {
+          "phase": "GamePlay",
+          "time": -1
+        },
+        {
+          "phase": "GameOver",
+          "time": 300
+        },
+        {
+          "phase": "Shutdown",
+          "time": -1
+        }
+      ],
+      "flags": [
+        "HiveNoEssence",
+        "AddRespawnTimeByStage",
+        "RetainOwnershipOfOwnableInteractablesOnPlayerDeath",
+        "NoPlayersLeftCount",
+        "KeepMedpacksUponRespawn",
+        "FlatKillEssence",
+        "ScenariosAndEvents",
+        "DistributedEssenceEruption",
+        "HivesSpawnHearts",
+        "MinimalModeCamps",
+        "SequentialHives",
+        "CampIconsAlwaysOn",
+        "EruptionNoEssence",
+        "AmpsOnlyCenter",
+        "ForceCrossMapDropSpawns",
+        "RespawnPointShields"
+      ],
+      "values": {
+        "PlayerDeathEssencePercent": 40,
+        "SolarFlareDeltaShields": -3,
+        "SwarmDeltaBubbles": 5,
+        "MaxGameDuration": 59,
+        "SpittersDeltaPatches": -3,
+        "PortableSiphonEssenceOverrideAmount": 75,
+        "AlwaysNAmps": 1,
+        "AmpRequiredBuffer": 110,
+        "DamageAmpPercentBuffOverrideAmount": 6,
+        "HealthAmpPercentBuffOverrideAmount": 10,
+        "AmpTelegraphOverride": 150,
+        "CampRespawnTime": 300,
+        "CampRespawnTelegraph": 60
+      },
+      "minimum_players": 8,
+      "EnableRespawn": true,
+      "AlliancesEnabled": false,
+      "StaticAllianceMode": true,
+      "EnableMultipleDropMasters": false,
+      "ui_mode_override": "HEART_OF_THE_HIVES",
+      "target_score": 3,
+      "match_point_threshold": 2,
+      "UseRespawnPointsAsDropPoints": true
+    },
+    {
+      "index": 9,
+      "mode": "HOTH_GUIDE",
+      "config": "design/gamemodes/hoth_guide.gamemodeconfig",
+      "phases": [
+        {
+          "phase": "WaitForPlayers",
+          "time": 0
+        },
+        {
+          "phase": "PerkPreview",
+          "time": 1
+        },
+        {
+          "phase": "TeamInfo",
+          "time": 5
+        },
+        {
+          "phase": "PerkSelect",
+          "time": 20
+        },
+        {
+          "phase": "DropPreview",
+          "time": 12
+        },
+        {
+          "phase": "DropSelect",
+          "time": 8
+        },
+        {
+          "phase": "GamePlay",
+          "time": -1
+        },
+        {
+          "phase": "GameOver",
+          "time": 300
+        },
+        {
+          "phase": "Shutdown",
+          "time": -1
+        }
+      ],
+      "flags": [
+        "HiveNoEssence",
+        "AddRespawnTimeByStage",
+        "RetainOwnershipOfOwnableInteractablesOnPlayerDeath",
+        "NoPlayersLeftCount",
+        "KeepMedpacksUponRespawn",
+        "FlatKillEssence",
+        "ScenariosAndEvents",
+        "GuideHeartOfTheHives",
+        "HivesSpawnHearts",
+        "DistributedEssenceEruption",
+        "MinimalModeCamps",
+        "SequentialHives",
+        "CampIconsAlwaysOn",
+        "AmpsOnlyCenter",
+        "ForceCrossMapDropSpawns",
+        "ForceSplitEssence",
+        "RespawnPointShields"
+      ],
+      "values": {
+        "PlayerDeathEssencePercent": 50,
+        "SolarFlareDeltaShields": -3,
+        "SwarmDeltaBubbles": 5,
+        "MaxGameDuration": 60,
+        "SpittersDeltaPatches": 2,
+        "PortableSiphonEssenceOverrideAmount": 75,
+        "AlwaysNAmps": 1,
+        "AmpRequiredBuffer": 110,
+        "DamageAmpPercentBuffOverrideAmount": 8,
+        "HealthAmpPercentBuffOverrideAmount": 12,
+        "AmpTelegraphOverride": 30,
+        "CampRespawnTime": 300,
+        "CampRespawnTelegraph": 60
+      },
+      "minimum_players": 1,
+      "EnableRespawn": true,
+      "AlliancesEnabled": false,
+      "StaticAllianceMode": true,
+      "EnableMultipleDropMasters": false,
+      "ui_mode_override": "HEART_OF_THE_HIVES",
+      "target_score": 3,
+      "match_point_threshold": 2,
+      "UseRespawnPointsAsDropPoints": true
+    },
+    {
+      "index": 10,
+      "mode": "HOTH_MINIMAL",
+      "config": "design/gamemodes/hoth_minimal.gamemodeconfig",
+      "phases": [
+        {
+          "phase": "WaitForPlayers",
+          "time": 0
+        },
+        {
+          "phase": "PerkPreview",
+          "time": 240
+        },
+        {
+          "phase": "TeamInfo",
+          "time": 10
+        },
+        {
+          "phase": "PerkSelect",
+          "time": 5
+        },
+        {
+          "phase": "DropPreview",
+          "time": 5
+        },
+        {
+          "phase": "DropSelect",
+          "time": 5
+        },
+        {
+          "phase": "GamePlay",
+          "time": -1
+        },
+        {
+          "phase": "GameOver",
+          "time": 300
+        },
+        {
+          "phase": "Shutdown",
+          "time": -1
+        }
+      ],
+      "flags": [
+        "HiveNoEssence",
+        "AddRespawnTimeByStage",
+        "RetainOwnershipOfOwnableInteractablesOnPlayerDeath",
+        "NoPlayersLeftCount",
+        "KeepMedpacksUponRespawn",
+        "NoHarvesters",
+        "FlatKillEssence",
+        "PulsingSwarm",
+        "TeamModeEventConfiguration",
+        "ScenariosAndEvents",
+        "DistributedEssenceEruption",
+        "RespawnCampsBasedOnHive",
+        "SequentialHives",
+        "HivesSpawnHearts",
+        "MinimalModeCamps",
+        "CreaturesScanWhenAwoken",
+        "CampIconsAlwaysOn"
+      ],
+      "values": {
+        "PlayerDeathEssencePercent": 50,
+        "SolarFlareDeltaShields": -3,
+        "SwarmDeltaBubbles": 5,
+        "MaxGameDuration": 60,
+        "SpittersDeltaPatches": 2,
+        "PortableSiphonEssenceOverrideAmount": 75,
+        "AlwaysNAmps": 1,
+        "AmpRequiredBuffer": 110,
+        "DamageAmpPercentBuffOverrideAmount": 8,
+        "HealthAmpPercentBuffOverrideAmount": 12,
+        "AmpTelegraphOverride": 240,
+        "HarvesterEssenceOverrideAmount": 400
+      },
+      "minimum_players": 8,
+      "EnableRespawn": true,
+      "AlliancesEnabled": false,
+      "StaticAllianceMode": true,
+      "EnableMultipleDropMasters": false,
+      "ui_mode_override": "HEART_OF_THE_HIVES",
+      "target_score": 3,
+      "match_point_threshold": 2,
+      "UseRespawnPointsAsDropPoints": false
+    },
+    {
+      "index": 11,
+      "mode": "TUTORIAL2",
+      "config": "design/gamemodes/tutorial2.gamemodeconfig",
+      "phases": [
+        {
+          "phase": "WaitForPlayers",
+          "time": 1
+        },
+        {
+          "phase": "GamePlay",
+          "time": -1
+        },
+        {
+          "phase": "GameOver",
+          "time": 300
+        },
+        {
+          "phase": "Shutdown",
+          "time": -1
+        }
+      ],
+      "flags": [
+        "RespawnInPlace",
+        "RetainOwnershipOfOwnableInteractablesOnPlayerDeath",
+        "KeepMedpacksUponRespawn",
+        "AutoSkipPhaseToGameplay",
+        "DoNotSpawnDropPod"
+      ],
+      "values": {
+        "PlayerDeathEssencePercent": 0,
+        "MaxGameDuration": 60
+      },
+      "minimum_players": 1,
+      "EnableRespawn": true,
+      "AlliancesEnabled": false,
+      "StaticAllianceMode": false,
+      "EnableMultipleDropMasters": false,
+      "ui_mode_override": "Invalid",
+      "target_score": 0,
+      "match_point_threshold": 0,
+      "UseRespawnPointsAsDropPoints": false
+    }
+  ]
+}

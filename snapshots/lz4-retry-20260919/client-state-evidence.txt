@@ -1,0 +1,11 @@
+[09-19-2026:16:05:37.238024-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from Disconnected to ConnectingToGameRegistry
+[09-19-2026:16:05:37.238031-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToGameRegistry to ConnectingToHub
+[09-19-2026:16:05:43.254075-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToHub to LoadingLevel
+[09-19-2026:16:05:49.774308-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from LoadingLevel to LevelLoaded
+[09-19-2026:16:05:53.674035-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from LevelLoaded to ConnectingToServerShard
+[09-19-2026:16:05:54.235929-GMT] NovaGameClientPackets::DispatchPacket(): [Debug_DispatchPackets] NovaGameClientPackets::DispatchPacket: Received packet Accept
+[09-19-2026:16:05:54.235937-GMT] NovaNet::NovaGameClient::SetClientGameState(): Client is transitioning state from ConnectingToServerShard to Connected
+[09-19-2026:16:05:55.091616-GMT] NovaNet::NovaGameServiceClient::OnDisconnect(): Client is connected to game server shard, allowing hub connection to close
+[09-19-2026:16:05:55.092288-GMT] NovaNet::ClientNetworkAgent::OnConnectTimeout(): [Debug_ClientConnect] ClientNetworkAgent::OnConnectTimeout() Fully connected to game server shard, allowing connect retry timer to expire
+[09-19-2026:16:05:55.597463-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.
+[09-19-2026:16:08:33.798699-GMT] Warning(): [Warning][GameMode] GameModeComponent was not ready yet.

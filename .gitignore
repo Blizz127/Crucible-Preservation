@@ -10,6 +10,12 @@ server/.crucible-test-ca/
 # Append-only runtime logs written by the local stubs. Regenerated per run;
 # they are not evidence (captured findings live in snapshots/).
 server/*.log
+server/*.log.*
+
+# Byte offset into shard_udp.log, written before a launch so the session that
+# follows can be isolated from the 300 MB+ history. Purely local scratch.
+server/.test-log-offset
+server/.shard-probe-counter
 
 # Pak rebuild scratch
 *.pak.new

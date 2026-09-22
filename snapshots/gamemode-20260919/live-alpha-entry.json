@@ -1,0 +1,9811 @@
+{
+  "last_server_game_time_ms": 68581,
+  "pid": 132423,
+  "game_state": 8,
+  "connection_status": 4,
+  "entities": [
+    {
+      "network_id": "0x1000004",
+      "slice_hash": 9256072,
+      "slice_entry": 0,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6d3c758",
+          "type_getter": "0x4b93830",
+          "getter_bytes": "e99bfeffffcc"
+        },
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x688c160",
+          "type_getter": "0x51fd50",
+          "getter_bytes": "40534883ec20"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66eb970",
+          "type_getter": "0x8d2710",
+          "getter_bytes": "b033c3cccccc"
+        },
+        {
+          "vtable": "0x66e61a0",
+          "type_getter": "0x8a26f0",
+          "getter_bytes": "b02cc3cccccc"
+        },
+        {
+          "vtable": "0x670c508",
+          "type_getter": "0x9d23b0",
+          "getter_bytes": "b071c3cccccc"
+        },
+        {
+          "vtable": "0x66ddcb8",
+          "type_getter": "0x86d8e0",
+          "getter_bytes": "b024c3cccccc"
+        },
+        {
+          "vtable": "0x670f6a0",
+          "type_getter": "0x9e6030",
+          "getter_bytes": "b075c3cccccc"
+        },
+        {
+          "vtable": "0x66efe58",
+          "type_getter": "0x8eff00",
+          "getter_bytes": "b03dc3cccccc"
+        },
+        {
+          "vtable": "0x67135b8",
+          "type_getter": "0xa04100",
+          "getter_bytes": "b080c3cccccc"
+        },
+        {
+          "vtable": "0x6717758",
+          "type_getter": "0xa22080",
+          "getter_bytes": "b087c3cccccc"
+        },
+        {
+          "vtable": "0x66bd030",
+          "type_getter": "0x4fdfb0",
+          "getter_bytes": "32c0c3cccccc"
+        },
+        {
+          "vtable": "0x66ea3c0",
+          "type_getter": "0x8c67b0",
+          "getter_bytes": "b030c3cccccc"
+        },
+        {
+          "vtable": "0x66f27d8",
+          "type_getter": "0x90bb60",
+          "getter_bytes": "b042c3cccccc"
+        },
+        {
+          "vtable": "0x66cea00",
+          "type_getter": "0x7fa750",
+          "getter_bytes": "b00ec3cccccc"
+        },
+        {
+          "vtable": "0x66f23e8",
+          "type_getter": "0x908f10",
+          "getter_bytes": "b041c3cccccc"
+        },
+        {
+          "vtable": "0x66b2098",
+          "type_getter": "0x71e380",
+          "getter_bytes": "b023c3cccccc"
+        },
+        {
+          "vtable": "0x671e518",
+          "type_getter": "0xa55460",
+          "getter_bytes": "b08cc3cccccc"
+        },
+        {
+          "vtable": "0x66f2ba8",
+          "type_getter": "0x90d920",
+          "getter_bytes": "b043c3cccccc"
+        },
+        {
+          "vtable": "0x6716db0",
+          "type_getter": "0xa1c230",
+          "getter_bytes": "b085c3cccccc"
+        },
+        {
+          "vtable": "0x66b2958",
+          "type_getter": "0x740d60",
+          "getter_bytes": "b0a5c3cccccc"
+        },
+        {
+          "vtable": "0x675ceb8",
+          "type_getter": "0xa9e4d0",
+          "getter_bytes": "b091c3cccccc",
+          "authoritative_position": [
+            1313.4705810546875,
+            1264.9761962890625,
+            23.623966217041016
+          ],
+          "authoritative_rotation": [
+            0.9999992847442627,
+            0.0006912350654602051,
+            0.0006912350654602051,
+            0.0006912350654602051
+          ]
+        },
+        {
+          "vtable": "0x66d36a8",
+          "type_getter": "0x821460",
+          "getter_bytes": "b016c3cccccc"
+        },
+        {
+          "vtable": "0x66fe2e8",
+          "type_getter": "0x965670",
+          "getter_bytes": "b056c3cccccc"
+        },
+        {
+          "vtable": "0x671f098",
+          "type_getter": "0xa5b620",
+          "getter_bytes": "b08ec3cccccc"
+        },
+        {
+          "vtable": "0x66c9128",
+          "type_getter": "0x7adfd0",
+          "getter_bytes": "b00ac3cccccc"
+        },
+        {
+          "vtable": "0x66caf20",
+          "type_getter": "0x7db870",
+          "getter_bytes": "b00dc3cccccc"
+        },
+        {
+          "vtable": "0x66eb1c0",
+          "type_getter": "0x8ce780",
+          "getter_bytes": "b032c3cccccc"
+        },
+        {
+          "vtable": "0x66ec550",
+          "type_getter": "0x8d9cd0",
+          "getter_bytes": "b036c3cccccc"
+        },
+        {
+          "vtable": "0x66fa0c8",
+          "type_getter": "0x942fc0",
+          "getter_bytes": "b050c3cccccc"
+        },
+        {
+          "vtable": "0x66f3830",
+          "type_getter": "0x911160",
+          "getter_bytes": "b045c3cccccc"
+        },
+        {
+          "vtable": "0x66f4968",
+          "type_getter": "0x914b30",
+          "getter_bytes": "b046c3cccccc"
+        },
+        {
+          "vtable": "0x674bc80",
+          "type_getter": "0x9d0d90",
+          "getter_bytes": "b070c3cccccc"
+        },
+        {
+          "vtable": "0x66b2ff0",
+          "type_getter": "0x7316c0",
+          "getter_bytes": "b06cc3cccccc"
+        },
+        {
+          "vtable": "0x66d1fb8",
+          "type_getter": "0x816680",
+          "getter_bytes": "b015c3cccccc"
+        },
+        {
+          "vtable": "0x6702410",
+          "type_getter": "0x9813c0",
+          "getter_bytes": "b05ec3cccccc"
+        },
+        {
+          "vtable": "0x66e9320",
+          "type_getter": "0x8ad9f0",
+          "getter_bytes": "b02ec3cccccc"
+        },
+        {
+          "vtable": "0x67142b8",
+          "type_getter": "0xa06760",
+          "getter_bytes": "b081c3cccccc"
+        },
+        {
+          "vtable": "0x6706890",
+          "type_getter": "0x998680",
+          "getter_bytes": "b063c3cccccc"
+        },
+        {
+          "vtable": "0x68912e8",
+          "type_getter": "0x1b93020",
+          "getter_bytes": "e99bffffffcc"
+        },
+        {
+          "vtable": "0x67046c8",
+          "type_getter": "0x992ac0",
+          "getter_bytes": "b061c3cccccc"
+        },
+        {
+          "vtable": "0x688a4b0",
+          "network_getter": false
+        },
+        {
+          "vtable": "0x675b0e0",
+          "type_getter": "0xa885d0",
+          "getter_bytes": "b09bc3cccccc"
+        },
+        {
+          "vtable": "0x6716340",
+          "type_getter": "0xa13700",
+          "getter_bytes": "b084c3cccccc"
+        },
+        {
+          "vtable": "0x66b3148",
+          "type_getter": "0x72f4f0",
+          "getter_bytes": "b065c3cccccc"
+        },
+        {
+          "vtable": "0x66fa8e8",
+          "type_getter": "0x945c10",
+          "getter_bytes": "b051c3cccccc"
+        },
+        {
+          "vtable": "0x674c7f0",
+          "type_getter": "0x9d89c0",
+          "getter_bytes": "b073c3cccccc",
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0
+            ],
+            [
+              2,
+              7,
+              4,
+              1,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              6,
+              11,
+              8,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              0,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              0,
+              0
+            ],
+            [
+              9,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              10,
+              15,
+              12,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              0,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              0,
+              0
+            ],
+            [
+              13,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              14,
+              19,
+              16,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              0,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              0,
+              0
+            ],
+            [
+              17,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              18,
+              23,
+              20,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              0,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              0,
+              0
+            ],
+            [
+              21,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              22,
+              27,
+              24,
+              1,
+              0
+            ],
+            [
+              23,
+              25,
+              0,
+              0,
+              0
+            ],
+            [
+              24,
+              26,
+              0,
+              0,
+              0
+            ],
+            [
+              25,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              31,
+              28,
+              1,
+              0
+            ],
+            [
+              27,
+              29,
+              0,
+              0,
+              0
+            ],
+            [
+              28,
+              30,
+              0,
+              0,
+              0
+            ],
+            [
+              29,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              30,
+              35,
+              32,
+              1,
+              0
+            ],
+            [
+              31,
+              33,
+              0,
+              0,
+              0
+            ],
+            [
+              32,
+              34,
+              0,
+              0,
+              0
+            ],
+            [
+              33,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              34,
+              39,
+              36,
+              1,
+              0
+            ],
+            [
+              35,
+              37,
+              0,
+              0,
+              0
+            ],
+            [
+              36,
+              38,
+              0,
+              0,
+              0
+            ],
+            [
+              37,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              38,
+              0,
+              40,
+              1,
+              0
+            ],
+            [
+              39,
+              41,
+              0,
+              0,
+              0
+            ],
+            [
+              40,
+              42,
+              0,
+              0,
+              0
+            ],
+            [
+              41,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1
+          ]
+        },
+        {
+          "vtable": "0x671f750",
+          "type_getter": "0xa5d170",
+          "getter_bytes": "b08fc3cccccc"
+        },
+        {
+          "vtable": "0x66b2ab8",
+          "type_getter": "0x73a900",
+          "getter_bytes": "b090c3cccccc"
+        },
+        {
+          "vtable": "0x6d50698",
+          "type_getter": "0x4cc5550",
+          "getter_bytes": "48895c242056"
+        },
+        {
+          "vtable": "0x6d4ce78",
+          "type_getter": "0x4ca9550",
+          "getter_bytes": "48895c242057"
+        },
+        {
+          "vtable": "0x672b8c0",
+          "type_getter": "0xab0e60",
+          "getter_bytes": "b0a3c3cccccc"
+        },
+        {
+          "vtable": "0x66cfbb8",
+          "type_getter": "0x803350",
+          "getter_bytes": "b011c3cccccc"
+        },
+        {
+          "vtable": "0x672c050",
+          "type_getter": "0xab4c50",
+          "getter_bytes": "b0a4c3cccccc"
+        },
+        {
+          "vtable": "0x67205c8",
+          "type_getter": "0xa60ec0",
+          "getter_bytes": "b092c3cccccc"
+        },
+        {
+          "vtable": "0x675d428",
+          "type_getter": "0xab9780",
+          "getter_bytes": "b0a6c3cccccc"
+        },
+        {
+          "vtable": "0x675b718",
+          "type_getter": "0xa89bd0",
+          "getter_bytes": "b09cc3cccccc"
+        },
+        {
+          "vtable": "0x6724940",
+          "type_getter": "0xa86470",
+          "getter_bytes": "b09ac3cccccc"
+        },
+        {
+          "vtable": "0x674b490",
+          "type_getter": "0x9bc390",
+          "getter_bytes": "b06bc3cccccc"
+        },
+        {
+          "vtable": "0x66e9af8",
+          "type_getter": "0x8c4b70",
+          "getter_bytes": "b02fc3cccccc"
+        },
+        {
+          "vtable": "0x68746e0",
+          "type_getter": "0x19895f0",
+          "getter_bytes": "48895c240857"
+        },
+        {
+          "vtable": "0x66dcdc0",
+          "type_getter": "0x868c40",
+          "getter_bytes": "b022c3cccccc"
+        },
+        {
+          "vtable": "0x6727830",
+          "type_getter": "0xa951e0",
+          "getter_bytes": "b09ec3cccccc",
+          "following_entity_id": "0x0",
+          "controlling_entity_id": "0x0",
+          "hierarchy_kind": 1,
+          "child_count": 0,
+          "child_ids": [],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2
+          ],
+          "autonomous_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "vtable": "0x6727c80",
+          "type_getter": "0xa99790",
+          "getter_bytes": "b09fc3cccccc"
+        },
+        {
+          "vtable": "0x66abd60",
+          "type_getter": "0x70d920",
+          "getter_bytes": "b01ac3cccccc"
+        },
+        {
+          "vtable": "0x670b2c0",
+          "type_getter": "0x9c2c10",
+          "getter_bytes": "b06ec3cccccc"
+        },
+        {
+          "vtable": "0x66fb018",
+          "type_getter": "0x949df0",
+          "getter_bytes": "b052c3cccccc"
+        },
+        {
+          "vtable": "0x66b2380",
+          "type_getter": "0x718d60",
+          "getter_bytes": "b012c3cccccc"
+        },
+        {
+          "vtable": "0x67a6448",
+          "type_getter": "0xe457d4",
+          "getter_bytes": "4881e9f00000"
+        },
+        {
+          "vtable": "0x66d9628",
+          "type_getter": "0x83dd40",
+          "getter_bytes": "b01bc3cccccc"
+        },
+        {
+          "vtable": "0x66d5f30",
+          "type_getter": "0x832d10",
+          "getter_bytes": "b019c3cccccc"
+        },
+        {
+          "vtable": "0x66f7f90",
+          "type_getter": "0x932430",
+          "getter_bytes": "b04fc3cccccc",
+          "rpc_handler": "0x935940",
+          "state_delta_serializer": "0x9355f0",
+          "health_value_triplet": [
+            0.0,
+            800.0,
+            800.0
+          ],
+          "health_rate": 0.0,
+          "health_timing_fields": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              4,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              24,
+              7,
+              0,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              1,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              1,
+              0
+            ],
+            [
+              21,
+              23,
+              0,
+              1,
+              0
+            ],
+            [
+              22,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              23,
+              0,
+              25,
+              0,
+              0
+            ],
+            [
+              24,
+              0,
+              26,
+              1,
+              0
+            ],
+            [
+              25,
+              27,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            23
+          ]
+        },
+        {
+          "vtable": "0x67109b0",
+          "type_getter": "0x9f0740",
+          "getter_bytes": "b078c3cccccc"
+        },
+        {
+          "vtable": "0x66d4008",
+          "type_getter": "0x826000",
+          "getter_bytes": "b018c3cccccc"
+        },
+        {
+          "vtable": "0x6707dc0",
+          "type_getter": "0x9b1580",
+          "getter_bytes": "b066c3cccccc"
+        },
+        {
+          "vtable": "0x66d1828",
+          "type_getter": "0x80ea90",
+          "getter_bytes": "b014c3cccccc"
+        },
+        {
+          "vtable": "0x66fcc58",
+          "type_getter": "0x958e50",
+          "getter_bytes": "b054c3cccccc"
+        },
+        {
+          "vtable": "0x66c1f38",
+          "type_getter": "0x794130",
+          "getter_bytes": "b006c3cccccc"
+        },
+        {
+          "vtable": "0x6704ea0",
+          "type_getter": "0x994800",
+          "getter_bytes": "b062c3cccccc"
+        },
+        {
+          "vtable": "0x6712838",
+          "type_getter": "0x9fe4d0",
+          "getter_bytes": "b07dc3cccccc",
+          "last_processed_game_time_ms": 0
+        }
+      ]
+    },
+    {
+      "network_id": "0xfe00098f",
+      "slice_hash": 161882647,
+      "slice_entry": 1660,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66edb40",
+          "type_getter": "0x8e7250",
+          "getter_bytes": "b03ac3cccccc"
+        },
+        {
+          "vtable": "0x66b2588",
+          "type_getter": "0x73f450",
+          "getter_bytes": "b0a0c3cccccc"
+        },
+        {
+          "vtable": "0x6712be8",
+          "type_getter": "0xa00ac0",
+          "getter_bytes": "b07ec3cccccc"
+        }
+      ]
+    },
+    {
+      "network_id": "0xfe000995",
+      "slice_hash": 161882647,
+      "slice_entry": 1666,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66eb970",
+          "type_getter": "0x8d2710",
+          "getter_bytes": "b033c3cccccc"
+        },
+        {
+          "vtable": "0x66e61a0",
+          "type_getter": "0x8a26f0",
+          "getter_bytes": "b02cc3cccccc"
+        },
+        {
+          "vtable": "0x6701fb8",
+          "type_getter": "0x97f840",
+          "getter_bytes": "b05dc3cccccc"
+        },
+        {
+          "vtable": "0x66f23e8",
+          "type_getter": "0x908f10",
+          "getter_bytes": "b041c3cccccc"
+        },
+        {
+          "vtable": "0x66f2fb8",
+          "type_getter": "0x90f6a0",
+          "getter_bytes": "b044c3cccccc"
+        },
+        {
+          "vtable": "0x66b2588",
+          "type_getter": "0x73f450",
+          "getter_bytes": "b0a0c3cccccc"
+        },
+        {
+          "vtable": "0x66e10b0",
+          "type_getter": "0x872720",
+          "getter_bytes": "b025c3cccccc",
+          "player_list_size": 4,
+          "first_character_id": "0x1000002",
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              36,
+              3,
+              0,
+              0
+            ],
+            [
+              2,
+              4,
+              0,
+              1,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              1,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              1,
+              0
+            ],
+            [
+              21,
+              23,
+              0,
+              1,
+              0
+            ],
+            [
+              22,
+              24,
+              0,
+              1,
+              0
+            ],
+            [
+              23,
+              25,
+              0,
+              1,
+              0
+            ],
+            [
+              24,
+              26,
+              0,
+              1,
+              0
+            ],
+            [
+              25,
+              27,
+              0,
+              1,
+              0
+            ],
+            [
+              26,
+              28,
+              0,
+              1,
+              0
+            ],
+            [
+              27,
+              29,
+              0,
+              1,
+              0
+            ],
+            [
+              28,
+              30,
+              0,
+              1,
+              0
+            ],
+            [
+              29,
+              31,
+              0,
+              1,
+              0
+            ],
+            [
+              30,
+              32,
+              0,
+              1,
+              0
+            ],
+            [
+              31,
+              33,
+              0,
+              1,
+              0
+            ],
+            [
+              32,
+              34,
+              0,
+              1,
+              0
+            ],
+            [
+              33,
+              35,
+              0,
+              1,
+              0
+            ],
+            [
+              34,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              35,
+              62,
+              37,
+              0,
+              0
+            ],
+            [
+              36,
+              38,
+              0,
+              1,
+              0
+            ],
+            [
+              37,
+              39,
+              0,
+              1,
+              0
+            ],
+            [
+              38,
+              40,
+              0,
+              1,
+              0
+            ],
+            [
+              39,
+              41,
+              0,
+              1,
+              0
+            ],
+            [
+              40,
+              42,
+              0,
+              1,
+              0
+            ],
+            [
+              41,
+              43,
+              0,
+              1,
+              0
+            ],
+            [
+              42,
+              44,
+              0,
+              1,
+              0
+            ],
+            [
+              43,
+              45,
+              0,
+              1,
+              0
+            ],
+            [
+              44,
+              46,
+              0,
+              1,
+              0
+            ],
+            [
+              45,
+              47,
+              0,
+              1,
+              0
+            ],
+            [
+              46,
+              48,
+              0,
+              1,
+              0
+            ],
+            [
+              47,
+              49,
+              0,
+              1,
+              0
+            ],
+            [
+              48,
+              50,
+              0,
+              1,
+              0
+            ],
+            [
+              49,
+              51,
+              0,
+              1,
+              0
+            ],
+            [
+              50,
+              52,
+              0,
+              1,
+              0
+            ],
+            [
+              51,
+              53,
+              0,
+              1,
+              0
+            ],
+            [
+              52,
+              54,
+              0,
+              1,
+              0
+            ],
+            [
+              53,
+              55,
+              0,
+              1,
+              0
+            ],
+            [
+              54,
+              56,
+              0,
+              1,
+              0
+            ],
+            [
+              55,
+              57,
+              0,
+              1,
+              0
+            ],
+            [
+              56,
+              58,
+              0,
+              1,
+              0
+            ],
+            [
+              57,
+              59,
+              0,
+              1,
+              0
+            ],
+            [
+              58,
+              60,
+              0,
+              1,
+              0
+            ],
+            [
+              59,
+              61,
+              0,
+              1,
+              0
+            ],
+            [
+              60,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              61,
+              63,
+              0,
+              1,
+              0
+            ],
+            [
+              62,
+              73,
+              64,
+              0,
+              0
+            ],
+            [
+              63,
+              65,
+              0,
+              1,
+              0
+            ],
+            [
+              64,
+              66,
+              0,
+              1,
+              0
+            ],
+            [
+              65,
+              67,
+              0,
+              1,
+              0
+            ],
+            [
+              66,
+              68,
+              0,
+              1,
+              0
+            ],
+            [
+              67,
+              69,
+              0,
+              1,
+              0
+            ],
+            [
+              68,
+              70,
+              0,
+              1,
+              0
+            ],
+            [
+              69,
+              71,
+              0,
+              1,
+              0
+            ],
+            [
+              70,
+              72,
+              0,
+              1,
+              0
+            ],
+            [
+              71,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              72,
+              74,
+              0,
+              0,
+              0
+            ],
+            [
+              73,
+              539,
+              75,
+              0,
+              0
+            ],
+            [
+              74,
+              104,
+              76,
+              1,
+              0
+            ],
+            [
+              75,
+              77,
+              0,
+              0,
+              0
+            ],
+            [
+              76,
+              0,
+              78,
+              0,
+              0
+            ],
+            [
+              77,
+              79,
+              0,
+              0,
+              0
+            ],
+            [
+              78,
+              80,
+              0,
+              0,
+              0
+            ],
+            [
+              79,
+              81,
+              0,
+              0,
+              0
+            ],
+            [
+              80,
+              82,
+              0,
+              0,
+              0
+            ],
+            [
+              81,
+              83,
+              0,
+              0,
+              0
+            ],
+            [
+              82,
+              84,
+              0,
+              0,
+              0
+            ],
+            [
+              83,
+              85,
+              0,
+              0,
+              0
+            ],
+            [
+              84,
+              86,
+              0,
+              0,
+              0
+            ],
+            [
+              85,
+              87,
+              0,
+              0,
+              0
+            ],
+            [
+              86,
+              88,
+              0,
+              0,
+              0
+            ],
+            [
+              87,
+              89,
+              0,
+              0,
+              0
+            ],
+            [
+              88,
+              90,
+              0,
+              0,
+              0
+            ],
+            [
+              89,
+              91,
+              0,
+              0,
+              0
+            ],
+            [
+              90,
+              92,
+              0,
+              0,
+              0
+            ],
+            [
+              91,
+              93,
+              0,
+              0,
+              0
+            ],
+            [
+              92,
+              94,
+              0,
+              0,
+              0
+            ],
+            [
+              93,
+              95,
+              0,
+              0,
+              0
+            ],
+            [
+              94,
+              96,
+              0,
+              0,
+              0
+            ],
+            [
+              95,
+              97,
+              0,
+              0,
+              0
+            ],
+            [
+              96,
+              98,
+              0,
+              0,
+              0
+            ],
+            [
+              97,
+              99,
+              0,
+              0,
+              0
+            ],
+            [
+              98,
+              100,
+              0,
+              0,
+              0
+            ],
+            [
+              99,
+              101,
+              0,
+              0,
+              0
+            ],
+            [
+              100,
+              102,
+              0,
+              0,
+              0
+            ],
+            [
+              101,
+              103,
+              0,
+              0,
+              0
+            ],
+            [
+              102,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              103,
+              133,
+              105,
+              1,
+              0
+            ],
+            [
+              104,
+              106,
+              0,
+              0,
+              0
+            ],
+            [
+              105,
+              0,
+              107,
+              0,
+              0
+            ],
+            [
+              106,
+              108,
+              0,
+              0,
+              0
+            ],
+            [
+              107,
+              109,
+              0,
+              0,
+              0
+            ],
+            [
+              108,
+              110,
+              0,
+              0,
+              0
+            ],
+            [
+              109,
+              111,
+              0,
+              0,
+              0
+            ],
+            [
+              110,
+              112,
+              0,
+              0,
+              0
+            ],
+            [
+              111,
+              113,
+              0,
+              0,
+              0
+            ],
+            [
+              112,
+              114,
+              0,
+              0,
+              0
+            ],
+            [
+              113,
+              115,
+              0,
+              0,
+              0
+            ],
+            [
+              114,
+              116,
+              0,
+              0,
+              0
+            ],
+            [
+              115,
+              117,
+              0,
+              0,
+              0
+            ],
+            [
+              116,
+              118,
+              0,
+              0,
+              0
+            ],
+            [
+              117,
+              119,
+              0,
+              0,
+              0
+            ],
+            [
+              118,
+              120,
+              0,
+              0,
+              0
+            ],
+            [
+              119,
+              121,
+              0,
+              0,
+              0
+            ],
+            [
+              120,
+              122,
+              0,
+              0,
+              0
+            ],
+            [
+              121,
+              123,
+              0,
+              0,
+              0
+            ],
+            [
+              122,
+              124,
+              0,
+              0,
+              0
+            ],
+            [
+              123,
+              125,
+              0,
+              0,
+              0
+            ],
+            [
+              124,
+              126,
+              0,
+              0,
+              0
+            ],
+            [
+              125,
+              127,
+              0,
+              0,
+              0
+            ],
+            [
+              126,
+              128,
+              0,
+              0,
+              0
+            ],
+            [
+              127,
+              129,
+              0,
+              0,
+              0
+            ],
+            [
+              128,
+              130,
+              0,
+              0,
+              0
+            ],
+            [
+              129,
+              131,
+              0,
+              0,
+              0
+            ],
+            [
+              130,
+              132,
+              0,
+              0,
+              0
+            ],
+            [
+              131,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              132,
+              162,
+              134,
+              1,
+              0
+            ],
+            [
+              133,
+              135,
+              0,
+              0,
+              0
+            ],
+            [
+              134,
+              0,
+              136,
+              0,
+              0
+            ],
+            [
+              135,
+              137,
+              0,
+              0,
+              0
+            ],
+            [
+              136,
+              138,
+              0,
+              0,
+              0
+            ],
+            [
+              137,
+              139,
+              0,
+              0,
+              0
+            ],
+            [
+              138,
+              140,
+              0,
+              0,
+              0
+            ],
+            [
+              139,
+              141,
+              0,
+              0,
+              0
+            ],
+            [
+              140,
+              142,
+              0,
+              0,
+              0
+            ],
+            [
+              141,
+              143,
+              0,
+              0,
+              0
+            ],
+            [
+              142,
+              144,
+              0,
+              0,
+              0
+            ],
+            [
+              143,
+              145,
+              0,
+              0,
+              0
+            ],
+            [
+              144,
+              146,
+              0,
+              0,
+              0
+            ],
+            [
+              145,
+              147,
+              0,
+              0,
+              0
+            ],
+            [
+              146,
+              148,
+              0,
+              0,
+              0
+            ],
+            [
+              147,
+              149,
+              0,
+              0,
+              0
+            ],
+            [
+              148,
+              150,
+              0,
+              0,
+              0
+            ],
+            [
+              149,
+              151,
+              0,
+              0,
+              0
+            ],
+            [
+              150,
+              152,
+              0,
+              0,
+              0
+            ],
+            [
+              151,
+              153,
+              0,
+              0,
+              0
+            ],
+            [
+              152,
+              154,
+              0,
+              0,
+              0
+            ],
+            [
+              153,
+              155,
+              0,
+              0,
+              0
+            ],
+            [
+              154,
+              156,
+              0,
+              0,
+              0
+            ],
+            [
+              155,
+              157,
+              0,
+              0,
+              0
+            ],
+            [
+              156,
+              158,
+              0,
+              0,
+              0
+            ],
+            [
+              157,
+              159,
+              0,
+              0,
+              0
+            ],
+            [
+              158,
+              160,
+              0,
+              0,
+              0
+            ],
+            [
+              159,
+              161,
+              0,
+              0,
+              0
+            ],
+            [
+              160,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              161,
+              191,
+              163,
+              1,
+              0
+            ],
+            [
+              162,
+              164,
+              0,
+              0,
+              0
+            ],
+            [
+              163,
+              0,
+              165,
+              0,
+              0
+            ],
+            [
+              164,
+              166,
+              0,
+              0,
+              0
+            ],
+            [
+              165,
+              167,
+              0,
+              0,
+              0
+            ],
+            [
+              166,
+              168,
+              0,
+              0,
+              0
+            ],
+            [
+              167,
+              169,
+              0,
+              0,
+              0
+            ],
+            [
+              168,
+              170,
+              0,
+              0,
+              0
+            ],
+            [
+              169,
+              171,
+              0,
+              0,
+              0
+            ],
+            [
+              170,
+              172,
+              0,
+              0,
+              0
+            ],
+            [
+              171,
+              173,
+              0,
+              0,
+              0
+            ],
+            [
+              172,
+              174,
+              0,
+              0,
+              0
+            ],
+            [
+              173,
+              175,
+              0,
+              0,
+              0
+            ],
+            [
+              174,
+              176,
+              0,
+              0,
+              0
+            ],
+            [
+              175,
+              177,
+              0,
+              0,
+              0
+            ],
+            [
+              176,
+              178,
+              0,
+              0,
+              0
+            ],
+            [
+              177,
+              179,
+              0,
+              0,
+              0
+            ],
+            [
+              178,
+              180,
+              0,
+              0,
+              0
+            ],
+            [
+              179,
+              181,
+              0,
+              0,
+              0
+            ],
+            [
+              180,
+              182,
+              0,
+              0,
+              0
+            ],
+            [
+              181,
+              183,
+              0,
+              0,
+              0
+            ],
+            [
+              182,
+              184,
+              0,
+              0,
+              0
+            ],
+            [
+              183,
+              185,
+              0,
+              0,
+              0
+            ],
+            [
+              184,
+              186,
+              0,
+              0,
+              0
+            ],
+            [
+              185,
+              187,
+              0,
+              0,
+              0
+            ],
+            [
+              186,
+              188,
+              0,
+              0,
+              0
+            ],
+            [
+              187,
+              189,
+              0,
+              0,
+              0
+            ],
+            [
+              188,
+              190,
+              0,
+              0,
+              0
+            ],
+            [
+              189,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              190,
+              220,
+              192,
+              1,
+              0
+            ],
+            [
+              191,
+              193,
+              0,
+              0,
+              0
+            ],
+            [
+              192,
+              0,
+              194,
+              0,
+              0
+            ],
+            [
+              193,
+              195,
+              0,
+              0,
+              0
+            ],
+            [
+              194,
+              196,
+              0,
+              0,
+              0
+            ],
+            [
+              195,
+              197,
+              0,
+              0,
+              0
+            ],
+            [
+              196,
+              198,
+              0,
+              0,
+              0
+            ],
+            [
+              197,
+              199,
+              0,
+              0,
+              0
+            ],
+            [
+              198,
+              200,
+              0,
+              0,
+              0
+            ],
+            [
+              199,
+              201,
+              0,
+              0,
+              0
+            ],
+            [
+              200,
+              202,
+              0,
+              0,
+              0
+            ],
+            [
+              201,
+              203,
+              0,
+              0,
+              0
+            ],
+            [
+              202,
+              204,
+              0,
+              0,
+              0
+            ],
+            [
+              203,
+              205,
+              0,
+              0,
+              0
+            ],
+            [
+              204,
+              206,
+              0,
+              0,
+              0
+            ],
+            [
+              205,
+              207,
+              0,
+              0,
+              0
+            ],
+            [
+              206,
+              208,
+              0,
+              0,
+              0
+            ],
+            [
+              207,
+              209,
+              0,
+              0,
+              0
+            ],
+            [
+              208,
+              210,
+              0,
+              0,
+              0
+            ],
+            [
+              209,
+              211,
+              0,
+              0,
+              0
+            ],
+            [
+              210,
+              212,
+              0,
+              0,
+              0
+            ],
+            [
+              211,
+              213,
+              0,
+              0,
+              0
+            ],
+            [
+              212,
+              214,
+              0,
+              0,
+              0
+            ],
+            [
+              213,
+              215,
+              0,
+              0,
+              0
+            ],
+            [
+              214,
+              216,
+              0,
+              0,
+              0
+            ],
+            [
+              215,
+              217,
+              0,
+              0,
+              0
+            ],
+            [
+              216,
+              218,
+              0,
+              0,
+              0
+            ],
+            [
+              217,
+              219,
+              0,
+              0,
+              0
+            ],
+            [
+              218,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              219,
+              249,
+              221,
+              1,
+              0
+            ],
+            [
+              220,
+              222,
+              0,
+              0,
+              0
+            ],
+            [
+              221,
+              0,
+              223,
+              0,
+              0
+            ],
+            [
+              222,
+              224,
+              0,
+              0,
+              0
+            ],
+            [
+              223,
+              225,
+              0,
+              0,
+              0
+            ],
+            [
+              224,
+              226,
+              0,
+              0,
+              0
+            ],
+            [
+              225,
+              227,
+              0,
+              0,
+              0
+            ],
+            [
+              226,
+              228,
+              0,
+              0,
+              0
+            ],
+            [
+              227,
+              229,
+              0,
+              0,
+              0
+            ],
+            [
+              228,
+              230,
+              0,
+              0,
+              0
+            ],
+            [
+              229,
+              231,
+              0,
+              0,
+              0
+            ],
+            [
+              230,
+              232,
+              0,
+              0,
+              0
+            ],
+            [
+              231,
+              233,
+              0,
+              0,
+              0
+            ],
+            [
+              232,
+              234,
+              0,
+              0,
+              0
+            ],
+            [
+              233,
+              235,
+              0,
+              0,
+              0
+            ],
+            [
+              234,
+              236,
+              0,
+              0,
+              0
+            ],
+            [
+              235,
+              237,
+              0,
+              0,
+              0
+            ],
+            [
+              236,
+              238,
+              0,
+              0,
+              0
+            ],
+            [
+              237,
+              239,
+              0,
+              0,
+              0
+            ],
+            [
+              238,
+              240,
+              0,
+              0,
+              0
+            ],
+            [
+              239,
+              241,
+              0,
+              0,
+              0
+            ],
+            [
+              240,
+              242,
+              0,
+              0,
+              0
+            ],
+            [
+              241,
+              243,
+              0,
+              0,
+              0
+            ],
+            [
+              242,
+              244,
+              0,
+              0,
+              0
+            ],
+            [
+              243,
+              245,
+              0,
+              0,
+              0
+            ],
+            [
+              244,
+              246,
+              0,
+              0,
+              0
+            ],
+            [
+              245,
+              247,
+              0,
+              0,
+              0
+            ],
+            [
+              246,
+              248,
+              0,
+              0,
+              0
+            ],
+            [
+              247,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              248,
+              278,
+              250,
+              1,
+              0
+            ],
+            [
+              249,
+              251,
+              0,
+              0,
+              0
+            ],
+            [
+              250,
+              0,
+              252,
+              0,
+              0
+            ],
+            [
+              251,
+              253,
+              0,
+              0,
+              0
+            ],
+            [
+              252,
+              254,
+              0,
+              0,
+              0
+            ],
+            [
+              253,
+              255,
+              0,
+              0,
+              0
+            ],
+            [
+              254,
+              256,
+              0,
+              0,
+              0
+            ],
+            [
+              255,
+              257,
+              0,
+              0,
+              0
+            ],
+            [
+              256,
+              258,
+              0,
+              0,
+              0
+            ],
+            [
+              257,
+              259,
+              0,
+              0,
+              0
+            ],
+            [
+              258,
+              260,
+              0,
+              0,
+              0
+            ],
+            [
+              259,
+              261,
+              0,
+              0,
+              0
+            ],
+            [
+              260,
+              262,
+              0,
+              0,
+              0
+            ],
+            [
+              261,
+              263,
+              0,
+              0,
+              0
+            ],
+            [
+              262,
+              264,
+              0,
+              0,
+              0
+            ],
+            [
+              263,
+              265,
+              0,
+              0,
+              0
+            ],
+            [
+              264,
+              266,
+              0,
+              0,
+              0
+            ],
+            [
+              265,
+              267,
+              0,
+              0,
+              0
+            ],
+            [
+              266,
+              268,
+              0,
+              0,
+              0
+            ],
+            [
+              267,
+              269,
+              0,
+              0,
+              0
+            ],
+            [
+              268,
+              270,
+              0,
+              0,
+              0
+            ],
+            [
+              269,
+              271,
+              0,
+              0,
+              0
+            ],
+            [
+              270,
+              272,
+              0,
+              0,
+              0
+            ],
+            [
+              271,
+              273,
+              0,
+              0,
+              0
+            ],
+            [
+              272,
+              274,
+              0,
+              0,
+              0
+            ],
+            [
+              273,
+              275,
+              0,
+              0,
+              0
+            ],
+            [
+              274,
+              276,
+              0,
+              0,
+              0
+            ],
+            [
+              275,
+              277,
+              0,
+              0,
+              0
+            ],
+            [
+              276,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              277,
+              307,
+              279,
+              1,
+              0
+            ],
+            [
+              278,
+              280,
+              0,
+              0,
+              0
+            ],
+            [
+              279,
+              0,
+              281,
+              0,
+              0
+            ],
+            [
+              280,
+              282,
+              0,
+              0,
+              0
+            ],
+            [
+              281,
+              283,
+              0,
+              0,
+              0
+            ],
+            [
+              282,
+              284,
+              0,
+              0,
+              0
+            ],
+            [
+              283,
+              285,
+              0,
+              0,
+              0
+            ],
+            [
+              284,
+              286,
+              0,
+              0,
+              0
+            ],
+            [
+              285,
+              287,
+              0,
+              0,
+              0
+            ],
+            [
+              286,
+              288,
+              0,
+              0,
+              0
+            ],
+            [
+              287,
+              289,
+              0,
+              0,
+              0
+            ],
+            [
+              288,
+              290,
+              0,
+              0,
+              0
+            ],
+            [
+              289,
+              291,
+              0,
+              0,
+              0
+            ],
+            [
+              290,
+              292,
+              0,
+              0,
+              0
+            ],
+            [
+              291,
+              293,
+              0,
+              0,
+              0
+            ],
+            [
+              292,
+              294,
+              0,
+              0,
+              0
+            ],
+            [
+              293,
+              295,
+              0,
+              0,
+              0
+            ],
+            [
+              294,
+              296,
+              0,
+              0,
+              0
+            ],
+            [
+              295,
+              297,
+              0,
+              0,
+              0
+            ],
+            [
+              296,
+              298,
+              0,
+              0,
+              0
+            ],
+            [
+              297,
+              299,
+              0,
+              0,
+              0
+            ],
+            [
+              298,
+              300,
+              0,
+              0,
+              0
+            ],
+            [
+              299,
+              301,
+              0,
+              0,
+              0
+            ],
+            [
+              300,
+              302,
+              0,
+              0,
+              0
+            ],
+            [
+              301,
+              303,
+              0,
+              0,
+              0
+            ],
+            [
+              302,
+              304,
+              0,
+              0,
+              0
+            ],
+            [
+              303,
+              305,
+              0,
+              0,
+              0
+            ],
+            [
+              304,
+              306,
+              0,
+              0,
+              0
+            ],
+            [
+              305,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              306,
+              336,
+              308,
+              1,
+              0
+            ],
+            [
+              307,
+              309,
+              0,
+              0,
+              0
+            ],
+            [
+              308,
+              0,
+              310,
+              0,
+              0
+            ],
+            [
+              309,
+              311,
+              0,
+              0,
+              0
+            ],
+            [
+              310,
+              312,
+              0,
+              0,
+              0
+            ],
+            [
+              311,
+              313,
+              0,
+              0,
+              0
+            ],
+            [
+              312,
+              314,
+              0,
+              0,
+              0
+            ],
+            [
+              313,
+              315,
+              0,
+              0,
+              0
+            ],
+            [
+              314,
+              316,
+              0,
+              0,
+              0
+            ],
+            [
+              315,
+              317,
+              0,
+              0,
+              0
+            ],
+            [
+              316,
+              318,
+              0,
+              0,
+              0
+            ],
+            [
+              317,
+              319,
+              0,
+              0,
+              0
+            ],
+            [
+              318,
+              320,
+              0,
+              0,
+              0
+            ],
+            [
+              319,
+              321,
+              0,
+              0,
+              0
+            ],
+            [
+              320,
+              322,
+              0,
+              0,
+              0
+            ],
+            [
+              321,
+              323,
+              0,
+              0,
+              0
+            ],
+            [
+              322,
+              324,
+              0,
+              0,
+              0
+            ],
+            [
+              323,
+              325,
+              0,
+              0,
+              0
+            ],
+            [
+              324,
+              326,
+              0,
+              0,
+              0
+            ],
+            [
+              325,
+              327,
+              0,
+              0,
+              0
+            ],
+            [
+              326,
+              328,
+              0,
+              0,
+              0
+            ],
+            [
+              327,
+              329,
+              0,
+              0,
+              0
+            ],
+            [
+              328,
+              330,
+              0,
+              0,
+              0
+            ],
+            [
+              329,
+              331,
+              0,
+              0,
+              0
+            ],
+            [
+              330,
+              332,
+              0,
+              0,
+              0
+            ],
+            [
+              331,
+              333,
+              0,
+              0,
+              0
+            ],
+            [
+              332,
+              334,
+              0,
+              0,
+              0
+            ],
+            [
+              333,
+              335,
+              0,
+              0,
+              0
+            ],
+            [
+              334,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              335,
+              365,
+              337,
+              1,
+              0
+            ],
+            [
+              336,
+              338,
+              0,
+              0,
+              0
+            ],
+            [
+              337,
+              0,
+              339,
+              0,
+              0
+            ],
+            [
+              338,
+              340,
+              0,
+              0,
+              0
+            ],
+            [
+              339,
+              341,
+              0,
+              0,
+              0
+            ],
+            [
+              340,
+              342,
+              0,
+              0,
+              0
+            ],
+            [
+              341,
+              343,
+              0,
+              0,
+              0
+            ],
+            [
+              342,
+              344,
+              0,
+              0,
+              0
+            ],
+            [
+              343,
+              345,
+              0,
+              0,
+              0
+            ],
+            [
+              344,
+              346,
+              0,
+              0,
+              0
+            ],
+            [
+              345,
+              347,
+              0,
+              0,
+              0
+            ],
+            [
+              346,
+              348,
+              0,
+              0,
+              0
+            ],
+            [
+              347,
+              349,
+              0,
+              0,
+              0
+            ],
+            [
+              348,
+              350,
+              0,
+              0,
+              0
+            ],
+            [
+              349,
+              351,
+              0,
+              0,
+              0
+            ],
+            [
+              350,
+              352,
+              0,
+              0,
+              0
+            ],
+            [
+              351,
+              353,
+              0,
+              0,
+              0
+            ],
+            [
+              352,
+              354,
+              0,
+              0,
+              0
+            ],
+            [
+              353,
+              355,
+              0,
+              0,
+              0
+            ],
+            [
+              354,
+              356,
+              0,
+              0,
+              0
+            ],
+            [
+              355,
+              357,
+              0,
+              0,
+              0
+            ],
+            [
+              356,
+              358,
+              0,
+              0,
+              0
+            ],
+            [
+              357,
+              359,
+              0,
+              0,
+              0
+            ],
+            [
+              358,
+              360,
+              0,
+              0,
+              0
+            ],
+            [
+              359,
+              361,
+              0,
+              0,
+              0
+            ],
+            [
+              360,
+              362,
+              0,
+              0,
+              0
+            ],
+            [
+              361,
+              363,
+              0,
+              0,
+              0
+            ],
+            [
+              362,
+              364,
+              0,
+              0,
+              0
+            ],
+            [
+              363,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              364,
+              394,
+              366,
+              1,
+              0
+            ],
+            [
+              365,
+              367,
+              0,
+              0,
+              0
+            ],
+            [
+              366,
+              0,
+              368,
+              0,
+              0
+            ],
+            [
+              367,
+              369,
+              0,
+              0,
+              0
+            ],
+            [
+              368,
+              370,
+              0,
+              0,
+              0
+            ],
+            [
+              369,
+              371,
+              0,
+              0,
+              0
+            ],
+            [
+              370,
+              372,
+              0,
+              0,
+              0
+            ],
+            [
+              371,
+              373,
+              0,
+              0,
+              0
+            ],
+            [
+              372,
+              374,
+              0,
+              0,
+              0
+            ],
+            [
+              373,
+              375,
+              0,
+              0,
+              0
+            ],
+            [
+              374,
+              376,
+              0,
+              0,
+              0
+            ],
+            [
+              375,
+              377,
+              0,
+              0,
+              0
+            ],
+            [
+              376,
+              378,
+              0,
+              0,
+              0
+            ],
+            [
+              377,
+              379,
+              0,
+              0,
+              0
+            ],
+            [
+              378,
+              380,
+              0,
+              0,
+              0
+            ],
+            [
+              379,
+              381,
+              0,
+              0,
+              0
+            ],
+            [
+              380,
+              382,
+              0,
+              0,
+              0
+            ],
+            [
+              381,
+              383,
+              0,
+              0,
+              0
+            ],
+            [
+              382,
+              384,
+              0,
+              0,
+              0
+            ],
+            [
+              383,
+              385,
+              0,
+              0,
+              0
+            ],
+            [
+              384,
+              386,
+              0,
+              0,
+              0
+            ],
+            [
+              385,
+              387,
+              0,
+              0,
+              0
+            ],
+            [
+              386,
+              388,
+              0,
+              0,
+              0
+            ],
+            [
+              387,
+              389,
+              0,
+              0,
+              0
+            ],
+            [
+              388,
+              390,
+              0,
+              0,
+              0
+            ],
+            [
+              389,
+              391,
+              0,
+              0,
+              0
+            ],
+            [
+              390,
+              392,
+              0,
+              0,
+              0
+            ],
+            [
+              391,
+              393,
+              0,
+              0,
+              0
+            ],
+            [
+              392,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              393,
+              423,
+              395,
+              1,
+              0
+            ],
+            [
+              394,
+              396,
+              0,
+              0,
+              0
+            ],
+            [
+              395,
+              0,
+              397,
+              0,
+              0
+            ],
+            [
+              396,
+              398,
+              0,
+              0,
+              0
+            ],
+            [
+              397,
+              399,
+              0,
+              0,
+              0
+            ],
+            [
+              398,
+              400,
+              0,
+              0,
+              0
+            ],
+            [
+              399,
+              401,
+              0,
+              0,
+              0
+            ],
+            [
+              400,
+              402,
+              0,
+              0,
+              0
+            ],
+            [
+              401,
+              403,
+              0,
+              0,
+              0
+            ],
+            [
+              402,
+              404,
+              0,
+              0,
+              0
+            ],
+            [
+              403,
+              405,
+              0,
+              0,
+              0
+            ],
+            [
+              404,
+              406,
+              0,
+              0,
+              0
+            ],
+            [
+              405,
+              407,
+              0,
+              0,
+              0
+            ],
+            [
+              406,
+              408,
+              0,
+              0,
+              0
+            ],
+            [
+              407,
+              409,
+              0,
+              0,
+              0
+            ],
+            [
+              408,
+              410,
+              0,
+              0,
+              0
+            ],
+            [
+              409,
+              411,
+              0,
+              0,
+              0
+            ],
+            [
+              410,
+              412,
+              0,
+              0,
+              0
+            ],
+            [
+              411,
+              413,
+              0,
+              0,
+              0
+            ],
+            [
+              412,
+              414,
+              0,
+              0,
+              0
+            ],
+            [
+              413,
+              415,
+              0,
+              0,
+              0
+            ],
+            [
+              414,
+              416,
+              0,
+              0,
+              0
+            ],
+            [
+              415,
+              417,
+              0,
+              0,
+              0
+            ],
+            [
+              416,
+              418,
+              0,
+              0,
+              0
+            ],
+            [
+              417,
+              419,
+              0,
+              0,
+              0
+            ],
+            [
+              418,
+              420,
+              0,
+              0,
+              0
+            ],
+            [
+              419,
+              421,
+              0,
+              0,
+              0
+            ],
+            [
+              420,
+              422,
+              0,
+              0,
+              0
+            ],
+            [
+              421,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              422,
+              452,
+              424,
+              1,
+              0
+            ],
+            [
+              423,
+              425,
+              0,
+              0,
+              0
+            ],
+            [
+              424,
+              0,
+              426,
+              0,
+              0
+            ],
+            [
+              425,
+              427,
+              0,
+              0,
+              0
+            ],
+            [
+              426,
+              428,
+              0,
+              0,
+              0
+            ],
+            [
+              427,
+              429,
+              0,
+              0,
+              0
+            ],
+            [
+              428,
+              430,
+              0,
+              0,
+              0
+            ],
+            [
+              429,
+              431,
+              0,
+              0,
+              0
+            ],
+            [
+              430,
+              432,
+              0,
+              0,
+              0
+            ],
+            [
+              431,
+              433,
+              0,
+              0,
+              0
+            ],
+            [
+              432,
+              434,
+              0,
+              0,
+              0
+            ],
+            [
+              433,
+              435,
+              0,
+              0,
+              0
+            ],
+            [
+              434,
+              436,
+              0,
+              0,
+              0
+            ],
+            [
+              435,
+              437,
+              0,
+              0,
+              0
+            ],
+            [
+              436,
+              438,
+              0,
+              0,
+              0
+            ],
+            [
+              437,
+              439,
+              0,
+              0,
+              0
+            ],
+            [
+              438,
+              440,
+              0,
+              0,
+              0
+            ],
+            [
+              439,
+              441,
+              0,
+              0,
+              0
+            ],
+            [
+              440,
+              442,
+              0,
+              0,
+              0
+            ],
+            [
+              441,
+              443,
+              0,
+              0,
+              0
+            ],
+            [
+              442,
+              444,
+              0,
+              0,
+              0
+            ],
+            [
+              443,
+              445,
+              0,
+              0,
+              0
+            ],
+            [
+              444,
+              446,
+              0,
+              0,
+              0
+            ],
+            [
+              445,
+              447,
+              0,
+              0,
+              0
+            ],
+            [
+              446,
+              448,
+              0,
+              0,
+              0
+            ],
+            [
+              447,
+              449,
+              0,
+              0,
+              0
+            ],
+            [
+              448,
+              450,
+              0,
+              0,
+              0
+            ],
+            [
+              449,
+              451,
+              0,
+              0,
+              0
+            ],
+            [
+              450,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              451,
+              481,
+              453,
+              1,
+              0
+            ],
+            [
+              452,
+              454,
+              0,
+              0,
+              0
+            ],
+            [
+              453,
+              0,
+              455,
+              0,
+              0
+            ],
+            [
+              454,
+              456,
+              0,
+              0,
+              0
+            ],
+            [
+              455,
+              457,
+              0,
+              0,
+              0
+            ],
+            [
+              456,
+              458,
+              0,
+              0,
+              0
+            ],
+            [
+              457,
+              459,
+              0,
+              0,
+              0
+            ],
+            [
+              458,
+              460,
+              0,
+              0,
+              0
+            ],
+            [
+              459,
+              461,
+              0,
+              0,
+              0
+            ],
+            [
+              460,
+              462,
+              0,
+              0,
+              0
+            ],
+            [
+              461,
+              463,
+              0,
+              0,
+              0
+            ],
+            [
+              462,
+              464,
+              0,
+              0,
+              0
+            ],
+            [
+              463,
+              465,
+              0,
+              0,
+              0
+            ],
+            [
+              464,
+              466,
+              0,
+              0,
+              0
+            ],
+            [
+              465,
+              467,
+              0,
+              0,
+              0
+            ],
+            [
+              466,
+              468,
+              0,
+              0,
+              0
+            ],
+            [
+              467,
+              469,
+              0,
+              0,
+              0
+            ],
+            [
+              468,
+              470,
+              0,
+              0,
+              0
+            ],
+            [
+              469,
+              471,
+              0,
+              0,
+              0
+            ],
+            [
+              470,
+              472,
+              0,
+              0,
+              0
+            ],
+            [
+              471,
+              473,
+              0,
+              0,
+              0
+            ],
+            [
+              472,
+              474,
+              0,
+              0,
+              0
+            ],
+            [
+              473,
+              475,
+              0,
+              0,
+              0
+            ],
+            [
+              474,
+              476,
+              0,
+              0,
+              0
+            ],
+            [
+              475,
+              477,
+              0,
+              0,
+              0
+            ],
+            [
+              476,
+              478,
+              0,
+              0,
+              0
+            ],
+            [
+              477,
+              479,
+              0,
+              0,
+              0
+            ],
+            [
+              478,
+              480,
+              0,
+              0,
+              0
+            ],
+            [
+              479,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              480,
+              510,
+              482,
+              1,
+              0
+            ],
+            [
+              481,
+              483,
+              0,
+              0,
+              0
+            ],
+            [
+              482,
+              0,
+              484,
+              0,
+              0
+            ],
+            [
+              483,
+              485,
+              0,
+              0,
+              0
+            ],
+            [
+              484,
+              486,
+              0,
+              0,
+              0
+            ],
+            [
+              485,
+              487,
+              0,
+              0,
+              0
+            ],
+            [
+              486,
+              488,
+              0,
+              0,
+              0
+            ],
+            [
+              487,
+              489,
+              0,
+              0,
+              0
+            ],
+            [
+              488,
+              490,
+              0,
+              0,
+              0
+            ],
+            [
+              489,
+              491,
+              0,
+              0,
+              0
+            ],
+            [
+              490,
+              492,
+              0,
+              0,
+              0
+            ],
+            [
+              491,
+              493,
+              0,
+              0,
+              0
+            ],
+            [
+              492,
+              494,
+              0,
+              0,
+              0
+            ],
+            [
+              493,
+              495,
+              0,
+              0,
+              0
+            ],
+            [
+              494,
+              496,
+              0,
+              0,
+              0
+            ],
+            [
+              495,
+              497,
+              0,
+              0,
+              0
+            ],
+            [
+              496,
+              498,
+              0,
+              0,
+              0
+            ],
+            [
+              497,
+              499,
+              0,
+              0,
+              0
+            ],
+            [
+              498,
+              500,
+              0,
+              0,
+              0
+            ],
+            [
+              499,
+              501,
+              0,
+              0,
+              0
+            ],
+            [
+              500,
+              502,
+              0,
+              0,
+              0
+            ],
+            [
+              501,
+              503,
+              0,
+              0,
+              0
+            ],
+            [
+              502,
+              504,
+              0,
+              0,
+              0
+            ],
+            [
+              503,
+              505,
+              0,
+              0,
+              0
+            ],
+            [
+              504,
+              506,
+              0,
+              0,
+              0
+            ],
+            [
+              505,
+              507,
+              0,
+              0,
+              0
+            ],
+            [
+              506,
+              508,
+              0,
+              0,
+              0
+            ],
+            [
+              507,
+              509,
+              0,
+              0,
+              0
+            ],
+            [
+              508,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              509,
+              0,
+              511,
+              1,
+              0
+            ],
+            [
+              510,
+              512,
+              0,
+              0,
+              0
+            ],
+            [
+              511,
+              0,
+              513,
+              0,
+              0
+            ],
+            [
+              512,
+              514,
+              0,
+              0,
+              0
+            ],
+            [
+              513,
+              515,
+              0,
+              0,
+              0
+            ],
+            [
+              514,
+              516,
+              0,
+              0,
+              0
+            ],
+            [
+              515,
+              517,
+              0,
+              0,
+              0
+            ],
+            [
+              516,
+              518,
+              0,
+              0,
+              0
+            ],
+            [
+              517,
+              519,
+              0,
+              0,
+              0
+            ],
+            [
+              518,
+              520,
+              0,
+              0,
+              0
+            ],
+            [
+              519,
+              521,
+              0,
+              0,
+              0
+            ],
+            [
+              520,
+              522,
+              0,
+              0,
+              0
+            ],
+            [
+              521,
+              523,
+              0,
+              0,
+              0
+            ],
+            [
+              522,
+              524,
+              0,
+              0,
+              0
+            ],
+            [
+              523,
+              525,
+              0,
+              0,
+              0
+            ],
+            [
+              524,
+              526,
+              0,
+              0,
+              0
+            ],
+            [
+              525,
+              527,
+              0,
+              0,
+              0
+            ],
+            [
+              526,
+              528,
+              0,
+              0,
+              0
+            ],
+            [
+              527,
+              529,
+              0,
+              0,
+              0
+            ],
+            [
+              528,
+              530,
+              0,
+              0,
+              0
+            ],
+            [
+              529,
+              531,
+              0,
+              0,
+              0
+            ],
+            [
+              530,
+              532,
+              0,
+              0,
+              0
+            ],
+            [
+              531,
+              533,
+              0,
+              0,
+              0
+            ],
+            [
+              532,
+              534,
+              0,
+              0,
+              0
+            ],
+            [
+              533,
+              535,
+              0,
+              0,
+              0
+            ],
+            [
+              534,
+              536,
+              0,
+              0,
+              0
+            ],
+            [
+              535,
+              537,
+              0,
+              0,
+              0
+            ],
+            [
+              536,
+              538,
+              0,
+              0,
+              0
+            ],
+            [
+              537,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              538,
+              557,
+              540,
+              0,
+              0
+            ],
+            [
+              539,
+              541,
+              0,
+              1,
+              0
+            ],
+            [
+              540,
+              542,
+              0,
+              1,
+              0
+            ],
+            [
+              541,
+              543,
+              0,
+              1,
+              0
+            ],
+            [
+              542,
+              544,
+              0,
+              1,
+              0
+            ],
+            [
+              543,
+              545,
+              0,
+              1,
+              0
+            ],
+            [
+              544,
+              546,
+              0,
+              1,
+              0
+            ],
+            [
+              545,
+              547,
+              0,
+              1,
+              0
+            ],
+            [
+              546,
+              548,
+              0,
+              1,
+              0
+            ],
+            [
+              547,
+              549,
+              0,
+              1,
+              0
+            ],
+            [
+              548,
+              550,
+              0,
+              1,
+              0
+            ],
+            [
+              549,
+              551,
+              0,
+              1,
+              0
+            ],
+            [
+              550,
+              552,
+              0,
+              1,
+              0
+            ],
+            [
+              551,
+              553,
+              0,
+              1,
+              0
+            ],
+            [
+              552,
+              554,
+              0,
+              1,
+              0
+            ],
+            [
+              553,
+              555,
+              0,
+              1,
+              0
+            ],
+            [
+              554,
+              556,
+              0,
+              1,
+              0
+            ],
+            [
+              555,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              556,
+              558,
+              0,
+              1,
+              0
+            ],
+            [
+              557,
+              570,
+              559,
+              0,
+              0
+            ],
+            [
+              558,
+              560,
+              0,
+              1,
+              0
+            ],
+            [
+              559,
+              561,
+              0,
+              1,
+              0
+            ],
+            [
+              560,
+              562,
+              0,
+              1,
+              0
+            ],
+            [
+              561,
+              563,
+              0,
+              1,
+              0
+            ],
+            [
+              562,
+              564,
+              0,
+              1,
+              0
+            ],
+            [
+              563,
+              565,
+              0,
+              1,
+              0
+            ],
+            [
+              564,
+              566,
+              0,
+              1,
+              0
+            ],
+            [
+              565,
+              567,
+              0,
+              1,
+              0
+            ],
+            [
+              566,
+              568,
+              0,
+              1,
+              0
+            ],
+            [
+              567,
+              569,
+              0,
+              1,
+              0
+            ],
+            [
+              568,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              569,
+              580,
+              571,
+              0,
+              0
+            ],
+            [
+              570,
+              572,
+              0,
+              1,
+              0
+            ],
+            [
+              571,
+              573,
+              0,
+              1,
+              0
+            ],
+            [
+              572,
+              574,
+              0,
+              1,
+              0
+            ],
+            [
+              573,
+              575,
+              0,
+              1,
+              0
+            ],
+            [
+              574,
+              576,
+              0,
+              1,
+              0
+            ],
+            [
+              575,
+              577,
+              0,
+              1,
+              0
+            ],
+            [
+              576,
+              578,
+              0,
+              1,
+              0
+            ],
+            [
+              577,
+              579,
+              0,
+              1,
+              0
+            ],
+            [
+              578,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              579,
+              581,
+              0,
+              0,
+              0
+            ],
+            [
+              580,
+              588,
+              582,
+              0,
+              0
+            ],
+            [
+              581,
+              583,
+              0,
+              1,
+              0
+            ],
+            [
+              582,
+              584,
+              0,
+              1,
+              0
+            ],
+            [
+              583,
+              585,
+              0,
+              1,
+              0
+            ],
+            [
+              584,
+              586,
+              0,
+              1,
+              0
+            ],
+            [
+              585,
+              587,
+              0,
+              1,
+              0
+            ],
+            [
+              586,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              587,
+              0,
+              589,
+              0,
+              0
+            ],
+            [
+              588,
+              590,
+              0,
+              1,
+              0
+            ],
+            [
+              589,
+              591,
+              0,
+              1,
+              0
+            ],
+            [
+              590,
+              592,
+              0,
+              1,
+              0
+            ],
+            [
+              591,
+              593,
+              0,
+              1,
+              0
+            ],
+            [
+              592,
+              594,
+              0,
+              1,
+              0
+            ],
+            [
+              593,
+              595,
+              0,
+              1,
+              0
+            ],
+            [
+              594,
+              596,
+              0,
+              1,
+              0
+            ],
+            [
+              595,
+              597,
+              0,
+              1,
+              0
+            ],
+            [
+              596,
+              598,
+              0,
+              1,
+              0
+            ],
+            [
+              597,
+              599,
+              0,
+              1,
+              0
+            ],
+            [
+              598,
+              600,
+              0,
+              1,
+              0
+            ],
+            [
+              599,
+              601,
+              0,
+              1,
+              0
+            ],
+            [
+              600,
+              602,
+              0,
+              1,
+              0
+            ],
+            [
+              601,
+              603,
+              0,
+              1,
+              0
+            ],
+            [
+              602,
+              604,
+              0,
+              1,
+              0
+            ],
+            [
+              603,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            35,
+            61,
+            62,
+            72,
+            73,
+            538,
+            556,
+            557,
+            569,
+            579,
+            580,
+            587
+          ]
+        },
+        {
+          "vtable": "0x66b2ab8",
+          "type_getter": "0x73a900",
+          "getter_bytes": "b090c3cccccc"
+        },
+        {
+          "vtable": "0x6712be8",
+          "type_getter": "0xa00ac0",
+          "getter_bytes": "b07ec3cccccc"
+        },
+        {
+          "vtable": "0x66d5f30",
+          "type_getter": "0x832d10",
+          "getter_bytes": "b019c3cccccc"
+        }
+      ]
+    },
+    {
+      "network_id": "0xfe00098b",
+      "slice_hash": 161882647,
+      "slice_entry": 1656,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66eb970",
+          "type_getter": "0x8d2710",
+          "getter_bytes": "b033c3cccccc"
+        },
+        {
+          "vtable": "0x674a508",
+          "type_getter": "0x96cc10",
+          "getter_bytes": "b059c3cccccc",
+          "phase": 8
+        },
+        {
+          "vtable": "0x66b2588",
+          "type_getter": "0x73f450",
+          "getter_bytes": "b0a0c3cccccc"
+        },
+        {
+          "vtable": "0x6712be8",
+          "type_getter": "0xa00ac0",
+          "getter_bytes": "b07ec3cccccc"
+        }
+      ]
+    },
+    {
+      "network_id": "0x1000005",
+      "slice_hash": 9256072,
+      "slice_entry": 0,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6d3c758",
+          "type_getter": "0x4b93830",
+          "getter_bytes": "e99bfeffffcc"
+        },
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x688c160",
+          "type_getter": "0x51fd50",
+          "getter_bytes": "40534883ec20"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66eb970",
+          "type_getter": "0x8d2710",
+          "getter_bytes": "b033c3cccccc"
+        },
+        {
+          "vtable": "0x66e61a0",
+          "type_getter": "0x8a26f0",
+          "getter_bytes": "b02cc3cccccc"
+        },
+        {
+          "vtable": "0x670c508",
+          "type_getter": "0x9d23b0",
+          "getter_bytes": "b071c3cccccc"
+        },
+        {
+          "vtable": "0x66ddcb8",
+          "type_getter": "0x86d8e0",
+          "getter_bytes": "b024c3cccccc"
+        },
+        {
+          "vtable": "0x670f6a0",
+          "type_getter": "0x9e6030",
+          "getter_bytes": "b075c3cccccc"
+        },
+        {
+          "vtable": "0x66efe58",
+          "type_getter": "0x8eff00",
+          "getter_bytes": "b03dc3cccccc"
+        },
+        {
+          "vtable": "0x67135b8",
+          "type_getter": "0xa04100",
+          "getter_bytes": "b080c3cccccc"
+        },
+        {
+          "vtable": "0x6717758",
+          "type_getter": "0xa22080",
+          "getter_bytes": "b087c3cccccc"
+        },
+        {
+          "vtable": "0x66bd030",
+          "type_getter": "0x4fdfb0",
+          "getter_bytes": "32c0c3cccccc"
+        },
+        {
+          "vtable": "0x66ea3c0",
+          "type_getter": "0x8c67b0",
+          "getter_bytes": "b030c3cccccc"
+        },
+        {
+          "vtable": "0x66f27d8",
+          "type_getter": "0x90bb60",
+          "getter_bytes": "b042c3cccccc"
+        },
+        {
+          "vtable": "0x66cea00",
+          "type_getter": "0x7fa750",
+          "getter_bytes": "b00ec3cccccc"
+        },
+        {
+          "vtable": "0x66f23e8",
+          "type_getter": "0x908f10",
+          "getter_bytes": "b041c3cccccc"
+        },
+        {
+          "vtable": "0x66b2098",
+          "type_getter": "0x71e380",
+          "getter_bytes": "b023c3cccccc"
+        },
+        {
+          "vtable": "0x671e518",
+          "type_getter": "0xa55460",
+          "getter_bytes": "b08cc3cccccc"
+        },
+        {
+          "vtable": "0x66f2ba8",
+          "type_getter": "0x90d920",
+          "getter_bytes": "b043c3cccccc"
+        },
+        {
+          "vtable": "0x6716db0",
+          "type_getter": "0xa1c230",
+          "getter_bytes": "b085c3cccccc"
+        },
+        {
+          "vtable": "0x66b2958",
+          "type_getter": "0x740d60",
+          "getter_bytes": "b0a5c3cccccc"
+        },
+        {
+          "vtable": "0x675ceb8",
+          "type_getter": "0xa9e4d0",
+          "getter_bytes": "b091c3cccccc",
+          "authoritative_position": [
+            1318.48095703125,
+            1248.3271484375,
+            20.87413787841797
+          ],
+          "authoritative_rotation": [
+            0.9999992847442627,
+            0.0006912350654602051,
+            0.0006912350654602051,
+            0.0006912350654602051
+          ]
+        },
+        {
+          "vtable": "0x66d36a8",
+          "type_getter": "0x821460",
+          "getter_bytes": "b016c3cccccc"
+        },
+        {
+          "vtable": "0x66fe2e8",
+          "type_getter": "0x965670",
+          "getter_bytes": "b056c3cccccc"
+        },
+        {
+          "vtable": "0x671f098",
+          "type_getter": "0xa5b620",
+          "getter_bytes": "b08ec3cccccc"
+        },
+        {
+          "vtable": "0x66c9128",
+          "type_getter": "0x7adfd0",
+          "getter_bytes": "b00ac3cccccc"
+        },
+        {
+          "vtable": "0x66caf20",
+          "type_getter": "0x7db870",
+          "getter_bytes": "b00dc3cccccc"
+        },
+        {
+          "vtable": "0x66eb1c0",
+          "type_getter": "0x8ce780",
+          "getter_bytes": "b032c3cccccc"
+        },
+        {
+          "vtable": "0x66ec550",
+          "type_getter": "0x8d9cd0",
+          "getter_bytes": "b036c3cccccc"
+        },
+        {
+          "vtable": "0x66fa0c8",
+          "type_getter": "0x942fc0",
+          "getter_bytes": "b050c3cccccc"
+        },
+        {
+          "vtable": "0x66f3830",
+          "type_getter": "0x911160",
+          "getter_bytes": "b045c3cccccc"
+        },
+        {
+          "vtable": "0x66f4968",
+          "type_getter": "0x914b30",
+          "getter_bytes": "b046c3cccccc"
+        },
+        {
+          "vtable": "0x674bc80",
+          "type_getter": "0x9d0d90",
+          "getter_bytes": "b070c3cccccc"
+        },
+        {
+          "vtable": "0x66b2ff0",
+          "type_getter": "0x7316c0",
+          "getter_bytes": "b06cc3cccccc"
+        },
+        {
+          "vtable": "0x66d1fb8",
+          "type_getter": "0x816680",
+          "getter_bytes": "b015c3cccccc"
+        },
+        {
+          "vtable": "0x6702410",
+          "type_getter": "0x9813c0",
+          "getter_bytes": "b05ec3cccccc"
+        },
+        {
+          "vtable": "0x66e9320",
+          "type_getter": "0x8ad9f0",
+          "getter_bytes": "b02ec3cccccc"
+        },
+        {
+          "vtable": "0x67142b8",
+          "type_getter": "0xa06760",
+          "getter_bytes": "b081c3cccccc"
+        },
+        {
+          "vtable": "0x6706890",
+          "type_getter": "0x998680",
+          "getter_bytes": "b063c3cccccc"
+        },
+        {
+          "vtable": "0x68912e8",
+          "type_getter": "0x1b93020",
+          "getter_bytes": "e99bffffffcc"
+        },
+        {
+          "vtable": "0x67046c8",
+          "type_getter": "0x992ac0",
+          "getter_bytes": "b061c3cccccc"
+        },
+        {
+          "vtable": "0x688a4b0",
+          "network_getter": false
+        },
+        {
+          "vtable": "0x675b0e0",
+          "type_getter": "0xa885d0",
+          "getter_bytes": "b09bc3cccccc"
+        },
+        {
+          "vtable": "0x6716340",
+          "type_getter": "0xa13700",
+          "getter_bytes": "b084c3cccccc"
+        },
+        {
+          "vtable": "0x66b3148",
+          "type_getter": "0x72f4f0",
+          "getter_bytes": "b065c3cccccc"
+        },
+        {
+          "vtable": "0x66fa8e8",
+          "type_getter": "0x945c10",
+          "getter_bytes": "b051c3cccccc"
+        },
+        {
+          "vtable": "0x674c7f0",
+          "type_getter": "0x9d89c0",
+          "getter_bytes": "b073c3cccccc",
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0
+            ],
+            [
+              2,
+              7,
+              4,
+              1,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              6,
+              11,
+              8,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              0,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              0,
+              0
+            ],
+            [
+              9,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              10,
+              15,
+              12,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              0,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              0,
+              0
+            ],
+            [
+              13,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              14,
+              19,
+              16,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              0,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              0,
+              0
+            ],
+            [
+              17,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              18,
+              23,
+              20,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              0,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              0,
+              0
+            ],
+            [
+              21,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              22,
+              27,
+              24,
+              1,
+              0
+            ],
+            [
+              23,
+              25,
+              0,
+              0,
+              0
+            ],
+            [
+              24,
+              26,
+              0,
+              0,
+              0
+            ],
+            [
+              25,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              31,
+              28,
+              1,
+              0
+            ],
+            [
+              27,
+              29,
+              0,
+              0,
+              0
+            ],
+            [
+              28,
+              30,
+              0,
+              0,
+              0
+            ],
+            [
+              29,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              30,
+              35,
+              32,
+              1,
+              0
+            ],
+            [
+              31,
+              33,
+              0,
+              0,
+              0
+            ],
+            [
+              32,
+              34,
+              0,
+              0,
+              0
+            ],
+            [
+              33,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              34,
+              39,
+              36,
+              1,
+              0
+            ],
+            [
+              35,
+              37,
+              0,
+              0,
+              0
+            ],
+            [
+              36,
+              38,
+              0,
+              0,
+              0
+            ],
+            [
+              37,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              38,
+              0,
+              40,
+              1,
+              0
+            ],
+            [
+              39,
+              41,
+              0,
+              0,
+              0
+            ],
+            [
+              40,
+              42,
+              0,
+              0,
+              0
+            ],
+            [
+              41,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1
+          ]
+        },
+        {
+          "vtable": "0x671f750",
+          "type_getter": "0xa5d170",
+          "getter_bytes": "b08fc3cccccc"
+        },
+        {
+          "vtable": "0x66b2ab8",
+          "type_getter": "0x73a900",
+          "getter_bytes": "b090c3cccccc"
+        },
+        {
+          "vtable": "0x6d50698",
+          "type_getter": "0x4cc5550",
+          "getter_bytes": "48895c242056"
+        },
+        {
+          "vtable": "0x6d4ce78",
+          "type_getter": "0x4ca9550",
+          "getter_bytes": "48895c242057"
+        },
+        {
+          "vtable": "0x672b8c0",
+          "type_getter": "0xab0e60",
+          "getter_bytes": "b0a3c3cccccc"
+        },
+        {
+          "vtable": "0x66cfbb8",
+          "type_getter": "0x803350",
+          "getter_bytes": "b011c3cccccc"
+        },
+        {
+          "vtable": "0x672c050",
+          "type_getter": "0xab4c50",
+          "getter_bytes": "b0a4c3cccccc"
+        },
+        {
+          "vtable": "0x67205c8",
+          "type_getter": "0xa60ec0",
+          "getter_bytes": "b092c3cccccc"
+        },
+        {
+          "vtable": "0x675d428",
+          "type_getter": "0xab9780",
+          "getter_bytes": "b0a6c3cccccc"
+        },
+        {
+          "vtable": "0x675b718",
+          "type_getter": "0xa89bd0",
+          "getter_bytes": "b09cc3cccccc"
+        },
+        {
+          "vtable": "0x6724940",
+          "type_getter": "0xa86470",
+          "getter_bytes": "b09ac3cccccc"
+        },
+        {
+          "vtable": "0x674b490",
+          "type_getter": "0x9bc390",
+          "getter_bytes": "b06bc3cccccc"
+        },
+        {
+          "vtable": "0x66e9af8",
+          "type_getter": "0x8c4b70",
+          "getter_bytes": "b02fc3cccccc"
+        },
+        {
+          "vtable": "0x68746e0",
+          "type_getter": "0x19895f0",
+          "getter_bytes": "48895c240857"
+        },
+        {
+          "vtable": "0x66dcdc0",
+          "type_getter": "0x868c40",
+          "getter_bytes": "b022c3cccccc"
+        },
+        {
+          "vtable": "0x6727830",
+          "type_getter": "0xa951e0",
+          "getter_bytes": "b09ec3cccccc",
+          "following_entity_id": "0x0",
+          "controlling_entity_id": "0x0",
+          "hierarchy_kind": 1,
+          "child_count": 0,
+          "child_ids": [],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2
+          ],
+          "autonomous_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "vtable": "0x6727c80",
+          "type_getter": "0xa99790",
+          "getter_bytes": "b09fc3cccccc"
+        },
+        {
+          "vtable": "0x66abd60",
+          "type_getter": "0x70d920",
+          "getter_bytes": "b01ac3cccccc"
+        },
+        {
+          "vtable": "0x670b2c0",
+          "type_getter": "0x9c2c10",
+          "getter_bytes": "b06ec3cccccc"
+        },
+        {
+          "vtable": "0x66fb018",
+          "type_getter": "0x949df0",
+          "getter_bytes": "b052c3cccccc"
+        },
+        {
+          "vtable": "0x66b2380",
+          "type_getter": "0x718d60",
+          "getter_bytes": "b012c3cccccc"
+        },
+        {
+          "vtable": "0x67a6448",
+          "type_getter": "0xe457d4",
+          "getter_bytes": "4881e9f00000"
+        },
+        {
+          "vtable": "0x66d9628",
+          "type_getter": "0x83dd40",
+          "getter_bytes": "b01bc3cccccc"
+        },
+        {
+          "vtable": "0x66d5f30",
+          "type_getter": "0x832d10",
+          "getter_bytes": "b019c3cccccc"
+        },
+        {
+          "vtable": "0x66f7f90",
+          "type_getter": "0x932430",
+          "getter_bytes": "b04fc3cccccc",
+          "rpc_handler": "0x935940",
+          "state_delta_serializer": "0x9355f0",
+          "health_value_triplet": [
+            0.0,
+            800.0,
+            800.0
+          ],
+          "health_rate": 0.0,
+          "health_timing_fields": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              4,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              24,
+              7,
+              0,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              1,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              1,
+              0
+            ],
+            [
+              21,
+              23,
+              0,
+              1,
+              0
+            ],
+            [
+              22,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              23,
+              0,
+              25,
+              0,
+              0
+            ],
+            [
+              24,
+              0,
+              26,
+              1,
+              0
+            ],
+            [
+              25,
+              27,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            23
+          ]
+        },
+        {
+          "vtable": "0x67109b0",
+          "type_getter": "0x9f0740",
+          "getter_bytes": "b078c3cccccc"
+        },
+        {
+          "vtable": "0x66d4008",
+          "type_getter": "0x826000",
+          "getter_bytes": "b018c3cccccc"
+        },
+        {
+          "vtable": "0x6707dc0",
+          "type_getter": "0x9b1580",
+          "getter_bytes": "b066c3cccccc"
+        },
+        {
+          "vtable": "0x66d1828",
+          "type_getter": "0x80ea90",
+          "getter_bytes": "b014c3cccccc"
+        },
+        {
+          "vtable": "0x66fcc58",
+          "type_getter": "0x958e50",
+          "getter_bytes": "b054c3cccccc"
+        },
+        {
+          "vtable": "0x66c1f38",
+          "type_getter": "0x794130",
+          "getter_bytes": "b006c3cccccc"
+        },
+        {
+          "vtable": "0x6704ea0",
+          "type_getter": "0x994800",
+          "getter_bytes": "b062c3cccccc"
+        },
+        {
+          "vtable": "0x6712838",
+          "type_getter": "0x9fe4d0",
+          "getter_bytes": "b07dc3cccccc",
+          "last_processed_game_time_ms": 0
+        }
+      ]
+    },
+    {
+      "network_id": "0x1000002",
+      "slice_hash": 9256072,
+      "slice_entry": 0,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6d3c758",
+          "type_getter": "0x4b93830",
+          "getter_bytes": "e99bfeffffcc"
+        },
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x688c160",
+          "type_getter": "0x51fd50",
+          "getter_bytes": "40534883ec20"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66eb970",
+          "type_getter": "0x8d2710",
+          "getter_bytes": "b033c3cccccc"
+        },
+        {
+          "vtable": "0x66e61a0",
+          "type_getter": "0x8a26f0",
+          "getter_bytes": "b02cc3cccccc"
+        },
+        {
+          "vtable": "0x670c508",
+          "type_getter": "0x9d23b0",
+          "getter_bytes": "b071c3cccccc"
+        },
+        {
+          "vtable": "0x66ddcb8",
+          "type_getter": "0x86d8e0",
+          "getter_bytes": "b024c3cccccc"
+        },
+        {
+          "vtable": "0x670f6a0",
+          "type_getter": "0x9e6030",
+          "getter_bytes": "b075c3cccccc"
+        },
+        {
+          "vtable": "0x66efe58",
+          "type_getter": "0x8eff00",
+          "getter_bytes": "b03dc3cccccc"
+        },
+        {
+          "vtable": "0x67135b8",
+          "type_getter": "0xa04100",
+          "getter_bytes": "b080c3cccccc"
+        },
+        {
+          "vtable": "0x6717758",
+          "type_getter": "0xa22080",
+          "getter_bytes": "b087c3cccccc"
+        },
+        {
+          "vtable": "0x66bd030",
+          "type_getter": "0x4fdfb0",
+          "getter_bytes": "32c0c3cccccc"
+        },
+        {
+          "vtable": "0x66ea3c0",
+          "type_getter": "0x8c67b0",
+          "getter_bytes": "b030c3cccccc"
+        },
+        {
+          "vtable": "0x66f27d8",
+          "type_getter": "0x90bb60",
+          "getter_bytes": "b042c3cccccc"
+        },
+        {
+          "vtable": "0x66cea00",
+          "type_getter": "0x7fa750",
+          "getter_bytes": "b00ec3cccccc"
+        },
+        {
+          "vtable": "0x66f23e8",
+          "type_getter": "0x908f10",
+          "getter_bytes": "b041c3cccccc"
+        },
+        {
+          "vtable": "0x66b2098",
+          "type_getter": "0x71e380",
+          "getter_bytes": "b023c3cccccc"
+        },
+        {
+          "vtable": "0x671e518",
+          "type_getter": "0xa55460",
+          "getter_bytes": "b08cc3cccccc"
+        },
+        {
+          "vtable": "0x66f2ba8",
+          "type_getter": "0x90d920",
+          "getter_bytes": "b043c3cccccc"
+        },
+        {
+          "vtable": "0x6716db0",
+          "type_getter": "0xa1c230",
+          "getter_bytes": "b085c3cccccc"
+        },
+        {
+          "vtable": "0x66b2958",
+          "type_getter": "0x740d60",
+          "getter_bytes": "b0a5c3cccccc"
+        },
+        {
+          "vtable": "0x675ceb8",
+          "type_getter": "0xa9e4d0",
+          "getter_bytes": "b091c3cccccc",
+          "authoritative_position": [
+            1228.5367431640625,
+            1273.5098876953125,
+            26.8573055267334
+          ],
+          "authoritative_rotation": [
+            0.7688997387886047,
+            0.0006912350654602051,
+            0.0006912350654602051,
+            0.6393685936927795
+          ]
+        },
+        {
+          "vtable": "0x66d36a8",
+          "type_getter": "0x821460",
+          "getter_bytes": "b016c3cccccc"
+        },
+        {
+          "vtable": "0x66fe2e8",
+          "type_getter": "0x965670",
+          "getter_bytes": "b056c3cccccc"
+        },
+        {
+          "vtable": "0x671f098",
+          "type_getter": "0xa5b620",
+          "getter_bytes": "b08ec3cccccc"
+        },
+        {
+          "vtable": "0x66c9128",
+          "type_getter": "0x7adfd0",
+          "getter_bytes": "b00ac3cccccc"
+        },
+        {
+          "vtable": "0x66caf20",
+          "type_getter": "0x7db870",
+          "getter_bytes": "b00dc3cccccc"
+        },
+        {
+          "vtable": "0x66eb1c0",
+          "type_getter": "0x8ce780",
+          "getter_bytes": "b032c3cccccc"
+        },
+        {
+          "vtable": "0x66ec550",
+          "type_getter": "0x8d9cd0",
+          "getter_bytes": "b036c3cccccc"
+        },
+        {
+          "vtable": "0x66fa0c8",
+          "type_getter": "0x942fc0",
+          "getter_bytes": "b050c3cccccc"
+        },
+        {
+          "vtable": "0x66f3830",
+          "type_getter": "0x911160",
+          "getter_bytes": "b045c3cccccc"
+        },
+        {
+          "vtable": "0x66f4968",
+          "type_getter": "0x914b30",
+          "getter_bytes": "b046c3cccccc"
+        },
+        {
+          "vtable": "0x674bc80",
+          "type_getter": "0x9d0d90",
+          "getter_bytes": "b070c3cccccc"
+        },
+        {
+          "vtable": "0x66b2ff0",
+          "type_getter": "0x7316c0",
+          "getter_bytes": "b06cc3cccccc"
+        },
+        {
+          "vtable": "0x66d1fb8",
+          "type_getter": "0x816680",
+          "getter_bytes": "b015c3cccccc"
+        },
+        {
+          "vtable": "0x6702410",
+          "type_getter": "0x9813c0",
+          "getter_bytes": "b05ec3cccccc"
+        },
+        {
+          "vtable": "0x66e9320",
+          "type_getter": "0x8ad9f0",
+          "getter_bytes": "b02ec3cccccc"
+        },
+        {
+          "vtable": "0x67142b8",
+          "type_getter": "0xa06760",
+          "getter_bytes": "b081c3cccccc"
+        },
+        {
+          "vtable": "0x6706890",
+          "type_getter": "0x998680",
+          "getter_bytes": "b063c3cccccc"
+        },
+        {
+          "vtable": "0x68912e8",
+          "type_getter": "0x1b93020",
+          "getter_bytes": "e99bffffffcc"
+        },
+        {
+          "vtable": "0x67046c8",
+          "type_getter": "0x992ac0",
+          "getter_bytes": "b061c3cccccc"
+        },
+        {
+          "vtable": "0x688a4b0",
+          "network_getter": false
+        },
+        {
+          "vtable": "0x675b0e0",
+          "type_getter": "0xa885d0",
+          "getter_bytes": "b09bc3cccccc"
+        },
+        {
+          "vtable": "0x6716340",
+          "type_getter": "0xa13700",
+          "getter_bytes": "b084c3cccccc"
+        },
+        {
+          "vtable": "0x66b3148",
+          "type_getter": "0x72f4f0",
+          "getter_bytes": "b065c3cccccc"
+        },
+        {
+          "vtable": "0x66fa8e8",
+          "type_getter": "0x945c10",
+          "getter_bytes": "b051c3cccccc"
+        },
+        {
+          "vtable": "0x674c7f0",
+          "type_getter": "0x9d89c0",
+          "getter_bytes": "b073c3cccccc",
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0
+            ],
+            [
+              2,
+              7,
+              4,
+              1,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              6,
+              11,
+              8,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              0,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              0,
+              0
+            ],
+            [
+              9,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              10,
+              15,
+              12,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              0,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              0,
+              0
+            ],
+            [
+              13,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              14,
+              19,
+              16,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              0,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              0,
+              0
+            ],
+            [
+              17,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              18,
+              23,
+              20,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              0,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              0,
+              0
+            ],
+            [
+              21,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              22,
+              27,
+              24,
+              1,
+              0
+            ],
+            [
+              23,
+              25,
+              0,
+              0,
+              0
+            ],
+            [
+              24,
+              26,
+              0,
+              0,
+              0
+            ],
+            [
+              25,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              31,
+              28,
+              1,
+              0
+            ],
+            [
+              27,
+              29,
+              0,
+              0,
+              0
+            ],
+            [
+              28,
+              30,
+              0,
+              0,
+              0
+            ],
+            [
+              29,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              30,
+              35,
+              32,
+              1,
+              0
+            ],
+            [
+              31,
+              33,
+              0,
+              0,
+              0
+            ],
+            [
+              32,
+              34,
+              0,
+              0,
+              0
+            ],
+            [
+              33,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              34,
+              39,
+              36,
+              1,
+              0
+            ],
+            [
+              35,
+              37,
+              0,
+              0,
+              0
+            ],
+            [
+              36,
+              38,
+              0,
+              0,
+              0
+            ],
+            [
+              37,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              38,
+              0,
+              40,
+              1,
+              0
+            ],
+            [
+              39,
+              41,
+              0,
+              0,
+              0
+            ],
+            [
+              40,
+              42,
+              0,
+              0,
+              0
+            ],
+            [
+              41,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1
+          ]
+        },
+        {
+          "vtable": "0x671f750",
+          "type_getter": "0xa5d170",
+          "getter_bytes": "b08fc3cccccc"
+        },
+        {
+          "vtable": "0x66b2ab8",
+          "type_getter": "0x73a900",
+          "getter_bytes": "b090c3cccccc"
+        },
+        {
+          "vtable": "0x6d50698",
+          "type_getter": "0x4cc5550",
+          "getter_bytes": "48895c242056"
+        },
+        {
+          "vtable": "0x6d4ce78",
+          "type_getter": "0x4ca9550",
+          "getter_bytes": "48895c242057"
+        },
+        {
+          "vtable": "0x672b8c0",
+          "type_getter": "0xab0e60",
+          "getter_bytes": "b0a3c3cccccc"
+        },
+        {
+          "vtable": "0x66cfbb8",
+          "type_getter": "0x803350",
+          "getter_bytes": "b011c3cccccc"
+        },
+        {
+          "vtable": "0x672c050",
+          "type_getter": "0xab4c50",
+          "getter_bytes": "b0a4c3cccccc"
+        },
+        {
+          "vtable": "0x67205c8",
+          "type_getter": "0xa60ec0",
+          "getter_bytes": "b092c3cccccc"
+        },
+        {
+          "vtable": "0x675d428",
+          "type_getter": "0xab9780",
+          "getter_bytes": "b0a6c3cccccc"
+        },
+        {
+          "vtable": "0x675b718",
+          "type_getter": "0xa89bd0",
+          "getter_bytes": "b09cc3cccccc"
+        },
+        {
+          "vtable": "0x6724940",
+          "type_getter": "0xa86470",
+          "getter_bytes": "b09ac3cccccc"
+        },
+        {
+          "vtable": "0x674b490",
+          "type_getter": "0x9bc390",
+          "getter_bytes": "b06bc3cccccc"
+        },
+        {
+          "vtable": "0x66e9af8",
+          "type_getter": "0x8c4b70",
+          "getter_bytes": "b02fc3cccccc"
+        },
+        {
+          "vtable": "0x68746e0",
+          "type_getter": "0x19895f0",
+          "getter_bytes": "48895c240857"
+        },
+        {
+          "vtable": "0x66dcdc0",
+          "type_getter": "0x868c40",
+          "getter_bytes": "b022c3cccccc"
+        },
+        {
+          "vtable": "0x6727830",
+          "type_getter": "0xa951e0",
+          "getter_bytes": "b09ec3cccccc",
+          "following_entity_id": "0x0",
+          "controlling_entity_id": "0x0",
+          "hierarchy_kind": 1,
+          "child_count": 0,
+          "child_ids": [],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2
+          ],
+          "autonomous_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "vtable": "0x6727c80",
+          "type_getter": "0xa99790",
+          "getter_bytes": "b09fc3cccccc"
+        },
+        {
+          "vtable": "0x66abd60",
+          "type_getter": "0x70d920",
+          "getter_bytes": "b01ac3cccccc"
+        },
+        {
+          "vtable": "0x670b2c0",
+          "type_getter": "0x9c2c10",
+          "getter_bytes": "b06ec3cccccc"
+        },
+        {
+          "vtable": "0x66fb018",
+          "type_getter": "0x949df0",
+          "getter_bytes": "b052c3cccccc"
+        },
+        {
+          "vtable": "0x66b2380",
+          "type_getter": "0x718d60",
+          "getter_bytes": "b012c3cccccc"
+        },
+        {
+          "vtable": "0x67a6448",
+          "type_getter": "0xe457d4",
+          "getter_bytes": "4881e9f00000"
+        },
+        {
+          "vtable": "0x66d9628",
+          "type_getter": "0x83dd40",
+          "getter_bytes": "b01bc3cccccc"
+        },
+        {
+          "vtable": "0x66d5f30",
+          "type_getter": "0x832d10",
+          "getter_bytes": "b019c3cccccc"
+        },
+        {
+          "vtable": "0x66f7f90",
+          "type_getter": "0x932430",
+          "getter_bytes": "b04fc3cccccc",
+          "rpc_handler": "0x935940",
+          "state_delta_serializer": "0x9355f0",
+          "health_value_triplet": [
+            0.0,
+            800.0,
+            800.0
+          ],
+          "health_rate": 0.0,
+          "health_timing_fields": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              4,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              24,
+              7,
+              0,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              1,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              1,
+              0
+            ],
+            [
+              21,
+              23,
+              0,
+              1,
+              0
+            ],
+            [
+              22,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              23,
+              0,
+              25,
+              0,
+              0
+            ],
+            [
+              24,
+              0,
+              26,
+              1,
+              0
+            ],
+            [
+              25,
+              27,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            23
+          ]
+        },
+        {
+          "vtable": "0x67109b0",
+          "type_getter": "0x9f0740",
+          "getter_bytes": "b078c3cccccc"
+        },
+        {
+          "vtable": "0x66d4008",
+          "type_getter": "0x826000",
+          "getter_bytes": "b018c3cccccc"
+        },
+        {
+          "vtable": "0x6707dc0",
+          "type_getter": "0x9b1580",
+          "getter_bytes": "b066c3cccccc"
+        },
+        {
+          "vtable": "0x66d1828",
+          "type_getter": "0x80ea90",
+          "getter_bytes": "b014c3cccccc"
+        },
+        {
+          "vtable": "0x66fcc58",
+          "type_getter": "0x958e50",
+          "getter_bytes": "b054c3cccccc"
+        },
+        {
+          "vtable": "0x66c1f38",
+          "type_getter": "0x794130",
+          "getter_bytes": "b006c3cccccc"
+        },
+        {
+          "vtable": "0x6704ea0",
+          "type_getter": "0x994800",
+          "getter_bytes": "b062c3cccccc"
+        },
+        {
+          "vtable": "0x6712838",
+          "type_getter": "0x9fe4d0",
+          "getter_bytes": "b07dc3cccccc",
+          "last_processed_game_time_ms": 0
+        }
+      ]
+    },
+    {
+      "network_id": "0x1000003",
+      "slice_hash": 9256072,
+      "slice_entry": 0,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6d3c758",
+          "type_getter": "0x4b93830",
+          "getter_bytes": "e99bfeffffcc"
+        },
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x688c160",
+          "type_getter": "0x51fd50",
+          "getter_bytes": "40534883ec20"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66eb970",
+          "type_getter": "0x8d2710",
+          "getter_bytes": "b033c3cccccc"
+        },
+        {
+          "vtable": "0x66e61a0",
+          "type_getter": "0x8a26f0",
+          "getter_bytes": "b02cc3cccccc"
+        },
+        {
+          "vtable": "0x670c508",
+          "type_getter": "0x9d23b0",
+          "getter_bytes": "b071c3cccccc"
+        },
+        {
+          "vtable": "0x66ddcb8",
+          "type_getter": "0x86d8e0",
+          "getter_bytes": "b024c3cccccc"
+        },
+        {
+          "vtable": "0x670f6a0",
+          "type_getter": "0x9e6030",
+          "getter_bytes": "b075c3cccccc"
+        },
+        {
+          "vtable": "0x66efe58",
+          "type_getter": "0x8eff00",
+          "getter_bytes": "b03dc3cccccc"
+        },
+        {
+          "vtable": "0x67135b8",
+          "type_getter": "0xa04100",
+          "getter_bytes": "b080c3cccccc"
+        },
+        {
+          "vtable": "0x6717758",
+          "type_getter": "0xa22080",
+          "getter_bytes": "b087c3cccccc"
+        },
+        {
+          "vtable": "0x66bd030",
+          "type_getter": "0x4fdfb0",
+          "getter_bytes": "32c0c3cccccc"
+        },
+        {
+          "vtable": "0x66ea3c0",
+          "type_getter": "0x8c67b0",
+          "getter_bytes": "b030c3cccccc"
+        },
+        {
+          "vtable": "0x66f27d8",
+          "type_getter": "0x90bb60",
+          "getter_bytes": "b042c3cccccc"
+        },
+        {
+          "vtable": "0x66cea00",
+          "type_getter": "0x7fa750",
+          "getter_bytes": "b00ec3cccccc"
+        },
+        {
+          "vtable": "0x66f23e8",
+          "type_getter": "0x908f10",
+          "getter_bytes": "b041c3cccccc"
+        },
+        {
+          "vtable": "0x66b2098",
+          "type_getter": "0x71e380",
+          "getter_bytes": "b023c3cccccc"
+        },
+        {
+          "vtable": "0x671e518",
+          "type_getter": "0xa55460",
+          "getter_bytes": "b08cc3cccccc"
+        },
+        {
+          "vtable": "0x66f2ba8",
+          "type_getter": "0x90d920",
+          "getter_bytes": "b043c3cccccc"
+        },
+        {
+          "vtable": "0x6716db0",
+          "type_getter": "0xa1c230",
+          "getter_bytes": "b085c3cccccc"
+        },
+        {
+          "vtable": "0x66b2958",
+          "type_getter": "0x740d60",
+          "getter_bytes": "b0a5c3cccccc"
+        },
+        {
+          "vtable": "0x675ceb8",
+          "type_getter": "0xa9e4d0",
+          "getter_bytes": "b091c3cccccc",
+          "authoritative_position": [
+            1316.27294921875,
+            1257.57763671875,
+            22.709009170532227
+          ],
+          "authoritative_rotation": [
+            0.9999992847442627,
+            0.0006912350654602051,
+            0.0006912350654602051,
+            0.0006912350654602051
+          ]
+        },
+        {
+          "vtable": "0x66d36a8",
+          "type_getter": "0x821460",
+          "getter_bytes": "b016c3cccccc"
+        },
+        {
+          "vtable": "0x66fe2e8",
+          "type_getter": "0x965670",
+          "getter_bytes": "b056c3cccccc"
+        },
+        {
+          "vtable": "0x671f098",
+          "type_getter": "0xa5b620",
+          "getter_bytes": "b08ec3cccccc"
+        },
+        {
+          "vtable": "0x66c9128",
+          "type_getter": "0x7adfd0",
+          "getter_bytes": "b00ac3cccccc"
+        },
+        {
+          "vtable": "0x66caf20",
+          "type_getter": "0x7db870",
+          "getter_bytes": "b00dc3cccccc"
+        },
+        {
+          "vtable": "0x66eb1c0",
+          "type_getter": "0x8ce780",
+          "getter_bytes": "b032c3cccccc"
+        },
+        {
+          "vtable": "0x66ec550",
+          "type_getter": "0x8d9cd0",
+          "getter_bytes": "b036c3cccccc"
+        },
+        {
+          "vtable": "0x66fa0c8",
+          "type_getter": "0x942fc0",
+          "getter_bytes": "b050c3cccccc"
+        },
+        {
+          "vtable": "0x66f3830",
+          "type_getter": "0x911160",
+          "getter_bytes": "b045c3cccccc"
+        },
+        {
+          "vtable": "0x66f4968",
+          "type_getter": "0x914b30",
+          "getter_bytes": "b046c3cccccc"
+        },
+        {
+          "vtable": "0x674bc80",
+          "type_getter": "0x9d0d90",
+          "getter_bytes": "b070c3cccccc"
+        },
+        {
+          "vtable": "0x66b2ff0",
+          "type_getter": "0x7316c0",
+          "getter_bytes": "b06cc3cccccc"
+        },
+        {
+          "vtable": "0x66d1fb8",
+          "type_getter": "0x816680",
+          "getter_bytes": "b015c3cccccc"
+        },
+        {
+          "vtable": "0x6702410",
+          "type_getter": "0x9813c0",
+          "getter_bytes": "b05ec3cccccc"
+        },
+        {
+          "vtable": "0x66e9320",
+          "type_getter": "0x8ad9f0",
+          "getter_bytes": "b02ec3cccccc"
+        },
+        {
+          "vtable": "0x67142b8",
+          "type_getter": "0xa06760",
+          "getter_bytes": "b081c3cccccc"
+        },
+        {
+          "vtable": "0x6706890",
+          "type_getter": "0x998680",
+          "getter_bytes": "b063c3cccccc"
+        },
+        {
+          "vtable": "0x68912e8",
+          "type_getter": "0x1b93020",
+          "getter_bytes": "e99bffffffcc"
+        },
+        {
+          "vtable": "0x67046c8",
+          "type_getter": "0x992ac0",
+          "getter_bytes": "b061c3cccccc"
+        },
+        {
+          "vtable": "0x688a4b0",
+          "network_getter": false
+        },
+        {
+          "vtable": "0x675b0e0",
+          "type_getter": "0xa885d0",
+          "getter_bytes": "b09bc3cccccc"
+        },
+        {
+          "vtable": "0x6716340",
+          "type_getter": "0xa13700",
+          "getter_bytes": "b084c3cccccc"
+        },
+        {
+          "vtable": "0x66b3148",
+          "type_getter": "0x72f4f0",
+          "getter_bytes": "b065c3cccccc"
+        },
+        {
+          "vtable": "0x66fa8e8",
+          "type_getter": "0x945c10",
+          "getter_bytes": "b051c3cccccc"
+        },
+        {
+          "vtable": "0x674c7f0",
+          "type_getter": "0x9d89c0",
+          "getter_bytes": "b073c3cccccc",
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0
+            ],
+            [
+              2,
+              7,
+              4,
+              1,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              6,
+              11,
+              8,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              0,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              0,
+              0
+            ],
+            [
+              9,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              10,
+              15,
+              12,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              0,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              0,
+              0
+            ],
+            [
+              13,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              14,
+              19,
+              16,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              0,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              0,
+              0
+            ],
+            [
+              17,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              18,
+              23,
+              20,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              0,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              0,
+              0
+            ],
+            [
+              21,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              22,
+              27,
+              24,
+              1,
+              0
+            ],
+            [
+              23,
+              25,
+              0,
+              0,
+              0
+            ],
+            [
+              24,
+              26,
+              0,
+              0,
+              0
+            ],
+            [
+              25,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              31,
+              28,
+              1,
+              0
+            ],
+            [
+              27,
+              29,
+              0,
+              0,
+              0
+            ],
+            [
+              28,
+              30,
+              0,
+              0,
+              0
+            ],
+            [
+              29,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              30,
+              35,
+              32,
+              1,
+              0
+            ],
+            [
+              31,
+              33,
+              0,
+              0,
+              0
+            ],
+            [
+              32,
+              34,
+              0,
+              0,
+              0
+            ],
+            [
+              33,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              34,
+              39,
+              36,
+              1,
+              0
+            ],
+            [
+              35,
+              37,
+              0,
+              0,
+              0
+            ],
+            [
+              36,
+              38,
+              0,
+              0,
+              0
+            ],
+            [
+              37,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              38,
+              0,
+              40,
+              1,
+              0
+            ],
+            [
+              39,
+              41,
+              0,
+              0,
+              0
+            ],
+            [
+              40,
+              42,
+              0,
+              0,
+              0
+            ],
+            [
+              41,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1
+          ]
+        },
+        {
+          "vtable": "0x671f750",
+          "type_getter": "0xa5d170",
+          "getter_bytes": "b08fc3cccccc"
+        },
+        {
+          "vtable": "0x66b2ab8",
+          "type_getter": "0x73a900",
+          "getter_bytes": "b090c3cccccc"
+        },
+        {
+          "vtable": "0x6d50698",
+          "type_getter": "0x4cc5550",
+          "getter_bytes": "48895c242056"
+        },
+        {
+          "vtable": "0x6d4ce78",
+          "type_getter": "0x4ca9550",
+          "getter_bytes": "48895c242057"
+        },
+        {
+          "vtable": "0x672b8c0",
+          "type_getter": "0xab0e60",
+          "getter_bytes": "b0a3c3cccccc"
+        },
+        {
+          "vtable": "0x66cfbb8",
+          "type_getter": "0x803350",
+          "getter_bytes": "b011c3cccccc"
+        },
+        {
+          "vtable": "0x672c050",
+          "type_getter": "0xab4c50",
+          "getter_bytes": "b0a4c3cccccc"
+        },
+        {
+          "vtable": "0x67205c8",
+          "type_getter": "0xa60ec0",
+          "getter_bytes": "b092c3cccccc"
+        },
+        {
+          "vtable": "0x675d428",
+          "type_getter": "0xab9780",
+          "getter_bytes": "b0a6c3cccccc"
+        },
+        {
+          "vtable": "0x675b718",
+          "type_getter": "0xa89bd0",
+          "getter_bytes": "b09cc3cccccc"
+        },
+        {
+          "vtable": "0x6724940",
+          "type_getter": "0xa86470",
+          "getter_bytes": "b09ac3cccccc"
+        },
+        {
+          "vtable": "0x674b490",
+          "type_getter": "0x9bc390",
+          "getter_bytes": "b06bc3cccccc"
+        },
+        {
+          "vtable": "0x66e9af8",
+          "type_getter": "0x8c4b70",
+          "getter_bytes": "b02fc3cccccc"
+        },
+        {
+          "vtable": "0x68746e0",
+          "type_getter": "0x19895f0",
+          "getter_bytes": "48895c240857"
+        },
+        {
+          "vtable": "0x66dcdc0",
+          "type_getter": "0x868c40",
+          "getter_bytes": "b022c3cccccc"
+        },
+        {
+          "vtable": "0x6727830",
+          "type_getter": "0xa951e0",
+          "getter_bytes": "b09ec3cccccc",
+          "following_entity_id": "0x0",
+          "controlling_entity_id": "0x0",
+          "hierarchy_kind": 1,
+          "child_count": 0,
+          "child_ids": [],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2
+          ],
+          "autonomous_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "vtable": "0x6727c80",
+          "type_getter": "0xa99790",
+          "getter_bytes": "b09fc3cccccc"
+        },
+        {
+          "vtable": "0x66abd60",
+          "type_getter": "0x70d920",
+          "getter_bytes": "b01ac3cccccc"
+        },
+        {
+          "vtable": "0x670b2c0",
+          "type_getter": "0x9c2c10",
+          "getter_bytes": "b06ec3cccccc"
+        },
+        {
+          "vtable": "0x66fb018",
+          "type_getter": "0x949df0",
+          "getter_bytes": "b052c3cccccc"
+        },
+        {
+          "vtable": "0x66b2380",
+          "type_getter": "0x718d60",
+          "getter_bytes": "b012c3cccccc"
+        },
+        {
+          "vtable": "0x67a6448",
+          "type_getter": "0xe457d4",
+          "getter_bytes": "4881e9f00000"
+        },
+        {
+          "vtable": "0x66d9628",
+          "type_getter": "0x83dd40",
+          "getter_bytes": "b01bc3cccccc"
+        },
+        {
+          "vtable": "0x66d5f30",
+          "type_getter": "0x832d10",
+          "getter_bytes": "b019c3cccccc"
+        },
+        {
+          "vtable": "0x66f7f90",
+          "type_getter": "0x932430",
+          "getter_bytes": "b04fc3cccccc",
+          "rpc_handler": "0x935940",
+          "state_delta_serializer": "0x9355f0",
+          "health_value_triplet": [
+            0.0,
+            800.0,
+            800.0
+          ],
+          "health_rate": 0.0,
+          "health_timing_fields": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              4,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              24,
+              7,
+              0,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              21,
+              0,
+              1,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              1,
+              0
+            ],
+            [
+              21,
+              23,
+              0,
+              1,
+              0
+            ],
+            [
+              22,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              23,
+              0,
+              25,
+              0,
+              0
+            ],
+            [
+              24,
+              0,
+              26,
+              1,
+              0
+            ],
+            [
+              25,
+              27,
+              0,
+              0,
+              0
+            ],
+            [
+              26,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            23
+          ]
+        },
+        {
+          "vtable": "0x67109b0",
+          "type_getter": "0x9f0740",
+          "getter_bytes": "b078c3cccccc"
+        },
+        {
+          "vtable": "0x66d4008",
+          "type_getter": "0x826000",
+          "getter_bytes": "b018c3cccccc"
+        },
+        {
+          "vtable": "0x6707dc0",
+          "type_getter": "0x9b1580",
+          "getter_bytes": "b066c3cccccc"
+        },
+        {
+          "vtable": "0x66d1828",
+          "type_getter": "0x80ea90",
+          "getter_bytes": "b014c3cccccc"
+        },
+        {
+          "vtable": "0x66fcc58",
+          "type_getter": "0x958e50",
+          "getter_bytes": "b054c3cccccc"
+        },
+        {
+          "vtable": "0x66c1f38",
+          "type_getter": "0x794130",
+          "getter_bytes": "b006c3cccccc"
+        },
+        {
+          "vtable": "0x6704ea0",
+          "type_getter": "0x994800",
+          "getter_bytes": "b062c3cccccc"
+        },
+        {
+          "vtable": "0x6712838",
+          "type_getter": "0x9fe4d0",
+          "getter_bytes": "b07dc3cccccc",
+          "last_processed_game_time_ms": 0
+        }
+      ]
+    },
+    {
+      "network_id": "0x1000001",
+      "slice_hash": 646954285,
+      "slice_entry": 0,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66eb970",
+          "type_getter": "0x8d2710",
+          "getter_bytes": "b033c3cccccc"
+        },
+        {
+          "vtable": "0x66e61a0",
+          "type_getter": "0x8a26f0",
+          "getter_bytes": "b02cc3cccccc"
+        },
+        {
+          "vtable": "0x67121d8",
+          "type_getter": "0x9fcb60",
+          "getter_bytes": "b07cc3cccccc"
+        },
+        {
+          "vtable": "0x66fdca0",
+          "type_getter": "0x95e380",
+          "getter_bytes": "b055c3cccccc",
+          "loadout_character": 8,
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              11,
+              3,
+              0,
+              0
+            ],
+            [
+              2,
+              4,
+              0,
+              1,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              20,
+              12,
+              0,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              0,
+              21,
+              0,
+              0
+            ],
+            [
+              20,
+              22,
+              0,
+              1,
+              0
+            ],
+            [
+              21,
+              23,
+              0,
+              1,
+              0
+            ],
+            [
+              22,
+              24,
+              0,
+              1,
+              0
+            ],
+            [
+              23,
+              25,
+              0,
+              1,
+              0
+            ],
+            [
+              24,
+              26,
+              0,
+              1,
+              0
+            ],
+            [
+              25,
+              27,
+              0,
+              1,
+              0
+            ],
+            [
+              26,
+              28,
+              0,
+              1,
+              0
+            ],
+            [
+              27,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            10,
+            19
+          ],
+          "autonomous_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              7,
+              4,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              16,
+              10,
+              0,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              0,
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "vtable": "0x66b2958",
+          "type_getter": "0x740d60",
+          "getter_bytes": "b0a5c3cccccc"
+        },
+        {
+          "vtable": "0x675ceb8",
+          "type_getter": "0xa9e4d0",
+          "getter_bytes": "b091c3cccccc",
+          "authoritative_position": [
+            0.001072883838787675,
+            0.001072883838787675,
+            0.0012397777754813433
+          ],
+          "authoritative_rotation": [
+            0.9999992847442627,
+            0.0006912350654602051,
+            0.0006912350654602051,
+            0.0006912350654602051
+          ]
+        },
+        {
+          "vtable": "0x675dc38",
+          "type_getter": "0xac2e40",
+          "getter_bytes": "b0a9c3cccccc"
+        },
+        {
+          "vtable": "0x672f840",
+          "type_getter": "0xac9f20",
+          "getter_bytes": "b0acc3cccccc",
+          "input_autonomous_vtable": "0x675fce8",
+          "input_server_time_ms": 68581,
+          "input_server_multiplier": 2,
+          "input_client_offset": 0
+        },
+        {
+          "vtable": "0x66bd5d8",
+          "type_getter": "0x5333b0",
+          "getter_bytes": "b001c3cccccc"
+        },
+        {
+          "vtable": "0x66d0e58",
+          "type_getter": "0x80cfb0",
+          "getter_bytes": "b013c3cccccc"
+        },
+        {
+          "vtable": "0x66dc248",
+          "type_getter": "0x85e690",
+          "getter_bytes": "b020c3cccccc"
+        },
+        {
+          "vtable": "0x66dcdc0",
+          "type_getter": "0x868c40",
+          "getter_bytes": "b022c3cccccc"
+        },
+        {
+          "vtable": "0x6727830",
+          "type_getter": "0xa951e0",
+          "getter_bytes": "b09ec3cccccc",
+          "following_entity_id": "0x1000002",
+          "controlling_entity_id": "0x1000002",
+          "hierarchy_kind": 0,
+          "child_count": 1,
+          "child_ids": [
+            "0x1000002"
+          ],
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              20,
+              0,
+              1,
+              0
+            ],
+            [
+              19,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1,
+            2
+          ],
+          "autonomous_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              3,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "vtable": "0x675beb0",
+          "type_getter": "0xa8e710",
+          "getter_bytes": "b09dc3cccccc"
+        },
+        {
+          "vtable": "0x670bd18",
+          "type_getter": "0x9ce660",
+          "getter_bytes": "b06fc3cccccc"
+        },
+        {
+          "vtable": "0x66db2b8",
+          "type_getter": "0x85c330",
+          "getter_bytes": "b01fc3cccccc"
+        },
+        {
+          "vtable": "0x66ff060",
+          "type_getter": "0x969090",
+          "getter_bytes": "b058c3cccccc",
+          "match_player_id": 1,
+          "replication_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "property_record_indices": [
+            1
+          ],
+          "autonomous_graph": [
+            [
+              65535,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0
+            ],
+            [
+              2,
+              4,
+              0,
+              1,
+              0
+            ],
+            [
+              3,
+              5,
+              0,
+              1,
+              0
+            ],
+            [
+              4,
+              6,
+              0,
+              1,
+              0
+            ],
+            [
+              5,
+              7,
+              0,
+              1,
+              0
+            ],
+            [
+              6,
+              8,
+              0,
+              1,
+              0
+            ],
+            [
+              7,
+              9,
+              0,
+              1,
+              0
+            ],
+            [
+              8,
+              10,
+              0,
+              1,
+              0
+            ],
+            [
+              9,
+              11,
+              0,
+              1,
+              0
+            ],
+            [
+              10,
+              12,
+              0,
+              1,
+              0
+            ],
+            [
+              11,
+              13,
+              0,
+              1,
+              0
+            ],
+            [
+              12,
+              14,
+              0,
+              1,
+              0
+            ],
+            [
+              13,
+              15,
+              0,
+              1,
+              0
+            ],
+            [
+              14,
+              16,
+              0,
+              1,
+              0
+            ],
+            [
+              15,
+              17,
+              0,
+              1,
+              0
+            ],
+            [
+              16,
+              18,
+              0,
+              1,
+              0
+            ],
+            [
+              17,
+              19,
+              0,
+              1,
+              0
+            ],
+            [
+              18,
+              0,
+              0,
+              1,
+              0
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "local_entity_slots": [
+    {
+      "entity_id": "0x1000001fffffffe",
+      "network_id": "0x1000001"
+    },
+    {
+      "entity_id": "0x1000002fffffffe",
+      "network_id": "0x1000002"
+    },
+    {
+      "entity_id": "0xffffffff",
+      "network_id": "0x0"
+    },
+    {
+      "entity_id": "0xffffffff",
+      "network_id": "0x0"
+    },
+    {
+      "entity_id": "0xffffffff",
+      "network_id": "0x0"
+    },
+    {
+      "entity_id": "0xffffffff",
+      "network_id": "0x0"
+    },
+    {
+      "entity_id": "0xffffffff",
+      "network_id": "0x0"
+    }
+  ]
+}

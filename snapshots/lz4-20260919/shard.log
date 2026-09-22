@@ -1,0 +1,24 @@
+[2026-09-19T11:02:20.325] listening on 127.0.0.1:18878 (UDP, log: /var/home/blizz/Projects/Crucible Revival/snapshots/lz4-20260919/shard.log)
+[2026-09-19T11:02:20.325] expect: NovaGameClientPackets after the hub hands out this address
+[2026-09-19T11:02:20.325] reply mode: accept
+[2026-09-19T11:02:50.207] --- first datagram from ('127.0.0.1', 58046) ---
+[2026-09-19T11:02:50.208]   <- 73 bytes from ('127.0.0.1', 58046) (total 73)
+[2026-09-19T11:02:50.208]       BasePacket::unknown(0x51), encrypted or handshake - not decodable here
+[2026-09-19T11:02:50.208]       hex: 5100050001000100f11a0300006435f1dbf15d1a6bfdbce12c7b73bbe5bb64b0273bc197a600010080000200000800002008022e000231000002002005eb060080001145f1816ae89b
+[2026-09-19T11:02:50.208]       asc: b"Q\x00\x05\x00\x01\x00\x01\x00\xf1\x1a\x03\x00\x00d5\xf1\xdb\xf1]\x1ak\xfd\xbc\xe1,{s\xbb\xe5\xbbd\xb0';\xc1\x97\xa6\x00\x01\x00\x80\x00\x02\x00\x00\x08\x00\x00 \x08\x02.\x00\x021\x00\x00\x02\x00 \x05\xeb\x06\x00\x80\x00\x11E\xf1\x81j\xe8\x9b"
+[2026-09-19T11:02:50.210]       reply(accept) -> 00f001000600010001000000000000226c13db
+[2026-09-19T11:02:50.758]   <- 18 bytes from ('127.0.0.1', 58046) (total 91)
+[2026-09-19T11:02:50.762]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-19T11:02:50.762]       hex: f001000200020001000000010000aafa36ab
+[2026-09-19T11:02:50.762]       asc: b'\xf0\x01\x00\x02\x00\x02\x00\x01\x00\x00\x00\x01\x00\x00\xaa\xfa6\xab'
+[2026-09-19T11:02:50.762]       reply(accept) -> 0021000202009000000000009ad04601
+[2026-09-19T11:02:50.765]   <- 73 bytes from ('127.0.0.1', 58046) (total 164)
+[2026-09-19T11:02:50.765]       BasePacket::unknown(0xf3), encrypted or handshake - not decodable here
+[2026-09-19T11:02:50.765]       hex: f325000500030001000000010300006435f1dbf15d1a6bfdbce12c7b73bbe5bb64b0273bc197a60001008000020000080000200802000100120308002105eb0800701145f1e2fb6c76
+[2026-09-19T11:02:50.765]       asc: b"\xf3%\x00\x05\x00\x03\x00\x01\x00\x00\x00\x01\x03\x00\x00d5\xf1\xdb\xf1]\x1ak\xfd\xbc\xe1,{s\xbb\xe5\xbbd\xb0';\xc1\x97\xa6\x00\x01\x00\x80\x00\x02\x00\x00\x08\x00\x00 \x08\x02\x00\x01\x00\x12\x03\x08\x00!\x05\xeb\x08\x00p\x11E\xf1\xe2\xfblv"
+[2026-09-19T11:02:50.765]       reply(accept) -> 00f0010006000300030000000000009b052a74
+[2026-09-19T11:02:51.570]   <- 18 bytes from ('127.0.0.1', 58046) (total 182)
+[2026-09-19T11:02:51.571]       BasePacket::unknown(0xf0), encrypted or handshake - not decodable here
+[2026-09-19T11:02:51.571]       hex: f001000200040002000000030000eb8c81d2
+[2026-09-19T11:02:51.571]       asc: b'\xf0\x01\x00\x02\x00\x04\x00\x02\x00\x00\x00\x03\x00\x00\xeb\x8c\x81\xd2'
+[2026-09-19T11:02:51.571]       reply(accept) -> 00f0010002000400040000000000008a1a0ab1

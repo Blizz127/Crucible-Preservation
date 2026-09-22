@@ -6,12 +6,24 @@ playable again via a community backend — same playbook as other dead-game
 revivals (local server emulator + traffic redirect via hosts file / firewall
 rules, client patched only where unavoidable).
 
-> Status: **Phase 3+ — the client now loads a level from our backend.** Client downloaded and
-> hashed (21 GB, `5685572`); boot log captured; the local backend populates the
-> menu (battlepass, challenges, store) and the LAN READY flow runs to a clean
-> Timeout modal. Match server speaks TLS and rejects untrusted certs, so real
-> gameplay still needs a community server. Practice Arena mode entry was
-> unblocked last — see `docs/09-practice-arena.md`.
+> Status: **Solo entry verified on two profiles. AI and combat are written
+> but not yet seen running.**
+> Training Arena enters with one controllable hero and sustained movement;
+> Alpha Hunters enters on April2018 with three visible Marine hunters
+> (screenshot-confirmed). Both are *stationary* populations. The installed
+> local services use `CRUCIBLE_SHARD_BOOTSTRAP=practice-character`. See the
+> [startup and runtime evidence](docs/16-entity-bootstrap.md) and
+> [Alpha Hunters acceptance](docs/18-heart-of-the-hives-solo.md).
+>
+> Since then, and **not yet confirmed in a running client**: authoritative
+> damage/death/respawn from the retail weapon assets (`docs/20`), hunter-bot
+> pursuit over the shipped navmesh (`docs/21`), creature aggro and attack
+> timing (`docs/22`), and the client-input decoder that tells the server
+> where the player is (`docs/25`). All of it is opt-in and off by default —
+> `CRUCIBLE_SOLO_COMBAT=1` and `CRUCIBLE_SOLO_AI=1` — so the two accepted
+> profiles are byte-identical unless you ask for the new behaviour.
+> Multiplayer, persistence, objectives and full server simulation remain
+> unimplemented.
 
 ## Scope and legal
 
@@ -59,11 +71,35 @@ repository's original work, not any third-party game content.
   an honest ordering of the work between here and a playable match.
 - `docs/14-state-of-play.md` — **start here**: what works, how to start it,
   the one open problem, and the experiment already armed to answer it.
+- `docs/15`–`16` — the shard's LZ4 framing and the entity bootstrap that
+  gets a controllable hero into the Training Arena.
+- `docs/17-solo-ai.md` — the Training Arena population and the first
+  nonlethal damage probe.
+- `docs/18-heart-of-the-hives-solo.md` — per-mode selection; Alpha Hunters
+  solo entry with three visible hunters, accepted.
+- `docs/19-hunter-patrol.md` — the shipped MNM navmesh and the first patrol.
+- `docs/20-combat-core.md` — server-authoritative damage, death and respawn,
+  with the weapon falloff read out of the retail projectile asset.
+- `docs/21-hunter-ai.md` — hunter-bot navigation and behaviour.
+- `docs/22-creature-ai.md` — the creature `.ai`/`.cdl` traces and state machine.
+- `docs/23-maps-and-modes.md` — the level-name hash function and per-map
+  readiness for every shipped level.
+- `docs/24-hero-and-abilities.md` — hero selection and the HUD ability slots.
+- `docs/25-client-input.md` — decoding the client's input RPC, i.e. how the
+  server learns where the player is. Everything that reacts depends on it.
 - `server/crucible_backend.py` — local live-services backend (`:18876`).
 - `server/tls_stub.py` — PlayerAuthorizer TLS logging stub (`:443`).
 - `server/match_stub.py` — NovaGameHub TLS listener (`:18877`); speaks the hub
   RPC well enough that the client loads a level.
 - `server/shard_stub.py` — server-shard UDP listener (`:18878`).
+- `server/client_input.py` — decoder for the client's input RPC; supplies the
+  player position every AI behaviour needs (`docs/25`).
+- `server/combat.py` — damage, health, death and respawn (`docs/20`).
+- `server/hunter_ai.py`, `server/navigation.py`, `server/hunter_patrol.py` —
+  hunter-bot behaviour over the shipped navmesh (`docs/21`).
+- `server/creature_ai.py`, `server/practice_population.py` — creature
+  behaviour and per-map population (`docs/22`).
+- `server/solo_modes.py` — solo map/mode profiles (`docs/23`).
 - `tools/install_test_ca.py` — trust the stubs' test certs in the Proton prefix.
 - `tools/scan_endpoints.sh` — re-runnable endpoint/credential scan.
 - `tools/pak.py` — list / extract entries from a `.pak` (read-only).
@@ -73,6 +109,10 @@ repository's original work, not any third-party game content.
 - `server/test_hubrpc.py` — committed checks for the NovaGameHub envelope.
 
 ## Quickstart
+
+Run `python3 tools/install_local_services.py` to start all three local services and
+enable them at login. This does not launch the game. See [the current instructions](docs/15-shard-lz4.md).
+The historical steps below cover the live-services/menu setup only.
 
 1. Start the backend (it must be up before/during the game):
    `python3 server/crucible_backend.py --port 18876`

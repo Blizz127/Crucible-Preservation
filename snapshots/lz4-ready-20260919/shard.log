@@ -1,0 +1,3 @@
+[2026-09-19T11:10:50.770] listening on 127.0.0.1:18878 (UDP, log: /var/home/blizz/Projects/Crucible Revival/snapshots/lz4-ready-20260919/shard.log)
+[2026-09-19T11:10:50.770] expect: NovaGameClientPackets after the hub hands out this address
+[2026-09-19T11:10:50.771] reply mode: accept

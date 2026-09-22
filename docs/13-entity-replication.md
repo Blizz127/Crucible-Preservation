@@ -1,5 +1,9 @@
 # Entity replication: the shape of the work after `Connected`
 
+> **Superseded findings:** [the 2026-09-19 bootstrap audit](16-entity-bootstrap.md)
+> corrects the missing SliceEntryId entry index and identifies the low nibble
+> as a network role. The historical spawn example below is incomplete.
+
 Static RE of 2026-09-17, mapping what a shard has to send once the handshake
 lands. Nothing here has been exercised against the client — the client has not
 reached `Connected` yet. This is the map, not the territory.
@@ -42,7 +46,8 @@ element        = RelativeId          (zigzag varint)
                | u8 TypeAndFlags
                | SliceEntryId        (ONLY when bit7 clear and bit4 set)
                | u16 BE PayloadSize
-               | <PayloadSize bytes>
+
+PackingBuffer  = u16 BE total bytes | payload[0] | ... | payload[Size-1]
 ```
 
 The conditional `SliceEntryId` is the client's own logic at `0x4b9dc5b`: it
@@ -50,17 +55,21 @@ tests the delete flag (bit 7) first and skips the rest, then tests bit 4 and
 only then calls the `SliceEntryId` serialiser (`0x4b9e620`) into `+0x10`.
 That is what makes a message a *spawn* rather than a property update.
 
-Built end to end by `build_entity_updates` in `server/shard_stub.py`. A spawn
-of `slices/player/hero/hero_character` is eight bytes of entity message:
+Built by `build_entity_updates` in `server/shard_stub.py`. All message headers
+precede the shared PackingBuffer. Retail 0x4b9e26b reads that buffer only after
+the header loop; 0x4b9e2dd then assigns slices of it using each PayloadSize.
+The buffer's capacity is 6144 bytes (0x4aa8412), so its ranged length is u16 BE
+(0x4f56910 -> 0x4f57140). Omitting this length caused the live 2026-09-19
+FixedSizeVector.inl:240 assertion before any component properties were read.
+
+Example GameMode header plus shared buffer (one message; enclosing count omitted):
 
 ```
-02 11 1de937ad 0000
-|  |  |         |
-|  |  |         u16 PayloadSize = 0
-|  |  SliceEntryId = u32 BE 501823405
-|  TypeAndFlags = type 1, bit4 (has slice)
-RelativeId zigzag varint = 1
+04 11 4cda6360 7f 0004 | 0004 06038006
 ```
+
+The header names network counter 1 and practicearena entry 127. The property
+bytes are still an unverified configuration-only probe, not gameplay proof.
 
 - `PayloadSize` is a `uint16_t` declared `0..65535`, so two bytes big endian
   (`0x4b9e904`).

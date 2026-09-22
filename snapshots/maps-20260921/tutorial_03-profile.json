@@ -1,0 +1,153 @@
+{
+  "file": "/tmp/claude-1000/lv/tutorial_03.dynamicslice",
+  "entity_array_length": 2400,
+  "has_nested_slice_instances": false,
+  "controllers": {
+    "MatchPhaseController": [
+      {
+        "entry": 57,
+        "name": "MatchPhaseController"
+      }
+    ],
+    "GameMode": [
+      {
+        "entry": 60,
+        "name": "GameMode"
+      }
+    ],
+    "MatchDataStore": [
+      {
+        "entry": 66,
+        "name": "MatchDataStore"
+      }
+    ]
+  },
+  "named": [
+    {
+      "entry": 25,
+      "name": "TutorialMedkitSpawn",
+      "translation": [
+        519.9619140625,
+        688.4337158203125,
+        37.95308303833008
+      ]
+    },
+    {
+      "entry": 48,
+      "name": "TargetDummyRespawner",
+      "translation": [
+        492.133056640625,
+        805.9891357421875,
+        39.36273193359375
+      ]
+    },
+    {
+      "entry": 49,
+      "name": "TargetDummyRespawner",
+      "translation": [
+        492.22259521484375,
+        810.47705078125,
+        39.36273193359375
+      ]
+    },
+    {
+      "entry": 130,
+      "name": "Tutorial_Respawn_HarvesterRoom",
+      "translation": [
+        520.4891967773438,
+        698.1233520507812,
+        37.51591491699219
+      ]
+    },
+    {
+      "entry": 240,
+      "name": "Tutorial_Respawn_SnurtleRoom",
+      "translation": [
+        494.8832092285156,
+        572.2752075195312,
+        41.4921875
+      ]
+    },
+    {
+      "entry": 754,
+      "name": "CheckpointsAndRespawnPoints",
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "entry": 866,
+      "name": "TutorialDamageLaserStartPoint",
+      "translation": [
+        495.66845703125,
+        649.9459228515625,
+        43.0
+      ]
+    },
+    {
+      "entry": 1018,
+      "name": "SpitterSpawnLocation",
+      "translation": [
+        480.5780029296875,
+        703.1492309570312,
+        37.40999984741211
+      ]
+    },
+    {
+      "entry": 1024,
+      "name": "SpawnNode_Player_DropPoint",
+      "translation": [
+        501.59393310546875,
+        516.8480224609375,
+        41.57218933105469
+      ]
+    },
+    {
+      "entry": 1090,
+      "name": "InitialTrainingDummySpawnPoint",
+      "translation": [
+        502.57470703125,
+        562.0057373046875,
+        42.10872268676758
+      ]
+    },
+    {
+      "entry": 1113,
+      "name": "Tutorial_Respawn_2ndHallway",
+      "translation": [
+        515.6400146484375,
+        819.0327758789062,
+        37.490962982177734
+      ]
+    },
+    {
+      "entry": 1518,
+      "name": "Tutorial_Respawn_HiveRoom",
+      "translation": [
+        529.04541015625,
+        797.4951171875,
+        37.51591491699219
+      ]
+    },
+    {
+      "entry": 1919,
+      "name": "Tutorial_Respawn_HiveRoom",
+      "translation": [
+        548.121337890625,
+        914.5120239257812,
+        37.490962982177734
+      ]
+    },
+    {
+      "entry": 2219,
+      "name": "Tutorial_Respawn_1stHallway",
+      "translation": [
+        492.8433532714844,
+        631.639892578125,
+        37.49095916748047
+      ]
+    }
+  ]
+}

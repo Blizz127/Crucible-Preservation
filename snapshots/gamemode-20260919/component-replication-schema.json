@@ -1,0 +1,1812 @@
+{
+  "observed_at": "2026-09-19T17:52:28.576841+00:00",
+  "pid": 490399,
+  "directions": [
+    "server_to_clients",
+    "server_to_servers",
+    "server_to_autonomous",
+    "client_to_servers"
+  ],
+  "components": [
+    {
+      "type_id": 0,
+      "name": "AfkCharacterComponent",
+      "expanded_record_bits": [
+        4,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 1,
+      "name": "AfkPlayerComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 2,
+      "name": "AIComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 3,
+      "name": "AITargetOffsetComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 4,
+      "name": "NpcBlockerComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 5,
+      "name": "NpcMovementComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 6,
+      "name": "AbilityComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        26,
+        0
+      ]
+    },
+    {
+      "type_id": 7,
+      "name": "AccountProgressionMatchComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 8,
+      "name": "ActorPropertySyncComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 9,
+      "name": "AimBotComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 10,
+      "name": "AllianceComponent",
+      "expanded_record_bits": [
+        14,
+        0,
+        21,
+        0
+      ]
+    },
+    {
+      "type_id": 11,
+      "name": "AnalyticsListenerComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 12,
+      "name": "AnalyticsMatchComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 13,
+      "name": "AnimationParameterComponent",
+      "expanded_record_bits": [
+        33,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 14,
+      "name": "AudioCharacterThreatComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 15,
+      "name": "AudioInfoMatchComponent",
+      "expanded_record_bits": [
+        35,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 16,
+      "name": "AudioJointComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 17,
+      "name": "AudioPhysicsComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 18,
+      "name": "AudioScriptComponent",
+      "expanded_record_bits": [
+        92,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 19,
+      "name": "AudioUnattachedReceiverComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 20,
+      "name": "AutomatedTestingComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        515,
+        0
+      ]
+    },
+    {
+      "type_id": 21,
+      "name": "AwarenessComponent",
+      "expanded_record_bits": [
+        51,
+        0,
+        2,
+        0
+      ]
+    },
+    {
+      "type_id": 22,
+      "name": "AwarenessInfoComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 23,
+      "name": "BakedNameTestComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 24,
+      "name": "BuffComponent",
+      "expanded_record_bits": [
+        21,
+        0,
+        19,
+        0
+      ]
+    },
+    {
+      "type_id": 25,
+      "name": "ScriptComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        4,
+        0
+      ]
+    },
+    {
+      "type_id": 26,
+      "name": "CameraDataComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 27,
+      "name": "CameraGameplayDataComponent",
+      "expanded_record_bits": [
+        5,
+        0,
+        5,
+        0
+      ]
+    },
+    {
+      "type_id": 28,
+      "name": "ChallengesDebugMatchComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 29,
+      "name": "HighFrequencyEventAggregatorComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 30,
+      "name": "CharacterDropPointComponent",
+      "expanded_record_bits": [
+        14,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 31,
+      "name": "ClientConnectionComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 32,
+      "name": "CruciCommsComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        20,
+        2
+      ]
+    },
+    {
+      "type_id": 33,
+      "name": "CruciCommsMatchComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 34,
+      "name": "CrucibleDebugComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 35,
+      "name": "CrucibleLODComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 36,
+      "name": "DamageFloaterComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        36,
+        0
+      ]
+    },
+    {
+      "type_id": 37,
+      "name": "DataStoreMatchComponent",
+      "expanded_record_bits": [
+        604,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 38,
+      "name": "DeathFogVisualsComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 39,
+      "name": "DebugVisualizationsComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 40,
+      "name": "DialogueMatchComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 41,
+      "name": "DisableServerAnimsComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 42,
+      "name": "DropPodLifetimeMatchComponent",
+      "expanded_record_bits": [
+        19,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 43,
+      "name": "DropPodStateComponent",
+      "expanded_record_bits": [
+        12,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 44,
+      "name": "EntityFlagsComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 45,
+      "name": "EntityQueryMatchComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 46,
+      "name": "EntityResourceCollectionComponent",
+      "expanded_record_bits": [
+        38,
+        0,
+        92,
+        0
+      ]
+    },
+    {
+      "type_id": 47,
+      "name": "EssencePoolRequestComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 48,
+      "name": "EssenceComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        2,
+        0
+      ]
+    },
+    {
+      "type_id": 49,
+      "name": "EssencePoolComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 50,
+      "name": "LevelComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    {
+      "type_id": 51,
+      "name": "EventComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 52,
+      "name": "BroadcastComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 53,
+      "name": "ExampleMatchComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 54,
+      "name": "ExplosionComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 55,
+      "name": "ForceVolumeComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 56,
+      "name": "FreeCamMovementComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        4,
+        0
+      ]
+    },
+    {
+      "type_id": 57,
+      "name": "GameAccelerationMatchComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 58,
+      "name": "GameModeComponent",
+      "expanded_record_bits": [
+        14,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 59,
+      "name": "GameplayProjectileComponent",
+      "expanded_record_bits": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 60,
+      "name": "AmortizedSpawningMatchComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 61,
+      "name": "DesignerEventComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        8,
+        0
+      ]
+    },
+    {
+      "type_id": 62,
+      "name": "GMComponent",
+      "expanded_record_bits": [
+        9,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 63,
+      "name": "GMEventComponent",
+      "expanded_record_bits": [
+        23,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 64,
+      "name": "GMEventSpawnedObjectiveComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 65,
+      "name": "GameplayHeartbeatComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 66,
+      "name": "GameplayStatsBlackboardComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 67,
+      "name": "GameplayStatsProcessorComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 68,
+      "name": "GameplayUpdateComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 69,
+      "name": "OwnableComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 70,
+      "name": "OwnerComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        67,
+        0
+      ]
+    },
+    {
+      "type_id": 71,
+      "name": "PuppetComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 72,
+      "name": "SpawnTelegraphComponent",
+      "expanded_record_bits": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 73,
+      "name": "SpawnTrackingComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 74,
+      "name": "SpawnedEntityComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 75,
+      "name": "TargetTypeComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 76,
+      "name": "GuideBotSpawnerComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 77,
+      "name": "GuideEntityDetectionComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 78,
+      "name": "HarvesterIdComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 79,
+      "name": "CrucibleHealthComponent",
+      "expanded_record_bits": [
+        27,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 80,
+      "name": "HitReactionComponent",
+      "expanded_record_bits": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 81,
+      "name": "IncomingHitIndicatorComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        19,
+        0
+      ]
+    },
+    {
+      "type_id": 82,
+      "name": "InputComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        24,
+        0
+      ]
+    },
+    {
+      "type_id": 83,
+      "name": "InteractableComponent",
+      "expanded_record_bits": [
+        8,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 84,
+      "name": "InteractorComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        5,
+        0
+      ]
+    },
+    {
+      "type_id": 85,
+      "name": "LoadoutSetupComponent",
+      "expanded_record_bits": [
+        28,
+        0,
+        18,
+        0
+      ]
+    },
+    {
+      "type_id": 86,
+      "name": "TeleportComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 87,
+      "name": "MatchAIOverlordComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 88,
+      "name": "MatchDataReceiverComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        19,
+        0
+      ]
+    },
+    {
+      "type_id": 89,
+      "name": "MatchPhaseComponent",
+      "expanded_record_bits": [
+        4,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 90,
+      "name": "ClientHouseKeepingMatchComponent",
+      "expanded_record_bits": [
+        19,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 91,
+      "name": "DeathFogComponent",
+      "expanded_record_bits": [
+        11,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 92,
+      "name": "SpectatorComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        54,
+        0
+      ]
+    },
+    {
+      "type_id": 93,
+      "name": "SpectatorPlayerInfoMatchComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 94,
+      "name": "MeleeComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 95,
+      "name": "ScriptableMoverComponent",
+      "expanded_record_bits": [
+        4,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 96,
+      "name": "SimpleSurfaceFollowerComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        4,
+        0
+      ]
+    },
+    {
+      "type_id": 97,
+      "name": "ObjectiveCollectorComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 98,
+      "name": "ObjectiveComponent",
+      "expanded_record_bits": [
+        4,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 99,
+      "name": "OverShieldComponent",
+      "expanded_record_bits": [
+        99,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 100,
+      "name": "ParticlesCoordinatorMatchComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 101,
+      "name": "ParticlesRequestComponent",
+      "expanded_record_bits": [
+        40,
+        0,
+        3,
+        0
+      ]
+    },
+    {
+      "type_id": 102,
+      "name": "PerkComponent",
+      "expanded_record_bits": [
+        7,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 103,
+      "name": "PhaseServerAnimsComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 104,
+      "name": "PhysXTriggerEventComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 105,
+      "name": "PhysicsColliderStateComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 106,
+      "name": "PhysicsMatchComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 107,
+      "name": "CrucibleAnimatedHitVolumesComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 108,
+      "name": "PlacementHelperComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 109,
+      "name": "PlayerInputSpoofComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 110,
+      "name": "PlayerMovementComponent",
+      "expanded_record_bits": [
+        4,
+        0,
+        25,
+        0
+      ]
+    },
+    {
+      "type_id": 111,
+      "name": "PlayerStatsComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    {
+      "type_id": 112,
+      "name": "PositionInterpolationComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 113,
+      "name": "SilhouetteComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 114,
+      "name": "PreloadMatchComponent",
+      "expanded_record_bits": [
+        37,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 115,
+      "name": "ProjectileRequestComponent",
+      "expanded_record_bits": [
+        42,
+        0,
+        17,
+        8
+      ]
+    },
+    {
+      "type_id": 116,
+      "name": "QueuedLoSTestMatchComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 117,
+      "name": "QuickCommsComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        11,
+        0
+      ]
+    },
+    {
+      "type_id": 118,
+      "name": "QuickCommsMatchComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 119,
+      "name": "PuppetInputRecorderComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 120,
+      "name": "RespawnComponent",
+      "expanded_record_bits": [
+        7,
+        0,
+        3,
+        0
+      ]
+    },
+    {
+      "type_id": 121,
+      "name": "RespawnMatchComponent",
+      "expanded_record_bits": [
+        18,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 122,
+      "name": "SpawnBlacklistComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 123,
+      "name": "SequentialGMMatchComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 124,
+      "name": "ServerOnlyPlayerComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 125,
+      "name": "ServerPlayerStateComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 126,
+      "name": "MatchComponentMarker",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 127,
+      "name": "ServicesQueryComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 128,
+      "name": "SkinnedActorComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 129,
+      "name": "SocketComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 130,
+      "name": "SpawnNodeComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 131,
+      "name": "SpawningSystemMatchComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 132,
+      "name": "StatsComponent",
+      "expanded_record_bits": [
+        29,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 133,
+      "name": "SurrenderComponent",
+      "expanded_record_bits": [
+        10,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 134,
+      "name": "TargetDummyComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 135,
+      "name": "TargetPointComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 136,
+      "name": "TestFooComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 137,
+      "name": "TestTargetEntityComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 138,
+      "name": "TestComponentWithBlackboardFloats",
+      "expanded_record_bits": [
+        11,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 139,
+      "name": "TestComponentWithBlackboardIntegers",
+      "expanded_record_bits": [
+        5,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 140,
+      "name": "TutorialObjectivesComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 141,
+      "name": "GameAlertComponent",
+      "expanded_record_bits": [
+        10,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 142,
+      "name": "UISettingsOverrideComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 143,
+      "name": "VelocityOverrideRequestComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 144,
+      "name": "CrucibleVoiceScriptComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 145,
+      "name": "LocationComponent",
+      "expanded_record_bits": [
+        6,
+        0,
+        2,
+        0
+      ]
+    },
+    {
+      "type_id": 146,
+      "name": "AnimGraphParameterComponent",
+      "expanded_record_bits": [
+        35,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 147,
+      "name": "AnimGraphSnapshotComponent",
+      "expanded_record_bits": [
+        45,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 148,
+      "name": "LinkExampleComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 149,
+      "name": "TestComponentNested",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 150,
+      "name": "NotifyTestComponent",
+      "expanded_record_bits": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 151,
+      "name": "TestComponent",
+      "expanded_record_bits": [
+        53,
+        0,
+        9,
+        19
+      ]
+    },
+    {
+      "type_id": 152,
+      "name": "AITestSpawnComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 153,
+      "name": "AIWanderComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 154,
+      "name": "AnimatedHitVolumesComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 155,
+      "name": "AudioComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 156,
+      "name": "CharacterComponent",
+      "expanded_record_bits": [
+        3,
+        0,
+        4,
+        0
+      ]
+    },
+    {
+      "type_id": 157,
+      "name": "DebugComponent",
+      "expanded_record_bits": [
+        7,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 158,
+      "name": "EntityHierarchyComponent",
+      "expanded_record_bits": [
+        20,
+        0,
+        3,
+        0
+      ]
+    },
+    {
+      "type_id": 159,
+      "name": "FilteredEntityComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 160,
+      "name": "GlobalAccessComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 161,
+      "name": "HealthComponent",
+      "expanded_record_bits": [
+        4,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 162,
+      "name": "ModelVisibilityComponent",
+      "expanded_record_bits": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 163,
+      "name": "NetworkAnimationComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 164,
+      "name": "NetworkRandomNumberGeneratorComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    {
+      "type_id": 165,
+      "name": "OctreeNodeComponent",
+      "expanded_record_bits": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 166,
+      "name": "PhysicsComponent",
+      "expanded_record_bits": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 167,
+      "name": "PickupComponent",
+      "expanded_record_bits": [
+        4,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 168,
+      "name": "PlayerClickToMoveComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        38,
+        0
+      ]
+    },
+    {
+      "type_id": 169,
+      "name": "PlayerComponent",
+      "expanded_record_bits": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 170,
+      "name": "PlayerEACComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 171,
+      "name": "PlayerNameTagComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 172,
+      "name": "PlayerNetworkInputComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 173,
+      "name": "PlayerSpawnPointComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 174,
+      "name": "PlayerTelemetryComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        8
+      ]
+    },
+    {
+      "type_id": 175,
+      "name": "PlayerWasdMovementComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    {
+      "type_id": 176,
+      "name": "ProjectileComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        4,
+        0
+      ]
+    },
+    {
+      "type_id": 177,
+      "name": "ProximityTriggerComponent",
+      "expanded_record_bits": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 178,
+      "name": "TeamComponent",
+      "expanded_record_bits": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type_id": 179,
+      "name": "WeaponsComponent",
+      "expanded_record_bits": [
+        28,
+        0,
+        10,
+        0
+      ]
+    }
+  ]
+}

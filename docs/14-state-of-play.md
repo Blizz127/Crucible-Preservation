@@ -1,4 +1,18 @@
-# State of play — 2026-09-17
+# State of play
+
+> **2026-09-19 current result:** solo Training Arena is playable for local
+> exploration. Ready enters the arena without another player; native Mendoza
+> spawn, camera/control assignment, and sustained movement were verified with
+> the user. A monotonic server clock fixes the input-offset saturation stall.
+> All 47 server tests pass. Installed services use the opt-in
+> `practice-character` shard mode. See [16-entity-bootstrap.md](16-entity-bootstrap.md)
+> for live captures and acceptance boundaries. Combat, AI, persistence,
+> multiplayer and authoritative server simulation remain unfinished.
+>
+> The historical connection failures below are superseded by this result and
+> [15-shard-lz4.md](15-shard-lz4.md).
+
+# Historical investigation — 2026-09-17
 
 Where this stands after the session that got the client loading a level from
 our own backend, and what to do next. Read this first; `docs/11`–`13` are the

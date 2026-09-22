@@ -1,0 +1,180 @@
+{
+  "file": "/tmp/claude-1000/lv/practicearena.dynamicslice",
+  "entity_array_length": 1198,
+  "has_nested_slice_instances": false,
+  "controllers": {
+    "MatchPhaseController": [
+      {
+        "entry": 123,
+        "name": "MatchPhaseController"
+      }
+    ],
+    "GameMode": [
+      {
+        "entry": 127,
+        "name": "GameMode"
+      }
+    ],
+    "MatchDataStore": [
+      {
+        "entry": 133,
+        "name": "MatchDataStore"
+      }
+    ]
+  },
+  "named": [
+    {
+      "entry": 71,
+      "name": "SpawnNode_MegaDrone_AIOverlord",
+      "translation": [
+        532.9998779296875,
+        518.0000610351562,
+        32.0
+      ]
+    },
+    {
+      "entry": 72,
+      "name": "RotatedSpawn",
+      "translation": [
+        532.9998779296875,
+        518.0000610351562,
+        32.0
+      ]
+    },
+    {
+      "entry": 114,
+      "name": "MedkitRespawner",
+      "translation": [
+        521.4482421875,
+        596.0628662109375,
+        37.49095916748047
+      ]
+    },
+    {
+      "entry": 115,
+      "name": "MedkitRespawner",
+      "translation": [
+        457.87835693359375,
+        623.445068359375,
+        41.240966796875
+      ]
+    },
+    {
+      "entry": 116,
+      "name": "MedkitRespawner",
+      "translation": [
+        536.8167724609375,
+        570.8649291992188,
+        46.34696960449219
+      ]
+    },
+    {
+      "entry": 138,
+      "name": "SpitterRespawner",
+      "translation": [
+        508.07464599609375,
+        640.0597534179688,
+        39.54024887084961
+      ]
+    },
+    {
+      "entry": 139,
+      "name": "SpitterRespawner",
+      "translation": [
+        498.94964599609375,
+        640.1847534179688,
+        40.54024887084961
+      ]
+    },
+    {
+      "entry": 140,
+      "name": "MedicalStation Spawner",
+      "translation": [
+        554.7850952148438,
+        549.0818481445312,
+        42.6246337890625
+      ]
+    },
+    {
+      "entry": 144,
+      "name": "TargetDummyRespawner",
+      "translation": [
+        511.6386413574219,
+        605.4163818359375,
+        37.990962982177734
+      ]
+    },
+    {
+      "entry": 145,
+      "name": "TargetDummyRespawner",
+      "translation": [
+        520.8886108398438,
+        617.6663818359375,
+        37.990962982177734
+      ]
+    },
+    {
+      "entry": 146,
+      "name": "TargetDummyRespawner",
+      "translation": [
+        491.8886413574219,
+        615.1663818359375,
+        37.990962982177734
+      ]
+    },
+    {
+      "entry": 147,
+      "name": "TargetDummyRespawner",
+      "translation": [
+        507.6386413574219,
+        622.4163818359375,
+        37.990962982177734
+      ]
+    },
+    {
+      "entry": 148,
+      "name": "TargetDummyRespawner",
+      "translation": [
+        514.3886108398438,
+        628.1663818359375,
+        39.740962982177734
+      ]
+    },
+    {
+      "entry": 149,
+      "name": "TargetDummyRespawner",
+      "translation": [
+        502.00006103515625,
+        618.4999389648438,
+        48.249996185302734
+      ]
+    },
+    {
+      "entry": 150,
+      "name": "TargetDummyRespawner",
+      "translation": [
+        503.3886413574219,
+        609.4163818359375,
+        37.990962982177734
+      ]
+    },
+    {
+      "entry": 151,
+      "name": "TargetDummyRespawner",
+      "translation": [
+        515.5000610351562,
+        611.9999389648438,
+        45.999996185302734
+      ]
+    },
+    {
+      "entry": 695,
+      "name": "PlayerStartSpawn",
+      "translation": [
+        501.09075927734375,
+        564.5346069335938,
+        45.27315902709961
+      ]
+    }
+  ]
+}

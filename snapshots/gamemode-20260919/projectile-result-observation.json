@@ -1,0 +1,101 @@
+{
+  "authority": "Client-reported previous-hit list; no server damage validation",
+  "results": [
+    {
+      "at": "2026-09-19T16:03:02.911",
+      "projectile_id": 48,
+      "previous_hit_entities": [
+        "0xfe00004b",
+        "0x1000002"
+      ]
+    },
+    {
+      "at": "2026-09-19T16:03:03.029",
+      "projectile_id": 49,
+      "previous_hit_entities": [
+        "0xfe00004b",
+        "0x1000002"
+      ]
+    },
+    {
+      "at": "2026-09-19T16:03:03.702",
+      "projectile_id": 50,
+      "previous_hit_entities": [
+        "0xfe00004b",
+        "0x1000002"
+      ]
+    },
+    {
+      "at": "2026-09-19T16:03:03.801",
+      "projectile_id": 51,
+      "previous_hit_entities": [
+        "0xfe00004b",
+        "0x1000002"
+      ]
+    },
+    {
+      "at": "2026-09-19T16:03:03.919",
+      "projectile_id": 52,
+      "previous_hit_entities": [
+        "0xfe00004b",
+        "0x1000002"
+      ]
+    },
+    {
+      "at": "2026-09-19T16:03:04.015",
+      "projectile_id": 53,
+      "previous_hit_entities": [
+        "0xfe00004b",
+        "0x1000002"
+      ]
+    },
+    {
+      "at": "2026-09-19T16:03:04.134",
+      "projectile_id": 54,
+      "previous_hit_entities": [
+        "0xfe00004b",
+        "0x1000002"
+      ]
+    },
+    {
+      "at": "2026-09-19T16:03:04.245",
+      "projectile_id": 55,
+      "previous_hit_entities": [
+        "0xfe00004b",
+        "0x1000002"
+      ]
+    },
+    {
+      "at": "2026-09-19T16:03:04.363",
+      "projectile_id": 56,
+      "previous_hit_entities": [
+        "0xfe00004b",
+        "0x1000002"
+      ]
+    },
+    {
+      "at": "2026-09-19T16:03:04.460",
+      "projectile_id": 57,
+      "previous_hit_entities": [
+        "0xfe00004b",
+        "0x1000002"
+      ]
+    },
+    {
+      "at": "2026-09-19T16:03:04.565",
+      "projectile_id": 58,
+      "previous_hit_entities": [
+        "0xfe00004b",
+        "0x1000002"
+      ]
+    },
+    {
+      "at": "2026-09-19T16:03:04.662",
+      "projectile_id": 59,
+      "previous_hit_entities": [
+        "0xfe00004b",
+        "0x1000002"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "pid": 768926,
+  "game_state": 8,
+  "connection_status": 4,
+  "entities": [
+    {
+      "network_id": "0xfe00007d",
+      "slice_hash": 1289380704,
+      "slice_entry": 123,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66eb970",
+          "type_getter": "0x8d2710",
+          "getter_bytes": "b033c3cccccc"
+        },
+        {
+          "vtable": "0x674a508",
+          "type_getter": "0x96cc10",
+          "getter_bytes": "b059c3cccccc",
+          "phase": 8
+        },
+        {
+          "vtable": "0x66b2588",
+          "type_getter": "0x73f450",
+          "getter_bytes": "b0a0c3cccccc"
+        },
+        {
+          "vtable": "0x6712be8",
+          "type_getter": "0xa00ac0",
+          "getter_bytes": "b07ec3cccccc"
+        }
+      ]
+    },
+    {
+      "network_id": "0xfe000081",
+      "slice_hash": 1289380704,
+      "slice_entry": 127,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66edb40",
+          "type_getter": "0x8e7250",
+          "getter_bytes": "b03ac3cccccc"
+        },
+        {
+          "vtable": "0x66b2588",
+          "type_getter": "0x73f450",
+          "getter_bytes": "b0a0c3cccccc"
+        },
+        {
+          "vtable": "0x6712be8",
+          "type_getter": "0xa00ac0",
+          "getter_bytes": "b07ec3cccccc"
+        }
+      ]
+    },
+    {
+      "network_id": "0x1000001",
+      "slice_hash": 646954285,
+      "slice_entry": 0,
+      "active_state": 4,
+      "components": [
+        {
+          "vtable": "0x6da3a18",
+          "type_getter": "0x51a8e58",
+          "getter_bytes": "4883e958e9ef"
+        },
+        {
+          "vtable": "0x6d2cc88",
+          "type_getter": "0x4aa178c",
+          "getter_bytes": "4883e918e94b"
+        },
+        {
+          "vtable": "0x66eb970",
+          "type_getter": "0x8d2710",
+          "getter_bytes": "b033c3cccccc"
+        },
+        {
+          "vtable": "0x66e61a0",
+          "type_getter": "0x8a26f0",
+          "getter_bytes": "b02cc3cccccc"
+        },
+        {
+          "vtable": "0x67121d8",
+          "type_getter": "0x9fcb60",
+          "getter_bytes": "b07cc3cccccc"
+        },
+        {
+          "vtable": "0x66fdca0",
+          "type_getter": "0x95e380",
+          "getter_bytes": "b055c3cccccc"
+        },
+        {
+          "vtable": "0x66b2958",
+          "type_getter": "0x740d60",
+          "getter_bytes": "b0a5c3cccccc"
+        },
+        {
+          "vtable": "0x675ceb8",
+          "type_getter": "0xa9e4d0",
+          "getter_bytes": "b091c3cccccc"
+        },
+        {
+          "vtable": "0x675dc38",
+          "type_getter": "0xac2e40",
+          "getter_bytes": "b0a9c3cccccc"
+        },
+        {
+          "vtable": "0x672f840",
+          "type_getter": "0xac9f20",
+          "getter_bytes": "b0acc3cccccc"
+        },
+        {
+          "vtable": "0x66bd5d8",
+          "type_getter": "0x5333b0",
+          "getter_bytes": "b001c3cccccc"
+        },
+        {
+          "vtable": "0x66d0e58",
+          "type_getter": "0x80cfb0",
+          "getter_bytes": "b013c3cccccc"
+        },
+        {
+          "vtable": "0x66dc248",
+          "type_getter": "0x85e690",
+          "getter_bytes": "b020c3cccccc"
+        },
+        {
+          "vtable": "0x66dcdc0",
+          "type_getter": "0x868c40",
+          "getter_bytes": "b022c3cccccc"
+        },
+        {
+          "vtable": "0x6727830",
+          "type_getter": "0xa951e0",
+          "getter_bytes": "b09ec3cccccc"
+        },
+        {
+          "vtable": "0x675beb0",
+          "type_getter": "0xa8e710",
+          "getter_bytes": "b09dc3cccccc"
+        },
+        {
+          "vtable": "0x670bd18",
+          "type_getter": "0x9ce660",
+          "getter_bytes": "b06fc3cccccc"
+        },
+        {
+          "vtable": "0x66db2b8",
+          "type_getter": "0x85c330",
+          "getter_bytes": "b01fc3cccccc"
+        },
+        {
+          "vtable": "0x66ff060",
+          "type_getter": "0x969090",
+          "getter_bytes": "b058c3cccccc",
+          "match_player_id": -1
+        }
+      ]
+    }
+  ]
+}

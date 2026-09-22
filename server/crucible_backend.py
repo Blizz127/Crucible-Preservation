@@ -26,6 +26,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse
 
 import crucible_data as D
+import hero_loadout
 
 STATE = {
     "rerolls_left": D.SEED_REROLLS,
@@ -172,6 +173,10 @@ def handle_level(path, body):
         return {"levels": [{"level": i, "xp": i * 1000} for i in range(1, 41)]}
     if path in ("/characterxp", "/characterxp/"):
         return {"xp": []}
+    # The menu also asks per hunter (`/characterxp/Minigunner`); those 404ed
+    # in the backend journal on every roster browse.
+    if path.startswith("/characterxp/"):
+        return {"character": path.rstrip("/").rsplit("/", 1)[1], "xp": 0, "level": 1}
     if path == "/matchxp/":
         return {"xp": 0}
     return None
@@ -256,7 +261,32 @@ def handle_sysmsgs(path):
     return None
 
 
+def handle_playerdata(path, body):
+    """The router whose absence forced Marine (docs/24).
+
+    Without it `/playerdata/activeloadout`, `/playerdata/loadouts/<Name>` and
+    `/playerdata/perkset/<Name>` all 404 - SVCSREQ 17, 19-29, 31 and 32 have
+    no SVCSRESP in NovaGameClient-20260919T173321Z.log. The menu's
+    `activeloadout` invoke then errors, skips to `done`, and the LAN state
+    machine falls back to the first entry of `characters.get`, which is roster
+    index 0: Marine. It is also why choosing a hunter raised LOADOUT_SET_FAIL.
+    """
+    # The dispatcher strips only the SERVICE name, so `path` still carries the
+    # `/playerdata` prefix: `/playerdata/perkset/Marine`. Verified against the
+    # live 404s in the backend journal.
+    if path.rstrip("/") == "/playerdata/activeloadout":
+        return hero_loadout.playerdata_activeloadout()
+    if path.startswith("/playerdata/activeloadout/"):
+        return hero_loadout.playerdata_activeloadout()
+    if path.startswith("/playerdata/loadouts/"):
+        return hero_loadout.playerdata_loadouts(path.rstrip("/").rsplit("/", 1)[1])
+    if path.startswith("/playerdata/perkset/"):
+        return hero_loadout.playerdata_perkset(path.rstrip("/").rsplit("/", 1)[1])
+    return None
+
+
 ROUTERS = [
+    ("CrucibleLivePlayerDataService", handle_playerdata),
     ("CrucibleLiveChallengeService", handle_challenges),
     ("CrucibleLiveGameConfigService", lambda p, b: handle_gameconfig(p)),
     ("CrucibleLiveEntitlementService", handle_entitlements),

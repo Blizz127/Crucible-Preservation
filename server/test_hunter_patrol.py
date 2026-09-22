@@ -1,0 +1,134 @@
+import math
+import unittest
+from unittest.mock import patch
+
+import hunter_ai
+import hunter_patrol
+import navigation
+import shard_stub as shard
+
+STUB_ROUTE = ((0., 0., 0.), (3., 0., 0.))
+
+
+class HunterPatrolTests(unittest.TestCase):
+    @patch('hunter_patrol.routes', return_value=(STUB_ROUTE,) * 3)
+    def test_native_update_preserves_spawn_property_mask_and_faces_motion(self, _routes):
+        baseline = shard.build_practice_character_probe(autonomous=False).payload[:-12]
+        # One time on the outbound leg and one after the route reverses, so the
+        # decoded rotation is checked against both travel directions.
+        for seconds in (.1, .8):
+            _, direction = hunter_patrol.sample(STUB_ROUTE, seconds)
+            previous = 0
+            for counter, message in enumerate(shard.build_hunter_patrol_updates(seconds), 3):
+                actual, offset = shard.decode_entity_id(message.header, previous_id=previous)
+                self.assertEqual(actual, counter)
+                self.assertEqual(message.header[offset], shard.ENTITY_ROLE_CLIENT_SIMULATION)
+                self.assertEqual(message.payload[:-12], baseline)
+                packed = int.from_bytes(message.payload[-4:], 'big')
+                largest = packed >> 30
+                remaining = [(((packed >> s) & 1023)-511.5)/723.3699951171875
+                             for s in (20, 10, 0)]
+                remaining.insert(largest, math.sqrt(1-sum(v*v for v in remaining)))
+                w, x, y, z = remaining
+                # Quaternion rotates the native +Y forward onto the travel axis.
+                self.assertAlmostEqual(2*(x*y-w*z), math.copysign(1., direction[0]),
+                                       delta=.005)
+                previous = actual
+
+    def test_constant_speed_across_corners_and_return(self):
+        route = [(0, 0, 0), (3, 0, 0), (3, 4, 0)]
+        self.assertEqual(hunter_patrol.sample(route, 2, speed=2)[0], (3, 1, 0))
+        self.assertEqual(hunter_patrol.sample(route, 5, speed=2)[0], (3, 1, 0))
+        self.assertEqual(hunter_patrol.sample(route, 7, speed=2)[0], (0, 0, 0))
+
+    def test_default_speed_is_the_authored_marine_walk(self):
+        self.assertEqual(hunter_ai.MARINE.patrol_speed, 5.5)
+        route = [(0., 0., 0.), (100., 0., 0.)]
+        self.assertAlmostEqual(hunter_patrol.sample(route, 2.)[0][0], 11.)
+
+    def test_invalid_paths_and_times_rejected(self):
+        for route, time in [([], 1), ([(0,0,0)], 1), ([(0,0,0),(1,0,0)], -1)]:
+            with self.assertRaises(ValueError):
+                hunter_patrol.sample(route, time)
+        with self.assertRaises(ValueError):
+            hunter_patrol.sample(STUB_ROUTE, 1, speed=0)
+
+    @patch.dict('os.environ', {'CRUCIBLE_SOLO_MODE':'alpha-hunters',
+                              'CRUCIBLE_SOLO_PATROL':'1',
+                              'CRUCIBLE_SHARD_BOOTSTRAP':'practice-character'})
+    @patch('hunter_patrol.routes', return_value=(STUB_ROUTE,) * 3)
+    def test_clock_sends_only_spawned_bot_movement(self, _routes):
+        import lz4.block
+        state={'character_links_sent':True, 'clock_epoch':100,
+               'clock_last_sent':100, 'seq':1, 'received_seq':1,'received_window':1}
+        raw=lz4.block.decompress(shard.game_clock_reply(state,now=101)[1:],uncompressed_size=4096)
+        self.assertEqual(int.from_bytes(raw[15:17],'big'),0)
+        state['practice_npcs_sent']=True
+        raw=lz4.block.decompress(shard.game_clock_reply(state,now=102)[1:],uncompressed_size=4096)
+        self.assertEqual(int.from_bytes(raw[15:17],'big'),3)
+
+
+class TransformTests(unittest.TestCase):
+    def test_position_unpack_inverts_the_retail_packer(self):
+        import solo_modes
+        for position in (solo_modes.HIVES.player_position,
+                         solo_modes.PRACTICE.player_position,
+                         (0., 0., 0.), (-4499., 4499., -1299.)):
+            packed = shard.pack_practice_spawn_transform(position)
+            for blob in (packed, packed[:8]):
+                for actual, expected in zip(hunter_patrol.unpack_position(blob), position):
+                    self.assertAlmostEqual(actual, expected, delta=.003)
+
+    def test_position_unpack_rejects_wrong_lengths(self):
+        for blob in (b'', b'\0' * 7, b'\0' * 9, b'\0' * 13):
+            with self.assertRaises(ValueError):
+                hunter_patrol.unpack_position(blob)
+
+
+class InstalledRouteTests(unittest.TestCase):
+    """Routes over the shipped mesh. Read-only; nothing is launched."""
+
+    @classmethod
+    def setUpClass(cls):
+        if not navigation.LEVEL_PAK.exists():
+            raise unittest.SkipTest('Crucible is not installed')
+
+    def test_every_route_sample_lies_on_the_installed_surface(self):
+        mesh = navigation.installed_mesh()
+        legs = hunter_patrol.routes()
+        self.assertEqual(len(legs), 3)
+        for leg in legs:
+            self.assertGreaterEqual(len(leg), 2)
+            for point in leg:
+                self.assertIsNotNone(mesh.locate(point, .05), point)
+            for a, b in zip(leg, leg[1:]):
+                self.assertLessEqual(math.dist(a[:2], b[:2]),
+                                     hunter_patrol.ROUTE_STEP + 1e-4)
+
+    def test_circuits_close_and_visit_every_authored_drop_point(self):
+        legs = hunter_patrol.routes()
+        for index, circuit in enumerate(hunter_patrol.circuits()):
+            self.assertEqual(circuit[0], legs[index][0])
+            self.assertEqual(circuit[-1], legs[index][0])
+            self.assertGreater(hunter_ai.plan_distance(circuit),
+                               max(hunter_ai.plan_distance(leg) for leg in legs))
+
+    def test_squad_builds_three_marine_bots_on_the_mesh(self):
+        squad = hunter_patrol.squad()
+        self.assertEqual([bot.entity for bot in squad.bots],
+                         [0x01000003, 0x01000004, 0x01000005])
+        mesh = navigation.installed_mesh()
+        for bot in squad.bots:
+            self.assertIs(bot.tuning, hunter_ai.MARINE)
+            self.assertTrue(bot.wander)
+            self.assertIsNotNone(mesh.locate(bot.position, .05))
+        steps = squad.update(0.)
+        steps = squad.update(2.)
+        for step in steps:
+            self.assertEqual(step.state, hunter_ai.PATROL)
+            self.assertIsNotNone(mesh.locate(step.position, .05), step.position)
+            self.assertLessEqual(step.speed, hunter_ai.MARINE.patrol_speed + 1e-6)
+
+
+if __name__ == '__main__':
+    unittest.main()
