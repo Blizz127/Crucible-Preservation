@@ -156,10 +156,13 @@ match state.
 
 The accepted local April2018 entry is currently a **four-entity test
 population**: one player and three Marine hunters. It does not form eight
-duos, apply dynamic alliances or partner ownership transfer, track the last
-living team, or send a terminal match result. It is useful for combat and
-presentation work, but it is not yet a complete Alpha Hunters match. The
-requested solo respawn behavior is tracked separately from the retail profile
+duos, apply dynamic alliances or partner ownership transfer, or reproduce a
+retail roster. The local combat core now detects the last surviving team and
+repeats MatchPhase `GameOver` on subsequent shard clock updates; `winner_team`
+is retained in shard state and its team id is logged. This is a local
+elimination path, not verified retail winner presentation or a full Alpha
+Hunters match. The requested solo respawn behavior is tracked separately from
+the retail profile
 until its intended role is settled; respawn cannot silently stand in for
 retail team elimination.
 

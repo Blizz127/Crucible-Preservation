@@ -568,6 +568,16 @@ def solo_phase_reply(state):
                                 seq_window=state['received_window'])
 
 
+def build_solo_match_phase_update(profile, phase, *, previous_id=0):
+    """Update the accepted map's MatchPhase component (docs/23)."""
+    properties = build_replication_record([True, False, True, False]) + phase.to_bytes(2, 'big')
+    return build_entity_message(
+        profile.phase_entry + profile.baked_counter_bias,
+        pack_type_and_flags(ENTITY_ROLE_CLIENT_SIMULATION, bit4=True),
+        slice_hash=profile.level_hash, slice_entry_index=profile.phase_entry,
+        payload=properties, previous_id=previous_id, local=True)
+
+
 def pack_practice_spawn_transform(position=None):
     """Retail packed Location transform at Practice's authored PlayerStartSpawn.
 
@@ -938,6 +948,12 @@ def solo_simulation_messages(state, now, *, previous_id=0):
     """AI and combat entity messages for one clock tick, chained by RelativeId."""
     messages = []
     player = state.get('player_position')
+    arena = state.get('combat')
+    health_entities = arena.tick(now) if arena is not None else []
+    active_entities = ({entity for entity in arena.entities if arena.alive(entity)}
+                       if arena is not None else None)
+    if active_entities is not None and PLAYER_CHARACTER_ID not in active_entities:
+        player = None
     squad = state.get('squad')
     if squad is not None:
         updates, steps = build_hunter_ai_updates(squad, now, player, previous_id=previous_id)
@@ -975,8 +991,22 @@ def solo_simulation_messages(state, now, *, previous_id=0):
             previous_id = entity & 0xffffff
     arena = state.get('combat')
     if arena is not None:
-        health = arena.build_messages(arena.tick(now), previous_id=previous_id)
+        health = arena.build_messages(health_entities, previous_id=previous_id)
         messages.extend(health)
+        if health_entities:
+            previous_id = health_entities[-1].entity_id & 0xffffff
+        profile = solo_modes.selected()
+        if (profile.mode_profile is not None
+                and profile.mode_profile.name == 'alpha-hunters'):
+            winner = arena.terminal_winner()
+            if winner is not None:
+                if 'match_result' not in state:
+                    state['match_result'] = {'winner_team': winner, 'at_seconds': now}
+                    log('      ALPHA HUNTERS match over: winner team %s'
+                        % (winner if winner else 'draw'))
+                messages.append(build_solo_match_phase_update(
+                    profile, solo_modes.MATCH_PHASE['GameOver'],
+                    previous_id=previous_id))
     return messages
 
 

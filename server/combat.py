@@ -270,6 +270,24 @@ class Combat:
     def alive(self, entity_id):
         return self.entities[entity_id].alive
 
+    def terminal_winner(self):
+        """Return the sole surviving team, 0 for a draw, or None in progress.
+
+        A team with any scheduled respawn is still in play. The caller decides
+        whether this match profile actually uses team elimination.
+        """
+        teams = {entity.team for entity in self.entities.values()}
+        alive = {entity.team for entity in self.entities.values() if entity.alive}
+        if any(entity.respawn_at is not None for entity in self.entities.values()):
+            return None
+        if len(alive) == 1:
+            return next(iter(alive))
+        if not alive and teams:
+            return 0
+        if len(alive) > 1:
+            return None
+        return None
+
     # -- damage
     def apply_reported_hit(self, shooter, projectile_id, reported, *,
                            weapon=MARINE_PRIMARY, distance=None,
