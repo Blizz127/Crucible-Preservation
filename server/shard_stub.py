@@ -928,6 +928,8 @@ def start_solo_simulation(state):
 def observe_solo_combat(message, state):
     """Route accepted player and opt-in hunter projectile results to combat."""
     arena = state.get('combat')
+    if state.get('match_result') is not None:
+        return
     if arena is None or (message.delivery, message.component, message.rpc) != (3, 115, 4):
         return
     shooter = message.entity_id
@@ -965,6 +967,9 @@ def observe_solo_combat(message, state):
 def solo_simulation_messages(state, now, *, previous_id=0):
     """AI and combat entity messages for one clock tick, chained by RelativeId."""
     messages = []
+    if state.get('match_result') is not None:
+        profile = solo_modes.selected()
+        return [build_solo_match_phase_update(profile, solo_modes.MATCH_PHASE['GameOver'], previous_id=previous_id)]
     player = state.get('player_position')
     arena = state.get('combat')
     health_entities = arena.tick(now) if arena is not None else []
