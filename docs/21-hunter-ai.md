@@ -111,6 +111,8 @@ sha256 e739463bad9c9fa4eae7984e3c23983b208034f7ab7e6c27b632364c8ef6fea6:
 | MovementPararams/SpeedChase | 0x7c2 | `41000000` | 8.0 |
 | PassiveTurnParams/TurnInPlaceSpeed | 0xc93 | `42b40000` | 90 deg/s |
 | AggroCheckLineOfSight | 0x107b | `01` | true |
+| AggroOriginOffsetLocal | 0x103e | `(0, 0, 1)` | one metre above the character root |
+| AggroTargetOffsetVertical | 0x1061 | `3f800000` | `1.0` m |
 | AggroRadiusNear | 0x1092 | `40a00000` | 5.0 |
 | AggroRadiusFar | 0x10ac | `42200000` | 40.0 |
 | AggroAngleFar | 0x10c6 | `42f00000` | 120 deg |
@@ -342,3 +344,157 @@ changes are needed there, in dependency order.
 each route, which is still the nav-projected authored drop point. If the squad
 becomes the source of initial positions, use `squad().bots[i].position`, which
 is the same value.
+
+## First live run, 2026-09-21 23:0x: they follow
+
+The user played the Alpha Hunters profile on April2018 with
+`CRUCIBLE_SOLO_AI=1`. Everything below is **live observation**, not inference.
+
+**Pursuit works.** The user's words were "they are following". That settles
+several things at once that the unit tests could not: the navmesh routing
+produces usable paths at runtime, `Bot.update` is being driven correctly off
+the decoded player position (`docs/25`), and — importantly — **our Location
+deltas do move the rendered entity**. The renderer-transform worry carried
+over from `docs/18` (the `+1440` transform populated by `c406b0`) is not a
+problem for simulation-role bots.
+
+Three defects came with it.
+
+### They ran in place, and that breaks this document's animation prediction
+
+The section above concluded, from the absence of any replicated velocity or
+locomotion property and the presence of `BlendSpaceMoveSpeedParamEvaluator`
+(`0x6d7b440`), that Location deltas alone should drive the walk animation.
+
+Observed instead: hunters standing still — the server was sending a
+*constant* position, confirmed in simulation at speed 0.00 with 0.034 m of
+drift over six seconds — while playing a **run cycle**. Under the prediction
+above a constant position gives an idle stance.
+
+So the prediction is **falsified as stated**. Either animation is not driven
+by replicated position deltas, or there is a movement-state input that is
+never replicated and whose default is "running". The second is the better bet
+and is now the leading open trace, because it also explains why the bots
+looked wrong while genuinely moving. Do not treat the earlier conclusion as
+settled; it was reasoned from absence of evidence.
+
+### They stood inside each other
+
+All three path to the same target and nothing pushed them apart. Retail does
+this with a constraint solver; `marine_guide_dummy.ai` carries the margins —
+`NavigationParams/RepulsionMarginMin` 2.0 (0x8f2), `RepulsionMarginMax` 2.7,
+and `TargetApproachParams/StopDesiredDistance` 1.8 (0x9c4),
+`StopAllowedDistance` 3.0. `hunter_patrol.separate` is a bounded relaxation
+over the authored 2.0 m margin in plan view. It is not the retail solver.
+
+### They clipped into the terrain, and the first fix was wrong
+
+The first attempt anchored each bot to its authored `DropPoint` transform and
+carried `authored Z - mesh Z` as a per-bot offset. **That was a mistake.**
+Drop points are pods, not standing positions: one of April2018's three sits
+0.5 m *below* the walkable surface, so the "fix" buried that bot.
+
+The player's own replicated stream settles it without guessing. Over 5,783
+input samples from the 23:08 run, `player Z - mesh surface Z` has its mode at
+**-0.03 m with 1,577 samples**; the +0.49/+0.92/+1.15 m clusters are jumps.
+A grounded character stands *on* the mesh. `STANDING_HEIGHT_OFFSET` is
+therefore 0.0 and the authored drop points are explicitly rejected as a
+standing reference.
+
+The real cause of sinking is that `advance` walks straight lines between
+waypoints, so on a convex slope the segment passes under the surface.
+`hunter_patrol.ground` re-projects every emitted position onto the mesh at its
+own X/Y, which removes the class of defect rather than tuning a constant. It
+costs 0.01 ms per call — 0.3 ms per second for three bots at 20 Hz.
+
+Both corrections are applied in `shard_stub.build_hunter_ai_updates`, between
+the state machine and the wire, so `hunter_ai` stays a pure simulation.
+
+## Operational trap: never restart the shard during a match
+
+This cost about an hour and is worth writing down, because nothing in the
+code makes it visible.
+
+Restarting the shard while the client is in a match makes the client write
+`AppData/Local/AGS/Crucible/rejoindata` with `m_hasValidRejoinData="true"`
+and the hub's address. From then on **every launch auto-rejoins that dead
+match instead of showing the menu**. The symptoms are misleading: the hunter
+select screen never appears, the client appears to "crash", and the client log
+fills with `[Warning][GameMode] GameModeComponent was not ready yet` — which
+is the same line `docs/18` produced from genuinely wrong baked entity IDs, so
+it is easy to misdiagnose as a replication regression. It is not; the client
+log's final line is `Crucible client application is quitting normally`.
+
+Two further traps in the same area:
+
+- `local_sessions.selection` only accepts a hub identity **60 seconds old or
+  less**, and the hub only publishes one during matchmaking. A client that
+  reconnects straight to the shard therefore hangs on Connecting forever with
+  `BOOTSTRAP waiting for one fresh local hub identity`. Re-queue from the
+  menu; do not reconnect.
+- The client writes its own logs to
+  `compatdata/1057240/pfx/.../AppData/Local/AGS/Crucible/NovaNetLogs/`. Read
+  them before theorising. They answer "did it crash or did it hang" in one
+  line, and none of the guessing above was necessary.
+
+A reboot revives an old file too. `m_timePointUntilCanRejoinInMicroSecs` is
+measured on the machine's uptime clock, not wall time: the client writes a
+fresh file at every match start, and it normally expires within the session.
+After a reboot, uptime restarts near zero, so an earlier file's deadline looks
+far in the future again. On 27 September a 22 September file (deadline
+165,912 s) forced the rejoin path after the 17:38 reboot. That path connects
+with `NovaNetUserId 0`, and the shard waits forever for a hub identity (below).
+The Banshee Crucible provider renames `rejoindata` before every launch.
+
+Recovery: stop the game, delete `rejoindata`, clear
+`$XDG_RUNTIME_DIR/crucible-revival-sessions/*`, restart the three services,
+and launch fresh.
+
+## Attack cadence from the rifle's own script, 24 September
+
+The earlier "one `Shot` per 2 s attack" was one event per *attack*, which
+`snapshots/accuracy-20260924/accuracy-audit.md` ranked as the most visible
+invented policy. The per-round cadence is authored in
+`cdl/player/marine/ability/marine_primary_onfire.cdl` (sha256 `10ecfb3b…`).
+Raw asset contents remain outside this repository. On entry it sets `using_primary1` and
+`using_aim_ik` and fires `CreateProjectile`. It then loops `Delay 0.064`,
+`Delay 0.032`, `AdjustResource Ammunition −1` and
+`WaitUntilTimePoint(GetTimePoint +0x60 ms)` back into the next
+`CreateProjectile`, so it fires **one round every 96 ms** while the input is
+held. `OnExit` clears `using_primary1`.
+
+`hunter_ai` now models an attack as the primary held for
+`Attacks[0].Duration` (2.0 s). That gives 21 rounds at their scripted times.
+Attacks run back to back (`MinTimeBetweenAttacks` 0.0). The start gate is
+the authored `Attacks[0]` block:
+- `RangeMin`/`RangeMax` 0–30 m;
+- `RangeVerticalMax` 20 m (0x136d);
+- `Angle` 90° (0x131f), read as a full cone width like `AggroAngleFar`
+  (that reading is DERIVED, not proven);
+- `AttackDelayForNewTargets` 0.25 s.
+
+A finite attack is not abandoned when the target leaves `RangeMax`, because
+`AbandonInfiniteAttackIfTargetOutOfMaxRange` covers infinite attacks only.
+Dropping the target (deaggro, death) ends it. `Step.firing` reports a held
+trigger.
+
+In the shard, `CRUCIBLE_SOLO_COMBAT_ANIMATION` holds `using_primary1` and
+`using_aim_ik` for the whole attack instead of pulsing once per shot. It no
+longer sets `is_aiming`: aiming down sights is the separate
+`marine_aimdownsights` ability, and nothing shows bots using it.
+`CRUCIBLE_SOLO_FIRE` publishes one activation per *shooter* per clock packet
+(it was one per packet in total), which keeps up with 10.4 rounds/s at the
+20 Hz clock. Still open: magazine size and reload (bots never run dry),
+strafing and approach stop distances, and line of sight. None of this has
+been observed in a running client.
+
+### Authored aim height
+
+The full Marine guide-AI dump adds two sourced offsets that matter to both
+targeting and the fire packet: `AggroOriginOffsetLocal = (0, 0, 1)` at 0x103e
+and `AggroTargetOffsetVertical = 1.0` at 0x1061. `Bot.update` now measures
+aggro/attack range and angles from those points and creates its round along
+that line. After grounding and separation, the shard reapplies both offsets
+before encoding `FireOrigin`, `IdealOrigin` and `IdealTargetPosition`. This
+removes the feet-level trace. The exact weapon muzzle attachment remains
+unresolved, and this still needs visual acceptance in a running client.

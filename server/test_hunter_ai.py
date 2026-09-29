@@ -9,8 +9,8 @@ import navigation
 def tuning(**overrides):
     values = dict(source='synthetic test tuning', patrol_speed=2., pursue_speed=4.,
                   aggro_near=5., aggro_far=20., deaggro=25., attack_delay=1.,
-                  range_min=.1, range_max=10., fire_interval=.5,
-                  turn_rate=math.tau)
+                  range_min=.1, range_max=10., attack_duration=.5,
+                  round_interval=.5, turn_rate=math.tau)
     values.update(overrides)
     return hunter_ai.Tuning(**values)
 
@@ -28,7 +28,9 @@ class TuningTests(unittest.TestCase):
     def test_incoherent_tuning_is_rejected(self):
         for bad in (dict(aggro_near=30.), dict(deaggro=1.), dict(range_min=99.),
                     dict(patrol_speed=0.), dict(attack_delay=-1.),
-                    dict(fire_interval=0.), dict(turn_rate=0.)):
+                    dict(attack_duration=0.), dict(round_interval=0.),
+                    dict(attack_angle=0.), dict(range_vertical_max=0.),
+                    dict(min_time_between_attacks=-1.), dict(turn_rate=0.)):
             with self.assertRaises(ValueError):
                 tuning(**bad)
 
@@ -178,7 +180,11 @@ class AggroConeTests(unittest.TestCase):
         self.assertAlmostEqual(math.degrees(marine.turn_rate), 90.)
         self.assertEqual((marine.patrol_speed, marine.pursue_speed), (5.5, 8.))
         self.assertEqual((marine.range_min, marine.range_max), (0., 30.))
-        self.assertEqual((marine.attack_delay, marine.fire_interval), (.25, 2.))
+        self.assertEqual(marine.attack_delay, .25)
+        self.assertEqual((marine.attack_duration, marine.min_time_between_attacks,
+                          marine.round_interval), (2., 0., .096))
+        self.assertAlmostEqual(math.degrees(marine.attack_angle), 90.)
+        self.assertEqual(marine.range_vertical_max, 20.)
 
 
 class WanderTests(unittest.TestCase):
@@ -271,14 +277,63 @@ class AttackTests(unittest.TestCase):
         self.assertAlmostEqual(times[0], 1.05)  # acquired at t=.05, delay 1 s
         self.assertAlmostEqual(times[1] - times[0], .5)
 
+    def test_a_marine_attack_fires_the_scripted_96_ms_burst(self):
+        bot = hunter_ai.Bot(3, straight(), tuning(attack_duration=2.,
+                                                  round_interval=.096,
+                                                  attack_delay=.25))
+        steps = ticks(bot, 60, target=2, position=(0., 8., 0.))
+        times = [s.time for step in steps for s in step.shots]
+        # Acquired at t=.05; the attack starts on the first tick past .25 s.
+        first = [s for s in steps if s.shots][0]
+        self.assertAlmostEqual(times[0], .3)
+        self.assertTrue(first.firing)
+        burst = [t for t in times if t < times[0] + 2.]
+        self.assertEqual(len(burst), 21)
+        for earlier, later in zip(burst, burst[1:]):
+            self.assertAlmostEqual(later - earlier, .096)
+        # Back to back: MinTimeBetweenAttacks is zero, so the next attack
+        # starts on the tick the previous one ends.
+        self.assertAlmostEqual(times[21], 2.3)
+        self.assertTrue(all(step.firing for step in steps[5:]))
+
+    def test_no_attack_starts_outside_the_authored_cone(self):
+        bot = hunter_ai.Bot(3, straight(), tuning(attack_angle=math.radians(90.),
+                                                  turn_rate=math.radians(80.),
+                                                  attack_delay=0.))
+        # Directly behind: 135 degrees of turning at 80 deg/s is 1.6875 s from
+        # the epoch tick at .05, so the target enters +-45 degrees at 1.7375
+        # and the first tick past that is 1.75.
+        steps = ticks(bot, 60, target=2, position=(0., -8., 0.))
+        first = next(step for step in steps if step.shots)
+        self.assertAlmostEqual(first.shots[0].time, 1.75)
+        self.assertTrue(all(not step.firing for step in steps[:steps.index(first)]))
+
+    def test_no_attack_starts_past_the_vertical_range(self):
+        bot = hunter_ai.Bot(3, straight(), tuning(aggro_far=30., deaggro=35.,
+                                                  range_max=30.,
+                                                  range_vertical_max=20.))
+        steps = ticks(bot, 60, target=2, position=(0., 8., 25.))
+        self.assertEqual({s.state for s in steps}, {hunter_ai.ATTACK})
+        self.assertFalse([s for step in steps for s in step.shots])
+
+    def test_dropping_the_target_ends_the_attack(self):
+        bot = hunter_ai.Bot(3, straight(), tuning(attack_duration=2.,
+                                                  round_interval=.1, attack_delay=0.))
+        engaged = ticks(bot, 5, target=2, position=(0., 8., 0.))
+        self.assertTrue(engaged[-1].firing)
+        dropped = ticks(bot, 5, start=.25)
+        self.assertFalse([s for step in dropped for s in step.shots])
+        self.assertFalse(any(step.firing for step in dropped))
+
     def test_shot_carries_shooter_target_and_a_unit_aim(self):
         bot = hunter_ai.Bot(3, straight(), tuning())
-        shots = [s for step in ticks(bot, 40, target=2, position=(0., 8., 6.))
+        # Inside RangeMax less the entry margin, so the bot fires from home.
+        shots = [s for step in ticks(bot, 40, target=2, position=(0., 4.8, 3.6))
                  for s in step.shots]
         shot = shots[0]
         self.assertEqual((shot.shooter, shot.target), (3, 2))
         self.assertAlmostEqual(math.dist((0., 0., 0.), shot.direction), 1.)
-        self.assertAlmostEqual(shot.range, 10.)
+        self.assertAlmostEqual(shot.range, 6.)
         self.assertEqual(shot.origin, bot.route[0])
 
     def test_out_of_range_targets_are_chased_not_shot(self):
@@ -296,6 +351,21 @@ class AttackTests(unittest.TestCase):
         self.assertEqual(step.state, hunter_ai.ATTACK)
         self.assertEqual(step.speed, 0.)
         self.assertAlmostEqual(step.yaw, 0.)
+
+    def test_a_target_at_the_range_edge_does_not_flip_the_state(self):
+        bot = hunter_ai.Bot(3, straight(), tuning())
+        # Just inside RangeMax but short of the entry margin: keep closing.
+        edge = 10. - hunter_ai.ATTACK_ENTRY_MARGIN / 2
+        self.assertEqual(bot.update(.05, 2, (0., edge, 0.)).state, hunter_ai.PURSUE)
+        steps = ticks(bot, 60, target=2, position=(0., edge, 0.), start=.05)
+        states = [s.state for s in steps]
+        first = states.index(hunter_ai.ATTACK)
+        self.assertEqual(set(states[first:]), {hunter_ai.ATTACK})
+        # Once attacking, the target may drift back to RangeMax without a flip.
+        near = steps[-1].position[1]
+        steps = [bot.update(3.05 + i * .05, 2, (0., near + 10. - (i % 2) * .4, 0.))
+                 for i in range(20)]
+        self.assertEqual({s.state for s in steps}, {hunter_ai.ATTACK})
 
     def test_targets_closer_than_range_min_are_still_engaged(self):
         bot = hunter_ai.Bot(3, straight(), tuning(range_min=3.))

@@ -15,6 +15,9 @@ import random
 PATROL = 'patrol'
 PURSUE = 'pursue'
 ATTACK = 'attack'
+# Not authored: the asset's approach/stop distances are still untraced
+# (docs/21). Stabilises the PURSUE/ATTACK boundary observed flapping live.
+ATTACK_ENTRY_MARGIN = 1.0
 RETURN = 'return'
 
 
@@ -30,8 +33,14 @@ class Tuning:
     attack_delay: float
     range_min: float
     range_max: float
-    fire_interval: float
+    attack_duration: float
+    round_interval: float
+    min_time_between_attacks: float = 0.
+    attack_angle: float = math.tau         # full cone width, radians
+    range_vertical_max: float = math.inf
     aggro_angle: float = math.tau          # full cone width, radians
+    aggro_origin_offset_local: tuple = (0., 0., 0.)
+    aggro_target_offset_vertical: float = 0.
     patrol_near: float = 5.
     patrol_far: float = 15.
     patrol_anchor_limit: float = 50.
@@ -44,10 +53,12 @@ class Tuning:
         ordered = (self.aggro_near <= self.aggro_far <= self.deaggro
                    and self.range_min < self.range_max
                    and 0 <= self.patrol_near <= self.patrol_far)
-        positive = min(self.patrol_speed, self.pursue_speed, self.fire_interval,
-                       self.repath_interval, self.turn_rate, self.aggro_angle,
+        positive = min(self.patrol_speed, self.pursue_speed, self.attack_duration,
+                       self.round_interval, self.repath_interval, self.turn_rate,
+                       self.aggro_angle, self.attack_angle, self.range_vertical_max,
                        self.patrol_attempts) > 0
-        if not ordered or not positive or self.attack_delay < 0:
+        if (not ordered or not positive or self.attack_delay < 0
+                or self.min_time_between_attacks < 0):
             raise ValueError('incoherent hunter tuning')
 
 
@@ -70,10 +81,22 @@ MARINE = Tuning(
     attack_delay=0.25,                     # AttackDelayForNewTargets, 0x12a6
     range_min=0.0,                         # Attacks[0].RangeMin, 0x1339
     range_max=30.0,                        # Attacks[0].RangeMax, 0x1353
-    # MinTimeBetweenAttacks is 0.0 (0x12c0), so attacks repeat back to back at
-    # Attacks[0].Duration (0x1387). One Shot is emitted per attack, not per
-    # bullet: the per-shot cadence of the rifle is a separate open trace.
-    fire_interval=2.0,
+    range_vertical_max=20.0,               # Attacks[0].RangeVerticalMax, 0x136d
+    # AI/guide_dummies/marine_guide_dummy.ai: AggroOriginOffsetLocal (0x103e)
+    # and AggroTargetOffsetVertical (0x1061). The authored values are both 1 m.
+    aggro_origin_offset_local=(0., 0., 1.),
+    aggro_target_offset_vertical=1.0,
+    # Attacks[0].Angle (0x131f), read as a full cone width like AggroAngleFar.
+    attack_angle=math.radians(90.),
+    # An attack holds the primary for Attacks[0].Duration (0x1387); with
+    # MinTimeBetweenAttacks 0.0 (0x12c0) attacks run back to back.
+    attack_duration=2.0,
+    min_time_between_attacks=0.0,
+    # cdl/player/marine/ability/marine_primary_onfire.cdl (sha256 10ecfb3b...)
+    # fires CreateProjectile on entry, then loops Delay 0.064 + Delay 0.032 +
+    # WaitUntilTimePoint(GetTimePoint +0x60 ms): one round every 96 ms while
+    # the input is held, i.e. 21 rounds in a 2.0 s attack.
+    round_interval=0.096,
     patrol_near=5.0,                       # PatrolParams/MinDistance, 0x2c2
     patrol_far=15.0,                       # PatrolParams/MaxDistance, 0x2dc
     patrol_anchor_limit=50.0,              # PatrolParams/MaxDistanceFromCurrent, 0x310
@@ -105,6 +128,7 @@ class Step:
     state: str
     target: int = None
     shots: tuple = ()
+    firing: bool = False     # the primary is held: an attack is in progress
 
 
 def plan_distance(points):
@@ -163,7 +187,9 @@ class Bot:
     state: str = PATROL
     target: int = None
     acquired_at: float = None
-    fired_at: float = None
+    attack_started: float = None
+    attack_ended: float = None
+    rounds_fired: int = 0
     _clock: float = None
     _plan: list = field(default_factory=list)
     _index: int = 1
@@ -253,11 +279,11 @@ class Bot:
         has been decoded, so no occlusion test is applied.
         """
         if target is None or distance is None:
-            self.target, self.acquired_at, self.fired_at = None, None, None
+            self._disengage()
             return False
         if self.target is not None:
             if distance > self.tuning.deaggro:
-                self.target, self.acquired_at, self.fired_at = None, None, None
+                self._disengage()
                 return False
             return True
         if distance > self.tuning.aggro_far:
@@ -266,19 +292,58 @@ class Bot:
             offset = (yaw_of(aim) - self.yaw + math.pi) % math.tau - math.pi
             if abs(offset) > self.tuning.aggro_angle / 2:
                 return False
-        self.target, self.acquired_at, self.fired_at = target, now, None
+        self.target, self.acquired_at = target, now
+        self.attack_started = self.attack_ended = None
         return True
 
-    def _may_fire(self, now, distance):
+    def _disengage(self):
+        self.target = self.acquired_at = None
+        self.attack_started = self.attack_ended = None
+        self.rounds_fired = 0
+
+    def _may_attack(self, now, distance, aim):
+        """Attacks[0]'s start gate: range, vertical range, cone and delays."""
         if self.target is None or self.acquired_at is None:
             return False
         if not self.tuning.range_min <= distance <= self.tuning.range_max:
             return False
+        if abs(aim[2]) > self.tuning.range_vertical_max:
+            return False
+        if any(aim[:2]):
+            offset = (yaw_of(aim) - self.yaw + math.pi) % math.tau - math.pi
+            if abs(offset) > self.tuning.attack_angle / 2:
+                return False
         if now - self.acquired_at < self.tuning.attack_delay:
             return False
-        if self.fired_at is None:
-            return True
-        return now - self.fired_at >= self.tuning.fire_interval
+        return (self.attack_ended is None or now - self.attack_ended
+                >= self.tuning.min_time_between_attacks)
+
+    def _rounds(self, now, target_position):
+        """Rounds due by `now` in the current attack, at their scripted times.
+
+        A finite attack runs its whole Duration once started: the asset's
+        AbandonInfiniteAttackIfTargetOutOfMaxRange applies to infinite attacks
+        only. It ends early only when the target is dropped.
+        """
+        shots = []
+        end = self.attack_started + self.tuning.attack_duration
+        while True:
+            due = self.attack_started + self.rounds_fired * self.tuning.round_interval
+            if due > now or due >= end - 1e-9:
+                break
+            origin = tuple(self.position[i] + self.tuning.aggro_origin_offset_local[i]
+                           for i in range(3))
+            target = (target_position[0], target_position[1],
+                      target_position[2] + self.tuning.aggro_target_offset_vertical)
+            aim = tuple(target[i] - origin[i] for i in range(3))
+            length = math.dist((0., 0., 0.), aim) or 1.
+            shots.append(Shot(self.entity, self.target, due, origin,
+                              tuple(v / length for v in aim), length))
+            self.rounds_fired += 1
+        if now >= end - 1e-9:
+            self.attack_started, self.attack_ended = None, end
+            self.rounds_fired = 0
+        return shots
 
     # -- tick -------------------------------------------------------------
 
@@ -299,10 +364,14 @@ class Bot:
         if (target is None) != (target_position is None):
             raise ValueError('target id and position must be given together')
 
-        distance = (None if target_position is None
-                    else math.dist(self.position, target_position))
-        aim = (None if target_position is None
-               else tuple(target_position[i] - self.position[i] for i in range(3)))
+        origin = tuple(self.position[i] + self.tuning.aggro_origin_offset_local[i]
+                       for i in range(3))
+        aim_target = (None if target_position is None else
+                      (target_position[0], target_position[1],
+                       target_position[2] + self.tuning.aggro_target_offset_vertical))
+        distance = None if aim_target is None else math.dist(origin, aim_target)
+        aim = (None if aim_target is None
+               else tuple(aim_target[i] - origin[i] for i in range(3)))
         engaged = self._sense(now, target, distance, aim)
 
         shots, speed, heading = (), 0., None
@@ -337,8 +406,12 @@ class Bot:
                     speed = 0.0
                 else:
                     self._dit_patrol_pause_until = None
-        elif distance <= self.tuning.range_max:
-            # In range, including closer than RangeMin: stand and face.
+        elif distance <= self.tuning.range_max - (
+                0. if self.state == ATTACK else ATTACK_ENTRY_MARGIN):
+            # In range, including closer than RangeMin: stand and face. A
+            # pursuing bot closes ATTACK_ENTRY_MARGIN inside RangeMax before
+            # stopping, so a target drifting at the range edge does not flip
+            # it between PURSUE and ATTACK every tick.
             self.state, heading = ATTACK, aim
         else:
             self.state, speed = PURSUE, self.tuning.pursue_speed
@@ -369,16 +442,22 @@ class Bot:
             self.yaw = turn_towards(self.yaw, yaw_of(heading),
                                     self.tuning.turn_rate * max(delta, 0.))
 
-        if engaged and self.state == ATTACK and self._may_fire(now, distance):
-            self.fired_at = now
-            aim = tuple(target_position[i] - self.position[i] for i in range(3))
-            length = math.dist((0., 0., 0.), aim) or 1.
-            shots = (Shot(self.entity, self.target, now, self.position,
-                          tuple(v / length for v in aim), length),)
+        shots = []
+        if engaged:
+            if self.attack_started is not None:
+                shots.extend(self._rounds(now, target_position))
+            current_origin = tuple(
+                self.position[i] + self.tuning.aggro_origin_offset_local[i]
+                for i in range(3))
+            aim = tuple(aim_target[i] - current_origin[i] for i in range(3))
+            if (self.attack_started is None
+                    and self._may_attack(now, math.dist(current_origin, aim_target), aim)):
+                self.attack_started, self.rounds_fired = now, 0
+                shots.extend(self._rounds(now, target_position))
 
         return Step(self.entity, self.position, self.facing(), self.yaw,
                     moved / delta if delta > 0 else 0., self.state,
-                    self.target, shots)
+                    self.target, tuple(shots), self.attack_started is not None)
 
     def facing(self):
         return (math.sin(self.yaw), math.cos(self.yaw), 0.)
@@ -396,8 +475,17 @@ class Squad:
     def __init__(self, bots):
         self.bots = list(bots)
 
-    def update(self, now, target=None, target_position=None):
-        return [bot.update(now, target, target_position) for bot in self.bots]
+    def update(self, now, target=None, target_position=None, *, active_entities=None):
+        steps = []
+        for bot in self.bots:
+            if active_entities is not None and bot.entity not in active_entities:
+                if not math.isfinite(now) or (bot._clock is not None and now < bot._clock):
+                    raise ValueError('invalid suspended hunter clock')
+                bot._clock = now
+                bot._disengage()
+                continue
+            steps.append(bot.update(now, target, target_position))
+        return steps
 
     def shots(self, steps):
         return [shot for step in steps for shot in step.shots]
