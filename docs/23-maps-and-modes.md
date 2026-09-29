@@ -163,6 +163,15 @@ requested solo respawn behavior is tracked separately from the retail profile
 until its intended role is settled; respawn cannot silently stand in for
 retail team elimination.
 
+The managed local shard profile enables a separate death-feedback probe with
+HealthChangeSource **0 = Unknown** and AbilityName **51 = marine_primary**.
+`docs/27` traces these values through the executable's static baked-name
+prefixes and shows the `KilledByDamageSource` change callback. The probe is
+source-backed, but whether it produces visible death or respawn presentation
+has not been observed in a client run. The installer must be run to regenerate
+the managed service unit; a running shard must only be restarted between
+matches.
+
 ### MatchPhaseType is now a known enum
 
 Retail name-pointer table at `.rdata` 0x65bc9c0, strings in the block
