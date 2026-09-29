@@ -177,10 +177,11 @@ With no client or active match running, `tools/install_local_services.py` was
 run from the repository `.venv`. Backend, hub, and shard are active; TCP
 18876/18877 and UDP 18878 bind to `127.0.0.1`. The shard prewarmed the retail
 navigation mesh in 4.69 seconds and is waiting for client packets. The managed
-shard unit enables Alpha Hunters, bot AI/combat, Marine fire, movement/combat
-animation, the explicit death metadata probe, hunter hit reports, and the DIT
-transport root. A read-only party descriptor returned HTTP 200 and the hub
-completed a local TLS 1.3 handshake. Exact service, socket, and smoke evidence is in
+shard's active systemd environment confirms Alpha Hunters, bot AI/combat,
+Marine fire, movement/combat animation, the explicit death metadata probe,
+hunter hit reports, and the DIT transport root. A read-only party descriptor
+returned HTTP 200 and the hub completed a local TLS 1.3 handshake. Exact
+service, socket, and smoke evidence is in
 `snapshots/runtime-20260929/local-services.txt`.
 
 The installer pre-creates the DIT transport root because DIT sync-down skips
