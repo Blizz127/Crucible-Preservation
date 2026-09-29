@@ -24,6 +24,7 @@ class Step:
     state: str
     target: int = None
     shots: tuple = ()
+    firing: bool = False
 
 
 def plan_distance(points):
@@ -68,8 +69,17 @@ class Squad:
     def __init__(self, bots):
         self.bots = list(bots)
 
-    def update(self, now, target=None, target_position=None):
-        return [bot.update(now, target, target_position) for bot in self.bots]
+    def update(self, now, target=None, target_position=None, *, active_entities=None):
+        steps = []
+        for bot in self.bots:
+            if active_entities is not None and bot.entity not in active_entities:
+                if not math.isfinite(now) or (bot._clock is not None and now < bot._clock):
+                    raise ValueError('invalid suspended hunter clock')
+                bot._clock = now
+                bot._disengage()
+                continue
+            steps.append(bot.update(now, target, target_position))
+        return steps
 
     def shots(self, steps):
         return [shot for step in steps for shot in step.shots]
