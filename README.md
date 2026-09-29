@@ -11,4 +11,8 @@ This repository collects original code and design notes from the Crucible Reviva
 
 - [Routing across a triangle mesh](docs/21-hunter-ai.md)
 
+## Patrol motion
+
+Successive accepted position samples provide an estimate of speed. Discard sudden position jumps, then record the duration of each moving or resting interval. Keep bounded samples of those durations. Each simulated patrol can select its own pause from an accepted range and fall back to the default when the input is invalid.
+
 This project distributes its original material under the [MIT License](LICENSE).

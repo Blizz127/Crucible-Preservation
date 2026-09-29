@@ -17,6 +17,7 @@ class CombatEntity:
     telegraph_seconds: float = 0.0
     respawn_at: float = None
     dirty: bool = False
+    killer_id: int = None
 
     def __post_init__(self):
         if self.health is None:
@@ -66,6 +67,23 @@ class Combat:
             return None
         return None
 
+    def apply_damage(self, attacker, target, damage, *, now=None):
+        now = time.monotonic() if now is None else now
+        source = self.entities.get(attacker)
+        entity = self.entities.get(target)
+        if (source is None or entity is None or not source.alive
+                or not entity.alive or source.team == entity.team):
+            return None
+        if type(damage) not in (int, float) or not 0 < damage < float('inf'):
+            raise ValueError('damage must be a positive finite number')
+        entity.health = max(0.0, entity.health - damage)
+        entity.dirty = True
+        killed = not entity.alive
+        if killed:
+            entity.killer_id = attacker
+            self._die(entity, now)
+        return HitResult(entity.entity_id, float(damage), entity.health, killed)
+
     def _die(self, entity, now):
         if entity.respawn_seconds is not None:
             entity.respawn_at = (now + entity.respawn_seconds
@@ -77,6 +95,7 @@ class Combat:
             if entity.respawn_at is not None and now >= entity.respawn_at:
                 entity.respawn_at = None
                 entity.health = entity.maximum
+                entity.killer_id = None
                 entity.dirty = True
         return [entity for entity in sorted(self.entities.values(),
                                             key=lambda e: e.entity_id)
