@@ -183,6 +183,11 @@ transport root. A read-only party descriptor returned HTTP 200 and the hub
 completed a local TLS 1.3 handshake. Exact service, socket, and smoke evidence is in
 `snapshots/runtime-20260929/local-services.txt`.
 
+The installer pre-creates the DIT transport root because DIT sync-down skips
+targets whose root directory does not exist. This lets DIT publish an approved
+tendency before the first 60-second motion flush. The root exists now, but no
+shared tendency document or DIT hub service is present on this host.
+
 There is still no Crucible client process or graphical display in this
 session, so visible death, respawn, fire, and animation behavior has not been
 accepted. No active DIT tendency file exists at the configured transport root;

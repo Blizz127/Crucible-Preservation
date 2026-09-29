@@ -5,6 +5,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+DIT_TRANSPORT_ROOT = ROOT / 'dit-transport'
 SERVICES = {
     'backend': ('crucible_backend.py', ['--port', '18876'], {}),
     'hub': ('match_stub.py', [], {
@@ -35,7 +36,7 @@ SERVICES = {
                                   'CRUCIBLE_SOLO_DEATH_ABILITY_ID': '51',
                                   # The local DIT transport stores aggregate
                                   # movement only, never positions.
-                                  'CRUCIBLE_DIT_TRANSPORT_ROOT': str(ROOT / 'dit-transport')}),
+                                  'CRUCIBLE_DIT_TRANSPORT_ROOT': str(DIT_TRANSPORT_ROOT)}),
 }
 
 
@@ -45,6 +46,10 @@ def quote(value):
 
 
 def main():
+    # DIT sync-down only writes to configured roots that already exist. Create
+    # the root before starting the shard so a hub sync does not depend on the
+    # first 60-second motion-observation flush.
+    DIT_TRANSPORT_ROOT.mkdir(parents=True, exist_ok=True)
     directory = pathlib.Path.home() / '.config/systemd/user'
     directory.mkdir(parents=True, exist_ok=True)
     names = []

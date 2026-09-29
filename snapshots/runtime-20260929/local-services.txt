@@ -27,3 +27,4 @@ Sep 29 04:12:57 blizz python[2644684]: [2026-09-29T04:12:57.161] reply mode: acc
 --- local protocol smoke ---
 GET /CrucibleLivePartyService/describeParty/local-party -> 200 OK (159 bytes)
 TLS handshake with 127.0.0.1:18877 -> TLSv1.3 / TLS_AES_256_GCM_SHA384
+DIT transport root exists; knowledge/shared/human-tendencies.json absent.
