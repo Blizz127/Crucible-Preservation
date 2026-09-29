@@ -3,6 +3,7 @@
 Everything here is offline: no sockets, no navmesh load, injected clocks.
 The accepted baselines must be unaffected when both flags are off.
 """
+import math
 import struct
 import unittest
 from unittest.mock import patch
@@ -160,21 +161,23 @@ class CreatureAITickTests(unittest.TestCase):
             self.assertEqual(shard.solo_simulation_messages(state, tick * 0.05), [])
 
 
-class FakeStep:
-    def __init__(self, entity, position, facing, state='pursue', shots=()):
-        self.entity, self.position, self.facing = entity, position, facing
-        self.state, self.shots, self.target = state, shots, None
+def FakeStep(entity, position, facing, state='pursue', shots=()):
+    from hunter_ai import Step
+    return Step(entity, position, facing, 0., 0., state, shots=shots)
 
 
 class FakeSquad:
     def __init__(self):
         self.calls = []
+        self.bots = []
 
-    def update(self, now, target, target_position):
+    def update(self, now, target, target_position, *, active_entities=None):
         self.calls.append((now, target, target_position))
-        return [FakeStep(0x1000003, (1.0, 2.0, 3.0), (0.0, 1.0, 0.0)),
-                FakeStep(0x1000004, (4.0, 5.0, 6.0), (1.0, 0.0, 0.0)),
-                FakeStep(0x1000005, (7.0, 8.0, 9.0), (0.0, -1.0, 0.0))]
+        steps = [FakeStep(0x1000003, (1.0, 2.0, 3.0), (0.0, 1.0, 0.0)),
+                 FakeStep(0x1000004, (4.0, 5.0, 6.0), (1.0, 0.0, 0.0)),
+                 FakeStep(0x1000005, (7.0, 8.0, 9.0), (0.0, -1.0, 0.0))]
+        return [step for step in steps
+                if active_entities is None or step.entity in active_entities]
 
 
 class HunterAITickTests(unittest.TestCase):
@@ -188,9 +191,60 @@ class HunterAITickTests(unittest.TestCase):
             self.assertEqual(actual, counter)
             self.assertEqual(message.header[offset], shard.ENTITY_ROLE_CLIENT_SIMULATION)
             previous = counter
-        # Same encoding the accepted stateless patrol uses.
+        # The fake positions are far apart and off-mesh, so separation is a
+        # no-op and grounding falls back to the input: the encoding must then
+        # match the accepted stateless patrol byte for byte.
         expected = shard.build_bot_location_message(3, (1.0, 2.0, 3.0), (0.0, 1.0, 0.0))
         self.assertEqual(messages[0].payload, expected.payload)
+
+
+class SeparationTests(unittest.TestCase):
+    def test_coincident_bots_are_pushed_to_the_authored_margin(self):
+        import hunter_patrol
+        same = [(10.0, 10.0, 0.0)] * 3
+        out = hunter_patrol.separate(same)
+        for i in range(3):
+            for j in range(i + 1, 3):
+                gap = math.dist(out[i][:2], out[j][:2])
+                self.assertGreaterEqual(round(gap, 6), hunter_patrol.SEPARATION * 0.5,
+                                        'bots %d and %d still overlapping' % (i, j))
+
+    def test_already_separated_bots_are_left_alone(self):
+        import hunter_patrol
+        apart = [(0.0, 0.0, 5.0), (10.0, 0.0, 5.0), (20.0, 0.0, 5.0)]
+        self.assertEqual(hunter_patrol.separate(apart), apart)
+
+    def test_separation_is_deterministic(self):
+        import hunter_patrol
+        same = [(3.0, 4.0, 1.0)] * 3
+        self.assertEqual(hunter_patrol.separate(same), hunter_patrol.separate(same))
+
+    def test_separation_does_not_touch_z(self):
+        import hunter_patrol
+        out = hunter_patrol.separate([(0.0, 0.0, 7.5), (0.1, 0.0, 9.25)])
+        self.assertEqual([p[2] for p in out], [7.5, 9.25])
+
+
+class GroundingTests(unittest.TestCase):
+    def test_a_point_under_the_surface_is_lifted_onto_it(self):
+        import hunter_patrol, navigation, solo_modes
+        mesh = navigation.installed_mesh()
+        authored = solo_modes.HIVES.bot_positions[0]
+        surface = mesh.locate(authored)[1][2]
+        sunk = (authored[0], authored[1], surface - 1.0)
+        self.assertAlmostEqual(hunter_patrol.ground(sunk)[2], surface, places=6)
+
+    def test_grounding_preserves_x_and_y(self):
+        import hunter_patrol, solo_modes
+        authored = solo_modes.HIVES.bot_positions[1]
+        out = hunter_patrol.ground(authored)
+        self.assertAlmostEqual(out[0], authored[0])
+        self.assertAlmostEqual(out[1], authored[1])
+
+    def test_off_mesh_points_are_returned_unchanged(self):
+        import hunter_patrol
+        far = (-99999.0, -99999.0, 12.0)
+        self.assertEqual(hunter_patrol.ground(far), far)
 
     def test_without_a_player_position_the_squad_gets_no_target(self):
         squad = FakeSquad()
@@ -203,8 +257,9 @@ class HunterAITickTests(unittest.TestCase):
         state = {'squad': FakeSquad(), 'combat': combat.Combat()}
         state['combat'].register(shard.PLAYER_CHARACTER_ID, shard.MARINE_SHARED_TYPES,
                                  maximum=800.0, team=1)
-        state['combat'].register(0x1000005, shard.MARINE_SHARED_TYPES,
-                                 maximum=800.0, team=2)
+        for entity in shard.HUNTER_BOT_IDS:
+            state['combat'].register(entity, shard.MARINE_SHARED_TYPES,
+                                     maximum=800.0, team=2)
         state['combat'].apply_reported_hit(shard.PLAYER_CHARACTER_ID, 1, (0x1000005,), now=0.0)
         messages = shard.solo_simulation_messages(state, 0.0)
         self.assertEqual(len(messages), 4)

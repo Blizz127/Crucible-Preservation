@@ -231,3 +231,36 @@ class TickTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class ServerResolvedDamageTests(unittest.TestCase):
+    def arena(self):
+        arena = combat.Combat()
+        arena.register(0x1000002, (13, 79), maximum=100., team=1)
+        arena.register(0x1000003, (13, 79), maximum=100., team=2)
+        arena.register(0x1000004, (13, 79), maximum=100., team=2,
+                       respawn_seconds=5.)
+        return arena
+
+    def test_damage_kills_and_records_killer(self):
+        arena = self.arena()
+        hit = arena.apply_damage(0x1000003, 0x1000002, 60., now=1.)
+        self.assertEqual((hit.damage, hit.health, hit.killed), (60., 40., False))
+        hit = arena.apply_damage(0x1000003, 0x1000002, 60., now=2.)
+        self.assertEqual((hit.health, hit.killed), (0., True))
+        self.assertEqual(arena.entities[0x1000002].killer_id, 0x1000003)
+        self.assertIsNone(arena.apply_damage(0x1000003, 0x1000002, 1., now=3.))
+
+    def test_same_team_dead_or_unknown_attackers_are_rejected(self):
+        arena = self.arena()
+        self.assertIsNone(arena.apply_damage(0x1000003, 0x1000004, 10.))
+        self.assertIsNone(arena.apply_damage(0x1000009, 0x1000002, 10.))
+        arena.entities[0x1000003].health = 0.
+        self.assertIsNone(arena.apply_damage(0x1000003, 0x1000002, 10.))
+        with self.assertRaises(ValueError):
+            arena.apply_damage(0x1000004, 0x1000002, 0.)
+
+    def test_respawn_deadline_uses_supplied_time(self):
+        arena = self.arena()
+        arena.apply_damage(0x1000002, 0x1000004, 100., now=10.)
+        self.assertEqual(arena.entities[0x1000004].respawn_at, 15.)

@@ -1,0 +1,19 @@
+.............[2026-09-22T13:14:41.418]       BOOTSTRAP waiting for one fresh local hub identity
+............................................................................................................/var/home/blizz/Projects/Crucible Revival/tools/inspect_hero_roster.py:136: ResourceWarning: unclosed file <_io.BufferedReader name='/home/blizz/.local/share/Steam/steamapps/common/Crucible/bin/Crucible.exe'>
+  image = open(EXE, 'rb').read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./var/home/blizz/Projects/Crucible Revival/tools/rebuild_pak.py:33: ResourceWarning: unclosed file <_io.BufferedReader name='/home/blizz/.local/share/Steam/steamapps/common/Crucible/misc.pak'>
+  d = open(pak_path, "rb").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./var/home/blizz/Projects/Crucible Revival/tools/rebuild_pak.py:33: ResourceWarning: unclosed file <_io.BufferedReader name='/home/blizz/.local/share/Steam/steamapps/common/Crucible/levels.pak'>
+  d = open(pak_path, "rb").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+................................/var/home/blizz/Projects/Crucible Revival/tools/rebuild_pak.py:33: ResourceWarning: unclosed file <_io.BufferedReader name='/home/blizz/.local/share/Steam/steamapps/common/Crucible/NvGameSdk/levels/april2018/level.pak'>
+  d = open(pak_path, "rb").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.............................................................................................[2026-09-22T13:15:01.089]       CLIENT RPC component=169 rpc=2 size=0
+..............................................................................
+----------------------------------------------------------------------
+Ran 326 tests in 19.714s
+
+OK

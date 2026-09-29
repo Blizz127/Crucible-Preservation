@@ -1,0 +1,110 @@
+{
+  "capture_kind": "read-only process memory schema",
+  "pid": 1562288,
+  "executable_sha256": "e28643747df4a4eccf6a0f5490a3a1c4ab0a6a75b2cee62d3c62f2b191d18203",
+  "captures": [
+    {
+      "file": "live-animation-20260922T174627Z.json",
+      "observed_at": "2026-09-22T17:46:27.284154+00:00",
+      "sha256": "adc1e4859d55536b08ad08599dfa2a3d234daad90c32db3b9badd28092850f48"
+    },
+    {
+      "file": "live-animation-20260922T174732Z.json",
+      "observed_at": "2026-09-22T17:47:32.152712+00:00",
+      "sha256": "604adf6c7dd0f1e67b3414ff6ab192ac936b9005f4a094d80782348e16c9b8f0"
+    }
+  ],
+  "local_character": {
+    "network_id": "0x1000002",
+    "internal_name": "saboteur",
+    "display_name": "Ajonah",
+    "loadout_character": 12,
+    "slice_hash": 2391706089
+  },
+  "marine_hunters": [
+    "0x1000003",
+    "0x1000004",
+    "0x1000005"
+  ],
+  "all_four_schema_match": true,
+  "components": {
+    "13": {
+      "shared_nodes_including_sentinel": 34,
+      "autonomous_nodes_including_sentinel": 0,
+      "property_record_indices": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "schema_sha256": "0b0c9d49bddfd0ec60fa143be36ebc75dc28dd6a6d2556c9fa5124ab55f8ca54"
+    },
+    "36": {
+      "shared_nodes_including_sentinel": 2,
+      "autonomous_nodes_including_sentinel": 37,
+      "property_record_indices": [],
+      "schema_sha256": "5481705a6b6a37f06f2240e9c306c5cb6d55ff809679264ffe3d6eccb52980ec"
+    },
+    "79": {
+      "shared_nodes_including_sentinel": 28,
+      "autonomous_nodes_including_sentinel": 0,
+      "property_record_indices": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        23
+      ],
+      "schema_sha256": "8b80fe1204f674b8729c398bd4f012aadaafa43ad788dee8e6a36ea20c5e769c"
+    },
+    "80": {
+      "shared_nodes_including_sentinel": 4,
+      "autonomous_nodes_including_sentinel": 0,
+      "property_record_indices": [
+        1,
+        2
+      ],
+      "schema_sha256": "532da7dba8c177037e476a36e65650de2d7e923aad394d51ebf3e844d2035e08"
+    },
+    "81": {
+      "shared_nodes_including_sentinel": 2,
+      "autonomous_nodes_including_sentinel": 20,
+      "property_record_indices": [],
+      "schema_sha256": "8396839606b04636bd074ecfa28993b8f3d3b3fee48d7eefaa4ccf017bb23cf0"
+    },
+    "115": {
+      "shared_nodes_including_sentinel": 43,
+      "autonomous_nodes_including_sentinel": 0,
+      "property_record_indices": [
+        1
+      ],
+      "schema_sha256": "950b4d7492a70fb1be0da39fba1869da44471dbdfc1c911a8ddcba9c64bb17fb"
+    }
+  },
+  "runtime_writes": false,
+  "service_restart": false,
+  "packets_injected": false
+}

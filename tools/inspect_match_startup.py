@@ -6,9 +6,13 @@ indices. No strings, identity tokens, process writes, launch or termination.
 Graph node layout follows retail 4aa8700/4aa8600; properties follow 876333.
 """
 from pathlib import Path
-import sys,os,struct,json
+from datetime import datetime, timezone
+import sys,os,struct,json,hashlib
 from inspect_replication_schema import find_client
-pid,base=find_client(Path('/home/blizz/.local/share/Steam/steamapps/common/Crucible/bin/Crucible.exe'))
+executable=Path('/home/blizz/.local/share/Steam/steamapps/common/Crucible/bin/Crucible.exe')
+with executable.open('rb') as image:
+ executable_sha256=hashlib.file_digest(image,'sha256').hexdigest()
+pid,base=find_client(executable)
 f=os.open(f'/proc/{pid}/mem',os.O_RDONLY)
 def rd(a,n):
  b=os.pread(f,n,a)
@@ -23,7 +27,9 @@ agent=q(g+0x78)
 if not agent:raise SystemExit('Client network agent not ready')
 rep=q(agent+0x4112488)
 if not rep:raise SystemExit('Client replication manager not ready')
-result={'last_server_game_time_ms':u(agent+0x4112610),'pid':pid,'game_state':u(g+0xa0),'connection_status':u(q(g+0x508)+0x28),'entities':[],
+result={'observed_at':datetime.now(timezone.utc).isoformat(),'executable':str(executable),
+ 'executable_sha256':executable_sha256,'image_base':hex(base),
+ 'last_server_game_time_ms':u(agent+0x4112610),'pid':pid,'game_state':u(g+0xa0),'connection_status':u(q(g+0x508)+0x28),'entities':[],
  'local_entity_slots':[{'entity_id':hex(q(base+0x7c9b490+i*16)), 'network_id':hex(u(base+0x7c9b498+i*16))} for i in range(7)]}
 stack=[q(rep+0x78)&~1];seen=set()
 while stack:
@@ -83,16 +89,21 @@ while stack:
                            'character_status':u(data+0x12c),
                            'team':struct.unpack('<b',rd(data+0x126,1))[0]}
 
-  if code[:3] in tuple(bytes.fromhex(x) for x in ('b002c3', 'b025c3', 'b04fc3', 'b055c3', 'b058c3', 'b073c3', 'b09ec3')):
+  # Include AnimationParameter (13), DamageFloater (36), HitReaction (80),
+  # and IncomingHitIndicator (81). Event-only directions can have no graph
+  # entries or property descriptors; an empty vector is valid, not unreadable.
+  # Animation registration offsets identify wrappers, so no unverified inner
+  # value offsets are read here.
+  if code[:3] in tuple(bytes.fromhex(x) for x in ('b002c3', 'b00dc3', 'b024c3', 'b025c3', 'b04fc3', 'b050c3', 'b051c3', 'b055c3', 'b058c3', 'b073c3', 'b09ec3')):
    graph=q(c+0x28);begin,end=q(graph),q(graph+8)
-   if not 0 < end-begin <= 65536 or (end-begin)%8:raise ValueError('invalid replication graph')
+   if not 0 <= end-begin <= 65536 or (end-begin)%8:raise ValueError('invalid replication graph')
    entry['replication_graph']=[list(struct.unpack('<HHHBB',rd(a,8))) for a in range(begin,end,8)]
    info=q(c+0x20);pb,pe=q(info+0x58),q(info+0x60)
-   if not 0 < pe-pb <= 1024 or (pe-pb)%8:raise ValueError('invalid property info vector')
+   if not 0 <= pe-pb <= 1024 or (pe-pb)%8:raise ValueError('invalid property info vector')
    entry['property_record_indices']=[struct.unpack('<H',rd(q(a)+0x20,2))[0] for a in range(pb,pe,8)]
-   if code[:3] in (bytes.fromhex('b055c3'),bytes.fromhex('b058c3'),bytes.fromhex('b09ec3')):
+   if code[:3] in tuple(bytes.fromhex(x) for x in ('b024c3','b051c3','b055c3','b058c3','b09ec3')):
     begin,end=q(graph+0x40),q(graph+0x48)
-    if not 0 < end-begin <= 65536 or (end-begin)%8:raise ValueError('invalid autonomous graph')
+    if not 0 <= end-begin <= 65536 or (end-begin)%8:raise ValueError('invalid autonomous graph')
     entry['autonomous_graph']=[list(struct.unpack('<HHHBB',rd(a,8))) for a in range(begin,end,8)]
 
   item['components'].append(entry)

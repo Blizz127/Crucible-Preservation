@@ -1,0 +1,25 @@
+{
+  "observed_at": "2026-09-22T15:10:29.980917+00:00",
+  "base_head": "37e9d86de49d9218e0fe7c97d27258e29635d910",
+  "branch": "solo-ai-and-combat",
+  "server_tests": 297,
+  "tools_tests": 9,
+  "client_visual": "menu observed; new in-match behavior NOT_OBSERVED",
+  "source_sha256": {
+    "server/combat.py": "c7c42430419e410f5c1ec8b89b29cb95f42fbeb0c1414d0d5d19113aaca0d016",
+    "server/hunter_ai.py": "865d65e48bbc4a5edc5b2ef453a93047176d7746c198036eb94b88aa25d1f726",
+    "server/hunter_patrol.py": "b053c9105a3b5ff221b3de365b3c5b2935309cbb68f615a3ec971af1757e44cc",
+    "server/shard_stub.py": "3a7d0e68ee1db8e2c9732c7b9456d380679bcb05a372492dd67f28323b684312",
+    "server/death_events.py": "3e09dd888ee6a73557ddde3428b9c4b8de072c79430f7e5f905adc2f98a387aa",
+    "server/projectile_events.py": "16a6dac7345622b10f91ee7ebb531cb901feaba1d3167b6684cfba2438d5e2fe",
+    "tools/inspect_fire_bakednames.py": "69f82f40198060c49218e75d260c374ec3b26ca2fffab485a2d7cbb378343d1d",
+    "tools/inspect_match_startup.py": "73a5df1564de691f29bdbf1ea887d7019e50774cfb7a531255591f34bf0c7011",
+    "tools/inspect_anim_graph.py": "0922712b56362c91f814f0d9948d033ef94b856719f0ba37a7a79135201dc1d4"
+  },
+  "game_modified": false,
+  "committed": false,
+  "pushed": false,
+  "shard_restarted_with_no_client": true,
+  "new_presentation_probes_enabled": false,
+  "shard_pid": 1331527
+}

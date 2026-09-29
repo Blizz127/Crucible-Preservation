@@ -1,0 +1,48 @@
+{
+  "observed_at": "2026-09-22T18:16:33.957575+00:00",
+  "base_head": "37e9d86de49d9218e0fe7c97d27258e29635d910",
+  "server_tests": 326,
+  "tools_tests": 9,
+  "read_only_live_schema_capture": "complete",
+  "native_animation_policy": "source decoded; bot-speed proxy explicitly documented",
+  "visual_acceptance": "NOT_OBSERVED for new presentation probes",
+  "client_pid": null,
+  "shard_pid": 1331527,
+  "presentation_flags": {
+    "CRUCIBLE_SOLO_FIRE": "0",
+    "CRUCIBLE_SOLO_DEATH_EVENTS": "0",
+    "CRUCIBLE_SOLO_MOVEMENT_ANIMATION": "0"
+  },
+  "service_restarted_during_capture_pass": false,
+  "runtime_memory_writes": false,
+  "packets_injected": false,
+  "game_assets_changed": false,
+  "committed": false,
+  "pushed": false,
+  "source_sha256": {
+    "server/animation_events.py": "ef0d4dea905244a70879716f5f0b3b9cbf9cdd4946a5b360d0039eca1e78a261",
+    "server/hit_reaction_events.py": "83e73e49ac2328be5e6eb034f68536b83f7d8ffd1e93a143a54e35d87edca431",
+    "server/shard_stub.py": "ae6eaaa0bd11d457a1cf9f4c98da20bb0e9bce955ed20ff4998c55a166d8724b",
+    "server/test_animation_events.py": "3916e69dff9707896d53e115ec1703e18b6c13257eb0caf5b0b681e9f32ea061",
+    "server/test_hit_reaction_events.py": "4d86c09ee96c51d5df59f996e1542809d9580bd8826cab492e3288e24bc9b338",
+    "server/test_hunter_animation.py": "3ebb88ac91be997e267e51a39d62b163d5ec981462444196678aeeafd99d1768",
+    "server/test_hunter_fire.py": "537c7e6cf301fc58e261a7ae0ab079f09b45747dcc1a8e7e1a020ef41b567ace",
+    "tools/inspect_animation_wire.py": "19df800080c6f15c549eafff9cafc716b9beaa0000839da69b2f0e6edcad92cd",
+    "tools/inspect_entity_serializer.py": "459c662aa3989fc34eecb5ffdade0fa8a29ba1b7b82e2ebf80453d1e85624fc7",
+    "tools/inspect_match_startup.py": "73a5df1564de691f29bdbf1ea887d7019e50774cfb7a531255591f34bf0c7011",
+    "docs/27-damage-and-death-events.md": "f53800bb782b0191a1d72a5ce190196f6c0c9def0f5f8268f67916a6076153ae",
+    "docs/28-animation-state.md": "4aad212cfb82270462a1f9f55736d7e494c5e8f21d1bbc664d0b809ef9798623",
+    "docs/29-weapon-fire-replication.md": "3c1fc375eeb332e11fb7db157153dccf41bbe7bc65e05a8cd0fc3f23ab083a20",
+    "docs/30-systems-resume.md": "8e498ae69d0f10e77052f110bc5bc966e6da356b7b2c8296b46ce67b6f7da1f2"
+  },
+  "evidence_sha256": {
+    "animation-capture-manifest.json": "edd4a443d7ea622a49f7c14e9851a5975f6a123fa3f87594d9b83098d27a5d3b",
+    "live-animation-20260922T174627Z.json": "adc1e4859d55536b08ad08599dfa2a3d234daad90c32db3b9badd28092850f48",
+    "live-animation-20260922T174732Z.json": "604adf6c7dd0f1e67b3414ff6ab192ac936b9005f4a094d80782348e16c9b8f0",
+    "animation-wire-map.json": "3de20869c9cacedabed85a2b931478548e54735c30c63822170d86ccbef95097",
+    "movement-animation-source.json": "fcf2e4a123aa1139fc91b09df9c36559a716a74b2bd1fc5280ef9351895e281e",
+    "entity-serializer-scope.json": "bb1231f2cf4256bd35a36b6476b2196018ab448899ef55f5c4b01334258a73f4",
+    "animation-server-tests.log": "259a1038032e267619e8dc1bc4525b02a43f4d16bd0aa291984c7ec1d591e289",
+    "animation-tools-tests.log": "f851a655fab59bbe4fee2dfe5f720a6b83c68fb5420dac32e13354460c47bb3f"
+  }
+}

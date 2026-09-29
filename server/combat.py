@@ -223,6 +223,7 @@ class CombatEntity:
     telegraph_seconds: float = 0.0
     respawn_at: float = None            # monotonic deadline while dead
     dirty: bool = False                 # replicate on the next tick
+    killer_id: int = None
 
     def __post_init__(self):
         if self.health is None:
@@ -253,6 +254,16 @@ class Combat:
     """
     entities: dict = field(default_factory=dict)
     last_projectile: dict = field(default_factory=dict)
+    # Explicit probe metadata only. Asset table indices alone do not establish
+    # wire enum ids or a neutral default source/ability pair (docs/27).
+    death_metadata: tuple = None
+
+    def __post_init__(self):
+        if self.death_metadata is not None:
+            if (len(self.death_metadata) != 2 or
+                    any(type(v) is not int or not 0 <= v <= 65535
+                        for v in self.death_metadata)):
+                raise ValueError('death metadata must contain two uint16 ids')
 
     # -- registration
     def register(self, entity_id, shared_types, *, maximum, team, local=False,
@@ -324,14 +335,39 @@ class Combat:
         entity.dirty = True
         killed = not entity.alive
         if killed:
+            entity.killer_id = shooter
             self._die(entity, now)
         return HitResult(entity.entity_id, damage, entity.health, killed)
 
-    def _die(self, entity, now):
-        """Death is health reaching zero; see docs/20-combat-core.md.
+    def apply_damage(self, attacker, target, damage, *, now=None):
+        """Apply server-resolved damage (NPC shots and attacks).
 
-        No separate death/alive replicated property was located, so the
-        server publishes health 0 and nothing else. The respawn deadline
+        Unlike apply_reported_hit there is no client report to gate: the
+        caller has already resolved the hit. Both entities must be registered
+        and alive and on different teams. Returns a HitResult or None.
+        """
+        now = time.monotonic() if now is None else now
+        source = self.entities.get(attacker)
+        entity = self.entities.get(target)
+        if (source is None or entity is None or not source.alive
+                or not entity.alive or source.team == entity.team):
+            return None
+        if type(damage) not in (int, float) or not 0 < damage < float('inf'):
+            raise ValueError('damage must be a positive finite number')
+        entity.health = max(0.0, entity.health - damage)
+        entity.dirty = True
+        killed = not entity.alive
+        if killed:
+            entity.killer_id = attacker
+            self._die(entity, now)
+        return HitResult(entity.entity_id, float(damage), entity.health, killed)
+
+    def _die(self, entity, now):
+        """Schedule the simulation's respawn after health reaches zero.
+
+        The default still publishes health only. Explicit death metadata
+        additionally selects records 2/3 (docs/27); the client's death event
+        and respawn presentation remain unverified. The respawn deadline
         includes the authored telegraph, which precedes the spawn itself:
         the dummy death watcher waits Delay 4.0 and then spawns with
         TelegraphTime 2, so the target is back 6.0 s after it died.
@@ -352,6 +388,7 @@ class Combat:
             if entity.respawn_at is not None and now >= entity.respawn_at:
                 entity.respawn_at = None
                 entity.health = entity.maximum
+                entity.killer_id = None
                 entity.dirty = True
         return [entity for entity in sorted(self.entities.values(),
                                             key=lambda e: e.entity_id)
@@ -361,8 +398,17 @@ class Combat:
         """EntityMessages for tick()'s result, chained for RelativeId."""
         messages = []
         for entity in entities:
-            messages.append(build_health_update(
+            builder, metadata = build_health_update, {}
+            if (self.death_metadata is not None and not entity.alive
+                    and entity.killer_id is not None):
+                from death_events import build_death_update
+                builder = build_death_update
+                metadata = dict(source_name=self.death_metadata[0],
+                                ability_name=self.death_metadata[1],
+                                killer_id=entity.killer_id)
+            messages.append(builder(
                 entity.entity_id, entity.shared_types, maximum=entity.maximum,
-                value=entity.health, local=entity.local, previous_id=previous_id))
+                value=entity.health, local=entity.local, previous_id=previous_id,
+                **metadata))
             previous_id = entity.entity_id & 0xffffff
         return messages

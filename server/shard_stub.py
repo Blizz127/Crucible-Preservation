@@ -32,7 +32,7 @@ Historical probe helpers below are retained for reproducing old experiments;
 their checksum/framing theories are superseded. Leave CRUCIBLE_SHARD_PROBE
 unset for the verified LZ4 path. Entity probes are opt-in and unverified.
 """
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import datetime
 import os
 import socket
@@ -780,7 +780,8 @@ def build_hunter_patrol_updates(seconds, *, previous_id=0):
     return messages
 
 
-def build_hunter_ai_updates(squad, now, player_position, *, previous_id=0):
+def build_hunter_ai_updates(squad, now, player_position, *, previous_id=0,
+                            active_entities=None):
     """Location deltas driven by the hunter_ai state machine.
 
     Unlike the stateless patrol this pursues: `player_position` is the
@@ -788,14 +789,76 @@ def build_hunter_ai_updates(squad, now, player_position, *, previous_id=0):
     the bots react to where the player actually is. Bots are entities
     01000003..05, i.e. RelativeId counters 3..5, in the order squad holds.
     """
+    import hunter_patrol
+    from hunter_ai import MARINE
     messages = []
+    kwargs = {} if active_entities is None else {'active_entities': active_entities}
     steps = squad.update(now, PLAYER_CHARACTER_ID if player_position else None,
-                         player_position)
-    for counter, step in enumerate(steps, 3):
+                         player_position, **kwargs)
+    if not steps:
+        return messages, []
+
+    def report_once(key, error):
+        # Bound reports to one per correction stage/entity for this squad;
+        # a persistent mesh failure must remain visible without tick spam.
+        reported = getattr(squad, '_reported_position_errors', None)
+        if reported is None:
+            reported = squad._reported_position_errors = set()
+        if key not in reported:
+            reported.add(key)
+            log('      HUNTER AI position correction %s failed (%s): %s' %
+                (key, type(error).__name__, str(error)[:160]))
+    # Two corrections between the state machine and the wire, both from the
+    # 2026-09-21 live runs (docs/21): bots that share a target converge into
+    # one body, and straight-line motion between waypoints cuts under convex
+    # slopes so they sink into the terrain.
+    positions = [step.position for step in steps]
+    try:
+        mesh = next((bot.mesh for bot in squad.bots if bot.mesh is not None), None)
+        positions = hunter_patrol.separate(positions, mesh=mesh)
+    except Exception as error:              # keep the other corrections usable
+        report_once('separation', error)
+        positions = [step.position for step in steps]
+    corrected = []
+    bots = {bot.entity: bot for bot in squad.bots}
+    for step, position in zip(steps, positions):
+        bot = bots.get(step.entity)
+        mesh = getattr(bot, 'mesh', None)
+        if mesh is not None:
+            try:
+                # A separation margin cannot override walkability. Keep the
+                # original X/Y when there is no surface under the candidate,
+                # and still correct the original's interpolated height.
+                if mesh.locate(position, vertical_tolerance=3.0) is None:
+                    position = step.position
+                position = hunter_patrol.ground(position, mesh=mesh)
+            except Exception as error:
+                report_once('%08x grounding' % step.entity, error)
+                position = step.position
+        shots = []
+        for shot in step.shots:
+            # Keep the authored AI origin and target offsets after the server's
+            # separation/grounding correction. The Marine guide AI aims from
+            # one metre above its root toward one metre above the target.
+            origin = tuple(position[i] + MARINE.aggro_origin_offset_local[i]
+                           for i in range(3))
+            target = (player_position[0], player_position[1],
+                      player_position[2] + MARINE.aggro_target_offset_vertical)
+            aim = tuple(target[i] - origin[i] for i in range(3))
+            distance = math.dist(origin, target)
+            shots.append(replace(shot, origin=origin, range=distance,
+                                 direction=tuple(v / (distance or 1.) for v in aim)))
+        step = replace(step, position=position, shots=tuple(shots))
+        corrected.append(step)
+        if bot is not None:
+            # The next AI tick and any shot must start at the position that
+            # was sent, rather than the uncorrected path interpolation.
+            bot.position = position
+        counter = step.entity & 0xffffff
         messages.append(build_bot_location_message(
-            counter, step.position, step.facing, previous_id=previous_id))
+            counter, position, step.facing, previous_id=previous_id))
         previous_id = counter
-    return messages, steps
+    return messages, corrected
 
 
 def build_practice_npc_probes():
@@ -882,13 +945,27 @@ def solo_ai_enabled():
     return os.environ.get('CRUCIBLE_SOLO_AI') == '1'
 
 
+def solo_death_metadata():
+    """Require explicit baked ids for the unverified death-event probe."""
+    if os.environ.get('CRUCIBLE_SOLO_DEATH_EVENTS') != '1':
+        return None
+    try:
+        values = tuple(int(os.environ['CRUCIBLE_SOLO_DEATH_' + name + '_ID'], 0)
+                       for name in ('SOURCE', 'ABILITY'))
+        if any(not 0 <= value <= 65535 for value in values):
+            raise ValueError('id outside uint16')
+    except (KeyError, ValueError) as error:
+        raise ValueError('death events require explicit uint16 source/ability metadata') from error
+    return values
+
+
 def start_solo_simulation(state):
     """Build per-connection combat/AI state for the population just sent."""
     import combat
     import practice_population
     profile = solo_modes.selected()
     if solo_combat_enabled():
-        arena = combat.Combat()
+        arena = combat.Combat(death_metadata=solo_death_metadata())
         arena.register(PLAYER_CHARACTER_ID, MARINE_SHARED_TYPES,
                        maximum=MARINE_HEALTH_MAX, team=1)
         if profile.bot_positions:
@@ -924,13 +1001,18 @@ def start_solo_simulation(state):
             state['creatures'] = creature_ai.CreatureDirector(placements)
             state['creature_types'] = {p.entity_id: (p.shared_types, p.local_id)
                                        for p in placements}
+            # practicearena_spittertracker.cdl respawns the no-aggro slice,
+            # rather than restoring the initially aggressive spitter (docs/20).
+            state['creature_respawn_profiles'] = {
+                p.entity_id: creature_ai.SPITTER_NOAGGRO for p in placements
+                if profile.level == solo_modes.PRACTICE.level and p.profile == 'spitter'}
 
 
 def observe_solo_combat(message, state):
     """Route accepted player and opt-in hunter projectile results to combat."""
-    arena = state.get('combat')
     if state.get('match_result') is not None:
         return
+    arena = state.get('combat')
     if arena is None or (message.delivery, message.component, message.rpc) != (3, 115, 4):
         return
     shooter = message.entity_id
@@ -967,10 +1049,11 @@ def observe_solo_combat(message, state):
 
 def solo_simulation_messages(state, now, *, previous_id=0):
     """AI and combat entity messages for one clock tick, chained by RelativeId."""
-    messages = []
     if state.get('match_result') is not None:
         profile = solo_modes.selected()
-        return [build_solo_match_phase_update(profile, solo_modes.MATCH_PHASE['GameOver'], previous_id=previous_id)]
+        return [build_solo_match_phase_update(
+            profile, solo_modes.MATCH_PHASE['GameOver'], previous_id=previous_id)]
+    messages = []
     player = state.get('player_position')
     arena = state.get('combat')
     health_entities = arena.tick(now) if arena is not None else []
@@ -980,7 +1063,8 @@ def solo_simulation_messages(state, now, *, previous_id=0):
         player = None
     squad = state.get('squad')
     if squad is not None:
-        updates, steps = build_hunter_ai_updates(squad, now, player, previous_id=previous_id)
+        updates, steps = build_hunter_ai_updates(squad, now, player, previous_id=previous_id,
+                                                active_entities=active_entities)
         messages.extend(updates)
         from dit_motion import transport_for_state
         transport = transport_for_state(state)
@@ -988,12 +1072,63 @@ def solo_simulation_messages(state, now, *, previous_id=0):
             for index, step in enumerate(steps, 1):
                 transport.observe(('bot', 'marine-hunter-%d' % index), step.position, now)
         if updates:
-            previous_id = HUNTER_BOT_IDS[len(updates) - 1] & 0xffffff
+            previous_id = steps[-1].entity & 0xffffff
+        # One animation update per bot per tick carries every enabled policy's
+        # properties. Values repeat each tick so a dropped update cannot
+        # permanently lose a state.
+        animation = {}
+        if os.environ.get('CRUCIBLE_SOLO_MOVEMENT_ANIMATION') == '1':
+            # Native MovementGameplayCommon writes 0 with input and 1 after
+            # 0.1 seconds without input (3292744..329277b, CVar 7bbecd0).
+            # The bot simulation exposes actual pre-separation speed, not
+            # native movement inputs: this opt-in policy uses that proxy.
+            # Millisecond session time avoids binary-float threshold jitter.
+            now_ms = round(now * 1000)
+            idle_since = state.setdefault('hunter_animation_idle_since_ms', {})
+            present = {step.entity for step in steps}
+            for entity in idle_since.keys() - present:
+                del idle_since[entity]
+            for step in steps:
+                if step.speed > 0 or step.entity not in idle_since:
+                    idle_since[step.entity] = now_ms
+                flag = float(step.speed <= 0 and now_ms - idle_since[step.entity] >= 100)
+                animation.setdefault(step.entity, {})['time_since_movement_input'] = flag
+        else:
+            state.pop('hunter_animation_idle_since_ms', None)
+        if os.environ.get('CRUCIBLE_SOLO_COMBAT_ANIMATION') == '1':
+            # marine.animgraph (docs/28): Root base->death on is_dead, and
+            # death->base with zero blend once it clears. primary_fire_sm0
+            # enters recoil on using_primary1 and replays it every 0.1 s
+            # while held. marine_primary_onfire.cdl sets using_primary1 and
+            # using_aim_ik on entry and clears using_primary1 in OnExit, so
+            # both are held for the whole attack. Bots never aim down sights
+            # (a separate marine_aimdownsights ability), so is_aiming stays 0.
+            dead = [entity for entity in HUNTER_BOT_IDS
+                    if arena is not None and entity in arena.entities
+                    and not arena.alive(entity)]
+            for step in steps:
+                if step.entity not in dead:
+                    animation.setdefault(step.entity, {}).update(
+                        is_dead=False, using_primary1=step.firing,
+                        using_aim_ik=step.firing)
+            for entity in dead:
+                animation.setdefault(entity, {}).update(
+                    is_dead=True, using_primary1=False, using_aim_ik=False)
+        if animation:
+            from animation_events import build_animation_update
+            for entity, values in animation.items():
+                messages.append(build_animation_update(
+                    entity, MARINE_SHARED_TYPES, values=values, previous_id=previous_id))
+                previous_id = entity & 0xffffff
         for step in steps:
             for shot in step.shots:
-                # Bots aim and "fire" on the authored cadence, but no
-                # server->client fire message has been decoded (docs/21), so
-                # this is logged, not replicated, and does no damage.
+                # docs/29: Marine primary is AllowedAssets[4]. For an
+                # undeflected shot, valid attachment None (0) leaves the
+                # projectile asset's own attachment in charge of rendering.
+                if os.environ.get('CRUCIBLE_SOLO_FIRE') == '1':
+                    state.setdefault('pending_hunter_shots', []).append(shot)
+                # Presentation only: collision authority and muzzle-space
+                # origins remain open; no damage is invented from this event.
                 log('      HUNTER AI %08x fired at %08x (range %.1f m)' %
                     (shot.shooter, shot.target, shot.range))
         for step in steps:
@@ -1001,8 +1136,55 @@ def solo_simulation_messages(state, now, *, previous_id=0):
             if last.get(step.entity) != step.state:
                 last[step.entity] = step.state
                 log('      HUNTER AI %08x -> %s' % (step.entity, step.state))
+        if os.environ.get('CRUCIBLE_SOLO_FIRE') == '1':
+            from combat import MARINE_PRIMARY
+            from projectile_events import build_hybrid_activation_update
+            # One activation per shooter per clock packet: the rifle fires
+            # every 96 ms and the clock runs at up to 20 Hz, so each queue
+            # drains. Per-EntityMessage bool reset is source-proven (docs/29);
+            # the per-shooter cap keeps one component-115 write per entity per
+            # packet. Creation times are preserved and events past their
+            # authored lifetime are discarded.
+            pending = [
+                shot for shot in state.get('pending_hunter_shots', [])
+                if 0 <= now - shot.time <= MARINE_PRIMARY.lifetime_s
+                and (active_entities is None or
+                     {shot.shooter, shot.target} <= active_entities)]
+            due, waiting = {}, []
+            for shot in pending:
+                if shot.shooter in due:
+                    waiting.append(shot)
+                else:
+                    due[shot.shooter] = shot
+            state['pending_hunter_shots'] = waiting
+            for shot in sorted(due.values(), key=lambda shot: shot.shooter):
+                slots = state.setdefault('hunter_projectile_slots', {})
+                slot = slots.get(shot.shooter, 0)
+                target = tuple(shot.origin[i] + shot.direction[i] * shot.range
+                               for i in range(3))
+                messages.append(build_hybrid_activation_update(
+                    shot.shooter, MARINE_SHARED_TYPES, slot=slot,
+                    allowed_projectile_index=4, fire_origin=shot.origin,
+                    ideal_origin=shot.origin, ideal_target_position=target,
+                    relative_time_ms=int((now - shot.time) * 1000),
+                    has_first_update_hit=False, deflected=False, attachment_id=0,
+                    previous_id=previous_id))
+                previous_id = shot.shooter & 0xffffff
+                slots[shot.shooter] = (slot + 1) % 10
+        else:
+            state.pop('pending_hunter_shots', None)
     director = state.get('creatures')
     if director is not None:
+        if active_entities is not None:
+            from creature_ai import Creature
+            for entity, creature in list(director.creatures.items()):
+                if entity not in active_entities and not creature.dead:
+                    creature.kill(now)
+                elif entity in active_entities and creature.dead:
+                    profile = state.get('creature_respawn_profiles', {}).get(
+                        entity, creature.profile)
+                    director.creatures[entity] = Creature(
+                        entity, profile, creature.position, yaw=creature.yaw)
         targets = {PLAYER_CHARACTER_ID: player} if player else {}
         for event in director.step(now, targets):
             kind = getattr(event, 'kind', 'attack')
@@ -1013,7 +1195,6 @@ def solo_simulation_messages(state, now, *, previous_id=0):
             messages.append(build_location_update(entity, types, transform,
                                                   local=local, previous_id=previous_id))
             previous_id = entity & 0xffffff
-    arena = state.get('combat')
     if arena is not None:
         health = arena.build_messages(health_entities, previous_id=previous_id)
         messages.extend(health)

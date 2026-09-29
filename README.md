@@ -6,24 +6,33 @@ playable again via a community backend — same playbook as other dead-game
 revivals (local server emulator + traffic redirect via hosts file / firewall
 rules, client patched only where unavoidable).
 
-> Status: **Solo entry verified on two profiles. AI and combat are written
-> but not yet seen running.**
+> Status: **Solo entry verified on two profiles; hunter AI has had live runs.
+> New death and firing presentation paths remain unverified in-game.**
 > Training Arena enters with one controllable hero and sustained movement;
 > Alpha Hunters enters on April2018 with three visible Marine hunters
-> (screenshot-confirmed). Both are *stationary* populations. The installed
-> local services use `CRUCIBLE_SHARD_BOOTSTRAP=practice-character`. See the
+> (screenshot-confirmed). Those original accepted profiles used stationary
+> populations and `CRUCIBLE_SHARD_BOOTSTRAP=practice-character`. See the
 > [startup and runtime evidence](docs/16-entity-bootstrap.md) and
 > [Alpha Hunters acceptance](docs/18-heart-of-the-hives-solo.md).
 >
-> Since then, and **not yet confirmed in a running client**: authoritative
-> damage/death/respawn from the retail weapon assets (`docs/20`), hunter-bot
-> pursuit over the shipped navmesh (`docs/21`), creature aggro and attack
-> timing (`docs/22`), and the client-input decoder that tells the server
-> where the player is (`docs/25`). All of it is opt-in and off by default —
-> `CRUCIBLE_SOLO_COMBAT=1` and `CRUCIBLE_SOLO_AI=1` — so the two accepted
-> profiles are byte-identical unless you ask for the new behaviour.
+> Subsequent hunter-AI runs showed pursuit, overlapping bots and terrain
+> sinking (`docs/21`). Health reached zero without visible death (`docs/20`).
+> Simulation is enabled with `CRUCIBLE_SOLO_COMBAT=1` and
+> `CRUCIBLE_SOLO_AI=1`; source defaults stay off. The managed local-service
+> installer now selects Alpha Hunters and enables hunter simulation, fire,
+> animation replication, and the explicit death metadata probe (Unknown /
+> marine_primary). Creature behavior (`docs/22`) and those bot presentation
+> paths still need further live acceptance.
 > Multiplayer, persistence, objectives and full server simulation remain
 > unimplemented.
+>
+> The [22 September systems continuation](docs/30-systems-resume.md) fixes
+> bot position consistency and life-state handling, adds opt-in death metadata
+> and Marine projectile activation, and records the remaining runtime gates.
+> Ajonah and Marine animation schemas are now captured; the native Location →
+> velocity path and separate idle/move flag are decoded. The managed local
+> service install enables the movement and combat animation probes; visual
+> acceptance is still pending. Findings are in `docs/26`–`29`.
 
 ## Scope and legal
 
@@ -111,7 +120,17 @@ repository's original work, not any third-party game content.
 ## Quickstart
 
 Run `python3 tools/install_local_services.py` to start all three local services and
-enable them at login. This does not launch the game. See [the current instructions](docs/15-shard-lz4.md).
+enable them at login. The managed hub and shard units select the same
+`alpha-hunters` profile; the shard enables bot AI, combat, firing and animation
+replication and source-backed death metadata (`0` = Unknown,
+`51` = marine_primary).
+This does not launch the game. These presentation paths have not
+yet passed live visual acceptance. To return to Training Arena defaults, edit
+the generated user service units and remove their `CRUCIBLE_SOLO_*` overrides,
+then reload and restart the services. See [the current instructions](docs/15-shard-lz4.md).
+If those services are already running when you change the generated units,
+restart the hub and shard between matches so they receive the new environment;
+never restart the shard during a match.
 The historical steps below cover the live-services/menu setup only.
 
 1. Start the backend (it must be up before/during the game):
@@ -124,4 +143,3 @@ The historical steps below cover the live-services/menu setup only.
 4. After editing the backend, **restart it** — a warm process keeps serving the
    old response shapes and makes correct code look broken.
 5. Re-verify a pak patch with `python3 tools/test_patch_menu.py`.
-

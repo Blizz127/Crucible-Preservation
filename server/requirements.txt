@@ -1,0 +1,2 @@
+# Raw LZ4 blocks on the retail NovaNet UDP transport (no stored-size prefix).
+lz4>=4.3,<5
