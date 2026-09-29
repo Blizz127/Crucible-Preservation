@@ -28,7 +28,7 @@ def approved_patrol_motion_ranges(root):
     if not isinstance(document, dict):
         return None, None
     if document.get("schemaVersion") != 1 or document.get("source") != "dit-neuronetwork":
-        return None
+        return None, None
     items = document.get("tendencies")
     if not isinstance(items, list):
         return None, None
@@ -48,6 +48,8 @@ def approved_patrol_motion_ranges(root):
                 or "crucible" not in evidence_games):
             continue
         distribution = tendency.get("distribution", {})
+        if not isinstance(distribution, dict):
+            continue
         low, median, high = (distribution.get(name) for name in ("p25", "median", "p75"))
         if all(isinstance(value, (int, float)) and not isinstance(value, bool)
                and math.isfinite(value) for value in (low, median, high)):
