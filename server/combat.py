@@ -53,6 +53,19 @@ class Combat:
     def alive(self, entity_id):
         return self.entities[entity_id].alive
 
+    def terminal_winner(self):
+        teams = {entity.team for entity in self.entities.values()}
+        alive = {entity.team for entity in self.entities.values() if entity.alive}
+        if any(entity.respawn_at is not None for entity in self.entities.values()):
+            return None
+        if len(alive) == 1:
+            return next(iter(alive))
+        if not alive and teams:
+            return 0
+        if len(alive) > 1:
+            return None
+        return None
+
     def _die(self, entity, now):
         if entity.respawn_seconds is not None:
             entity.respawn_at = (now + entity.respawn_seconds
