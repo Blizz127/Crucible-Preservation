@@ -170,3 +170,19 @@ redone from the asset and executable: see docs/28, "Combat-state wiring".
 `CRUCIBLE_SOLO_COMBAT_ANIMATION` (default off) implements the policy.
 Offline: **333 server tests and 9 tools tests passed**; `git diff --check` is clean. The
 running shard was not restarted, and the flag has not been enabled live.
+
+### Local service preparation, 29 September
+
+With no client or active match running, `tools/install_local_services.py` was
+run from the repository `.venv`. Backend, hub, and shard are active; TCP
+18876/18877 and UDP 18878 bind to `127.0.0.1`. The shard prewarmed the retail
+navigation mesh in 4.69 seconds and is waiting for client packets. The managed
+shard unit enables Alpha Hunters, bot AI/combat, Marine fire, movement/combat
+animation, the explicit death metadata probe, hunter hit reports, and the DIT
+transport root. Exact service and socket evidence is in
+`snapshots/runtime-20260929/local-services.txt`.
+
+There is still no Crucible client process or graphical display in this
+session, so visible death, respawn, fire, and animation behavior has not been
+accepted. No active DIT tendency file exists at the configured transport root;
+human-derived patrol cadence stays gated until DIT sync-down and approval.

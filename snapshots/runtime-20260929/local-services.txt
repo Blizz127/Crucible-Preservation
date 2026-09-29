@@ -1,0 +1,26 @@
+Local Crucible service startup verification, 2026-09-29 UTC
+--- systemctl --user show crucible-revival-backend.service ---
+ActiveState=active
+SubState=running
+MainPID=2644666
+ExecMainStartTimestamp=Tue 2026-09-29 04:12:52 UTC
+--- systemctl --user show crucible-revival-hub.service ---
+ActiveState=active
+SubState=running
+MainPID=2644672
+ExecMainStartTimestamp=Tue 2026-09-29 04:12:52 UTC
+--- systemctl --user show crucible-revival-shard.service ---
+ActiveState=active
+SubState=running
+MainPID=2644684
+ExecMainStartTimestamp=Tue 2026-09-29 04:12:52 UTC
+--- Crucible listeners ---
+udp   UNCONN 0      0                        127.0.0.1:18878      0.0.0.0:*    users:(("python",pid=2644684,fd=3))
+tcp   LISTEN 0      8                        127.0.0.1:18877      0.0.0.0:*    users:(("python",pid=2644672,fd=3))
+tcp   LISTEN 0      5                        127.0.0.1:18876      0.0.0.0:*    users:(("python",pid=2644666,fd=3))
+--- shard journal since 2026-09-29 04:12:45 UTC ---
+Sep 29 04:12:52 blizz systemd[2693009]: Started crucible-revival-shard.service - Crucible Revival local shard.
+Sep 29 04:12:52 blizz python[2644684]: [2026-09-29T04:12:52.467] listening on 127.0.0.1:18878 (UDP, log: /home/blizz/dev/Crucible Revival/server/shard_udp.log)
+Sep 29 04:12:52 blizz python[2644684]: [2026-09-29T04:12:52.468] expect: NovaGameClientPackets after the hub hands out this address
+Sep 29 04:12:57 blizz python[2644684]: [2026-09-29T04:12:57.160] prewarmed hunter navigation in 4.69s
+Sep 29 04:12:57 blizz python[2644684]: [2026-09-29T04:12:57.161] reply mode: accept
