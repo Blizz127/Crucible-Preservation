@@ -18,8 +18,19 @@ It does **not** confirm visible Marine models, replicated projectile effects,
 death, respawn or win/loss presentation. The Alienware checkout was at
 `37e9d86` with uncommitted edits; this checkout was at `9d8c5ac`. No remote
 files were overwritten, and no service was restarted during the active run.
-Before the next acceptance run, preserve and reconcile the Alienware edits,
-then start a clean match with the current death/fire/animation settings.
+The old worktree remains preserved. A fresh current-source match and its
+presentation checks remain pending.
+
+After the match returned to the home screen, committed source `6b5132d` was
+installed into a separate Alienware code directory, preserving its older dirty
+checkout. The managed backend, hub and shard units now start from that tree;
+the shard enables bot-hit reports, the explicit death metadata probe, fire,
+movement/combat animation and the DIT transport, and all service sockets bind
+to `127.0.0.1`. The game home screen showed Alpha Hunters `READY`
+([screenshot](../snapshots/runtime-20260929/alienware-alpha-ready.png)). No
+new GamePlay events followed the attempted Ready key. The Crucible window was
+not foreground, so input to unrelated desktop windows was avoided. A fresh
+current-source match and its presentation checks remain pending.
 
 Continues Claude's unfinished event-state investigation on
 `solo-ai-and-combat`, starting at `37e9d86`. The existing dirty work was

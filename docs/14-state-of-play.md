@@ -9,8 +9,11 @@
 > visible projectile, death, respawn and match result were not confirmed. This
 > run used an Alienware checkout at 37e9d86 with uncommitted edits, behind this
 > checkout's 9d8c5ac, so it is operational evidence rather than acceptance of
-> current source. See the log and screenshot linked from
-> [30-systems-resume.md](30-systems-resume.md).
+> current source. After that match returned home, the Alienware loopback
+> services were switched to committed 6b5132d in a separate directory; the
+> original dirty checkout remains untouched. The client now shows Alpha
+> Hunters READY, but no current-source match has started. See the log and
+> screenshots linked from [30-systems-resume.md](30-systems-resume.md).
 >
 > The local Alpha Hunters services are now enabled on loopback;
 > party-route and TLS-hub smoke checks pass. Server code includes navmesh

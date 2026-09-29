@@ -22,3 +22,14 @@ match result. The Alienware checkout was at 37e9d86 with uncommitted edits,
 behind this checkout's 9d8c5ac; the active runtime therefore is not acceptance
 of the current local source. No remote files were overwritten and no service
 was restarted during the live match.
+
+After that match had returned to the home screen, the managed loopback services
+were switched to committed source 6b5132d in a separate code directory
+(`/var/home/blizz/Projects/Crucible Revival Codex`) so the older dirty checkout
+remained untouched. Unit inspection confirmed the installed fire, bot-hit,
+movement/combat-animation and death metadata flags; all three services started
+from the new directory and bound only to 127.0.0.1. The client home screen then
+showed Alpha Hunters READY (`alienware-alpha-ready.png`). No gameplay packet
+followed the attempted Ready key, so current-source match acceptance remains
+pending. Further interaction was paused because the game window was not the
+foreground desktop window; no input was sent to other desktop applications.
