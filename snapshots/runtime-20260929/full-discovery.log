@@ -1,0 +1,82 @@
+Full offline discovery, 2026-09-29 UTC
+--- full-server-discovery (exit 1) ---
+command: ../.venv/bin/python -m unittest discover
+.............[2026-09-29T04:23:58.513]       BOOTSTRAP waiting for one fresh local hub identity
+..................................................................................................................EEE..................................../home/blizz/dev/Crucible Revival/tools/rebuild_pak.py:33: ResourceWarning: unclosed file <_io.BufferedReader name='/home/blizz/.local/share/Steam/steamapps/common/Crucible/NvGameSdk/levels/april2018/level.pak'>
+  d = open(pak_path, "rb").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+........................................................................................................[2026-09-29T04:24:10.061]       CLIENT RPC component=169 rpc=2 size=0
+..............................................................................
+======================================================================
+ERROR: test_character_class_values_match_the_executable_table (test_hero_loadout.InstalledAssetTests.test_character_class_values_match_the_executable_table)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/blizz/dev/Crucible Revival/server/test_hero_loadout.py", line 171, in test_character_class_values_match_the_executable_table
+    table = self.inspect.class_table()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blizz/dev/Crucible Revival/tools/inspect_hero_roster.py", line 134, in class_table
+    pe = pefile.PE(EXE)
+         ^^^^^^^^^^^^^^
+  File "/home/blizz/dev/Crucible Revival/.venv/lib/python3.12/site-packages/pefile.py", line 2941, in __init__
+    self.__parse__(name, data, fast_load)
+  File "/home/blizz/dev/Crucible Revival/.venv/lib/python3.12/site-packages/pefile.py", line 3021, in __parse__
+    stat = os.stat(fname)
+           ^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/blizz/.local/share/Steam/steamapps/common/Crucible/bin/Crucible.exe'
+
+======================================================================
+ERROR: test_selectable_slices_keep_marines_replicated_component_set (test_hero_loadout.InstalledAssetTests.test_selectable_slices_keep_marines_replicated_component_set)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/blizz/dev/Crucible Revival/server/test_hero_loadout.py", line 177, in test_selectable_slices_keep_marines_replicated_component_set
+    sets = self.inspect.character_components()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blizz/dev/Crucible Revival/tools/inspect_hero_roster.py", line 118, in character_components
+    for name, blob in sorted(entries(
+                             ^^^^^^^^
+  File "/home/blizz/dev/Crucible Revival/tools/inspect_hero_roster.py", line 54, in entries
+    for entry in pak.load(os.path.join(GAME, pak_name)):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blizz/dev/Crucible Revival/tools/pak.py", line 41, in load
+    _, _, entries = parse(pak_path)
+                    ^^^^^^^^^^^^^^^
+  File "/home/blizz/dev/Crucible Revival/tools/rebuild_pak.py", line 33, in parse
+    d = open(pak_path, "rb").read()
+        ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/blizz/.local/share/Steam/steamapps/common/Crucible/misc.pak'
+
+======================================================================
+ERROR: test_slice_hashes_match_every_shipped_level (test_hero_loadout.InstalledAssetTests.test_slice_hashes_match_every_shipped_level)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/blizz/dev/Crucible Revival/server/test_hero_loadout.py", line 164, in test_slice_hashes_match_every_shipped_level
+    found = self.inspect.slice_hashes(level)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blizz/dev/Crucible Revival/tools/inspect_hero_roster.py", line 92, in slice_hashes
+    xml = read('levels.pak',
+          ^^^^^^^^^^^^^^^^^^
+  File "/home/blizz/dev/Crucible Revival/tools/inspect_hero_roster.py", line 45, in read
+    for entry in pak.load(os.path.join(GAME, pak_name)):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blizz/dev/Crucible Revival/tools/pak.py", line 41, in load
+    _, _, entries = parse(pak_path)
+                    ^^^^^^^^^^^^^^^
+  File "/home/blizz/dev/Crucible Revival/tools/rebuild_pak.py", line 33, in parse
+    d = open(pak_path, "rb").read()
+        ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/blizz/.local/share/Steam/steamapps/common/Crucible/levels.pak'
+
+----------------------------------------------------------------------
+Ran 348 tests in 11.638s
+
+FAILED (errors=3)
+--- full-tool-discovery (exit 0) ---
+command: ../.venv/bin/python -m unittest discover
+/home/blizz/dev/Crucible Revival/tools/rebuild_pak.py:33: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpmoc1hvfo/fixture.pak'>
+  d = open(pak_path, "rb").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.030s
+
+OK

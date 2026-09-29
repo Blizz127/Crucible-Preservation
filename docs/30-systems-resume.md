@@ -195,6 +195,13 @@ the separation suite independently (5 tests), and the two inspector suites
 `snapshots/runtime-20260929/offline-tests.log`; only the existing unclosed-file
 `ResourceWarning` was emitted.
 
+Full discovery also ran **348 server tests**: 345 passed and three asset
+inspection tests errored because `Crucible.exe`, `misc.pak`, and `levels.pak`
+are absent at the configured install path. Full tools discovery passed all 9
+tests. A read-only search under `/home/blizz` found no complete retail install;
+the only game file found was April2018's `level.pak`. Exact output is in
+`snapshots/runtime-20260929/full-discovery.log`.
+
 There is still no Crucible client process or graphical display in this
 session, so visible death, respawn, fire, and animation behavior has not been
 accepted. No active DIT tendency file exists at the configured transport root;

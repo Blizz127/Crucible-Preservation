@@ -9,8 +9,12 @@
 > suite passed 182 server tests; the five-case separation suite and six
 > inspector tests also passed separately. **The latest death, firing,
 > animation, and respawn presentation has not been accepted in a live match.**
-> No game process or graphical feed is
-> available to this agent session. See [30-systems-resume.md](30-systems-resume.md)
+> Full server discovery ran 348 tests: 345 passed and three asset-inspection
+> tests errored because this host lacks `Crucible.exe`, `misc.pak`, and
+> `levels.pak`. Full tooling discovery passed all nine tests. A file search
+> found no complete retail install under `/home/blizz`; no game process or
+> graphical feed is available to this agent session. See
+> [30-systems-resume.md](30-systems-resume.md)
 > for service state and runtime evidence. DIT can tune patrol movement/pause
 > bouts only from active, approved non-provisional tendencies with Crucible
 > evidence; the transport currently has no tendency file. Multiplayer,
