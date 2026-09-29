@@ -20,6 +20,9 @@ SERVICES = {
                                   'CRUCIBLE_SOLO_AI': '1',
                                   'CRUCIBLE_SOLO_COMBAT': '1',
                                   'CRUCIBLE_SOLO_FIRE': '1',
+                                  # Damage from native client collision reports
+                                  # for the three local hunter projectiles.
+                                  'CRUCIBLE_SOLO_BOT_HIT_REPORTS': '1',
                                   'CRUCIBLE_SOLO_MOVEMENT_ANIMATION': '1',
                                   'CRUCIBLE_SOLO_COMBAT_ANIMATION': '1',
                                   # Source-backed death metadata probe: the

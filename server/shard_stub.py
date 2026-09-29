@@ -918,22 +918,32 @@ def start_solo_simulation(state):
 
 
 def observe_solo_combat(message, state):
-    """Route the player's ClientProjectileResult into authoritative combat."""
+    """Route accepted player and opt-in hunter projectile results to combat."""
     arena = state.get('combat')
-    if (arena is None
-            or (message.delivery, message.entity_id, message.component, message.rpc)
-                != (3, PLAYER_CHARACTER_ID, 115, 4)):
+    if arena is None or (message.delivery, message.component, message.rpc) != (3, 115, 4):
+        return
+    shooter = message.entity_id
+    if (shooter != PLAYER_CHARACTER_ID
+            and (os.environ.get('CRUCIBLE_SOLO_BOT_HIT_REPORTS') != '1'
+                 or shooter not in HUNTER_BOT_IDS)):
         return
     try:
         projectile, reported = parse_projectile_result(message.data)
     except ValueError:
         return
+    # game_clock_reply drives simulation in elapsed session seconds, truncated
+    # to milliseconds. Use that same domain for respawn and forced-aggro
+    # deadlines. Runtime startup always establishes clock_epoch; direct helper
+    # harnesses without a session clock inject their own simulation time.
     now = time.monotonic()
-    hit = arena.apply_reported_hit(PLAYER_CHARACTER_ID, projectile, reported, now=now)
+    if 'clock_epoch' in state:
+        now = int((now - state['clock_epoch']) * 1000) / 1000.
+    hit = arena.apply_reported_hit(shooter, projectile, reported, now=now)
     if hit is None:
         return
-    log('      SOLO COMBAT hit target=%08x damage=%.0f health=%.0f%s' %
-        (hit.target, hit.damage, hit.health, ' KILLED' if hit.killed else ''))
+    log('      SOLO COMBAT %s hit target=%08x damage=%.0f health=%.0f%s' %
+        ('player' if shooter == PLAYER_CHARACTER_ID else 'hunter %08x' % shooter,
+         hit.target, hit.damage, hit.health, ' KILLED' if hit.killed else ''))
     director = state.get('creatures')
     if director is not None:
         if hit.killed:

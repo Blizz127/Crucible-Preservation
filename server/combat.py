@@ -305,7 +305,7 @@ class Combat:
         """
         now = time.monotonic() if now is None else now
         attacker = self.entities.get(shooter)
-        if attacker is None:
+        if attacker is None or not attacker.alive:
             return None
         previous = self.last_projectile.get(shooter)
         if previous is not None and not 0 < (projectile_id - previous) % 256 < 128:
