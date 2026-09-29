@@ -24,9 +24,9 @@ transport, with no sync-down target. The hub must be restarted to load this
 host-default change; the local services installer must be rerun to apply the
 shard environment change. Neither was restarted by this implementation task.
 
-Hunter target selection and attacks remain in `server/hunter_ai.py`. An
-approved DIT pause-median input can adjust only patrol pauses, as described in
-`docs/34-dit-hunter-behavior.md`. The feed does not record combat choices or
+Hunter target selection and attacks remain in `server/hunter_ai.py`. Approved
+DIT movement and pause distributions can adjust only patrol cadence, as
+described in `docs/34-dit-hunter-behavior.md`. The feed does not record combat choices or
 prove that the bots behave like humans. Live ingestion and in-game presentation
 have not been verified because no Crucible client process is available in this
 environment.

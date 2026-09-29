@@ -5,19 +5,20 @@ Crucible transport is registered as both an import root and a sync-down target.
 The hub writes `knowledge/shared/human-tendencies.json` there on its scheduled
 sync-down run.
 
-`server/dit_motion_policy.py` looks for the field `pause-bout-seconds`
-tendency. It samples uniformly within the measured P25–P75 range for each
-Marine hunter's patrol leg only when the
+`server/dit_motion_policy.py` looks for the field `pause-bout-seconds` and
+`move-bout-seconds` tendencies. It samples uniformly within their measured
+P25–P75 ranges only when both have
 document is schema version 1, its approval is `active`, its evidence is no
-longer provisional, and `evidenceGames` includes `crucible`. The median must
-fall between 0.25 and 20 seconds. Candidates, provisional samples, malformed
+longer provisional, and `evidenceGames` includes `crucible`. Both ranges must
+be ordered within 0.25 and 20 seconds. Candidates, provisional samples, malformed
 documents and out-of-range values do not change bot behavior. The file is read
 once when a solo match starts, so the hub and shard do not need a live control
 connection.
 
-When active, a hunter waits at the end of each patrol leg for a deterministic
-per-bot sample from the approved human pause range, then continues its existing
-navmesh wander. Pursuit, attack
+When active, a hunter samples its moving and paused bout lengths independently
+from the approved ranges using its seeded per-bot random generator. Its patrol
+pauses when a movement bout expires, and resumes when a pause bout expires.
+Pursuit, attack
 timing, target selection, damage and retail movement-speed limits remain on
 the current authored simulation. The observation source pools field samples
 across games; requiring an active non-provisional tendency with Crucible in

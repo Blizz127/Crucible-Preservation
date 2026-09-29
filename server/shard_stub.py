@@ -910,13 +910,14 @@ def start_solo_simulation(state):
             state['squad'] = hunter_patrol.squad(
                 HUNTER_BOT_IDS[:len(profile.bot_positions)])
             import dit_motion_policy
-            pause_range = dit_motion_policy.approved_patrol_pause_range(
+            pause_range, move_range = dit_motion_policy.approved_patrol_motion_ranges(
                 os.environ.get('CRUCIBLE_DIT_TRANSPORT_ROOT'))
-            if pause_range is not None:
+            if pause_range is not None and move_range is not None:
                 for bot in state['squad'].bots:
                     bot.dit_patrol_pause_range = pause_range
-                log('      DIT approved human pause IQR %.2f..%.2f s applied to patrols'
-                    % pause_range)
+                    bot.dit_patrol_move_range = move_range
+                log('      DIT approved human patrol pause/move IQR %.2f..%.2f / %.2f..%.2f s'
+                    % (pause_range + move_range))
         placements = practice_population.creatures(profile.level)
         if placements:
             import creature_ai

@@ -171,7 +171,9 @@ class Bot:
     _planned_for: tuple = None
     _forward: bool = True
     dit_patrol_pause_range: tuple = ()
+    dit_patrol_move_range: tuple = ()
     _dit_patrol_pause_until: float = None
+    _dit_patrol_move_until: float = None
 
     def __post_init__(self):
         if len(self.route) < 2:
@@ -311,7 +313,26 @@ class Bot:
                     self.state = PATROL
                     self._patrol_plan()
             speed = self.tuning.patrol_speed
-            if self._dit_patrol_pause_until is not None:
+            if (self.state == PATROL and self.dit_patrol_pause_range
+                    and self.dit_patrol_move_range and self.rng is not None):
+                if self._dit_patrol_pause_until is not None:
+                    if now < self._dit_patrol_pause_until:
+                        speed = 0.0
+                    else:
+                        self._dit_patrol_pause_until = None
+                        low, high = self.dit_patrol_move_range
+                        self._dit_patrol_move_until = now + self.rng.uniform(low, high)
+                elif self._dit_patrol_move_until is None:
+                    low, high = self.dit_patrol_move_range
+                    self._dit_patrol_move_until = now + self.rng.uniform(low, high)
+                elif now >= self._dit_patrol_move_until:
+                    self._dit_patrol_move_until = None
+                    low, high = self.dit_patrol_pause_range
+                    self._dit_patrol_pause_until = now + self.rng.uniform(low, high)
+                    speed = 0.0
+            elif self.state != PATROL:
+                self._dit_patrol_pause_until = self._dit_patrol_move_until = None
+            elif self._dit_patrol_pause_until is not None:
                 if now < self._dit_patrol_pause_until:
                     speed = 0.0
                 else:
@@ -334,7 +355,8 @@ class Bot:
                 heading = direction
             if left > 0:
                 if self.state == PATROL:
-                    if self.dit_patrol_pause_range and self.rng is not None:
+                    if (self.dit_patrol_pause_range and self.rng is not None
+                            and not self.dit_patrol_move_range):
                         low, high = self.dit_patrol_pause_range
                         self._dit_patrol_pause_until = now + self.rng.uniform(low, high)
                     self._forward = self.wander or not self._forward

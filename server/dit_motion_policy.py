@@ -4,31 +4,35 @@ import math
 import pathlib
 
 
-TENDENCY_KEY = "motion/pause-bout-seconds/field"
+TENDENCY_KEYS = {
+    "pause": "motion/pause-bout-seconds/field",
+    "move": "motion/move-bout-seconds/field",
+}
 MIN_PAUSE_SECONDS = 0.25
 MAX_PAUSE_SECONDS = 20.0
 
 
-def approved_patrol_pause_range(root):
-    """Return a reviewed human pause interquartile range that includes Crucible.
+def approved_patrol_motion_ranges(root):
+    """Return reviewed human pause and move interquartile ranges.
 
     DIT candidates, provisional evidence, malformed files, and out-of-range
-    values leave the authored hunter behavior unchanged.
+    values leave the corresponding authored behavior unchanged.
     """
     if not root:
-        return None
+        return None, None
     path = pathlib.Path(root).expanduser() / "knowledge" / "shared" / "human-tendencies.json"
     try:
         document = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError):
-        return None
+        return None, None
     if not isinstance(document, dict):
-        return None
+        return None, None
     if document.get("schemaVersion") != 1 or document.get("source") != "dit-neuronetwork":
         return None
     items = document.get("tendencies")
     if not isinstance(items, list):
-        return None
+        return None, None
+    found = {}
     for item in items:
         if not isinstance(item, dict):
             continue
@@ -36,7 +40,9 @@ def approved_patrol_pause_range(root):
         if not isinstance(tendency, dict):
             continue
         evidence_games = tendency.get("evidenceGames")
-        if (item.get("key") != TENDENCY_KEY or item.get("approval") != "active"
+        behavior = next((name for name, key in TENDENCY_KEYS.items()
+                         if item.get("key") == key), None)
+        if (behavior is None or item.get("approval") != "active"
                 or tendency.get("provisional") is not False
                 or not isinstance(evidence_games, list)
                 or "crucible" not in evidence_games):
@@ -46,5 +52,5 @@ def approved_patrol_pause_range(root):
         if all(isinstance(value, (int, float)) and not isinstance(value, bool)
                and math.isfinite(value) for value in (low, median, high)):
             if (MIN_PAUSE_SECONDS <= low <= median <= high <= MAX_PAUSE_SECONDS):
-                return float(low), float(high)
-    return None
+                found[behavior] = (float(low), float(high))
+    return found.get("pause"), found.get("move")
