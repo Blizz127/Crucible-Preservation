@@ -1,13 +1,20 @@
 # State of play
 
-> **2026-09-19 current result:** solo Training Arena is playable for local
-> exploration. Ready enters the arena without another player; native Mendoza
-> spawn, camera/control assignment, and sustained movement were verified with
-> the user. A monotonic server clock fixes the input-offset saturation stall.
-> All 47 server tests pass. Installed services use the opt-in
-> `practice-character` shard mode. See [16-entity-bootstrap.md](16-entity-bootstrap.md)
-> for live captures and acceptance boundaries. Combat, AI, persistence,
-> multiplayer and authoritative server simulation remain unfinished.
+> **2026-09-29 current result:** solo Training Arena exploration and Alpha
+> Hunters entry with three visible Marine hunters were accepted in earlier
+> client runs. The local Alpha Hunters services are now enabled on loopback;
+> party-route and TLS-hub smoke checks pass. Server code includes navmesh
+> grounding/separation, authored rifle cadence, opt-in projectile/death and
+> animation replication, and team-elimination `GameOver`. A focused offline
+> suite passed 177 server tests; the five-case separation suite and six
+> inspector tests also passed separately. **The latest death, firing,
+> animation, and respawn presentation has not been accepted in a live match.**
+> No game process or graphical feed is
+> available to this agent session. See [30-systems-resume.md](30-systems-resume.md)
+> for service state and runtime evidence. DIT can tune patrol movement/pause
+> bouts only from active, approved non-provisional tendencies with Crucible
+> evidence; the transport currently has no tendency file. Multiplayer,
+> persistence and objectives remain unimplemented.
 >
 > The historical connection failures below are superseded by this result and
 > [15-shard-lz4.md](15-shard-lz4.md).
