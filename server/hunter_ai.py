@@ -170,6 +170,8 @@ class Bot:
     _planned_at: float = None
     _planned_for: tuple = None
     _forward: bool = True
+    dit_patrol_pause_range: tuple = ()
+    _dit_patrol_pause_until: float = None
 
     def __post_init__(self):
         if len(self.route) < 2:
@@ -309,6 +311,11 @@ class Bot:
                     self.state = PATROL
                     self._patrol_plan()
             speed = self.tuning.patrol_speed
+            if self._dit_patrol_pause_until is not None:
+                if now < self._dit_patrol_pause_until:
+                    speed = 0.0
+                else:
+                    self._dit_patrol_pause_until = None
         elif distance <= self.tuning.range_max:
             # In range, including closer than RangeMin: stand and face.
             self.state, heading = ATTACK, aim
@@ -327,6 +334,9 @@ class Bot:
                 heading = direction
             if left > 0:
                 if self.state == PATROL:
+                    if self.dit_patrol_pause_range and self.rng is not None:
+                        low, high = self.dit_patrol_pause_range
+                        self._dit_patrol_pause_until = now + self.rng.uniform(low, high)
                     self._forward = self.wander or not self._forward
                     self._patrol_plan()
                 elif self.state == RETURN:
