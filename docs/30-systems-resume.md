@@ -30,7 +30,11 @@ to `127.0.0.1`. The game home screen showed Alpha Hunters `READY`
 ([screenshot](../snapshots/runtime-20260929/alienware-alpha-ready.png)). No
 new GamePlay events followed the attempted Ready key. The Crucible window was
 not foreground, so input to unrelated desktop windows was avoided. A fresh
-current-source match and its presentation checks remain pending.
+current-source match and its presentation checks remain pending. The current
+backend party route returned 200 (159 bytes), the hub completed a TLS 1.3
+handshake with its IP certificate verified for `127.0.0.1`, and all three
+service listeners remained loopback-only. The DIT transport directory exists
+but contains no tendency file, so no DIT motion adjustments were active.
 
 Continues Claude's unfinished event-state investigation on
 `solo-ai-and-combat`, starting at `37e9d86`. The existing dirty work was

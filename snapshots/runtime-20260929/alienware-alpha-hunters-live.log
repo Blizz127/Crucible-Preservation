@@ -33,3 +33,9 @@ showed Alpha Hunters READY (`alienware-alpha-ready.png`). No gameplay packet
 followed the attempted Ready key, so current-source match acceptance remains
 pending. Further interaction was paused because the game window was not the
 foreground desktop window; no input was sent to other desktop applications.
+
+07:55 CDT current-source service smoke:
+GET /CrucibleLivePartyService/describeParty/local-party -> 200 OK (159 bytes)
+TLS hub 127.0.0.1:18877 -> TLS 1.3, certificate verified for IP 127.0.0.1
+Backend/hub/shard listeners remain loopback-only on 18876/TCP, 18877/TCP,
+18878/UDP. DIT transport root exists and has no tendency files.
