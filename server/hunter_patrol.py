@@ -49,6 +49,98 @@ def circuits():
     return tuple(result)
 
 
+# A grounded character's origin sits ON the navmesh, not above it. Measured
+# from the player's own replicated input positions during the 2026-09-21 23:08
+# April2018 run: 5,783 samples of (player Z - mesh surface Z) have their mode
+# at -0.03 m with 1,577 samples; the +0.49/+0.92/+1.15 m clusters are jumps.
+# So no standing offset is applied. The authored DropPoint transforms are NOT
+# usable as a standing reference - they are drop pods, and one of the three
+# sits 0.5 m below the walkable surface.
+STANDING_HEIGHT_OFFSET = 0.0
+
+# NavigationParams/RepulsionMarginMin on ai/guide_dummies/marine_guide_dummy.ai
+# (ObjectStream element 0x8fb). Bots that share a target otherwise converge
+# into one body - observed live as three hunters standing inside each other.
+SEPARATION = 2.0
+# TargetApproachParams/StopDesiredDistance (0x9f6); StopAllowedDistance is 3.0.
+STOP_DISTANCE = 1.8
+
+
+def ground(position, mesh=None, *, tolerance=3.0):
+    """Re-project a position onto the navmesh surface at its own X/Y.
+
+    `hunter_ai.advance` walks in straight lines between waypoints, which can
+    pass below a convex surface. Projection corrects the height when a nearby
+    surface exists; it does not validate the path or perform wall collision.
+
+    Falls back to the input when the point is off-mesh (a jump target, or a
+    gap), because forcing a height there would be worse than leaving it.
+    """
+    mesh = navigation.installed_mesh() if mesh is None else mesh
+    located = mesh.locate(position, vertical_tolerance=tolerance)
+    if located is None:
+        return position
+    return (position[0], position[1], located[1][2] + STANDING_HEIGHT_OFFSET)
+
+
+def separate(positions, *, distance=SEPARATION, passes=32, mesh=None):
+    """Push overlapping bots apart, projecting proposed positions to walkable ground.
+
+    Retail does this with a constraint solver and repulsion margins; this is a
+    bounded relaxation over the same authored margin, within 1e-7 metres for
+    the three-bot squad when space permits. Additional passes resolve contacts
+    disturbed by later pairs. With a mesh, each proposal is projected onto a
+    nearby walkable triangle. This still cannot guarantee clearance from walls
+    or resolve a crowded point with no nearby walkable space.
+    """
+    result = [list(p) for p in positions]
+
+    def projected(candidate):
+        if mesh is None:
+            return candidate
+        located = mesh.locate(candidate, vertical_tolerance=3.0)
+        return None if located is None else list(located[1])
+
+    for _ in range(passes):
+        moved = False
+        for i in range(len(result)):
+            for j in range(i + 1, len(result)):
+                a, b = result[i], result[j]
+                dx, dy = b[0] - a[0], b[1] - a[1]
+                span = math.hypot(dx, dy)
+                if span >= distance - 1e-7:
+                    continue
+                if span == 0.:
+                    # Choose a deterministic direction without inventing a
+                    # distance: coincident bots need the entire margin.
+                    ux, uy = 1., 0.
+                else:
+                    ux, uy = dx / span, dy / span
+                push = (distance - span) / 2.0
+                candidate_a = projected([a[0] - ux * push, a[1] - uy * push, a[2]])
+                candidate_b = projected([b[0] + ux * push, b[1] + uy * push, b[2]])
+                if candidate_a is not None and candidate_b is not None:
+                    a[:], b[:] = candidate_a, candidate_b
+                elif candidate_a is not None:
+                    candidate_a = projected(
+                        [a[0] - ux * 2.0 * push, a[1] - uy * 2.0 * push, a[2]])
+                    if candidate_a is None:
+                        continue
+                    a[:] = candidate_a
+                elif candidate_b is not None:
+                    candidate_b = projected(
+                        [b[0] + ux * 2.0 * push, b[1] + uy * 2.0 * push, b[2]])
+                    if candidate_b is None:
+                        continue
+                    b[:] = candidate_b
+                else:
+                    continue
+                moved = True
+        if not moved:
+            break
+    return [tuple(p) for p in result]
+
+
 def squad(entities=(0x01000003, 0x01000004, 0x01000005), tuning=None, mesh=None):
     """Build the three Alpha Hunters bots on their authored circuits."""
     tuning = tuning or hunter_ai.MARINE

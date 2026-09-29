@@ -10,6 +10,82 @@ import shard_stub as shard
 STUB_ROUTE = ((0., 0., 0.), (3., 0., 0.))
 
 
+class HunterSeparationTests(unittest.TestCase):
+    def assert_margin(self, positions, distance=2.):
+        for index, point in enumerate(positions):
+            self.assertTrue(all(math.isfinite(value) for value in point))
+            for other in positions[index + 1:]:
+                self.assertGreaterEqual(math.dist(point[:2], other[:2]),
+                                        distance - 1e-6)
+
+    def test_coincident_pair_resolves_in_one_pass(self):
+        points = [(10., 10., 1.), (10., 10., 2.)]
+        separated = hunter_patrol.separate(points, passes=1)
+        self.assert_margin(separated)
+        self.assertEqual([point[2] for point in separated], [1., 2.])
+        self.assertEqual(points, [(10., 10., 1.), (10., 10., 2.)])
+
+    def test_three_bots_reach_the_full_authored_margin(self):
+        cases = (
+            [(10., 10., 1.)] * 3,
+            [(0., 0., 0.), (1., 0., 0.), (2., 0., 0.)],
+            [(0., 0., 0.), (.2, .3, 0.), (.4, -.1, 0.)],
+        )
+        for points in cases:
+            with self.subTest(points=points):
+                separated = hunter_patrol.separate(points)
+                self.assert_margin(separated)
+                self.assertEqual(separated, hunter_patrol.separate(points))
+                for axis in (0, 1):
+                    self.assertAlmostEqual(sum(p[axis] for p in separated),
+                                           sum(p[axis] for p in points))
+
+    def test_near_coincident_pair_keeps_its_existing_direction(self):
+        points = [(0., 0., 0.), (-1e-8, 0., 0.)]
+        separated = hunter_patrol.separate(points, passes=1)
+        self.assert_margin(separated)
+        self.assertGreater(separated[0][0], separated[1][0])
+
+    def test_mesh_projection_preserves_walkable_positions(self):
+        mesh = navigation.Mesh({
+            0: ((-5., -5., 0.), (5., -5., 0.), (5., 5., 0.)),
+            1: ((-5., -5., 0.), (5., 5., 0.), (-5., 5., 0.)),
+        }, {})
+        separated = hunter_patrol.separate(
+            [(0., 0., 0.), (.25, 0., 0.)], mesh=mesh)
+        self.assert_margin(separated)
+        self.assertTrue(all(mesh.locate(point) is not None for point in separated))
+
+    def test_one_sided_push_resolves_when_only_one_side_has_walkable_space(self):
+        mesh = navigation.Mesh({
+            0: ((0., 0., 0.), (5., 0., 0.), (5., 5., 0.)),
+            1: ((0., 0., 0.), (5., 5., 0.), (0., 5., 0.)),
+        }, {})
+        separated = hunter_patrol.separate(
+            [(.1, .2, 0.), (.3, .2, 0.)], mesh=mesh)
+        self.assert_margin(separated)
+        self.assertTrue(all(mesh.locate(point) is not None for point in separated))
+
+
+class HunterGroundingTests(unittest.TestCase):
+    def test_grounding_follows_the_surface_between_convex_waypoints(self):
+        # A ridge at x=1 lies above the straight path joining x=0 and x=2.
+        mesh = navigation.Mesh({
+            0: ((0., 0., 0.), (1., 0., 1.), (1., 1., 1.)),
+            1: ((1., 0., 1.), (2., 0., 0.), (1., 1., 1.)),
+        }, {})
+        for x in (.25, .75, 1., 1.25, 1.75):
+            point = (x, .1, 0.)
+            grounded = hunter_patrol.ground(point, mesh)
+            self.assertEqual(grounded[:2], point[:2])
+            self.assertAlmostEqual(grounded[2], 1. - abs(1. - x))
+
+    def test_grounding_does_not_bridge_gaps_or_large_vertical_differences(self):
+        mesh = navigation.Mesh({0: ((0., 0., 0.), (2., 0., 0.), (0., 2., 0.))}, {})
+        for point in ((3., 3., 0.), (.5, .5, 4.)):
+            self.assertEqual(hunter_patrol.ground(point, mesh), point)
+
+
 class HunterPatrolTests(unittest.TestCase):
     @patch('hunter_patrol.routes', return_value=(STUB_ROUTE,) * 3)
     def test_native_update_preserves_spawn_property_mask_and_faces_motion(self, _routes):
