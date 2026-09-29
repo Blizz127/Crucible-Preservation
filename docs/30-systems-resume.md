@@ -179,7 +179,8 @@ run from the repository `.venv`. Backend, hub, and shard are active; TCP
 navigation mesh in 4.69 seconds and is waiting for client packets. The managed
 shard unit enables Alpha Hunters, bot AI/combat, Marine fire, movement/combat
 animation, the explicit death metadata probe, hunter hit reports, and the DIT
-transport root. Exact service and socket evidence is in
+transport root. A read-only party descriptor returned HTTP 200 and the hub
+completed a local TLS 1.3 handshake. Exact service, socket, and smoke evidence is in
 `snapshots/runtime-20260929/local-services.txt`.
 
 There is still no Crucible client process or graphical display in this
