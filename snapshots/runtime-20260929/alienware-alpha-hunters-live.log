@@ -39,3 +39,13 @@ GET /CrucibleLivePartyService/describeParty/local-party -> 200 OK (159 bytes)
 TLS hub 127.0.0.1:18877 -> TLS 1.3, certificate verified for IP 127.0.0.1
 Backend/hub/shard listeners remain loopback-only on 18876/TCP, 18877/TCP,
 18878/UDP. DIT transport root exists and has no tendency files.
+
+08:00 CDT current-source focused server suite (run from the staged Alienware
+server/ directory): test_combat, test_dit_motion_policy, test_hunter_ai,
+test_hunter_patrol, test_solo_simulation, test_death_events,
+test_animation_events, test_projectile_events, test_solo_death_events,
+test_solo_lifecycle, test_solo_clock, test_hunter_animation,
+test_hunter_fire, test_hunter_combat_animation, test_hunter_replication.
+Result: 182 tests, 0.803 s, OK. Python emitted one ResourceWarning from
+rebuild_pak.py's open read of the installed partial april2018 level.pak; no
+asset files were modified.
