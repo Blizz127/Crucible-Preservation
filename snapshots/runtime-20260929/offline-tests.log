@@ -1,0 +1,28 @@
+Offline verification run, 2026-09-29 UTC
+--- focused-server-suite (exit 0) ---
+command: ../.venv/bin/python -m unittest test_combat test_hunter_ai test_hunter_patrol test_solo_simulation test_death_events test_animation_events test_projectile_events test_solo_death_events test_solo_lifecycle test_solo_clock test_hunter_animation test_hunter_fire test_hunter_combat_animation test_hunter_replication
+................................................./home/blizz/dev/Crucible Revival/tools/rebuild_pak.py:33: ResourceWarning: unclosed file <_io.BufferedReader name='/home/blizz/.local/share/Steam/steamapps/common/Crucible/NvGameSdk/levels/april2018/level.pak'>
+  d = open(pak_path, "rb").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+..................................................................................................................................
+----------------------------------------------------------------------
+Ran 179 tests in 5.329s
+
+OK
+--- separation-suite (exit 0) ---
+command: ../.venv/bin/python -m unittest test_hunter_patrol.HunterSeparationTests
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.001s
+
+OK
+--- inspector-suite (exit 0) ---
+command: ../.venv/bin/python -m unittest test_inspect_anim_graph test_inspect_fire_bakednames
+/home/blizz/dev/Crucible Revival/tools/rebuild_pak.py:33: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpx_ysl1ea/fixture.pak'>
+  d = open(pak_path, "rb").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.015s
+
+OK
