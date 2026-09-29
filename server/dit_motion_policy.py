@@ -7,21 +7,22 @@ MIN_PAUSE_SECONDS = 0.25
 MAX_PAUSE_SECONDS = 20.0
 
 
-def approved_patrol_pause_range(path, *, source, game, tendency_key):
+def approved_patrol_motion_ranges(path, *, source, game, tendency_keys):
     if not path:
-        return None
+        return None, None
     path = pathlib.Path(path).expanduser()
     try:
         document = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError):
-        return None
+        return None, None
     if not isinstance(document, dict):
-        return None
+        return None, None
     if document.get("schemaVersion") != 1 or document.get("source") != source:
         return None
     items = document.get("tendencies")
     if not isinstance(items, list):
-        return None
+        return None, None
+    found = {}
     for item in items:
         if not isinstance(item, dict):
             continue
@@ -29,7 +30,9 @@ def approved_patrol_pause_range(path, *, source, game, tendency_key):
         if not isinstance(tendency, dict):
             continue
         evidence_games = tendency.get("evidenceGames")
-        if (item.get("key") != tendency_key or item.get("approval") != "active"
+        behavior = next((name for name, key in tendency_keys.items()
+                         if item.get("key") == key), None)
+        if (behavior is None or item.get("approval") != "active"
                 or tendency.get("provisional") is not False
                 or not isinstance(evidence_games, list)
                 or game not in evidence_games):
@@ -39,5 +42,5 @@ def approved_patrol_pause_range(path, *, source, game, tendency_key):
         if all(isinstance(value, (int, float)) and not isinstance(value, bool)
                and math.isfinite(value) for value in (low, median, high)):
             if (MIN_PAUSE_SECONDS <= low <= median <= high <= MAX_PAUSE_SECONDS):
-                return float(low), float(high)
-    return None
+                found[behavior] = (float(low), float(high))
+    return found.get("pause"), found.get("move")
