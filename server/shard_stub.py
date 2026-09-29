@@ -942,6 +942,11 @@ def solo_simulation_messages(state, now, *, previous_id=0):
     if squad is not None:
         updates, steps = build_hunter_ai_updates(squad, now, player, previous_id=previous_id)
         messages.extend(updates)
+        from dit_motion import transport_for_state
+        transport = transport_for_state(state)
+        if transport is not None:
+            for index, step in enumerate(steps, 1):
+                transport.observe(('bot', 'marine-hunter-%d' % index), step.position, now)
         if updates:
             previous_id = HUNTER_BOT_IDS[len(updates) - 1] & 0xffffff
         for step in steps:
@@ -1155,6 +1160,10 @@ def observe_client_input(message, state):
         state['input_unknown_shape'] = state.get('input_unknown_shape', 0) + 1
         return
     state['player_position'] = position
+    from dit_motion import transport_for_state
+    transport = transport_for_state(state)
+    if transport is not None:
+        transport.observe(('human', 'local-player'), position)
     if not state.get('player_position_logged'):
         state['player_position_logged'] = True
         log('      CLIENT INPUT decoded: player at (%.2f, %.2f, %.2f)' % position)
