@@ -6,7 +6,7 @@
 > party-route and TLS-hub smoke checks pass. Server code includes navmesh
 > grounding/separation, authored rifle cadence, opt-in projectile/death and
 > animation replication, and team-elimination `GameOver`. A focused offline
-> suite passed 179 server tests; the five-case separation suite and six
+> suite passed 182 server tests; the five-case separation suite and six
 > inspector tests also passed separately. **The latest death, firing,
 > animation, and respawn presentation has not been accepted in a live match.**
 > No game process or graphical feed is

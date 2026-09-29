@@ -188,7 +188,7 @@ targets whose root directory does not exist. This lets DIT publish an approved
 tendency before the first 60-second motion flush. The root exists now, but no
 shared tendency document or DIT hub service is present on this host.
 
-Fresh offline verification on 29 September passed **179 focused server tests**,
+Fresh offline verification on 29 September passed **182 focused server tests**,
 the separation suite independently (5 tests), and the two inspector suites
 (6 tests). Full command output is in
 `snapshots/runtime-20260929/offline-tests.log`; only the existing unclosed-file
