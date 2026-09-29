@@ -143,6 +143,26 @@ Note that index 0 and index 2 reference the **same** config asset
 (`singlesunranked.gamemodeconfig`), so SOLO_CASUAL and SOLO_BOTS differ on
 the wire only by the index.
 
+### Alpha Hunters' retail match target
+
+Amazon's launch description defines Alpha Hunters as **eight teams of two**
+fighting to be the final team standing ([Amazon Games launch announcement](https://press.aboutamazon.com/2020/5/hunt-level-adapt-amazon-games-launches-crucible)).
+The shipped `DOUBLES_CASUAL` profile has `enable_respawn = False`,
+`CanFormDynamicAlliancesAfterPartnerDies`, and `TransferOwnershipOfOwnableInteractablesOnPlayerDeath` (see the profile in
+`server/solo_modes.py`). Its score and match-point thresholds are both zero;
+the intended terminal condition is therefore team elimination, not a target
+score. This gives visible death and removal from play a concrete role in the
+match state.
+
+The accepted local April2018 entry is currently a **four-entity test
+population**: one player and three Marine hunters. It does not form eight
+duos, apply dynamic alliances or partner ownership transfer, track the last
+living team, or send a terminal match result. It is useful for combat and
+presentation work, but it is not yet a complete Alpha Hunters match. The
+requested solo respawn behavior is tracked separately from the retail profile
+until its intended role is settled; respawn cannot silently stand in for
+retail team elimination.
+
 ### MatchPhaseType is now a known enum
 
 Retail name-pointer table at `.rdata` 0x65bc9c0, strings in the block
