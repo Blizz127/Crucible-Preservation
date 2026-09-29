@@ -1,5 +1,26 @@
 # Systems continuation, 22 September 2026
 
+## Alienware live run, 29 September
+
+The owner authorized use of the Alienware retail client. Steam build 5685572
+launched through the home screen into Alpha Hunters on April2018. Its loopback
+backend, hub and shard were already active. At 07:21 CDT the shard logged
+three Marine hunters, decoded player input, transitioned each hunter to
+`attack`, and logged primary fire against player entity `01000002` at 6.2,
+14.1 and 23.7 m. The client HUD showed `REMAINING 4` and 800/800 health. A
+later screenshot still showed 4 remaining and 800/800, with no Marine in that
+camera view. The excerpt and screenshot are
+[`alienware-alpha-hunters-live.log`](../snapshots/runtime-20260929/alienware-alpha-hunters-live.log)
+and [`alienware-alpha-hunters-live.png`](../snapshots/runtime-20260929/alienware-alpha-hunters-live.png).
+
+This confirms retail-client entry, input, and server-side AI/fire decisions.
+It does **not** confirm visible Marine models, replicated projectile effects,
+death, respawn or win/loss presentation. The Alienware checkout was at
+`37e9d86` with uncommitted edits; this checkout was at `9d8c5ac`. No remote
+files were overwritten, and no service was restarted during the active run.
+Before the next acceptance run, preserve and reconcile the Alienware edits,
+then start a clean match with the current death/fire/animation settings.
+
 Continues Claude's unfinished event-state investigation on
 `solo-ai-and-combat`, starting at `37e9d86`. The existing dirty work was
 preserved. The resumed Claude processes were idle before edits began.

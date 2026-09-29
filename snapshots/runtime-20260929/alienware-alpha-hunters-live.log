@@ -1,0 +1,24 @@
+Alienware live run — 2026-09-29, 07:21–07:29 CDT
+Host: alienware-bazzite
+Retail: Steam AppID 1057240, build 5685572
+Mode/map: Alpha Hunters / April2018, client reached GamePlay; HUD showed REMAINING 4.
+Services: backend, hub, shard active on Alienware loopback (127.0.0.1:18876–18878).
+
+Selected shard journal evidence:
+[2026-09-29T07:21:32.814] SOLO POPULATION PROBE: three Marine hunters
+[2026-09-29T07:21:32.886] CLIENT INPUT decoded: player at (1312.71, 1271.16, 23.66)
+[2026-09-29T07:21:32.929] HUNTER AI 01000003 -> attack
+[2026-09-29T07:21:32.929] HUNTER AI 01000004 -> attack
+[2026-09-29T07:21:32.929] HUNTER AI 01000005 -> attack
+[2026-09-29T07:21:33.235] HUNTER AI 01000003 fired at 01000002 (range 14.1 m)
+[2026-09-29T07:21:33.235] HUNTER AI 01000004 fired at 01000002 (range 6.2 m)
+[2026-09-29T07:21:33.235] HUNTER AI 01000005 fired at 01000002 (range 23.7 m)
+
+A later client frame (alienware-alpha-hunters-live.png) showed the live scene and
+HUD at 800/800 health, REMAINING 4. No Marine model was in that camera view.
+This run proves session entry and server AI/firing decisions only; it does not
+prove replicated projectile visuals, visible hunters, death, respawn, or a
+match result. The Alienware checkout was at 37e9d86 with uncommitted edits,
+behind this checkout's 9d8c5ac; the active runtime therefore is not acceptance
+of the current local source. No remote files were overwritten and no service
+was restarted during the live match.

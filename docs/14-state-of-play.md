@@ -2,7 +2,17 @@
 
 > **2026-09-29 current result:** solo Training Arena exploration and Alpha
 > Hunters entry with three visible Marine hunters were accepted in earlier
-> client runs. The local Alpha Hunters services are now enabled on loopback;
+> client runs. A new live run on Alienware reached Alpha Hunters GamePlay
+> (build 5685572): its shard logged three Marine hunters, decoded player input,
+> and logged attack/fire decisions against the player. The HUD remained at
+> 800/800 health and REMAINING 4. The captured view showed no Marine model;
+> visible projectile, death, respawn and match result were not confirmed. This
+> run used an Alienware checkout at 37e9d86 with uncommitted edits, behind this
+> checkout's 9d8c5ac, so it is operational evidence rather than acceptance of
+> current source. See the log and screenshot linked from
+> [30-systems-resume.md](30-systems-resume.md).
+>
+> The local Alpha Hunters services are now enabled on loopback;
 > party-route and TLS-hub smoke checks pass. Server code includes navmesh
 > grounding/separation, authored rifle cadence, opt-in projectile/death and
 > animation replication, and team-elimination `GameOver`. A focused offline
