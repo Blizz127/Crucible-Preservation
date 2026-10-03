@@ -16,8 +16,11 @@ offset and the asset's sha256. `tools/inspect_creature_cdl.py` builds on it and
 prints a `.cdl` gameplay script as a node graph: enter/exit trigger events, the
 node list with hidden-literal values resolved, designer comments, and the slot
 connections that give execution order. Neither tool writes or launches
-anything. Their output for this trace is in
-`snapshots/creature-ai-20260921/`.
+anything. Their full output for this trace (decoded `.ai` asset dumps and
+`.cdl` script graphs) is verbatim retail content, so it is kept out of the
+repository; the findings are summarised below, and only the string census
+(`level-creature-census.json`) is in `snapshots/creature-ai-20260921/`.
+Re-run the two tools against your own install to regenerate the rest.
 
 The CRC dictionary is exact, not guessed: `crc32("sensingradius")` resolves to
 the single string `SensingRadius` in `Crucible.exe`, and the same lookup

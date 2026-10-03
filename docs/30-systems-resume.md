@@ -16,12 +16,12 @@ and [`alienware-alpha-hunters-live.png`](../snapshots/runtime-20260929/alienware
 This confirms retail-client entry, input, and server-side AI/fire decisions.
 It does **not** confirm visible Marine models, replicated projectile effects,
 death, respawn or win/loss presentation. The Alienware checkout was at
-`37e9d86` with uncommitted edits; this checkout was at `9d8c5ac`. No remote
+`d859ca3` with uncommitted edits; this checkout was at `36ac71d`. No remote
 files were overwritten, and no service was restarted during the active run.
 The old worktree remains preserved. A fresh current-source match and its
 presentation checks remain pending.
 
-After the match returned to the home screen, committed source `6b5132d` was
+After the match returned to the home screen, committed source `eb4f9b9` was
 installed into a separate Alienware code directory, preserving its older dirty
 checkout. The managed backend, hub and shard units now start from that tree;
 the shard enables bot-hit reports, the explicit death metadata probe, fire,
@@ -41,7 +41,7 @@ motion policy. One `ResourceWarning` came from `rebuild_pak.py` reading the
 installed partial April2018 `level.pak`; no game assets were modified.
 
 Continues Claude's unfinished event-state investigation on
-`solo-ai-and-combat`, starting at `37e9d86`. The existing dirty work was
+`solo-ai-and-combat`, starting at `d859ca3`. The existing dirty work was
 preserved. The resumed Claude processes were idle before edits began.
 No game executable or pak was patched, and no commit or push was made.
 

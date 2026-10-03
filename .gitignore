@@ -19,3 +19,12 @@ server/.shard-probe-counter
 
 # Pak rebuild scratch
 *.pak.new
+
+# Decoded retail content — asset dumps, cdl script graphs, disassembly
+# listings — is verbatim game data and must not be committed (README, "Scope
+# and legal"). Regenerate locally with tools/inspect_creature_ai.py and
+# tools/inspect_creature_cdl.py.
+*.ai.flat.txt
+*.cdl.txt
+*.flat.txt
+*.asm

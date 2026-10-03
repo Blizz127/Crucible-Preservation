@@ -7,10 +7,10 @@
 > and logged attack/fire decisions against the player. The HUD remained at
 > 800/800 health and REMAINING 4. The captured view showed no Marine model;
 > visible projectile, death, respawn and match result were not confirmed. This
-> run used an Alienware checkout at 37e9d86 with uncommitted edits, behind this
-> checkout's 9d8c5ac, so it is operational evidence rather than acceptance of
+> run used an Alienware checkout at d859ca3 with uncommitted edits, behind this
+> checkout's 36ac71d, so it is operational evidence rather than acceptance of
 > current source. After that match returned home, the Alienware loopback
-> services were switched to committed 6b5132d in a separate directory; the
+> services were switched to committed eb4f9b9 in a separate directory; the
 > original dirty checkout remains untouched. The client now shows Alpha
 > Hunters READY, but no current-source match has started. See the log and
 > screenshots linked from [30-systems-resume.md](30-systems-resume.md).
