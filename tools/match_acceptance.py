@@ -64,6 +64,10 @@ CLIENT_TIME = re.compile(r'^\[(\d\d)-(\d\d)-(\d{4}):(\d\d):(\d\d):(\d\d)\.(\d+)-
 UI_PHASES = re.compile(r'"match":\{"phases":(\{[^}]*\})')
 ASSERT = re.compile(r'NV_\w*ASSERT')
 MULTI_HIT = "There wasn't only one fixup hit"
+# HybridProjectileSystemClient drops a bad activation with a log line, e.g.
+# ValidateNetData "Network data validation failure" (docs/29 5b).
+ACTIVATION_REFUSED = re.compile(r'HybridProjectileSystemClient::\w+: .*'
+                                r'(validation failure|missing|[Cc]ould not)')
 
 
 def shard_facts(lines):
@@ -123,7 +127,8 @@ def client_time(line):
 
 def client_facts(lines):
     facts = {'connected': None, 'disconnecting': None, 'match_exit': False,
-             'phases': [], 'asserts': 0, 'multi_hit': 0, 'last': None}
+             'phases': [], 'asserts': 0, 'multi_hit': 0, 'refused_activations': 0,
+             'last': None}
     for line in lines:
         when = client_time(line)
         if when is not None:
@@ -141,6 +146,8 @@ def client_facts(lines):
             facts['asserts'] += 1
         if MULTI_HIT in line:
             facts['multi_hit'] += 1
+        if ACTIVATION_REFUSED.search(line):
+            facts['refused_activations'] += 1
     return facts
 
 
@@ -169,8 +176,12 @@ def score(shard, client):
     rows.append(('A2 bots move', 'LOGS-OK' if states else 'FAIL',
                  'states %s for %d hunters; eyes: visible, animated, grounded, apart'
                  % ('/'.join(states) or 'none', len(shard['states']))))
-    rows.append(('A3 bots fire', 'LOGS-OK' if shard['fire'] else 'FAIL',
-                 '%d fire decisions; eyes: shot animation and projectile' % shard['fire']))
+    refused_fire = client['refused_activations'] if client is not None else 0
+    fire_ok = shard['fire'] and not refused_fire
+    rows.append(('A3 bots fire', 'LOGS-OK' if fire_ok else 'FAIL',
+                 '%d fire decisions%s; eyes: shot animation and projectile' % (
+                     shard['fire'], '; client refused %d activations' % refused_fire
+                     if refused_fire else '')))
 
     on_player = [h for h in shard['hits'] if h['shooter'] != PLAYER and h['target'] == PLAYER]
     if on_player:

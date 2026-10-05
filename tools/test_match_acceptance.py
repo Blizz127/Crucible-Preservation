@@ -50,6 +50,13 @@ class MatchAcceptanceTests(unittest.TestCase):
         self.assertEqual(rows[3][1], 'FAIL')
         self.assertIn('01000004 no live enemy >=4', rows[3][2])
 
+    def test_client_refused_activations_fail_bot_fire(self):
+        client = CLIENT + [C % 4 + 'HybridProjectileSystemClient::ValidateNetData: Entity id '
+                           '(16777219), name (x) -> Network data validation failure. ...']
+        rows = score(shard_facts(SHARD), client_facts(client))
+        self.assertEqual(rows[2][1], 'FAIL')
+        self.assertIn('client refused 1 activations', rows[2][2])
+
     def test_shard_start_inside_the_connected_window_fails_stability(self):
         shard = SHARD + [J % (5, 5) + 'listening on 127.0.0.1:18878 (UDP, log: x)']
         rows = score(shard_facts(shard), client_facts(CLIENT))
