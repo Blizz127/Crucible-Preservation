@@ -110,6 +110,10 @@ repository's original work, not any third-party game content.
   behaviour and per-map population (`docs/22`).
 - `server/solo_modes.py` — solo map/mode profiles (`docs/23`).
 - `tools/install_test_ca.py` — trust the stubs' test certs in the Proton prefix.
+- `tools/preflight_local_services.sh` — read-only check of the managed
+  services, loopback endpoints and expected hunter before a live match.
+- `tools/match_acceptance.py` — score a live Alpha Hunters match (A1–A7)
+  from the shard journal and client log; visual checks stay with the player.
 - `tools/scan_endpoints.sh` — re-runnable endpoint/credential scan.
 - `tools/pak.py` — list / extract entries from a `.pak` (read-only).
 - `tools/rebuild_pak.py` — replace pak entries without disturbing the rest.
