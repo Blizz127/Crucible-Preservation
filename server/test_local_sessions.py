@@ -1,4 +1,5 @@
 import tempfile
+import time
 import unittest
 import os
 from unittest.mock import patch
@@ -34,6 +35,34 @@ class LocalSessionTests(unittest.TestCase):
             self.assertEqual(sessions.lookup(directory, '127.0.0.1'), 123)
             # A heartbeat cannot change the identity established by Connect.
             hub.hubrpc_reply(hub.build_hub(8, 3, (456).to_bytes(4, 'big')), state)
+            self.assertIsNone(sessions.lookup(directory, '127.0.0.1'))
+
+    @patch.object(hub, 'log')
+    def test_rejoin_with_user_zero_reuses_the_peers_last_identity(self, log):
+        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {
+                'CRUCIBLE_LOCAL_SESSIONS': directory,
+                'CRUCIBLE_HUB_SHARDADDR': 'reply'}), patch.dict(hub.REJOIN_USERS, clear=True):
+            first = {'key': 'first', 'peer': '127.0.0.1'}
+            hub.hubrpc_reply(hub.build_hub(5, 1, (123).to_bytes(4, 'big') + b'\0'), first)
+            hub.hubrpc_reply(hub.build_hub(11, 2, b''), first)
+            hub.finish_local_session(first)
+            self.assertEqual(sessions.claim(directory, '127.0.0.1'), 123)
+            # Retail rejoin: Connect and Heartbeat both carry user 0.
+            rejoin = {'key': 'rejoin', 'peer': '127.0.0.1'}
+            hub.hubrpc_reply(hub.build_hub(5, 6, bytes(5)), rejoin)
+            hub.hubrpc_reply(hub.build_hub(8, 7, bytes(4)), rejoin)
+            hub.hubrpc_reply(hub.build_hub(11, 8, b''), rejoin)
+            self.assertEqual(sessions.claim(directory, '127.0.0.1'), 123)
+            self.assertIn('reusing 123', log.call_args.args[0])
+
+    def test_rejoin_without_a_recent_identity_publishes_nothing(self):
+        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {
+                'CRUCIBLE_LOCAL_SESSIONS': directory,
+                'CRUCIBLE_HUB_SHARDADDR': 'reply'}), patch.dict(hub.REJOIN_USERS, clear=True):
+            hub.REJOIN_USERS['127.0.0.1'] = (123, time.time() - hub.REJOIN_WINDOW_SECONDS - 1)
+            rejoin = {'key': 'rejoin', 'peer': '127.0.0.1'}
+            hub.hubrpc_reply(hub.build_hub(5, 1, bytes(5)), rejoin)
+            hub.hubrpc_reply(hub.build_hub(11, 2, b''), rejoin)
             self.assertIsNone(sessions.lookup(directory, '127.0.0.1'))
 
     def test_fresh_unique_identity_and_cleanup(self):

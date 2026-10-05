@@ -429,6 +429,16 @@ def shard_probe_index():
     return i
 
 
+# The last nonzero user id each loopback peer connected with, in this hub
+# process. Retail's rejoin path sends user 0 in Connect and Heartbeat even
+# while the client stays logged in (live 2026-10-05 13:26:56). The shard then
+# never received an identity, and the client looped on "GameModeComponent was
+# not ready yet". A restarted client is not logged in at all (NovaNetUserId
+# 0); that case is stopped client-side by crucible_WriteRejoinDataToFile 0.
+REJOIN_USERS = {}
+REJOIN_WINDOW_SECONDS = 1800
+
+
 def track_local_session(parsed, session):
     directory = os.environ.get('CRUCIBLE_LOCAL_SESSIONS')
     if not directory or session is None:
@@ -437,9 +447,19 @@ def track_local_session(parsed, session):
     if msg_id == HUB_CONNECT_REQ:
         local_sessions.remove(directory, session['key'])
         session['advertised'] = False
-        session['user_id'] = int.from_bytes(payload[:4], 'big') if len(payload) >= 4 else 0
+        user = int.from_bytes(payload[:4], 'big') if len(payload) >= 4 else 0
+        session['rejoin'] = not user
+        if user:
+            REJOIN_USERS[session['peer']] = (user, time.time())
+        else:
+            known = REJOIN_USERS.get(session['peer'])
+            if known and time.time() - known[1] <= REJOIN_WINDOW_SECONDS:
+                user = known[0]
+                log('      hub rejoin: Connect sent user 0, reusing %d' % user)
+        session['user_id'] = user
     elif msg_id == HUB_HEARTBEAT_REQ:
-        if len(payload) != 4 or int.from_bytes(payload, 'big') != session.get('user_id'):
+        beat = int.from_bytes(payload, 'big') if len(payload) == 4 else None
+        if beat != session.get('user_id') and not (session.get('rejoin') and beat == 0):
             local_sessions.remove(directory, session['key'])
             session['advertised'] = False
             session['user_id'] = 0
