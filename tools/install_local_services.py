@@ -46,6 +46,14 @@ def quote(value):
 
 
 def main():
+    # The units run this interpreter. The shard imports lz4 at startup (see
+    # server/requirements.txt), and without it the unit restarts every few
+    # seconds forever, as the devbox shard did 51k times from 3 to 5 October.
+    try:
+        import lz4.block  # noqa: F401
+    except ImportError:
+        raise SystemExit(f'{sys.executable} cannot import lz4; run this installer '
+                         'with an interpreter that has server/requirements.txt')
     # DIT sync-down only writes to configured roots that already exist. Create
     # the root before starting the shard so a hub sync does not depend on the
     # first 60-second motion-observation flush.
