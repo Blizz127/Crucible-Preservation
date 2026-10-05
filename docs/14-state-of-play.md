@@ -1,5 +1,12 @@
 # State of play
 
+> **2026-10-05 live run:** current source entered Alpha Hunters with Ajonah,
+> and the player's hits applied the authored damage. The retail client sends
+> no hit reports for hunter projectiles, so the Marines cannot hurt the
+> player yet. Leaving mid-match armed a rejoin hang (the rejoin sends user id
+> 0); the hub, `user.cfg` and stale `rejoindata` fixes are in place. See
+> [30-systems-resume.md](30-systems-resume.md#alienware-live-run-5-october).
+>
 > **2026-10-05 current state:** the Alienware retail client (build 5685572)
 > and its loopback services are ready, but the current source has not yet
 > been played. Committed 69b9d69 is staged and its full suite passes there

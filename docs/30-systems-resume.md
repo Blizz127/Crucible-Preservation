@@ -1,5 +1,45 @@
 # Systems continuation, 22 September 2026
 
+## Alienware live run, 5 October
+
+The owner played the current source (69b9d69) with Ajonah. Evidence is in
+[`alienware-alpha-hunters-live.log`](../snapshots/runtime-20261005/alienware-alpha-hunters-live.log).
+
+**Entry and player damage work.** At 13:21:30 CDT the shard bootstrapped
+the match and entered GamePlay. It spawned three Marines, decoded input,
+and moved the hunters from patrol to attack. The player's hits used
+Ajonah's authored primary: Marine 01000004 went 800 → 760 → 720 → 680.
+
+**Hunters cannot hurt the player through client reports.** Over 320 s the
+hunters made 10,146 fire decisions. The client sent no
+`ClientProjectileResult` for any hunter projectile: there was no accepted
+hit and no refused report. A4 therefore needs a server-resolved hit model,
+or some other source. That choice was put to the owner.
+
+**Leaving mid-match armed a rejoin hang.** At 13:26:48 the player left via
+MatchExit, with no GameOver. The client then rejoined twice: once in the
+same process, and once after a game restart at about 13:28. The rejoin
+path sends user id 0 in both the hub Connect and Heartbeat; a normal READY
+sent 2621240704. With no nonzero id the hub published no lease, the shard
+waited for an identity forever, and the client looped on "GameModeComponent
+was not ready yet" until it was closed at 13:39.
+
+A restarted client is not logged in at all (`NovaNetUserId 0`). Fixes,
+each applied with no client running:
+- cd3dbfc: the hub reuses the peer's last nonzero id for 30 minutes within
+  one hub process.
+- `user.cfg` gains `crucible_WriteRejoinDataToFile 0`, with a backup kept.
+- The stale `rejoindata` was renamed to `rejoindata.stale-20261005`.
+
+Score from `tools/match_acceptance.py`:
+- A1: PASS.
+- A2 and A3: logs OK, visual checks pending.
+- A4: FAIL by design.
+- A5, A6 and A7: not reached, because the player left after 320 s.
+- 0 network asserts.
+
+The GameOver fix (bea8ada) and the victory rank have not run live yet.
+
 ## Alienware state check and staging, 5 October
 
 The project was resumed for the owner (request crucible-resume-20261004). A

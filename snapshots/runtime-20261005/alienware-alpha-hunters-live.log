@@ -1,0 +1,73 @@
+Alienware live run — 2026-10-05, 13:20–13:39 CDT (18:20–18:39Z)
+Host: alienware-bazzite. Retail: Steam AppID 1057240, build 5685572, GE-Proton 11-6.
+Services: committed 69b9d69 (backend/hub/shard on 127.0.0.1:18876-18878);
+Alpha Hunters, hero drop-in saboteur (Ajonah). Package reached 101 C at 13:27
+under game load; no runner work was running.
+
+--- first match: entry worked (shard journal) ---
+[2026-10-05T13:21:23.090] --- first datagram from ('127.0.0.1', 34993) ---
+[2026-10-05T13:21:30.719]       BOOTSTRAP PROBE practice-character -> ...
+[2026-10-05T13:21:30.735]       SOLO PHASE PROBE GamePlay -> ...
+[2026-10-05T13:21:30.799]       SOLO POPULATION PROBE: three Marine hunters
+[2026-10-05T13:21:30.892]       HUNTER AI 01000003/01000004/01000005 -> patrol
+[2026-10-05T13:21:30.893]       CLIENT INPUT decoded: player at (1312.71, 1271.16, 23.66)
+[2026-10-05T13:21:30.900]       HUNTER AI 01000003/01000004/01000005 -> attack
+[2026-10-05T13:26:33.856]       SOLO COMBAT player hit target=01000004 damage=40 health=760
+[2026-10-05T13:26:34.877]       SOLO COMBAT player hit target=01000004 damage=40 health=720
+[2026-10-05T13:26:35.654]       SOLO COMBAT player hit target=01000004 damage=40 health=680
+13:20-13:27:05: 10146 "HUNTER AI ... fired at" decisions; 0 "SOLO COMBAT hunter"
+and 0 "report refused" lines. The client sent no ClientProjectileResult for any
+hunter projectile: hunter damage cannot come from client reports (A4).
+Player hits used Ajonah's authored primary (40 per close hit, 9198a94).
+
+--- first match: client (NovaGameClient-20261005T182034Z.log, GMT) ---
+18:21:28.845 ConnectingToServerShard -> Connected
+18:21:30.774 ClientRejoinDataAppComponent: Setting Game Mode to DOUBLES_CASUAL;
+             rejoin data written to disk
+18:26:48.466 Crucible::UI::MatchExit::OpenConnection(): Client disconnected on
+             purpose from MatchExit   (the player left from the menu; no GameOver)
+18:26:52.421 Rejoin.get found a valid session to rejoin ... playerId , playerSessionId ,
+18:26:56.294 Disconnected -> ConnectingToGameRegistry -> ConnectingToHub (rejoin)
+18:27:04.643 ConnectingToServerShard -> Connected
+then "GameModeComponent was not ready yet" until the log stops mid-stream at
+18:28:45; CrashDB/reports/424.txt written 13:28:55 CDT.
+Connected 320 s; 0 NV_*ASSERT lines; 3 "only one fixup hit" warnings.
+
+--- rejoin hang: hub journal ---
+13:21:10.733 Connect::Request payload 9c3cf58000   (user 2621240704, normal READY)
+13:21:10.781 Heartbeat::Request payload 9c3cf580
+13:26:56.384 Connect::Request payload 0000000000   (rejoin, same logged-in process)
+13:26:56.433 Heartbeat::Request payload 00000000
+13:29:28.447 Connect::Request payload 0000000000   (rejoin after game restart)
+13:29:28.497 Heartbeat::Request payload 00000000
+Lease directory: one lease for user 2621240704, claimed 13:21:25; none after.
+Shard: 13:27:04.502 new connection (port 43688) -> 13:27:10.112 "BOOTSTRAP
+waiting for one fresh local hub identity"; 13:29:36.779 new connection (port
+51097) -> 13:29:42.333 same wait. Neither bootstrapped.
+
+--- second client process (NovaGameClient-20261005T182859Z.log, GMT) ---
+NovaNetUserId = 0 throughout (no login before the rejoin).
+18:29:05.970 rejoin data valid, m_timePointUntilCanRejoinInMicroSecs = 160796773289
+18:29:28.386 ConnectingToHub (rejoin); 18:29:40.480 Connected to the shard
+"GameModeComponent was not ready yet" more than 14000 times until the log stops
+mid-stream at 18:39:11 (game closed; no crash report).
+
+--- tools/match_acceptance.py on the first match ---
+shard lines: 121912
+A1 entry      PASS     population: three Marine hunters; input decoded 1x; client Connected 18:21:28.845835Z
+A2 bots move  LOGS-OK  states attack/patrol for 3 hunters; eyes: visible, animated, grounded, apart
+A3 bots fire  LOGS-OK  10146 fire decisions; eyes: shot animation and projectile
+A4 damaged    FAIL     no accepted hunter hit; refused hunter reports: none (client may not report remote projectiles)
+A5 kills      FAIL     3 player hits, no kill; refused player reports: none
+A6 match end  FAIL     no GameOver; client left via MatchExit
+A7 stable     FAIL     connected only 320 s; 0 network asserts; 3 multi-target projectile warnings; connected 320 s
+
+--- changes after the run (no client running for each) ---
+13:58:57 CDT: committed cd3dbfc staged as before (346 files sha256-verified;
+  359 server + 14 tools tests passed on the Alienware); the hub reuses a
+  loopback peer's last nonzero user id for a user-0 rejoin Connect.
+user.cfg: one appended line, crucible_WriteRejoinDataToFile 0 (stops the
+  client persisting rejoin data). Backup:
+  ~/.local/share/Steam/steamapps/common/Crucible/user.cfg.pre-rejoinfile-20261005
+AGS/Crucible/rejoindata (written 13:21:30, sha256 e50b427bac46c30c) renamed to
+  rejoindata.stale-20261005; rename back to restore.
