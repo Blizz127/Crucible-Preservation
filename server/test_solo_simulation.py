@@ -126,6 +126,40 @@ class SoloCombatTests(unittest.TestCase):
         self.assertEqual(state['combat'].health(0xfe00004b), 600.0)
 
 
+    @patch.dict('os.environ', COMBAT_ON)
+    @patch.object(shard, 'log')
+    def test_refused_reports_are_logged_at_powers_of_two(self, log):
+        state = {}
+        shard.start_solo_simulation(state)
+        for projectile in range(1, 6):
+            shard.observe_solo_combat(
+                rpc(shard.PLAYER_CHARACTER_ID, 115, 4,
+                    projectile_result(projectile, shard.PLAYER_CHARACTER_ID)), state)
+        shard.observe_solo_combat(
+            rpc(shard.PLAYER_CHARACTER_ID, 115, 4, b'\x01\x09'), state)
+        lines = [call.args[0] for call in log.call_args_list]
+        self.assertEqual(len(lines), 4)
+        self.assertIn('shooter=01000002 (no live enemy, count 4): '
+                      'projectile 4 after None, reported 01000002', lines[2])
+        self.assertIn('(invalid vector, count 1): 0109', lines[3])
+        self.assertEqual(state['refused_reports'][
+            shard.PLAYER_CHARACTER_ID, 'no live enemy'], 5)
+
+    @patch.object(shard, 'log')
+    def test_unregistered_shooters_are_logged_only_with_bot_reports(self, log):
+        report = rpc(0x01000009, 115, 4, projectile_result(1, shard.PLAYER_CHARACTER_ID))
+        with patch.dict('os.environ', COMBAT_ON):
+            state = {}
+            shard.start_solo_simulation(state)
+            shard.observe_solo_combat(report, state)
+            log.assert_not_called()
+        with patch.dict('os.environ', dict(COMBAT_ON, CRUCIBLE_SOLO_BOT_HIT_REPORTS='1')):
+            shard.observe_solo_combat(report, state)
+        log.assert_called_once()
+        self.assertIn('shooter=01000009 (unregistered shooter, count 1): 010101000002',
+                      log.call_args.args[0])
+
+
 class CreatureAITickTests(unittest.TestCase):
     @patch.dict('os.environ', AI_ON)
     @patch.object(shard, 'log')

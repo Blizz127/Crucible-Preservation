@@ -257,6 +257,8 @@ class Combat:
     # Explicit probe metadata only. Asset table indices alone do not establish
     # wire enum ids or a neutral default source/ability pair (docs/27).
     death_metadata: tuple = None
+    # Gate that refused the latest apply_reported_hit; None after a hit.
+    last_rejection: str = None
 
     def __post_init__(self):
         if self.death_metadata is not None:
@@ -312,14 +314,17 @@ class Combat:
         in the list. Marine primary despawns on collision (DynamicHitSetting
         "Despawn"), so an ambiguous multi-target report cannot name a target.
 
-        Returns a HitResult, or None when a gate rejects the report.
+        Returns a HitResult, or None when a gate rejects the report; the
+        refusing gate is then named in last_rejection.
         """
         now = time.monotonic() if now is None else now
         attacker = self.entities.get(shooter)
         if attacker is None or not attacker.alive:
+            self.last_rejection = 'shooter not live'
             return None
         previous = self.last_projectile.get(shooter)
         if previous is not None and not 0 < (projectile_id - previous) % 256 < 128:
+            self.last_rejection = 'projectile id not forward'
             return None
         # TargetFilter is "Enemies" (asset offset 0x323): same-team and self
         # hits are not damage.
@@ -327,7 +332,10 @@ class Combat:
                    if e in self.entities and self.entities[e].team != attacker.team
                    and self.entities[e].alive}
         if len(targets) != 1:
+            self.last_rejection = ('no live enemy' if not targets
+                                   else 'several live enemies')
             return None
+        self.last_rejection = None
         self.last_projectile[shooter] = projectile_id
         entity = self.entities[targets.pop()]
         damage = immediate_damage(weapon, distance=distance, critical=critical)

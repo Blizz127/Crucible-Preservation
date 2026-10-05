@@ -1008,6 +1008,20 @@ def start_solo_simulation(state):
                 if profile.level == solo_modes.PRACTICE.level and p.profile == 'spitter'}
 
 
+def log_refused_report(state, shooter, reason, detail):
+    """Log a refused projectile result at counts 1, 2, 4, 8, ... per gate.
+
+    Accepted hits are logged one by one. Refusals used to be silent, so a
+    live run could not tell a client that never reports hunter hits from a
+    gate that refuses every report.
+    """
+    counts = state.setdefault('refused_reports', {})
+    count = counts[shooter, reason] = counts.get((shooter, reason), 0) + 1
+    if count & (count - 1) == 0:
+        log('      SOLO COMBAT report refused shooter=%08x (%s, count %d): %s'
+            % (shooter, reason, count, detail))
+
+
 def observe_solo_combat(message, state):
     """Route accepted player and opt-in hunter projectile results to combat."""
     if state.get('match_result') is not None:
@@ -1016,13 +1030,18 @@ def observe_solo_combat(message, state):
     if arena is None or (message.delivery, message.component, message.rpc) != (3, 115, 4):
         return
     shooter = message.entity_id
-    if (shooter != PLAYER_CHARACTER_ID
-            and (os.environ.get('CRUCIBLE_SOLO_BOT_HIT_REPORTS') != '1'
-                 or shooter not in HUNTER_BOT_IDS)):
+    bot_reports = os.environ.get('CRUCIBLE_SOLO_BOT_HIT_REPORTS') == '1'
+    if shooter != PLAYER_CHARACTER_ID and (not bot_reports
+                                           or shooter not in HUNTER_BOT_IDS):
+        if bot_reports:
+            # A hunter result sent under some other id would otherwise vanish.
+            log_refused_report(state, shooter, 'unregistered shooter',
+                               message.data.hex())
         return
     try:
         projectile, reported = parse_projectile_result(message.data)
     except ValueError:
+        log_refused_report(state, shooter, 'invalid vector', message.data.hex())
         return
     # game_clock_reply drives simulation in elapsed session seconds, truncated
     # to milliseconds. Use that same domain for respawn and forced-aggro
@@ -1031,8 +1050,13 @@ def observe_solo_combat(message, state):
     now = time.monotonic()
     if 'clock_epoch' in state:
         now = int((now - state['clock_epoch']) * 1000) / 1000.
+    previous = arena.last_projectile.get(shooter)
     hit = arena.apply_reported_hit(shooter, projectile, reported, now=now)
     if hit is None:
+        log_refused_report(state, shooter, arena.last_rejection,
+                           'projectile %d after %s, reported %s' % (
+                               projectile, previous,
+                               ' '.join('%08x' % e for e in reported) or 'none'))
         return
     log('      SOLO COMBAT %s hit target=%08x damage=%.0f health=%.0f%s' %
         ('player' if shooter == PLAYER_CHARACTER_ID else 'hunter %08x' % shooter,

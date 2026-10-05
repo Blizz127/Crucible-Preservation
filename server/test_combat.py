@@ -129,6 +129,19 @@ class HitGateTests(unittest.TestCase):
         self.assertIsNone(c.apply_reported_hit(0x1000002, 1, (0xfe00007d,), now=0.0))
         self.assertEqual(c.health(0xfe00004b), 600.0)
 
+    def test_refused_report_names_the_gate_that_refused_it(self):
+        c = practice_combat()
+        c.apply_reported_hit(0x1000009, 1, (0xfe00004b,), now=0.0)
+        self.assertEqual(c.last_rejection, 'shooter not live')
+        c.apply_reported_hit(0x1000002, 1, (0x1000002,), now=0.0)
+        self.assertEqual(c.last_rejection, 'no live enemy')
+        c.apply_reported_hit(0x1000002, 1, (0xfe00004b, 0xfe00004c), now=0.0)
+        self.assertEqual(c.last_rejection, 'several live enemies')
+        c.apply_reported_hit(0x1000002, 1, (0xfe00004b,), now=0.0)
+        self.assertIsNone(c.last_rejection)
+        c.apply_reported_hit(0x1000002, 1, (0xfe00004b,), now=0.0)
+        self.assertEqual(c.last_rejection, 'projectile id not forward')
+
     def test_same_team_and_self_hits_are_not_damage(self):
         c = practice_combat()
         c.register(0x1000005, MARINE_SHARED_TYPES, maximum=800.0, team=1)

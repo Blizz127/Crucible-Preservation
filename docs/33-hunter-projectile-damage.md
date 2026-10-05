@@ -21,3 +21,27 @@ This completes a damage path for local solo play if the retail client sends
 the first visible hit, death presentation, and a loss through hunter damage
 still require an in-game capture. The client and DIT services were not running
 during implementation, so the feature remains unverified in play.
+
+## Refused reports are logged (5 October)
+
+Before this change the shard logged accepted hits only. If a hunter hit never
+appeared, a live run could not show whether the client had sent no report or
+whether a gate had refused the report. Each refusal is now logged as
+`SOLO COMBAT report refused shooter=<id> (<gate>, count N): <detail>`. A line
+is written at counts 1, 2, 4, 8, ... for each shooter and gate, so the final
+count is a lower bound with a 2x tolerance. The gates are:
+
+- `shooter not live`;
+- `projectile id not forward`;
+- `no live enemy`;
+- `several live enemies`;
+- `invalid vector`;
+- `unregistered shooter`, logged only with `CRUCIBLE_SOLO_BOT_HIT_REPORTS=1`,
+  so hunter results sent under an unexpected entity id remain visible.
+
+The detail field shows the projectile id, the previous accepted id and every
+reported entity id. `tools/match_acceptance.py` turns these lines into the A4
+and A5 evidence. Suppose a live run shows hunter fire decisions but no
+accepted hunter hit and no refused hunter report. Then the retail client is
+not reporting results for remote projectiles, and hunter damage needs a
+server-resolved path instead.
