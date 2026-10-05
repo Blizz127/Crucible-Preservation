@@ -523,6 +523,24 @@ def build_local_match_slot_probe(*, previous_id=0):
                                 payload=properties, previous_id=previous_id)
 
 
+def build_player_rank_update(rank, *, previous_id=0):
+    """PlayerStats.Rank on the local connection, for the post-game banner.
+
+    The only replicated Rank is PlayerStatsComponent (111), an autonomous,
+    full-range BE u32 (9cf7b0 -> 7cb2c0). The connection's shared roots are
+    44, 85, 88, 145, 157, 158, 165 and 169; its autonomous roots are 32, 85,
+    88, 111, 145 and 158. After GameOver the HUD waits up to 5 s for
+    rank > 0, then shows victory for rank 1 and defeat otherwise
+    (snapshots/retail-20260923 match-flow 01/03). That `match.stats.updates`
+    reads this property is inferred, not traced.
+    """
+    properties = (build_replication_record([False] * 8)
+                  + build_replication_record([False, False, False, True, True, False, False])
+                  + ranged_uint32(rank))
+    return build_entity_message(1, pack_type_and_flags(ENTITY_ROLE_CLIENT_AUTONOMOUS),
+                                payload=properties, previous_id=previous_id)
+
+
 def match_store_reply(state):
     if (os.environ.get('CRUCIBLE_SHARD_BOOTSTRAP') not in ('practice-roster', 'practice-character')
             or not state.get('bootstrap_sent')
@@ -1071,12 +1089,37 @@ def observe_solo_combat(message, state):
             director.note_damage(now, hit.target, PLAYER_CHARACTER_ID)
 
 
+def solo_match_rank(state):
+    """Opt-in local rank for this tick after a result, or None.
+
+    Every tick repeats GameOver, but the rank rides only every other tick.
+    If the client refuses a rank datagram, it loses one GameOver repetition,
+    never the result.
+    """
+    if os.environ.get('CRUCIBLE_SOLO_MATCH_RANK') != '1':
+        return None
+    result = state['match_result']
+    result['ticks'] = result.get('ticks', 0) + 1
+    if result['ticks'] % 2:
+        return None
+    rank = 1 if result['winner_team'] == solo_modes.selected().local_team else 2
+    if not result.get('rank_logged'):
+        result['rank_logged'] = True
+        log('      ALPHA HUNTERS rank %d published (PlayerStats.Rank)' % rank)
+    return rank
+
+
 def solo_simulation_messages(state, now, *, previous_id=0):
     """AI and combat entity messages for one clock tick, chained by RelativeId."""
     if state.get('match_result') is not None:
         profile = solo_modes.selected()
-        return [build_solo_match_phase_update(
+        messages = [build_solo_match_phase_update(
             profile, solo_modes.MATCH_PHASE['GameOver'], previous_id=previous_id)]
+        rank = solo_match_rank(state)
+        if rank is not None:
+            messages.append(build_player_rank_update(
+                rank, previous_id=profile.phase_entry + profile.baked_counter_bias))
+        return messages
     messages = []
     player = state.get('player_position')
     arena = state.get('combat')

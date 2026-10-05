@@ -199,6 +199,31 @@ class SoloMatchEndTests(unittest.TestCase):
         for messages in later:
             self.assertEqual([m.payload for m in messages], [game_over.payload])
 
+    def test_rank_one_rides_alternate_ticks_after_a_win(self, log):
+        state, _, later = self.finished_match(dict(ALPHA_COMBAT, CRUCIBLE_SOLO_MATCH_RANK='1'))
+        self.assertEqual([len(messages) for messages in later], [1, 2, 1, 2])
+        self.assertEqual(later[1][1].payload, bytes.fromhex('0800071800000001'))
+        self.assertEqual(later[1][1].payload, shard.build_player_rank_update(1).payload)
+        published = [c.args[0] for c in log.call_args_list if 'rank' in c.args[0]]
+        self.assertEqual(len(published), 1)
+        self.assertIn('rank 1 published', published[0])
+
+    def test_rank_two_after_the_hunters_eliminate_the_player(self, _log):
+        state, _, later = self.finished_match(dict(
+            ALPHA_COMBAT, CRUCIBLE_SOLO_MATCH_RANK='1', CRUCIBLE_SOLO_BOT_HIT_REPORTS='1'))
+        self.assertEqual(state['match_result']['winner_team'], 2)
+        self.assertEqual(later[1][1].payload[-4:], b'\x00\x00\x00\x02')
+
+    def test_rank_chains_after_the_baked_phase_entity(self, _log):
+        state, _, later = self.finished_match(dict(ALPHA_COMBAT, CRUCIBLE_SOLO_MATCH_RANK='1'))
+        with patch.dict('os.environ', ALPHA_COMBAT):
+            profile = shard.solo_modes.selected()
+        chained = shard.build_player_rank_update(
+            1, previous_id=profile.phase_entry + profile.baked_counter_bias)
+        self.assertEqual(later[1][1].header, chained.header)
+        self.assertEqual(shard.decode_entity_id(
+            chained.header, previous_id=profile.phase_entry + profile.baked_counter_bias)[0], 1)
+
 
 class CreatureAITickTests(unittest.TestCase):
     @patch.dict('os.environ', AI_ON)

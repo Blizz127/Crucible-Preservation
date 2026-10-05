@@ -34,6 +34,10 @@ SERVICES = {
                                   'CRUCIBLE_SOLO_DEATH_EVENTS': '1',
                                   'CRUCIBLE_SOLO_DEATH_SOURCE_ID': '0',
                                   'CRUCIBLE_SOLO_DEATH_ABILITY_ID': '51',
+                                  # PlayerStats.Rank after a result, so a win
+                                  # can show victory instead of the 5 s
+                                  # defeat fallback (match-flow 01/03).
+                                  'CRUCIBLE_SOLO_MATCH_RANK': '1',
                                   # The local DIT transport stores aggregate
                                   # movement only, never positions.
                                   'CRUCIBLE_DIT_TRANSPORT_ROOT': str(DIT_TRANSPORT_ROOT)}),

@@ -48,6 +48,19 @@ On the devbox, the units had been regenerated on 29 September with a
 They now run from the repository `.venv`, and the installer refuses an
 interpreter without lz4 (8cd9bfa).
 
+While the match-end tests for that milestone were being written, a bug
+turned up: Alpha Hunters had never ended. Commit 4d4d9af compared the mode
+profile's name with the alias `alpha-hunters`, but the profile is named
+`DOUBLES_CASUAL`. As a result:
+- eliminating the last team never set a result or sent GameOver;
+- the post-elimination freeze never engaged.
+
+bea8ada compares the profile itself and adds the first tests for this path.
+The later opt-in rank update (above) follows the 24 September match-flow
+findings: GameOver (phase 9) puts the client in GameOver unconditionally and
+clears its rejoin data, and the HUD shows victory only when it receives
+rank 1.
+
 ### Next milestone: one complete Alpha Hunters match
 
 These are the acceptance criteria for the current source on April2018 with
@@ -165,6 +178,7 @@ source-level defaults remain off.
 | `CRUCIBLE_SOLO_COMBAT_ANIMATION=1` | Publish `is_dead`, a one-update `using_primary1` pulse per simulated shot, and `is_aiming` during ATTACK for Marine bots (docs/28). |
 | `CRUCIBLE_SOLO_DEATH_EVENTS=1` | Include explicit death source, ability and killer metadata with zero health. The managed Alpha Hunters service enables this probe. |
 | `CRUCIBLE_SOLO_DEATH_SOURCE_ID`, `CRUCIBLE_SOLO_DEATH_ABILITY_ID` | Both required when the death probe is enabled; unsigned 16-bit wire IDs, accepted in decimal or `0x` notation. Managed profile: `0` (Unknown), `51` (`marine_primary`). |
+| `CRUCIBLE_SOLO_MATCH_RANK=1` | After an Alpha Hunters result, publish the local `PlayerStats.Rank` (1 = win, 2 = loss) on alternate GameOver ticks, so the HUD can show victory instead of its 5 s defeat fallback. The managed profile enables it; that the HUD reads this property is inferred (match-flow 03). |
 
 Death metadata is a probe configuration, not per-weapon damage attribution.
 The selected IDs must be appropriate to the experiment. The encoder tests
