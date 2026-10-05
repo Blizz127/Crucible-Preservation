@@ -1,0 +1,66 @@
+Alienware state check and current-source staging, 2026-10-05 UTC (2026-10-04 CDT)
+Host: alienware-bazzite. Retail: Steam AppID 1057240, build 5685572.
+
+--- read-only state check, ~02:30 UTC ---
+appmanifest_1057240.acf: buildid 5685572, StateFlags 4, SizeOnDisk 22051972132
+Proton prefix compatdata/1057240/pfx present.
+gamedata.pak sha256 5f12585b8aa02c66... (patched); gamedata.pak.orig 528c2aed054e4a33...
+bin/Crucible.exe sha256 e28643747df4a4ec... (NET_* log-channel patch applied);
+  .pre-logchan and .pre-crcgate both 5f1004303907cd8a... (retail)
+user.cfg: Crucible.AuthMethod 0; net_SslEnablePinning 0; net_UdpUseEncryption 0;
+  net_EnableDtlsPreSharedKeys 0; Debug_DispatchPackets / Debug_Nonce report tags
+autoexec.cfg: windowed 1280x720; UDP encryption/DTLS/compressor off; NET logging;
+  cl_serveraddr 127.0.0.1; cl_serverport 18877; map MainMenu
+/etc/hosts: 127.0.0.1 for the dead live-services execute-api host (docs/06)
+Last client logs: NovaGameClient-20260929T122059Z.log (match 12:21:31-12:38:34Z,
+  left via MatchExit; rejoin offer expired 12:41:23Z). No client run since.
+Services before staging: backend/hub/shard active since boot (2026-10-03 17:01 CDT),
+  0 restarts, from ~/Projects/Crucible Revival Codex. Its 100 tracked
+  server/tools files were sha256-identical to devbox HEAD 207684a (= eb4f9b9
+  code). The shard journal had no client traffic since boot.
+Shard drop-ins (crucible-revival-shard.service.d): arena-probe.conf
+  (CRUCIBLE_SHARD_BOOTSTRAP=practice-character, CRUCIBLE_PRACTICE_NPCS=1),
+  hero.conf (CRUCIBLE_SOLO_HERO=saboteur = Ajonah), local-session.conf,
+  presentation.conf, solo-ai.conf, solo-mode.conf (alpha-hunters).
+  hub drop-ins: local-session.conf, solo-mode.conf. Unchanged by staging.
+
+--- match_acceptance.py on the 29 September match (old dirty checkout) ---
+shard lines: 308380
+A1 entry      PASS     population: three Marine hunters; input decoded 1x; client Connected 12:21:30.901447Z
+A2 bots move  LOGS-OK  states attack/patrol/pursue for 3 hunters; eyes: visible, animated, grounded, apart
+A3 bots fire  LOGS-OK  693 fire decisions; eyes: shot animation and projectile
+A4 damaged    FAIL     no accepted hunter hit; refused hunter reports: none (client may not report remote projectiles)
+A5 kills      FAIL     0 player hits, no kill; refused player reports: none
+A6 match end  FAIL     no GameOver; client left via MatchExit
+A7 stable     PASS     0 network asserts; 2 multi-target projectile warnings; connected 1023 s
+
+--- staging of committed 8cd9bfa, 02:44-02:46 UTC ---
+git archive 8cd9bfa -> ~/Projects/Crucible Revival 8cd9bfa (new directory, 37 MB)
+sha256 verified: 345 files identical to the commit.
+Server suite in the staged tree on Alienware (retail assets present):
+  Ran 351 tests in 20.552s, OK. Tools suite: Ran 13 tests, OK. Package 66 C.
+No Crucible client running; 0 shard journal lines in the previous 30 min.
+/usr/bin/python3 tools/install_local_services.py (main units rewritten; drop-ins
+  untouched); systemctl --user restart crucible-revival-{backend,hub,shard}
+Shard: listening on 127.0.0.1:18878; prewarmed hunter navigation in 1.13s;
+  reply mode: accept.
+Effective shard environment diff before -> after: CRUCIBLE_DIT_TRANSPORT_ROOT
+  path only (.../Crucible Revival Codex/dit-transport -> .../8cd9bfa/dit-transport).
+~/Projects/Crucible Revival Codex left untouched (mtime 2026-09-29T07:41) for
+  rollback: run its tools/install_local_services.py and restart the units.
+
+--- tools/preflight_local_services.sh after staging (exit 0) ---
+OK    crucible-revival-backend.service active since Sun 2026-10-04 21:46:14 CDT, 0 restarts
+OK    crucible-revival-hub.service active since Sun 2026-10-04 21:46:14 CDT, 0 restarts
+OK    crucible-revival-shard.service active since Sun 2026-10-04 21:46:14 CDT, 0 restarts
+INFO  shard code directory: /var/home/blizz/Projects/Crucible Revival 8cd9bfa
+OK    18876/tcp bound to 127.0.0.1 only
+OK    18877/tcp bound to 127.0.0.1 only
+OK    18878/udp bound to 127.0.0.1 only
+OK    backend party route 200
+OK    hub TLS handshake: TLSv1.3
+INFO  shard settings: CRUCIBLE_SHARD_REPLY=accept CRUCIBLE_SHARD_SPAWN=0 CRUCIBLE_SOLO_MODE=alpha-hunters CRUCIBLE_SOLO_AI=1 CRUCIBLE_SOLO_COMBAT=1 CRUCIBLE_SOLO_FIRE=1 CRUCIBLE_SOLO_BOT_HIT_REPORTS=1 CRUCIBLE_SOLO_MOVEMENT_ANIMATION=1 CRUCIBLE_SOLO_COMBAT_ANIMATION=1 CRUCIBLE_SOLO_DEATH_EVENTS=1 CRUCIBLE_SOLO_DEATH_SOURCE_ID=0 CRUCIBLE_SOLO_DEATH_ABILITY_ID=51 CRUCIBLE_SHARD_BOOTSTRAP=practice-character CRUCIBLE_SOLO_HERO=saboteur 
+INFO  pick this hunter in the menu: saboteur
+OK    no Crucible client running
+INFO  package 64 C
+INFO  MemAvailable 12 GB, home free 71G

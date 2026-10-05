@@ -1,5 +1,74 @@
 # Systems continuation, 22 September 2026
 
+## Alienware state check and staging, 5 October
+
+The project was resumed for the owner (request crucible-resume-20261004). A
+read-only check of the Alienware found the retail client ready:
+- build 5685572 is fully installed;
+- the patched gamedata.pak and the loose user.cfg/autoexec.cfg are in place;
+- the NET_* log-channel patch on Crucible.exe is still applied (its retail
+  backups are kept);
+- /etc/hosts sends the dead live-services host to loopback.
+
+The backend, hub and shard had been active since the 3 October boot, with
+zero restarts. Their tracked server/tools files matched committed eb4f9b9
+exactly. The shard journal showed no client traffic, so the current source
+had still never been played. The last client session (29 September, old
+checkout) lasted 17 minutes and ended when the owner left via MatchExit.
+
+The shard's systemd drop-ins set `CRUCIBLE_SOLO_HERO=saboteur` (Ajonah). The
+main unit file does not show them. **Pick Ajonah in the menu.** A different
+hunter leaves the client waiting on the load screen.
+
+Before staging, a shard refusal of a projectile report left no log line. If
+the first current-source run had produced no hunter damage, nothing would
+have said why. Commit b2538b1 logs each refusal (docs/33).
+- `tools/preflight_local_services.sh` checks the services read-only and
+  reports the effective hunter.
+- `tools/match_acceptance.py` scores a live match against criteria A1–A7.
+  On the 29 September logs it reports: entry, three hunters through
+  patrol/pursue/attack, 693 fire decisions, no accepted hunter hit, no player
+  kill, no GameOver (the player left via MatchExit), and 1023 s connected.
+
+Commit 8cd9bfa was staged into a new directory, `~/Projects/Crucible Revival
+8cd9bfa`, and all 345 files were sha256-verified. The full server suite
+passed on the Alienware: **351 tests**, including the three installed-asset
+tests the devbox cannot run. The tools suite (13 tests) also passed. With no
+client running, the installer was run from that tree and the three units
+were restarted. Afterwards:
+- all three services were active and loopback-only;
+- the party route returned 200 and hub TLS 1.3 completed;
+- the only change in the effective shard environment was the DIT root path.
+
+The Codex tree is untouched, as a rollback. Evidence is in
+[`alienware-state-check.txt`](../snapshots/runtime-20261005/alienware-state-check.txt).
+
+On the devbox, the units had been regenerated on 29 September with a
+`python3` that cannot import lz4. The shard then restarted about 51k times.
+They now run from the repository `.venv`, and the installer refuses an
+interpreter without lz4 (8cd9bfa).
+
+### Next milestone: one complete Alpha Hunters match
+
+These are the acceptance criteria for the current source on April2018 with
+the three local Marine bots. Scored with `tools/match_acceptance.py`; "eyes"
+means only the player can confirm the item.
+
+| # | Criterion |
+|---|---|
+| A1 | Home → Alpha Hunters → READY reaches GamePlay; population spawned and input decoded |
+| A2 | Marines are visible and moving with animation, without sliding, sinking into terrain or overlapping (eyes) |
+| A3 | A Marine visibly fires: shot animation and projectile (eyes) |
+| A4 | A hunter hit on the player is accepted and the HUD drops below full (HUD: eyes) |
+| A5 | A player hit kills a Marine; it plays a visible death and stops moving and firing (death: eyes) |
+| A6 | Team elimination reaches GameOver; the end screen returns home; the next READY works without restarting a service |
+| A7 | 10 minutes or more connected, no crash, no shard restart during the match |
+
+After that come the postgame results flow, backend persistence (identities
+are still stubs and state is volatile), and the retail-fidelity target. That
+target is HOTH_GUIDE on HotH_02, the only shipped bot mode
+(`snapshots/retail-20260923/PLAN.md`).
+
 ## Alienware live run, 29 September
 
 The owner authorized use of the Alienware retail client. Steam build 5685572

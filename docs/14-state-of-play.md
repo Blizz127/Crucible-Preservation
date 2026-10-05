@@ -1,5 +1,13 @@
 # State of play
 
+> **2026-10-05 current state:** the Alienware retail client (build 5685572)
+> and its loopback services are ready, but the current source has not yet
+> been played. Committed 8cd9bfa is staged and its full suite passes there
+> (351 tests). Pick **Ajonah**, because the shard's hero drop-in selects
+> `saboteur`. The next milestone is one complete Alpha Hunters match,
+> criteria A1–A7, scored by `tools/match_acceptance.py`. See
+> [30-systems-resume.md](30-systems-resume.md#alienware-state-check-and-staging-5-october).
+>
 > **2026-09-29 current result:** solo Training Arena exploration and Alpha
 > Hunters entry with three visible Marine hunters were accepted in earlier
 > client runs. A new live run on Alienware reached Alpha Hunters GamePlay
