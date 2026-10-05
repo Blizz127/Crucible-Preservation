@@ -42,9 +42,10 @@ were restarted. Afterwards:
 
 The Codex tree is untouched, as a rollback. Evidence is in
 [`alienware-state-check.txt`](../snapshots/runtime-20261005/alienware-state-check.txt).
-be4ad3e was later staged the same way into its own directory (355 tests
-passed on the Alienware) to carry the GameOver fix and the rank probe below.
-The 8cd9bfa tree was kept as well.
+Later commits were staged the same way, each into its own directory. be4ad3e
+(355 tests passed on the Alienware) carried the GameOver fix and the rank
+probe below. 69b9d69 (357 tests) carried the per-hero player damage. Every
+earlier tree is kept for rollback.
 
 On the devbox, the units had been regenerated on 29 September with a
 `python3` that cannot import lz4. The shard then restarted about 51k times.

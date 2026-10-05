@@ -96,3 +96,32 @@ INFO  pick this hunter in the menu: saboteur
 OK    no Crucible client running
 INFO  package 58 C
 INFO  MemAvailable 14 GB, home free 71G
+
+--- restaging of committed 69b9d69, 02:58-03:01 UTC ---
+Reason: 9198a94 (player hits use the selected hero's authored primary:
+Ajonah 40 -> 20 instead of Marine 20 -> 10); 69b9d69 counts client
+projectile-activation refusals in match_acceptance.py A3.
+git archive 69b9d69 -> ~/Projects/Crucible Revival 69b9d69 (new directory)
+sha256 verified: 346 files identical to the commit.
+No client lines in the shard journal for 30 min; no Crucible client running.
+Server suite in the staged tree on Alienware: Ran 357 tests in 20.152s, OK.
+Tools suite: Ran 14 tests, OK.
+Installer run from the new tree; three units restarted; shard prewarmed hunter
+navigation in 1.02s; reply mode: accept.
+Effective shard environment diff be4ad3e -> 69b9d69: DIT root path only.
+
+--- tools/preflight_local_services.sh after restaging (exit 0) ---
+OK    crucible-revival-backend.service active since Sun 2026-10-04 22:00:57 CDT, 0 restarts
+OK    crucible-revival-hub.service active since Sun 2026-10-04 22:00:57 CDT, 0 restarts
+OK    crucible-revival-shard.service active since Sun 2026-10-04 22:00:57 CDT, 0 restarts
+INFO  shard code directory: /var/home/blizz/Projects/Crucible Revival 69b9d69
+OK    18876/tcp bound to 127.0.0.1 only
+OK    18877/tcp bound to 127.0.0.1 only
+OK    18878/udp bound to 127.0.0.1 only
+OK    backend party route 200
+OK    hub TLS handshake: TLSv1.3
+INFO  shard settings: CRUCIBLE_SHARD_REPLY=accept CRUCIBLE_SHARD_SPAWN=0 CRUCIBLE_SOLO_MODE=alpha-hunters CRUCIBLE_SOLO_AI=1 CRUCIBLE_SOLO_COMBAT=1 CRUCIBLE_SOLO_FIRE=1 CRUCIBLE_SOLO_BOT_HIT_REPORTS=1 CRUCIBLE_SOLO_MOVEMENT_ANIMATION=1 CRUCIBLE_SOLO_COMBAT_ANIMATION=1 CRUCIBLE_SOLO_DEATH_EVENTS=1 CRUCIBLE_SOLO_DEATH_SOURCE_ID=0 CRUCIBLE_SOLO_DEATH_ABILITY_ID=51 CRUCIBLE_SOLO_MATCH_RANK=1 CRUCIBLE_SHARD_BOOTSTRAP=practice-character CRUCIBLE_SOLO_HERO=saboteur
+INFO  pick this hunter in the menu: saboteur
+OK    no Crucible client running
+INFO  package 59 C
+INFO  MemAvailable 14 GB, home free 71G

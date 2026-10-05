@@ -2,9 +2,10 @@
 
 > **2026-10-05 current state:** the Alienware retail client (build 5685572)
 > and its loopback services are ready, but the current source has not yet
-> been played. Committed be4ad3e is staged and its full suite passes there
-> (355 tests). It includes bea8ada: Alpha Hunters had never sent GameOver
-> after an elimination, because the mode check compared the wrong name.
+> been played. Committed 69b9d69 is staged and its full suite passes there
+> (357 tests). It includes bea8ada: Alpha Hunters had never sent GameOver
+> after an elimination, because the mode check compared the wrong name. It
+> also adds the opt-in victory rank and Ajonah's authored primary damage.
 > Pick **Ajonah**, because the shard's hero drop-in selects `saboteur`. The next milestone is one complete Alpha Hunters match,
 > criteria A1–A7, scored by `tools/match_acceptance.py`. See
 > [30-systems-resume.md](30-systems-resume.md#alienware-state-check-and-staging-5-october).
