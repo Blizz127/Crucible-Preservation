@@ -55,6 +55,7 @@ HIT = re.compile(r'SOLO COMBAT (player|hunter ([0-9a-f]{8})) hit target=([0-9a-f
 REFUSED = re.compile(r'SOLO COMBAT report refused shooter=([0-9a-f]{8})'
                      r' \(([^,]+), count (\d+)\)')
 OVER = re.compile(r'ALPHA HUNTERS match over: winner team (\w+)')
+RANK = re.compile(r'ALPHA HUNTERS rank (\d+) published')
 SHARD_START = re.compile(r'Started crucible-revival-shard|listening on \S+:18878')
 TRACEBACK = re.compile(r'Traceback \(most recent call last\)')
 JOURNAL_TIME = re.compile(r'^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)([+-]\d\d):?(\d\d)')
@@ -67,7 +68,7 @@ MULTI_HIT = "There wasn't only one fixup hit"
 
 def shard_facts(lines):
     facts = {'population': [], 'input': 0, 'states': {}, 'fire': 0, 'hits': [],
-             'refused': {}, 'over': [], 'starts': [], 'tracebacks': 0,
+             'refused': {}, 'over': [], 'rank': None, 'starts': [], 'tracebacks': 0,
              'population_after_over': 0}
     for line in lines:
         if POPULATION.search(line):
@@ -92,6 +93,8 @@ def shard_facts(lines):
             facts['refused'][key] = max(facts['refused'].get(key, 0), int(count))
         elif OVER.search(line):
             facts['over'].append(OVER.search(line).group(1))
+        elif RANK.search(line):
+            facts['rank'] = int(RANK.search(line).group(1))
         if SHARD_START.search(line):
             facts['starts'].append(journal_time(line))
         if TRACEBACK.search(line):
@@ -192,6 +195,8 @@ def score(shard, client):
 
     if shard['over']:
         evidence = 'winner team %s' % shard['over'][0]
+        if shard['rank'] is not None:
+            evidence += ', rank %d sent' % shard['rank']
         if client is not None:
             evidence += '; client UI phases %s' % ' > '.join(client['phases'][-3:])
         evidence += ('; re-entered %dx after GameOver' % shard['population_after_over']

@@ -14,6 +14,7 @@ SHARD = [
     J % (4, 4) + 'SOLO COMBAT hunter 01000003 hit target=01000002 damage=25 health=775',
     J % (9, 9) + 'SOLO COMBAT player hit target=01000003 damage=40 health=0 KILLED',
     J % (12, 12) + 'ALPHA HUNTERS match over: winner team 1',
+    J % (12, 12) + 'ALPHA HUNTERS rank 1 published (PlayerStats.Rank)',
     J % (15, 15) + 'SOLO POPULATION PROBE: three Marine hunters',
 ]
 C = '[10-05-2026:23:%02d:00.000000-GMT] '
@@ -41,6 +42,7 @@ class MatchAcceptanceTests(unittest.TestCase):
             'A5': 'LOGS-OK', 'A6': 'LOGS-OK', 'A7': 'PASS'})
         a6 = score(shard_facts(SHARD), client_facts(CLIENT))[5][2]
         self.assertIn('re-entered 1x after GameOver', a6)
+        self.assertIn('winner team 1, rank 1 sent', a6)
 
     def test_refused_hunter_reports_explain_missing_damage(self):
         shard = [line for line in SHARD if 'hunter 01000003 hit' not in line]
