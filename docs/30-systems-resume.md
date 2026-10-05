@@ -64,6 +64,16 @@ findings: GameOver (phase 9) puts the client in GameOver unconditionally and
 clears its rejoin data, and the HUD shows victory only when it receives
 rank 1.
 
+Player hits previously used Marine damage for every hero (accuracy audit
+item 7). They now use the selected hero's authored primary. Ajonah's
+`saboteur_primary.projectile` in build 5685572 does 40 → 20 per hit at speed
+780, with falloff from 0.077 to 0.153 s and a ×2.5 critical multiplier. That
+halves the hits needed to kill an 800-health Marine, from 40 to 20.
+- Hunters still fire Marine numbers.
+- Heroes whose asset has not been read yet keep Marine numbers.
+- Range is still not fed to the falloff, so every accepted hit uses the
+  close-range maximum.
+
 ### Next milestone: one complete Alpha Hunters match
 
 These are the acceptance criteria for the current source on April2018 with

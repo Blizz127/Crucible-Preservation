@@ -86,6 +86,13 @@ MARINE_PRIMARY = Weapon('marine_projectile_primary', 20.0, 10.0,
                         0.064, 0.096, 625.0, 2.0, 0.4)
 # 0.064 * 625 = 40 units, 0.096 * 625 = 60 units: 20 damage inside 40,
 # falling linearly to 10 at 60 and staying there.
+# Ajonah: misc.pak assets/player/saboteur/saboteur_primary.projectile, read
+# with tools/inspect_combat_projectile.py on the installed build 5685572.
+SABOTEUR_PRIMARY = Weapon('saboteur_primary', 40.0, 20.0,
+                          0.077, 0.153, 780.0, 2.5, 0.4)
+# Primary projectile per hero key (hero_loadout.ROSTER). Heroes not listed
+# still use Marine numbers until their own asset is read.
+HERO_PRIMARY = {'marine': MARINE_PRIMARY, 'saboteur': SABOTEUR_PRIMARY}
 
 
 # --- Authored respawn timings -----------------------------------------------

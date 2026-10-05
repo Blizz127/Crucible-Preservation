@@ -199,6 +199,32 @@ class SoloMatchEndTests(unittest.TestCase):
         for messages in later:
             self.assertEqual([m.payload for m in messages], [game_over.payload])
 
+    def test_player_hits_use_the_selected_heros_primary(self, _log):
+        import combat
+        for hero, weapon in (('saboteur', combat.SABOTEUR_PRIMARY),
+                             ('marine', combat.MARINE_PRIMARY)):
+            with self.subTest(hero=hero), patch.dict(
+                    'os.environ', dict(ALPHA_COMBAT, CRUCIBLE_SOLO_HERO=hero)):
+                state = {}
+                shard.start_solo_simulation(state)
+                hunter = shard.HUNTER_BOT_IDS[0]
+                shard.observe_solo_combat(
+                    rpc(shard.PLAYER_CHARACTER_ID, 115, 4, projectile_result(1, hunter)), state)
+                self.assertEqual(state['combat'].health(hunter),
+                                 shard.MARINE_HEALTH_MAX - weapon.damage_max)
+
+    def test_hunter_hits_stay_marine_whatever_the_hero(self, _log):
+        import combat
+        with patch.dict('os.environ', dict(ALPHA_COMBAT, CRUCIBLE_SOLO_HERO='saboteur',
+                                           CRUCIBLE_SOLO_BOT_HIT_REPORTS='1')):
+            state = {}
+            shard.start_solo_simulation(state)
+            shard.observe_solo_combat(
+                rpc(shard.HUNTER_BOT_IDS[0], 115, 4,
+                    projectile_result(1, shard.PLAYER_CHARACTER_ID)), state)
+        self.assertEqual(state['combat'].health(shard.PLAYER_CHARACTER_ID),
+                         shard.MARINE_HEALTH_MAX - combat.MARINE_PRIMARY.damage_max)
+
     def test_rank_one_rides_alternate_ticks_after_a_win(self, log):
         state, _, later = self.finished_match(dict(ALPHA_COMBAT, CRUCIBLE_SOLO_MATCH_RANK='1'))
         self.assertEqual([len(messages) for messages in later], [1, 2, 1, 2])

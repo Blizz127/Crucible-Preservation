@@ -1069,7 +1069,12 @@ def observe_solo_combat(message, state):
     if 'clock_epoch' in state:
         now = int((now - state['clock_epoch']) * 1000) / 1000.
     previous = arena.last_projectile.get(shooter)
-    hit = arena.apply_reported_hit(shooter, projectile, reported, now=now)
+    # Hunters are Marines whatever CRUCIBLE_SOLO_HERO says; the player fires
+    # the selected hero's primary.
+    from combat import HERO_PRIMARY, MARINE_PRIMARY
+    weapon = (HERO_PRIMARY.get(hero_loadout.selected().name, MARINE_PRIMARY)
+              if shooter == PLAYER_CHARACTER_ID else MARINE_PRIMARY)
+    hit = arena.apply_reported_hit(shooter, projectile, reported, weapon=weapon, now=now)
     if hit is None:
         log_refused_report(state, shooter, arena.last_rejection,
                            'projectile %d after %s, reported %s' % (
