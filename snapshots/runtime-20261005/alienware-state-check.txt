@@ -59,8 +59,40 @@ OK    18877/tcp bound to 127.0.0.1 only
 OK    18878/udp bound to 127.0.0.1 only
 OK    backend party route 200
 OK    hub TLS handshake: TLSv1.3
-INFO  shard settings: CRUCIBLE_SHARD_REPLY=accept CRUCIBLE_SHARD_SPAWN=0 CRUCIBLE_SOLO_MODE=alpha-hunters CRUCIBLE_SOLO_AI=1 CRUCIBLE_SOLO_COMBAT=1 CRUCIBLE_SOLO_FIRE=1 CRUCIBLE_SOLO_BOT_HIT_REPORTS=1 CRUCIBLE_SOLO_MOVEMENT_ANIMATION=1 CRUCIBLE_SOLO_COMBAT_ANIMATION=1 CRUCIBLE_SOLO_DEATH_EVENTS=1 CRUCIBLE_SOLO_DEATH_SOURCE_ID=0 CRUCIBLE_SOLO_DEATH_ABILITY_ID=51 CRUCIBLE_SHARD_BOOTSTRAP=practice-character CRUCIBLE_SOLO_HERO=saboteur 
+INFO  shard settings: CRUCIBLE_SHARD_REPLY=accept CRUCIBLE_SHARD_SPAWN=0 CRUCIBLE_SOLO_MODE=alpha-hunters CRUCIBLE_SOLO_AI=1 CRUCIBLE_SOLO_COMBAT=1 CRUCIBLE_SOLO_FIRE=1 CRUCIBLE_SOLO_BOT_HIT_REPORTS=1 CRUCIBLE_SOLO_MOVEMENT_ANIMATION=1 CRUCIBLE_SOLO_COMBAT_ANIMATION=1 CRUCIBLE_SOLO_DEATH_EVENTS=1 CRUCIBLE_SOLO_DEATH_SOURCE_ID=0 CRUCIBLE_SOLO_DEATH_ABILITY_ID=51 CRUCIBLE_SHARD_BOOTSTRAP=practice-character CRUCIBLE_SOLO_HERO=saboteur
 INFO  pick this hunter in the menu: saboteur
 OK    no Crucible client running
 INFO  package 64 C
 INFO  MemAvailable 12 GB, home free 71G
+
+--- restaging of committed be4ad3e, 02:52-02:55 UTC ---
+Reason: bea8ada (Alpha Hunters GameOver never fired: the elimination check
+compared the profile name DOUBLES_CASUAL with the alias 'alpha-hunters') and
+a84464e (opt-in PlayerStats.Rank after a result, enabled in the managed
+profile). be4ad3e adds the rank to match_acceptance.py's A6 evidence.
+git archive be4ad3e -> ~/Projects/Crucible Revival be4ad3e (new directory)
+sha256 verified: 346 files identical to the commit.
+No client lines (CLIENT/POPULATION/HUNTER) in the shard journal for 20 min.
+Server suite in the staged tree on Alienware: Ran 355 tests in 17.797s, OK.
+Tools suite: Ran 13 tests, OK. Package 65 C.
+No Crucible client running; installer run from the new tree; three units
+restarted. Shard prewarmed hunter navigation in 0.91s; reply mode: accept.
+Effective shard environment diff 8cd9bfa -> be4ad3e: DIT root path, and
+CRUCIBLE_SOLO_MATCH_RANK=1 added. Drop-ins unchanged. The 8cd9bfa and Codex
+trees are kept for rollback.
+
+--- tools/preflight_local_services.sh after restaging (exit 0) ---
+OK    crucible-revival-backend.service active since Sun 2026-10-04 21:54:55 CDT, 0 restarts
+OK    crucible-revival-hub.service active since Sun 2026-10-04 21:54:55 CDT, 0 restarts
+OK    crucible-revival-shard.service active since Sun 2026-10-04 21:54:55 CDT, 0 restarts
+INFO  shard code directory: /var/home/blizz/Projects/Crucible Revival be4ad3e
+OK    18876/tcp bound to 127.0.0.1 only
+OK    18877/tcp bound to 127.0.0.1 only
+OK    18878/udp bound to 127.0.0.1 only
+OK    backend party route 200
+OK    hub TLS handshake: TLSv1.3
+INFO  shard settings: CRUCIBLE_SHARD_REPLY=accept CRUCIBLE_SHARD_SPAWN=0 CRUCIBLE_SOLO_MODE=alpha-hunters CRUCIBLE_SOLO_AI=1 CRUCIBLE_SOLO_COMBAT=1 CRUCIBLE_SOLO_FIRE=1 CRUCIBLE_SOLO_BOT_HIT_REPORTS=1 CRUCIBLE_SOLO_MOVEMENT_ANIMATION=1 CRUCIBLE_SOLO_COMBAT_ANIMATION=1 CRUCIBLE_SOLO_DEATH_EVENTS=1 CRUCIBLE_SOLO_DEATH_SOURCE_ID=0 CRUCIBLE_SOLO_DEATH_ABILITY_ID=51 CRUCIBLE_SOLO_MATCH_RANK=1 CRUCIBLE_SHARD_BOOTSTRAP=practice-character CRUCIBLE_SOLO_HERO=saboteur
+INFO  pick this hunter in the menu: saboteur
+OK    no Crucible client running
+INFO  package 58 C
+INFO  MemAvailable 14 GB, home free 71G

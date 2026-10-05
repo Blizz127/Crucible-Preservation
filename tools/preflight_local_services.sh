@@ -44,7 +44,7 @@ tls=$(timeout 8 openssl s_client -connect 127.0.0.1:18877 -brief </dev/null 2>&1
 [[ -n "$tls" ]] && ok "hub TLS handshake: ${tls#*: }" || bad "hub TLS handshake failed"
 
 env=$(systemctl --user show crucible-revival-shard.service -p Environment --value 2>/dev/null)
-echo "INFO  shard settings: $(tr ' ' '\n' <<<"$env" | grep -E '^CRUCIBLE_(SOLO|SHARD)_' | tr '\n' ' ')"
+echo "INFO  shard settings: $(tr ' ' '\n' <<<"$env" | grep -E '^CRUCIBLE_(SOLO|SHARD)_' | paste -sd ' ' -)"
 hero=$(tr ' ' '\n' <<<"$env" | sed -n 's/^CRUCIBLE_SOLO_HERO=//p')
 echo "INFO  pick this hunter in the menu: ${hero:-marine}"
 
