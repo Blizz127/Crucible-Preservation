@@ -160,6 +160,46 @@ class SoloCombatTests(unittest.TestCase):
                       log.call_args.args[0])
 
 
+ALPHA_COMBAT = {'CRUCIBLE_SOLO_COMBAT': '1', 'CRUCIBLE_SOLO_AI': '0',
+                'CRUCIBLE_SOLO_MODE': 'alpha-hunters'}
+
+
+def report_until_dead(state, shooter, target, first_projectile=1):
+    projectile = first_projectile
+    while state['combat'].alive(target):
+        shard.observe_solo_combat(
+            rpc(shooter, 115, 4, projectile_result(projectile & 0xff, target)), state)
+        projectile += 1
+    return projectile
+
+
+@patch.object(shard, 'log')
+class SoloMatchEndTests(unittest.TestCase):
+    def finished_match(self, env):
+        state = {}
+        with patch.dict('os.environ', env):
+            shard.start_solo_simulation(state)
+            if env.get('CRUCIBLE_SOLO_BOT_HIT_REPORTS') == '1':
+                report_until_dead(state, shard.HUNTER_BOT_IDS[0], shard.PLAYER_CHARACTER_ID)
+            else:
+                projectile = 1
+                for hunter in shard.HUNTER_BOT_IDS:
+                    projectile = report_until_dead(
+                        state, shard.PLAYER_CHARACTER_ID, hunter, projectile)
+            first = shard.solo_simulation_messages(state, 1.0)
+            later = [shard.solo_simulation_messages(state, 1.0 + i / 20) for i in range(1, 5)]
+        return state, first, later
+
+    def test_elimination_ends_the_match_and_repeats_game_over(self, _log):
+        state, first, later = self.finished_match(ALPHA_COMBAT)
+        self.assertEqual(state['match_result']['winner_team'], 1)
+        game_over = shard.build_solo_match_phase_update(
+            shard.solo_modes.selected(), shard.solo_modes.MATCH_PHASE['GameOver'])
+        self.assertTrue(first[-1].payload.endswith(b'\x00\x09'))
+        for messages in later:
+            self.assertEqual([m.payload for m in messages], [game_over.payload])
+
+
 class CreatureAITickTests(unittest.TestCase):
     @patch.dict('os.environ', AI_ON)
     @patch.object(shard, 'log')

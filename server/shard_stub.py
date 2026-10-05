@@ -1225,8 +1225,9 @@ def solo_simulation_messages(state, now, *, previous_id=0):
         if health_entities:
             previous_id = health_entities[-1].entity_id & 0xffffff
         profile = solo_modes.selected()
-        if (profile.mode_profile is not None
-                and profile.mode_profile.name == 'alpha-hunters'):
+        # The alias is 'alpha-hunters'; the profile's own name is the shipped
+        # config's DOUBLES_CASUAL, so compare profiles, not that string.
+        if profile.mode_profile == solo_modes.MODES['alpha-hunters']:
             winner = arena.terminal_winner()
             if winner is not None:
                 if 'match_result' not in state:
