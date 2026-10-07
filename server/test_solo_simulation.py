@@ -251,6 +251,58 @@ class SoloMatchEndTests(unittest.TestCase):
             chained.header, previous_id=profile.phase_entry + profile.baked_counter_bias)[0], 1)
 
 
+SERVER_HITS = dict(ALPHA_COMBAT, CRUCIBLE_SOLO_BOT_DAMAGE='server')
+
+
+@patch.object(shard, 'log')
+class ServerResolvedHunterHitTests(unittest.TestCase):
+    def test_landed_round_damages_the_player_on_its_flight_tick(self, log):
+        from hunter_hits import Landing
+        with patch.dict('os.environ', SERVER_HITS):
+            state = {}
+            shard.start_solo_simulation(state)
+            state['hunter_landings'] = [Landing(0x1000003, shard.PLAYER_CHARACTER_ID, 1.5, 20.0)]
+            shard.solo_simulation_messages(state, 1.0)
+            self.assertEqual(state['combat'].health(shard.PLAYER_CHARACTER_ID),
+                             shard.MARINE_HEALTH_MAX)
+            messages = shard.solo_simulation_messages(state, 1.5)
+        self.assertEqual(state['combat'].health(shard.PLAYER_CHARACTER_ID),
+                         shard.MARINE_HEALTH_MAX - 20.0)
+        self.assertEqual(state['hunter_landings'], [])
+        self.assertTrue(messages)
+        self.assertIn('SOLO COMBAT hunter 01000003 hit target=01000002 damage=20 health=780',
+                      [c.args[0].strip() for c in log.call_args_list][-1])
+
+    def test_rounds_that_kill_the_player_end_the_match_as_a_loss(self, _log):
+        from hunter_hits import Landing
+        with patch.dict('os.environ', SERVER_HITS):
+            state = {}
+            shard.start_solo_simulation(state)
+            state['hunter_landings'] = [Landing(0x1000004, shard.PLAYER_CHARACTER_ID,
+                                                1.0 + i / 100, 20.0) for i in range(40)]
+            shard.solo_simulation_messages(state, 2.0)
+        self.assertEqual(state['match_result']['winner_team'], 2)
+
+    def test_server_mode_ignores_client_hunter_reports(self, log):
+        with patch.dict('os.environ', dict(SERVER_HITS, CRUCIBLE_SOLO_BOT_HIT_REPORTS='1')):
+            state = {}
+            shard.start_solo_simulation(state)
+            shard.observe_solo_combat(
+                rpc(shard.HUNTER_BOT_IDS[0], 115, 4,
+                    projectile_result(1, shard.PLAYER_CHARACTER_ID)), state)
+        self.assertEqual(state['combat'].health(shard.PLAYER_CHARACTER_ID),
+                         shard.MARINE_HEALTH_MAX)
+        log.assert_not_called()
+
+    def test_gunnery_reads_the_scale_once_and_logs_it(self, log):
+        with patch.dict('os.environ', dict(SERVER_HITS, CRUCIBLE_SOLO_BOT_ACCURACY='0.5')):
+            state = {}
+            gunnery = shard.hunter_gunnery(state)
+            self.assertIs(shard.hunter_gunnery(state), gunnery)
+        self.assertEqual(gunnery.accuracy_scale, 0.5)
+        self.assertIn('accuracy scale 0.50', log.call_args.args[0])
+
+
 class CreatureAITickTests(unittest.TestCase):
     @patch.dict('os.environ', AI_ON)
     @patch.object(shard, 'log')

@@ -959,6 +959,38 @@ def solo_combat_enabled():
     return os.environ.get('CRUCIBLE_SOLO_COMBAT') == '1'
 
 
+def server_bot_damage_enabled():
+    """docs/35: hunter rounds are resolved here, never from client reports."""
+    return os.environ.get('CRUCIBLE_SOLO_BOT_DAMAGE') == 'server'
+
+
+def hunter_gunnery(state):
+    gunnery = state.get('hunter_gunnery')
+    if gunnery is None:
+        from hunter_hits import ACCURACY_SCALE, HunterGunnery
+        scale = float(os.environ.get('CRUCIBLE_SOLO_BOT_ACCURACY') or ACCURACY_SCALE)
+        seed = int(time.time())
+        gunnery = state['hunter_gunnery'] = HunterGunnery(seed=seed, accuracy_scale=scale)
+        log('      HUNTER HITS server-resolved, accuracy scale %.2f, seed %d'
+            % (scale, seed))
+    return gunnery
+
+
+def land_hunter_hits(state, arena, now):
+    """Apply server-resolved hunter rounds whose flight has ended."""
+    landings = state.get('hunter_landings')
+    if not landings or arena is None:
+        return
+    state['hunter_landings'] = [l for l in landings if l.time > now]
+    for landing in sorted((l for l in landings if l.time <= now), key=lambda l: l.time):
+        hit = arena.apply_damage(landing.shooter, landing.target, landing.damage,
+                                 now=landing.time)
+        if hit is not None:
+            log('      SOLO COMBAT hunter %08x hit target=%08x damage=%.0f health=%.0f%s'
+                % (landing.shooter, hit.target, hit.damage, hit.health,
+                   ' KILLED' if hit.killed else ''))
+
+
 def solo_ai_enabled():
     return os.environ.get('CRUCIBLE_SOLO_AI') == '1'
 
@@ -1048,7 +1080,9 @@ def observe_solo_combat(message, state):
     if arena is None or (message.delivery, message.component, message.rpc) != (3, 115, 4):
         return
     shooter = message.entity_id
-    bot_reports = os.environ.get('CRUCIBLE_SOLO_BOT_HIT_REPORTS') == '1'
+    # Server-resolved hunter rounds exclude client reports: no double hits.
+    bot_reports = (os.environ.get('CRUCIBLE_SOLO_BOT_HIT_REPORTS') == '1'
+                   and not server_bot_damage_enabled())
     if shooter != PLAYER_CHARACTER_ID and (not bot_reports
                                            or shooter not in HUNTER_BOT_IDS):
         if bot_reports:
@@ -1128,6 +1162,7 @@ def solo_simulation_messages(state, now, *, previous_id=0):
     messages = []
     player = state.get('player_position')
     arena = state.get('combat')
+    land_hunter_hits(state, arena, now)
     health_entities = arena.tick(now) if arena is not None else []
     active_entities = ({entity for entity in arena.entities if arena.alive(entity)}
                        if arena is not None else None)
@@ -1199,8 +1234,12 @@ def solo_simulation_messages(state, now, *, previous_id=0):
                 # projectile asset's own attachment in charge of rendering.
                 if os.environ.get('CRUCIBLE_SOLO_FIRE') == '1':
                     state.setdefault('pending_hunter_shots', []).append(shot)
-                # Presentation only: collision authority and muzzle-space
-                # origins remain open; no damage is invented from this event.
+                # Without CRUCIBLE_SOLO_BOT_DAMAGE=server this is presentation
+                # only; with it, docs/35 resolves the round here.
+                if arena is not None and server_bot_damage_enabled():
+                    landing = hunter_gunnery(state).resolve(shot)
+                    if landing is not None:
+                        state.setdefault('hunter_landings', []).append(landing)
                 log('      HUNTER AI %08x fired at %08x (range %.1f m)' %
                     (shot.shooter, shot.target, shot.range))
         for step in steps:

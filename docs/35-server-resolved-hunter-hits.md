@@ -1,9 +1,9 @@
 # Server-resolved hunter hits (design, option a)
 
-Status: **design only**. Nothing is implemented or tested. The owner chooses
-between this option (a), fidelity-first (b) and harmless bots (c). This file
-records what (a) would do and where every number comes from, so the choice
-can be made on facts.
+Status: **implemented, opt-in, not yet played** (`server/hunter_hits.py`;
+the owner chose option a on 7 October). Enable it with
+`CRUCIBLE_SOLO_BOT_DAMAGE=server`; tune it with `CRUCIBLE_SOLO_BOT_ACCURACY`
+(0..1, default 0.25). The managed profile does not enable it yet.
 
 ## Why it is needed
 
@@ -88,3 +88,34 @@ following, read by `tools/match_acceptance.py`:
 - A6 LOGS-OK with winner team 2 when the player loses.
 - The owner's judgement on whether the knob value feels fair. That decides
   the default before the flag is enabled in the managed profile.
+
+## Implementation notes (7 October)
+
+- **Bloom recovery.** `CooldownDuration` is read as the pause that resets
+  bloom, 0.3 s. A recovery rate of 1/0.3 s would outpace the 96 ms cadence,
+  and bloom could then never build; that would contradict a 2 s burst
+  widening the cone. This is an interpretation until the rest of the curve
+  and the client code are read.
+- **Bloom per shot.** `BloomRatioPerShot` is interpolated linearly between
+  its three keys. Their Bezier tangents are close to the linear slopes.
+- **Hit roll.** Each shot draws two numbers from one seeded RNG: the
+  deviation, and the scale roll. The seed is logged in the
+  `HUNTER HITS server-resolved` line, so a match can be replayed.
+- **Applying hits.** Each tick applies the landings that are due before
+  `Combat.tick`, so health replicates in the same packet. A hunter killed
+  while its round is in flight does no damage.
+- **Exclusion.** Server mode ignores `CRUCIBLE_SOLO_BOT_HIT_REPORTS`.
+
+### Default lethality: 0.25
+
+Measured by seeded simulation of continuous fire, as the mean over 20 seeds
+of the time to drain 800 health:
+
+| scale | 3 Marines at 8 m | 3 at 15 m | 3 at 25 m | 1 at 15 m |
+|---|---|---|---|---|
+| 1.0 (raw cone) | 2 s | 5 s | 16 s | 18 s |
+| 0.25 (default) | 7 s | 25 s | 72 s | 80 s |
+
+At 0.25 the player has time to kill a Marine; the player's own hits take
+about 20 per Marine. Walking into all three at close range is still deadly.
+The hunters have no pauses between attacks, so these times are worst cases.
