@@ -103,6 +103,42 @@ def practice_combat():
     return c
 
 
+class AutonomousPlayerHealthTests(unittest.TestCase):
+    """Live 2026-10-06: a role-1 health update on the player's own role-2
+    character made the retail client demote it and crash on the first hit."""
+
+    def test_player_health_keeps_its_autonomous_role(self):
+        import hero_loadout
+        import shard_stub
+        c = combat.Combat()
+        c.register(0x1000002, MARINE_SHARED_TYPES, maximum=800.0, team=1, autonomous=True)
+        c.register(0x1000003, MARINE_SHARED_TYPES, maximum=800.0, team=2)
+        c.apply_damage(0x1000003, 0x1000002, 20.0, now=0.0)
+        c.apply_damage(0x1000002, 0x1000003, 20.0, now=0.0)
+        player, hunter = c.build_messages(c.tick(0.0))
+        record = shard_stub.build_replication_record(
+            combat.health_traversal_bits(MARINE_SHARED_TYPES))
+        self.assertEqual(player.payload, record
+                         + shard_stub.build_replication_record(
+                             [False] * hero_loadout.AUTONOMOUS_ROOTS)
+                         + struct.pack('>fff', 0.0, 800.0, 780.0))
+        self.assertIn(shard_stub.pack_type_and_flags(shard_stub.ENTITY_ROLE_CLIENT_AUTONOMOUS),
+                      player.header)
+        self.assertEqual(hunter.payload, record + struct.pack('>fff', 0.0, 800.0, 780.0))
+        self.assertIn(shard_stub.pack_type_and_flags(shard_stub.ENTITY_ROLE_CLIENT_SIMULATION),
+                      hunter.header)
+
+    def test_player_death_keeps_its_autonomous_role(self):
+        import shard_stub
+        c = combat.Combat(death_metadata=(0, 51))
+        c.register(0x1000002, MARINE_SHARED_TYPES, maximum=800.0, team=1, autonomous=True)
+        c.register(0x1000003, MARINE_SHARED_TYPES, maximum=800.0, team=2)
+        c.apply_damage(0x1000003, 0x1000002, 800.0, now=0.0)
+        (player,) = c.build_messages(c.tick(0.0))
+        self.assertIn(shard_stub.pack_type_and_flags(shard_stub.ENTITY_ROLE_CLIENT_AUTONOMOUS),
+                      player.header)
+
+
 class HitGateTests(unittest.TestCase):
     def test_accepted_hit_damages_exactly_one_enemy(self):
         c = practice_combat()

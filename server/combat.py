@@ -195,8 +195,29 @@ def build_health_payload(shared_types, *, minimum, maximum, value):
             + struct.pack('>fff', minimum, maximum, value))
 
 
+def autonomous_record(autonomous):
+    """The all-false autonomous record an owned character's message carries.
+
+    The local player's character is ClientAutonomous (role 2). Updating it as
+    ClientSimulation demotes the role, and the retail client crashed on that
+    (live 2026-10-06 21:48, "Changing network role on entity 16777218, old
+    role 2 new role 1"). The record layout follows the accepted spawn probe.
+    """
+    import hero_loadout
+    import shard_stub
+    if not autonomous:
+        return b''
+    return shard_stub.build_replication_record([False] * hero_loadout.AUTONOMOUS_ROOTS)
+
+
+def entity_role(autonomous):
+    import shard_stub
+    return (shard_stub.ENTITY_ROLE_CLIENT_AUTONOMOUS if autonomous
+            else shard_stub.ENTITY_ROLE_CLIENT_SIMULATION)
+
+
 def build_health_update(entity_id, shared_types, *, maximum, value,
-                        minimum=0.0, local=False, previous_id=0):
+                        minimum=0.0, local=False, previous_id=0, autonomous=False):
     """One EntityMessage carrying an absolute Health value for any entity.
 
     Byte-identical to shard_stub.build_practice_health_update for the two NPC
@@ -206,12 +227,16 @@ def build_health_update(entity_id, shared_types, *, maximum, value,
     import shard_stub
     if not minimum <= value <= maximum:
         raise ValueError('health outside [minimum, maximum]')
+    payload = build_health_payload(shared_types, minimum=minimum,
+                                   maximum=maximum, value=value)
+    if autonomous:
+        # Shared record, then the autonomous record, then the values.
+        record = shard_stub.build_replication_record(health_traversal_bits(shared_types))
+        payload = record + autonomous_record(True) + payload[len(record):]
     return shard_stub.build_entity_message(
         entity_id & 0xffffff,
-        shard_stub.pack_type_and_flags(shard_stub.ENTITY_ROLE_CLIENT_SIMULATION),
-        payload=build_health_payload(shared_types, minimum=minimum,
-                                     maximum=maximum, value=value),
-        previous_id=previous_id, local=local)
+        shard_stub.pack_type_and_flags(entity_role(autonomous)),
+        payload=payload, previous_id=previous_id, local=local)
 
 
 # --- Entity state -----------------------------------------------------------
@@ -231,6 +256,7 @@ class CombatEntity:
     respawn_at: float = None            # monotonic deadline while dead
     dirty: bool = False                 # replicate on the next tick
     killer_id: int = None
+    autonomous: bool = False            # the local player's own character
 
     def __post_init__(self):
         if self.health is None:
@@ -276,10 +302,12 @@ class Combat:
 
     # -- registration
     def register(self, entity_id, shared_types, *, maximum, team, local=False,
-                 health=None, respawn_seconds=None, telegraph_seconds=0.0):
+                 health=None, respawn_seconds=None, telegraph_seconds=0.0,
+                 autonomous=False):
         entity = CombatEntity(entity_id, tuple(shared_types), float(maximum),
                               team, local, None if health is None else float(health),
                               respawn_seconds, telegraph_seconds)
+        entity.autonomous = autonomous
         health_traversal_bits(entity.shared_types)  # reject unreplicatable entities
         self.entities[entity_id] = entity
         return entity
@@ -424,6 +452,6 @@ class Combat:
             messages.append(builder(
                 entity.entity_id, entity.shared_types, maximum=entity.maximum,
                 value=entity.health, local=entity.local, previous_id=previous_id,
-                **metadata))
+                autonomous=entity.autonomous, **metadata))
             previous_id = entity.entity_id & 0xffffff
         return messages

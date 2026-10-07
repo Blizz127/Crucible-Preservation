@@ -49,7 +49,7 @@ def death_traversal_bits(shared_types):
 
 def build_death_update(entity_id, shared_types, *, source_name, ability_name,
                        killer_id, maximum, value, minimum=0.0, local=False,
-                       previous_id=0):
+                       previous_id=0, autonomous=False):
     """Return one EntityMessage containing explicit death metadata and health.
 
     Metadata is encoded by 0x93d520 as two full-range uint16 enums. KillerId
@@ -77,10 +77,12 @@ def build_death_update(entity_id, shared_types, *, source_name, ability_name,
 
     # shard_stub consumes this helper; defer the import to avoid a cycle.
     import shard_stub
+    from combat import autonomous_record, entity_role
     payload = (shard_stub.build_replication_record(bits)
+               + autonomous_record(autonomous)
                + struct.pack('>HHI', source_name, ability_name, killer_id)
                + health_bytes)
     return shard_stub.build_entity_message(
         entity_id & 0xffffff,
-        shard_stub.pack_type_and_flags(shard_stub.ENTITY_ROLE_CLIENT_SIMULATION),
+        shard_stub.pack_type_and_flags(entity_role(autonomous)),
         payload=payload, previous_id=previous_id, local=local)

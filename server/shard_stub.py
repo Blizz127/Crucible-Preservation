@@ -1017,7 +1017,7 @@ def start_solo_simulation(state):
     if solo_combat_enabled():
         arena = combat.Combat(death_metadata=solo_death_metadata())
         arena.register(PLAYER_CHARACTER_ID, MARINE_SHARED_TYPES,
-                       maximum=MARINE_HEALTH_MAX, team=1)
+                       maximum=MARINE_HEALTH_MAX, team=1, autonomous=True)
         if profile.bot_positions:
             for entity in HUNTER_BOT_IDS[:len(profile.bot_positions)]:
                 arena.register(entity, MARINE_SHARED_TYPES,
