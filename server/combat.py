@@ -18,6 +18,7 @@ class CombatEntity:
     respawn_at: float = None
     dirty: bool = False
     killer_id: int = None
+    autonomous: bool = False
 
     def __post_init__(self):
         if self.health is None:
@@ -41,10 +42,12 @@ class Combat:
     entities: dict = field(default_factory=dict)
 
     def register(self, entity_id, shared_types, *, maximum, team, local=False,
-                 health=None, respawn_seconds=None, telegraph_seconds=0.0):
+                 health=None, respawn_seconds=None, telegraph_seconds=0.0,
+                 autonomous=False):
         entity = CombatEntity(entity_id, tuple(shared_types), float(maximum),
                               team, local, None if health is None else float(health),
                               respawn_seconds, telegraph_seconds)
+        entity.autonomous = autonomous
         self.entities[entity_id] = entity
         return entity
 
