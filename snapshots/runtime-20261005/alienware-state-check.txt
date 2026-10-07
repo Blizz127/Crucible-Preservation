@@ -138,3 +138,22 @@ Rollback: ~/Projects/crucible-rollback-to-cd3dbfc.sh (drop-in renamed .off,
   units reinstalled from the cd3dbfc tree, restart).
 Pre-flight exit 0; both settings effective; hunter saboteur; package 87 C;
   home free 15G (was 64G on 10-05; not project data).
+
+--- staging of committed 3a09282 (player-health role fix), 2026-10-06 21:51 CDT ---
+Live 21:48:05 and 21:49:15 CDT: the first server-resolved hunter hit crashed
+the retail client on load-in. Last client line: "Changing network role on
+entity 16777218, old role 2 new role 1" -- Combat sent the player's own
+Health as ClientSimulation. Fix 3a09282 keeps the autonomous role in health
+and death updates (prior-session report, not re-run here: 369/372 devbox,
+the 3 needing game files, and 372/372 on the Alienware; pre-flight OK).
+Staged with no game running; hunter still saboteur (Ajonah).
+Re-verified read-only 2026-10-07 ~02:55 UTC (failover session, no writes):
+  shard ExecStart = "Crucible Revival 3a09282"/server/shard_stub.py,
+  active since 21:51:41 CDT, NRestarts=0;
+  bot-damage.conf still server/0.25; hero saboteur;
+  both trees present ("Crucible Revival 3a09282", "Crucible Revival cd3dbfc"),
+  rollback script unchanged;
+  no Crucible client running; zero shard journal lines since the switch,
+  so no retry match has run yet -- the crash fix is still unproven live.
+Disk: home 100%, 2.1G free of 3.7T (was 15G at staging). Not project data
+(new tree ~37 MB), but services and the client all write here; flag to owner.
