@@ -125,3 +125,16 @@ INFO  pick this hunter in the menu: saboteur
 OK    no Crucible client running
 INFO  package 59 C
 INFO  MemAvailable 14 GB, home free 71G
+
+--- staging of committed a24524f with server-resolved hunter hits, 2026-10-06 21:11 CDT ---
+Held from 20:36 CDT while Tabula Rasa (umu-run) was running; staged after no
+game process remained (re-checked immediately before the switch).
+git archive a24524f -> ~/Projects/Crucible Revival a24524f; sha256 350/350 files.
+Server suite on Alienware: Ran 370 tests in 14.583s, OK. Tools: 14 tests, OK.
+Unit files backed up to ~/Projects/crucible-unit-backup-a24524f/.
+New drop-in crucible-revival-shard.service.d/bot-damage.conf:
+  CRUCIBLE_SOLO_BOT_DAMAGE=server, CRUCIBLE_SOLO_BOT_ACCURACY=0.25 (docs/35).
+Rollback: ~/Projects/crucible-rollback-to-cd3dbfc.sh (drop-in renamed .off,
+  units reinstalled from the cd3dbfc tree, restart).
+Pre-flight exit 0; both settings effective; hunter saboteur; package 87 C;
+  home free 15G (was 64G on 10-05; not project data).
