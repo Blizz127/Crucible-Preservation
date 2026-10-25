@@ -578,7 +578,11 @@ class Bot:
         distance = None if aim_target is None else math.dist(origin, aim_target)
         aim = (None if aim_target is None
                else tuple(aim_target[i] - origin[i] for i in range(3)))
-        seen = aim_target is not None and self._can_see(now, aim_target)
+        # Sight decides nothing for a target that is neither held nor within
+        # acquisition range, so the ray is skipped there.
+        seen = (aim_target is not None
+                and (self.target is not None or distance <= self.tuning.aggro_far)
+                and self._can_see(now, aim_target))
         engaged = self._sense(now, target, distance, aim, seen)
 
         shots, speed, heading = (), 0., None

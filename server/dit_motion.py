@@ -96,8 +96,9 @@ class MotionTransport:
             return
         duration = max(0.0, now - track["bout_since"])
         bouts = track["move_bouts"] if current else track["pause_bouts"]
+        # The bout deques are bounded by maxlen=MAX_BOUTS. A slice delete
+        # here raised TypeError on the first transition (docs/36).
         bouts.append(round(duration, 3))
-        del bouts[:-MAX_BOUTS]
         track["moving"] = moving
         track["bout_since"] = now
         track["pending_state"] = None

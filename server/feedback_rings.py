@@ -160,22 +160,26 @@ class _Ring:
         self.last_index = 0
         self.written = 0
         self.recent = {}           # slot -> (entry, written at)
+        self.unsent = set()        # slots written but not yet in any update
 
     def _write(self, entry, now):
         self.last_index = (self.last_index + 1) % self.size
         self.recent[self.last_index] = (entry, now)
+        self.unsent.add(self.last_index)
         self.written += 1
 
     def take(self, now):
         """(entries, last_index) to send this tick, or None.
 
-        Entries written in the last RESEND_SECONDS, newest RESEND_ENTRIES,
-        always including the slot LastServerIndex names.
+        Every entry not yet sent, plus re-sends of entries written in the
+        last RESEND_SECONDS, newest first, up to RESEND_ENTRIES in all. An
+        entry is never dropped before it has been sent once.
         """
         fresh = sorted(((written, slot) for slot, (_, written) in self.recent.items()
                         if now - written <= RESEND_SECONDS), reverse=True)
-        keep = {slot for _, slot in fresh[:RESEND_ENTRIES]}
+        keep = {slot for _, slot in fresh[:RESEND_ENTRIES]} | self.unsent
         self.recent = {slot: value for slot, value in self.recent.items() if slot in keep}
+        self.unsent = set()
         if self.last_index not in self.recent:
             return None
         return {slot: entry for slot, (entry, _) in self.recent.items()}, self.last_index

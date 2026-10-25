@@ -32,6 +32,7 @@ Historical probe helpers below are retained for reproducing old experiments;
 their checksum/framing theories are superseded. Leave CRUCIBLE_SHARD_PROBE
 unset for the verified LZ4 path. Entity probes are opt-in and unverified.
 """
+import collections
 from dataclasses import dataclass, replace
 import datetime
 import os
@@ -1067,8 +1068,8 @@ def terrain_sight():
     level = solo_modes.selected().level
     try:
         terrain = level_geometry.installed_terrain(level)
-    except (OSError, ValueError) as error:
-        log('      LINE OF SIGHT unavailable on %s: %s' % (level, error))
+    except Exception as error:      # noqa: BLE001 - sight is optional; never crash-loop
+        log('      LINE OF SIGHT unavailable on %s: %r' % (level, error))
         return None
     return lambda eye, target: level_geometry.sight_clear(terrain, eye, target)
 
@@ -1380,8 +1381,10 @@ def solo_simulation_messages(state, now, *, previous_id=0):
         from dit_motion import transport_for_state
         transport = transport_for_state(state)
         if transport is not None:
+            # DIT is an observation feed; it must never cost a tick.
             for index, step in enumerate(steps, 1):
-                transport.observe(('bot', 'marine-hunter-%d' % index), step.position, now)
+                guarded(state, 'DIT observation', transport.observe,
+                        ('bot', 'marine-hunter-%d' % index), step.position, now)
         if updates:
             previous_id = steps[-1].entity & 0xffffff
         # One animation update per bot per tick carries every enabled policy's
@@ -1623,8 +1626,11 @@ def clock_interval():
     return min(max(milliseconds, 16), 100) / 1000.
 
 
-# Not authored: how long a failing simulation may run before the match ends.
+# Not authored: a match ends once failing ticks are at least this share of
+# the last window, judged over no less than the shorter span.
 SIMULATION_FAILURE_GAMEOVER_SECONDS = 2.0
+SIMULATION_FAILURE_WINDOW_SECONDS = 4.0
+SIMULATION_FAILURE_FRACTION = 0.2
 
 
 def guarded(state, where, function, *args, **kwargs):
@@ -1713,20 +1719,24 @@ def game_clock_packets(state, *, now=None):
         now_s = elapsed_ms / 1000.
         tick = guarded(state, 'simulation tick', solo_simulation_messages,
                        state, now_s, previous_id=previous)
-        if tick is None:
-            # A tick that keeps failing freezes the match, and the only way
-            # out would be leaving it (the rejoin trap). After a short run of
-            # failures, end it: the GameOver branch runs before any other
-            # simulation code, and GameOver clears the client's rejoin data.
-            since = state.setdefault('simulation_failing_since', now_s)
-            if (now_s - since >= SIMULATION_FAILURE_GAMEOVER_SECONDS
-                    and 'match_result' not in state):
-                state['match_result'] = {'winner_team': 0, 'at_seconds': now_s,
-                                         'reason': 'simulation error'}
-                log('      SIMULATION FAILED for %.1f s: ending the match with GameOver'
-                    % (now_s - since))
-        else:
-            state.pop('simulation_failing_since', None)
+        # A simulation that keeps failing, even only on some ticks, leaves a
+        # broken match whose only exit is leaving it (the rejoin trap). When
+        # failing ticks are a large share of the recent ones, end it: the
+        # GameOver branch runs before any other simulation code, and GameOver
+        # clears the client's rejoin data.
+        outcomes = state.setdefault('tick_outcomes', collections.deque())
+        outcomes.append((now_s, tick is None))
+        while outcomes and now_s - outcomes[0][0] > SIMULATION_FAILURE_WINDOW_SECONDS:
+            outcomes.popleft()
+        failed = sum(1 for _, bad in outcomes if bad)
+        if (tick is None and 'match_result' not in state
+                and now_s - outcomes[0][0] >= SIMULATION_FAILURE_GAMEOVER_SECONDS
+                and failed >= SIMULATION_FAILURE_FRACTION * len(outcomes)):
+            state['match_result'] = {'winner_team': 0, 'at_seconds': now_s,
+                                     'reason': 'simulation error'}
+            log('      SIMULATION FAILED on %d of %d ticks: ending the match with GameOver'
+                % (failed, len(outcomes)))
+        if tick is not None:
             messages.extend(tick)
     groups = split_entity_messages(messages) if split_updates_enabled() else [messages]
     packets = []
@@ -1871,7 +1881,8 @@ def observe_client_input(message, state):
     from dit_motion import transport_for_state
     transport = transport_for_state(state)
     if transport is not None:
-        transport.observe(('human', 'local-player'), position)
+        guarded(state, 'DIT observation', transport.observe,
+                ('human', 'local-player'), position)
     if not state.get('player_position_logged'):
         state['player_position_logged'] = True
         log('      CLIENT INPUT decoded: player at (%.2f, %.2f, %.2f)' % position)
@@ -2470,8 +2481,11 @@ def main():
     # The same for the line-of-sight terrain (about 0.3 s for April2018).
     if solo_ai_enabled() and os.environ.get('CRUCIBLE_SOLO_LOS') == 'terrain':
         start = time.monotonic()
-        if terrain_sight() is not None:
-            log("prewarmed line-of-sight terrain in %.2fs" % (time.monotonic() - start))
+        try:
+            if terrain_sight() is not None:
+                log("prewarmed line-of-sight terrain in %.2fs" % (time.monotonic() - start))
+        except Exception as error:      # noqa: BLE001 - diagnostic only
+            log("line-of-sight prewarm FAILED: %r" % (error,))
 
     reply = os.environ.get("CRUCIBLE_SHARD_REPLY", "").strip() or None
     if reply:

@@ -62,6 +62,8 @@ TRACEBACK = re.compile(r'Traceback \(most recent call last\)')
 # Marine reloads.
 FEEDBACK = re.compile(r'SOLO FEEDBACK sent rpc (\d+)/(\d+) to [0-9a-f]{8} \(count (\d+)\)')
 RELOAD = re.compile(r'HUNTER AI ([0-9a-f]{8}) reloading')
+# docs/36 valves that end a match with a no-winner GameOver.
+VALVE = re.compile(r'(SIMULATION FAILED on \d+ of \d+ ticks|SEQUENCE LIMIT: LocalSequence \d+ reached \d+)')
 RINGS = re.compile(r'SOLO FEEDBACK (damage numbers|hit arcs) index \d+ \(count (\d+)\)')
 JOURNAL_TIME = re.compile(r'^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)([+-]\d\d):?(\d\d)')
 
@@ -90,9 +92,12 @@ ACTIVATION_REFUSED = re.compile(r'HybridProjectileSystemClient::\w+: .*'
 def shard_facts(lines):
     facts = {'population': [], 'input': 0, 'states': {}, 'fire': 0, 'hits': [],
              'refused': {}, 'over': [], 'rank': None, 'starts': [], 'tracebacks': 0,
-             'population_after_over': 0, 'feedback': {}, 'reloads': 0, 'rings': {}}
+             'population_after_over': 0, 'feedback': {}, 'reloads': 0, 'rings': {},
+             'valves': []}
     for line in lines:
-        if RINGS.search(line):
+        if VALVE.search(line):
+            facts['valves'].append(VALVE.search(line).group(1))
+        elif RINGS.search(line):
             kind, count = RINGS.search(line).groups()
             facts['rings'][kind] = max(facts['rings'].get(kind, 0), int(count))
         elif FEEDBACK.search(line):
@@ -252,6 +257,9 @@ def score(shard, client):
         evidence += ('; re-entered %dx after GameOver' % shard['population_after_over']
                      if shard['population_after_over'] else '; next READY not seen')
         rows.append(('A6 match end', 'LOGS-OK', evidence + '; eyes: end screen, home'))
+    elif shard['valves']:
+        rows.append(('A6 match end', 'FAIL', 'GameOver forced by a valve, not by the match: %s'
+                     % shard['valves'][0]))
     else:
         rows.append(('A6 match end', 'FAIL', 'no GameOver%s' % (
             '; client left via MatchExit' if client and client['match_exit'] else '')))

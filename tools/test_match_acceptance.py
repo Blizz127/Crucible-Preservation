@@ -113,5 +113,16 @@ class RefusedUpdateRowTests(unittest.TestCase):
         self.assertEqual(statuses(SHARD, wrapped)['S1'], 'FAIL')
 
 
+
+class ValveRowTests(unittest.TestCase):
+    def test_a_valve_ending_is_named_in_a6(self):
+        shard = [line for line in SHARD if 'match over' not in line and 'rank 1' not in line]
+        shard += [J % (12, 12) + 'SIMULATION FAILED on 9 of 40 ticks: ending the match with GameOver']
+        rows = {row[0].split()[0]: row for row in score(shard_facts(shard), client_facts(CLIENT))}
+        self.assertEqual(rows['A6'][1], 'FAIL')
+        self.assertIn('forced by a valve', rows['A6'][2])
+        self.assertIn('SIMULATION FAILED on 9 of 40 ticks', rows['A6'][2])
+
+
 if __name__ == '__main__':
     unittest.main()

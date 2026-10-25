@@ -106,7 +106,8 @@ class RingPolicyTests(unittest.TestCase):
         self.assertIsNone(ring.take(10.6))
         for k in range(12):
             ring.hit(5., (0., 0., 0.), 11. + k * .01)
-        entries, last = ring.take(11.2)
+        self.assertEqual(len(ring.take(11.2)[0]), 12)     # each sent once
+        entries, last = ring.take(11.3)                   # then re-sends only
         self.assertEqual(len(entries), rings.RESEND_ENTRIES)
         self.assertIn(last, entries)
         self.assertEqual(sorted(entries), sorted((last - k) % 16 for k in range(8)))
@@ -211,6 +212,19 @@ class ShardRingTests(unittest.TestCase):
                 patch.object(shard, 'terrain_sight', return_value=lambda e, t: True):
             state = self.start()
         self.assertTrue(all(bot.visible is state['sight'] for bot in squad.bots))
+
+
+
+class UnsentEntryTests(unittest.TestCase):
+    def test_a_burst_larger_than_the_resend_cap_is_sent_whole_once(self):
+        ring = rings.FloaterRing()
+        for k in range(12):
+            ring.hit(0x01000003 + k % 3, 10., 5.)
+        entries, last = ring.take(5.)
+        self.assertEqual(len(entries), 12)
+        self.assertEqual(last, 12)
+        # Afterwards only the re-send window remains.
+        self.assertEqual(len(ring.take(5.1)[0]), rings.RESEND_ENTRIES)
 
 
 if __name__ == '__main__':

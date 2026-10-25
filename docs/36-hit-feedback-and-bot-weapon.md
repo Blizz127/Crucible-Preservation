@@ -411,6 +411,30 @@ raise, so both paths now run under `guarded`:
 
 A broken feature therefore ends the match cleanly instead of freezing it.
 
+The valve counts the **share** of failing ticks, not a consecutive run:
+- it ends the match once at least 20% of the ticks in the last 4 s failed,
+  judged over at least 2 s;
+- a bug that fails only every other tick still ends the match;
+- one tick in ten does not.
+
+**A pre-existing shard crash, found by review.** `dit_motion.py` trimmed
+its bout history with `del bouts[:-MAX_BOUTS]` on a `deque`. A deque cannot
+be sliced, so this raised TypeError the first time any tracked actor
+switched between moving and standing for 0.5 s. The managed profile sets
+`CRUCIBLE_DIT_TRANSPORT_ROOT`, so the path is live:
+- In the receive path, a walking player killed the shard: a mid-match
+  restart and the rejoin trap.
+- In the tick path, a patrolling hunter failed 25–59% of ticks.
+
+On 5 October it never fired: DIT recorded zero moving samples for every
+actor over 4.5 minutes, so no transition happened. The deques already have
+`maxlen=MAX_BOUTS`, so the line is gone. Both DIT observation calls now run
+under `guarded`, because an observation feed must never cost a tick.
+
+With the live profile, five scripted sessions are byte-identical between
+ffae2f1 and this commit. With DIT on and off they are also identical:
+wins, losses, deaggro, teleport and flank.
+
 ## Not verified
 
 None of these has run in the retail client yet. The live checks are:
