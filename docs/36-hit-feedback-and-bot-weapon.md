@@ -210,7 +210,9 @@ range". With `CRUCIBLE_SOLO_FORCED_AGGRO=1`, a Marine hit by the player:
 - restarts its 0.25 s new-target delay;
 - ignores the deaggro radius until the window ends.
 
-Line of sight is still not modelled.
+The window also holds the target unseen: with `CRUCIBLE_SOLO_LOS=terrain`
+(below) the 8 s forget does not apply inside it, but an attacker the
+Marine has never seen is not fired on.
 
 ## Strafing
 

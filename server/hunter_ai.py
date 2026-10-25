@@ -396,8 +396,8 @@ class Bot:
         """ForcedAggroDurationOnDamage: whoever hit the bot becomes its target.
 
         A new target restarts AttackDelayForNewTargets; the deaggro radius is
-        ignored until the forced window ends. Line of sight is not modelled,
-        so it cannot end the window early either.
+        ignored until the forced window ends. Losing sight cannot end the
+        window early, but only a real sight opens fire (_sighted_at).
         """
         if not self.tuning.forced_aggro_on_damage:
             return
