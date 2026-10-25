@@ -218,8 +218,10 @@ What the shipped files say (read on the devbox reference copy):
   centimetre, 1,418 are HotH_02's own, and 493 of April2018's are gone.
   Guide nodes 33, 34 and 42 stand beside HotH_02-only colliders: cave-tree
   roots, corals and tree-core samples. That explains their distance from the
-  copied navmesh. HotH_02 needs its own static-geometry cache
-  (`tools/build_static_geometry.py HotH_02`), which has not been built.
+  copied navmesh. HotH_02 needs its own static-geometry cache.
+  `tools/build_static_geometry.py HotH_02` builds it cleanly on the devbox:
+  9,161 instances of 708 meshes, every asset found, no collider on layer 2,
+  4.3 MB. Build it on the host before a HotH_02 run with static sight.
 - **Placeholder spawns.** The HotH_02 hunters start on guide nodes 44, 36
   and 39. Those are the three nearest the player's drop by navigation path
   (147, 180 and 228 m; `HOTH_02_BOT_NODES`). That gives presence, not the
