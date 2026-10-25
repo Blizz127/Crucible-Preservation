@@ -92,7 +92,6 @@ class MotionTransport:
         duration = max(0.0, now - track["bout_since"])
         bouts = track["move_bouts"] if current else track["pause_bouts"]
         bouts.append(round(duration, 3))
-        del bouts[:-MAX_BOUTS]
         track["moving"] = moving
         track["bout_since"] = now
         track["pending_state"] = None
