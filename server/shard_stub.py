@@ -1571,6 +1571,30 @@ def clock_interval():
     return min(max(milliseconds, 16), 100) / 1000.
 
 
+# Not authored: how long a failing simulation may run before the match ends.
+SIMULATION_FAILURE_GAMEOVER_SECONDS = 2.0
+
+
+def guarded(state, where, function, *args, **kwargs):
+    """Run simulation code without letting an exception end the shard.
+
+    An exception escaping the tick or the receive path stops the process,
+    systemd restarts it mid-match, and the client is left in the rejoin trap
+    (docs/30). Log the traceback instead (at counts 1, 2, 4, ...) and keep
+    the connection: that tick sends only its clock. Returns None on error.
+    """
+    try:
+        return function(*args, **kwargs)
+    except Exception:
+        import traceback
+        counts = state.setdefault('simulation_errors', {})
+        count = counts[where] = counts.get(where, 0) + 1
+        if count & (count - 1) == 0:
+            log('      SIMULATION ERROR in %s (count %d)\n%s'
+                % (where, count, traceback.format_exc().rstrip()))
+        return None
+
+
 def game_clock_reply(state, *, now=None):
     """Advance ServerGameTimePoint at up to 20 Hz after solo startup.
 
@@ -1603,7 +1627,24 @@ def game_clock_reply(state, *, now=None):
             messages.append(build_practice_health_update(entity, health, previous_id=previous))
             previous = entity & 0xffffff
     if state.get('practice_npcs_sent'):
-        messages.extend(solo_simulation_messages(state, elapsed_ms / 1000., previous_id=previous))
+        now_s = elapsed_ms / 1000.
+        tick = guarded(state, 'simulation tick', solo_simulation_messages,
+                       state, now_s, previous_id=previous)
+        if tick is None:
+            # A tick that keeps failing freezes the match, and the only way
+            # out would be leaving it (the rejoin trap). After a short run of
+            # failures, end it: the GameOver branch runs before any other
+            # simulation code, and GameOver clears the client's rejoin data.
+            since = state.setdefault('simulation_failing_since', now_s)
+            if (now_s - since >= SIMULATION_FAILURE_GAMEOVER_SECONDS
+                    and 'match_result' not in state):
+                state['match_result'] = {'winner_team': 0, 'at_seconds': now_s,
+                                         'reason': 'simulation error'}
+                log('      SIMULATION FAILED for %.1f s: ending the match with GameOver'
+                    % (now_s - since))
+        else:
+            state.pop('simulation_failing_since', None)
+            messages.extend(tick)
     return build_entity_updates(shard_bpt(), state['seq'], state['received_seq'],
                                 messages, game_time_ms=game_time_ms,
                                 seq_window=state['received_window'])
@@ -1782,7 +1823,7 @@ def observe_client_rpcs(region, state):
     counts = state.setdefault('client_rpc_counts', {})
     for message in messages:
         if 'combat' in state:
-            observe_solo_combat(message, state)
+            guarded(state, 'combat report', observe_solo_combat, message, state)
         else:
             observe_practice_damage(message, state)
         observe_client_input(message, state)

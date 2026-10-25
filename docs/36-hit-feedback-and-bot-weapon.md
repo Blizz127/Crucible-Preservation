@@ -340,6 +340,22 @@ while it stands.
 Facing gates the far aggro cone and the attack cone, so this switch also
 changes when Marines notice the player and start firing.
 
+## A simulation error no longer ends the shard
+
+Before this pass, an exception in the tick or in a reported hit escaped the
+shard's loop. systemd then restarted the process mid-match, which leaves
+the client in the rejoin trap (docs/30). New code paths add new ways to
+raise, so both paths now run under `guarded`:
+- The traceback is logged at counts 1, 2, 4, and so on, so
+  `match_acceptance.py` still fails A7.
+- The connection survives; a failing tick sends only its clock.
+- After 2 s of consecutive failing ticks the match ends with a no-winner
+  result (`SIMULATION_FAILURE_GAMEOVER_SECONDS`). The next tick takes the
+  GameOver branch, which runs before any other simulation code. GameOver
+  clears the client's rejoin data.
+
+A broken feature therefore ends the match cleanly instead of freezing it.
+
 ## Not verified
 
 None of these has run in the retail client yet. The live checks are:
