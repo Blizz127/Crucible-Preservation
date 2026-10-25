@@ -35,6 +35,14 @@ def sight_line(observer_feet, target_feet, *, eye_height, target_height):
             (target_feet[0], target_feet[1], target_feet[2] + target_height))
 
 
+def sight_clear(terrain, start, end, *, step, epsilon, underground=0.0):
+    for x, y, z in (start, end):
+        ground = terrain.height(x, y)
+        if ground is not None and z < ground - underground:
+            return True
+    return terrain_clear(terrain, start, end, step=step, epsilon=epsilon)
+
+
 def terrain_clear(terrain, start, end, *, step, epsilon):
     if step <= 0:
         raise ValueError('step must be positive')

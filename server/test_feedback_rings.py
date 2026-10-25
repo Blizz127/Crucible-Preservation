@@ -8,8 +8,8 @@ class RingPolicyTests(unittest.TestCase):
         size = 5
         indicators = rings.IndicatorRing(size)
         for hit in range(size * 3):
-            indicators.hit(1.0, (0.0, 0.0, 0.0))
-            indicators.take()
+            indicators.hit(1.0, (0.0, 0.0, 0.0), float(hit))
+            indicators.take(float(hit))
             self.assertLess(indicators.last_index, size)
 
 
