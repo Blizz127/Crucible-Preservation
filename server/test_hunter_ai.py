@@ -311,6 +311,71 @@ class FleeTests(unittest.TestCase):
         self.assertEqual(after[-1].target, 2)
         self.assertIn(after[-1].state, (hunter_ai.PURSUE, hunter_ai.ATTACK))
 
+    def blocked_bot(self, duration=2., window=(0., 2.)):
+        # Attacks[0]: FleeingBlockedWindows over the attack, a 2.5 s memory.
+        return self.bot(attack_duration=duration, round_interval=.1, attack_delay=.25,
+                        flee_ignore_targets=4., flee_blocked_window=window,
+                        flee_memory=2.5)
+
+    def engage(self, bot, player):
+        now = 0.
+        while bot.attack_started is None:
+            now += .05
+            bot.update(now, 2, player)
+            self.assertLess(now, 5.)
+        return now
+
+    def test_a_hit_mid_attack_waits_for_the_attack_to_end(self):
+        bot, player = self.blocked_bot(), (0., 8., 0.)
+        now = started = self.engage(bot, player)
+        now += .5
+        bot.update(now, 2, player)
+        self.assertTrue(bot.consider_flee(now, player, .3, .9))
+        self.assertNotEqual(bot.state, hunter_ai.FLEE)    # the attack runs on
+        steps = []
+        while now < started + 3.:
+            now += .05
+            steps.append((now, bot.update(now, 2, player)))
+        before = [s for t, s in steps if s.state != hunter_ai.FLEE]
+        flight = [(t, s) for t, s in steps if s.state == hunter_ai.FLEE]
+        self.assertTrue(any(s.shots for s in before))     # it finished its burst
+        self.assertTrue(flight)
+        self.assertFalse([s for t, s in flight if s.shots or s.firing])
+        first = flight[0][0]
+        self.assertGreaterEqual(first, started + 2. - 1e-9)
+        self.assertLess(first, started + 2.1)
+        self.assertEqual(bot.flees, 1)
+        self.assertAlmostEqual(bot._flee_until, first + 4.)  # IgnoreTargetsTime
+
+    def test_a_decision_outlasting_its_memory_is_dropped(self):
+        # A 3 s window closes 2.9 s after this decision, past the 2.5 s memory.
+        bot, player = self.blocked_bot(duration=3., window=(0., 3.)), (0., 8., 0.)
+        now = started = self.engage(bot, player)
+        now += .1
+        bot.update(now, 2, player)
+        self.assertTrue(bot.consider_flee(now, player, .3, .9))
+        while now < started + 3.5:
+            now += .05
+            self.assertNotEqual(bot.update(now, 2, player).state, hunter_ai.FLEE)
+        self.assertEqual(bot.flees, 0)
+        self.assertIsNotNone(bot.attack_started)          # fighting again
+
+    def test_a_hit_after_the_window_settles_the_waiting_decision(self):
+        # The attack has run its 2 s, but no tick has cleared it yet.
+        bot, player = self.blocked_bot(), (0., 8., 0.)
+        now = started = self.engage(bot, player)
+        self.assertTrue(bot.consider_flee(now + .5, player, .3, .9))
+        self.assertIsNotNone(bot._flee_wanted)
+        self.assertTrue(bot.consider_flee(started + 2.01, player, .3, .9))
+        path = list(bot._plan)
+        bot.update(started + 2.05, 2, player)
+        self.assertEqual((bot.flees, bot._plan), (1, path))
+
+    def test_outside_an_attack_it_goes_at_once(self):
+        bot = self.blocked_bot()
+        self.assertTrue(bot.consider_flee(1., (0., 9., 0.), .4, .8))
+        self.assertEqual((bot.state, bot.flees), (hunter_ai.FLEE, 1))
+
     def test_a_hit_during_the_flight_extends_it_on_the_same_path(self):
         bot = self.bot()
         self.assertTrue(bot.consider_flee(1., (0., 9., 0.), .4, .8))

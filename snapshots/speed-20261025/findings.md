@@ -135,7 +135,9 @@ Commands run from the repo root as `.venv/bin/python -I tools/xref.py ...`
   - `marine_guide_on_hit.cdl` (sha256 `4de60d8c...`): on damage it calls
     `RequestAIStateChange(Flee, 4.0 s)`, `StartInputOverride Ability3` for
     4.0 s, `MoveAxisY` for 4.0 s and `UseMedPack` for 6.0 s. The gating
-    conditions were not decoded.
+    conditions were not decoded. (Since decoded: docs/36, "A losing Marine
+    flees". The `MoveAxisY` node [7] is connected to nothing, and the
+    medpack needs a resource the Marine lacks.)
   - `marine_guide_attack_selector.cdl` (sha256 `8cc44216...`) has ten
     overrides, including `Ability3` 3.0 s and `MoveBackward` 3.0 s.
   - Both carry leftover debug prints.

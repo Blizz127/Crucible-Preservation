@@ -647,13 +647,20 @@ selector, so it runs. Decoded with the bot-weapon track's
 - **Otherwise it heals.** At or below the heal threshold it uses a medpack,
   if it has one.
 
-`FleeParams` and its tooltips give the flight:
+`FleeParams`, the attack element and their tooltips give the flight:
+- **When.** The Marine's one attack blocks fleeing for its whole 2 s
+  (`FleeingBlockedWindows` 0–2 s), and is not "interruptible by CDL state
+  change request". The AI "will remember desire to flee only for this long
+  while blocked from fleeing": 2.5 s (`TimeRememberingWantingToFlee`). So
+  a Marine hit mid-burst finishes its attack, starts no new one, and then
+  flees.
 - **Destination.** 20–40 m "from current pos", directly away from the
   enemies' average position (the current target weighted 2). Up to 30
   attempts.
 - **Ignoring targets.** For `IgnoreTargetsTime`, 4 s, it neither senses nor
   is aggroed by damage, "allowing it to break out of the flee state early"
-  afterwards.
+  afterwards. The tooltip also calls it the "min flee time", so the flight
+  lasts 4 s from its start (`MinFleeDuration` is 1 s).
 - **Speed.** Assumed: 8.5 m/s, sprint's forward speed, for the whole 4 s.
   The alternative is 5.5, the Default config's. `marine_sprint.cdl` starts
   sprint on an Ability3 input only while forward input is at least 0.1 (its
@@ -664,13 +671,19 @@ selector, so it runs. Decoded with the bot-weapon track's
   stops, or on aiming, firing (except while placing a bunker), melee or
   death. Native cancels were not checked. Running out of the Sprint
   resource (max 1, +4/s, drained at 8/s) is not one of the script's cancel
-  conditions.
+  conditions. A flight that waited for an attack starts with Ability3
+  already held through the end of the burst, when firing cancels sprint,
+  so it too depends on that untraced re-fire. The AI's own `FleeingSpeed`
+  is 8.0, like its chase speed, and is out of reach for the same reason
+  (below).
 
 With `CRUCIBLE_SOLO_BOT_FLEE=1`, an accepted, non-killing player hit runs
 that test on the hunter it hit, with the arena's health ratios and the
-horizontal distance. A fleeing Marine keeps its target (FleeParams flee
-from "the current combat target") but starts no attack and senses nothing.
-It runs its flight path at 8.5 m/s for 4 s; the chase cap does not limit
+horizontal distance. A Marine hit during an attack fires on to the
+attack's end and then flees; one hit between attacks flees at once. A
+fleeing Marine keeps its target (FleeParams flee from "the current combat
+target") but starts no attack and senses nothing. It runs its flight path
+at 8.5 m/s for 4 s from the flight's start; the chase cap does not limit
 the flight. Afterwards the held target's 50 m deaggro radius decides: a
 player within it is fought again, even one behind the Marine, outside its
 acquisition cone. Otherwise the Marine drops the target and patrols. Each
@@ -682,6 +695,8 @@ Inferred or left out:
 - **A hit during the flight** that still meets the test extends it to 4 s
   from that hit, on the same path. The script requests Flee again; how the
   AI treats a repeated request is not traced.
+- **A hit while the flight waits** for the attack's end restarts the 2.5 s
+  memory, and the flight runs from where the attacker is when it starts.
 - **The search's angular spread** (widening to ±60°) is not authored.
   Candidates in another navmesh component than the Marine's are skipped
   unsearched: no path reaches them, and proving that took up to a second.

@@ -406,8 +406,8 @@ def score(shard, client):
         rows.append(('B2 blocked', 'LOGS-OK', '>=%d hunter rounds stopped by line of sight; '
                      'eyes: no damage through cover' % shard['blocked']))
     if shard['flees']:
-        rows.append(('B4 flee', 'LOGS-OK', 'flights %s; eyes: a losing Marine turns, runs '
-                     'about 4 s, then comes back' % ', '.join(
+        rows.append(('B4 flee', 'LOGS-OK', 'flights %s; eyes: a losing Marine finishes its '
+                     'burst (up to 2 s), runs about 4 s, then comes back' % ', '.join(
                          '%s >=%d' % item for item in sorted(shard['flees'].items()))))
     if shard['rests']:
         rows.append(('B3 rests', 'LOGS-OK', 'idle rests %s; eyes: an idle animation between '

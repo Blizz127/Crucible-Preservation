@@ -54,7 +54,10 @@ class Tuning:
     idle_extra: float = 0.                 # ...plus this, seconds
     start_stop_acceleration: float = 0.    # m/s^2; 0 changes speed at once
     config_ramp_seconds: float = 0.        # movement config: 0 to full speed
-    flee_time: float = 0.                  # seconds; 0 never flees
+    flee_time: float = 0.                  # the script's Flee request, s; 0 never flees
+    flee_ignore_targets: float = 0.        # FleeParams/IgnoreTargetsTime: the least flight
+    flee_blocked_window: tuple = None      # (start, end) s into an attack: flight waits
+    flee_memory: float = 0.                # ...and the decision lasts this long, s
     flee_speed: float = 0.
     flee_near: float = 20.                 # destination, metres from where it stands
     flee_far: float = 40.
@@ -183,8 +186,12 @@ MARINE = Tuning(
     # flight is assumed to run at marine_sprint's 8.5 m/s (5.5 if sprint never
     # starts: its check needs forward input >= 0.1 at the press, docs/36).
     # FleeParams: destination 20..40 m "from current pos" (0x3a6/0x3c0),
-    # directly away from the enemy, in up to 30 attempts (0x35b).
-    flee_time=4.0, flee_speed=8.5, flee_near=20.0, flee_far=40.0, flee_attempts=30,
+    # directly away from the enemy, in up to 30 attempts (0x35b), and
+    # IgnoreTargetsTime 4.0 s, "min flee time" (0x3da). Attacks[0] blocks
+    # fleeing for its whole 2 s (FleeingBlockedWindows 0..2, 0x1465/0x147f)
+    # and remembers the decision 2.5 s (TimeRememberingWantingToFlee, 0x149b).
+    flee_time=4.0, flee_ignore_targets=4.0, flee_blocked_window=(0.0, 2.0),
+    flee_memory=2.5, flee_speed=8.5, flee_near=20.0, flee_far=40.0, flee_attempts=30,
     # PassiveTurnParams/TurnInPlaceSpeed (0xc93) turns a standing bot. A
     # moving one steers through its spoofed player inputs, so its body turns
     # at marine_default.movementconfig's Max Turn Speed (0x143), 1440 deg/s.
@@ -333,6 +340,7 @@ class Bot:
     _speed: float = 0.
     _patrol_failed_attempts: int = 0
     _flee_until: float = None
+    _flee_wanted: tuple = None    # (decided at, attacker position) while blocked
     _dit_patrol_move_until: float = None
 
     def __post_init__(self):
@@ -499,12 +507,15 @@ class Bot:
 
         It flees when the attacker is healthier (its health ratio is higher)
         and sqrt(Distance2D) * own ratio < 1.5. The flight goes 20..40 m
-        directly away from the attacker for flee_time. It keeps its combat
-        target (FleeParams flee from "the current combat target") but neither
+        directly away from the attacker. It keeps its combat target
+        (FleeParams flee from "the current combat target") but neither
         attacks nor senses; afterwards the held target's deaggro radius, not
-        the acquisition cone, decides whether it fights on. A hit during a
-        flight that still meets the test only extends it (inferred: the
-        script requests Flee again). Returns True when it flees.
+        the acquisition cone, decides whether it fights on. Inside an
+        attack's FleeingBlockedWindows the decision waits for the window to
+        close, remembered for flee_memory, and no new attack starts. A hit
+        during a flight that still meets the test only extends it (inferred:
+        the script requests Flee again). Returns True when it flees or will
+        once its attack allows.
         """
         if not self.flee or not self.tuning.flee_time or self.mesh is None or self.rng is None:
             return False
@@ -514,16 +525,38 @@ class Bot:
         if not (attacker_ratio > own_ratio and math.sqrt(distance) * own_ratio < 1.5):
             return False
         if self._flee_until is not None and now < self._flee_until:
-            self._flee_until = now + self.tuning.flee_time     # keep the path
+            self._flee_until = max(self._flee_until, now + self.tuning.flee_time)
+            return True                                         # keep the path
+        if self._flee_blocked(now):
+            self._flee_wanted = (now, attacker_position)
             return True
-        plan = self._flee_plan(dx, dy, distance)
+        return self._start_flight(now, attacker_position, now)
+
+    def _flee_blocked(self, now):
+        """Inside the running attack's FleeingBlockedWindows."""
+        window = self.tuning.flee_blocked_window
+        return (window is not None and self.attack_started is not None
+                and window[0] <= now - self.attack_started <= window[1])
+
+    def _start_flight(self, now, attacker_position, decided_at):
+        """Run from attacker_position; False when no destination is found.
+
+        The flight lasts IgnoreTargetsTime from its start ("min flee time"),
+        or to the end of the script's request if that is later.
+        """
+        self._flee_wanted = None          # a flight, or none, settles it
+        dx = self.position[0] - attacker_position[0]
+        dy = self.position[1] - attacker_position[1]
+        plan = self._flee_plan(dx, dy, math.hypot(dx, dy))
         if plan is None:
             return False
         self.flees += 1
         self._plan, self._index = plan, 1
         self._planned_at = self._planned_for = None
         self.attack_started, self.attack_ended, self.rounds_fired = None, now, 0
-        self.state, self._flee_until = FLEE, now + self.tuning.flee_time
+        self.state = FLEE
+        self._flee_until = now + max(self.tuning.flee_ignore_targets,
+                                     decided_at + self.tuning.flee_time - now)
         return True
 
     def _flee_plan(self, dx, dy, distance):
@@ -891,11 +924,20 @@ class Bot:
             in_sight_window = seen or (
                 self._sighted_at is not None
                 and now - self._sighted_at <= self.tuning.abandon_attack_without_sight)
-            if (self.attack_started is None and in_sight_window
+            if (self.attack_started is None and in_sight_window and self._flee_wanted is None
                     and self._may_attack(now, math.dist(current_origin, aim_target), aim)):
                 self.attack_started, self.rounds_fired = now, 0
                 self._round_anchor, self._anchor_rounds = now, 0
                 shots.extend(self._rounds(now, target_position))
+
+        if self._flee_wanted is not None and not self._flee_blocked(now):
+            # The attack is over (or dropped): act on a remembered decision.
+            decided_at, attacker = self._flee_wanted
+            self._flee_wanted = None
+            if now - decided_at <= self.tuning.flee_memory:
+                if target is not None and target == self.target and target_position is not None:
+                    attacker = target_position
+                self._start_flight(now, attacker, decided_at)
 
         # marine_primary_onfire.cdl clears using_primary1 when its loop exits
         # for the reload; marine_reload.cdl holds using_reload meanwhile.
