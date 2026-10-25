@@ -426,6 +426,20 @@ class Combat:
             self._die(entity, now)
         return HitResult(entity.entity_id, float(damage), entity.health, killed)
 
+    def heal(self, target, amount):
+        """Restore health to a live entity, at most to its maximum: a hive's
+        out-of-combat regeneration (docs/37). Returns the health gained."""
+        entity = self.entities.get(target)
+        if entity is None or not entity.alive:
+            return 0.0
+        if type(amount) not in (int, float) or not 0 < amount < float('inf'):
+            raise ValueError('healing must be a positive finite number')
+        gained = min(float(amount), entity.maximum - entity.health)
+        if gained > 0:
+            entity.health += gained
+            entity.dirty = True
+        return gained
+
     def _die(self, entity, now):
         """Schedule the simulation's respawn after health reaches zero.
 

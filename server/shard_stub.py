@@ -181,6 +181,70 @@ def bot_hero(entity):
     return next((slot.hero for slot in solo_bot_slots() if slot.entity == entity), None)
 
 
+# docs/37: HOTH_GUIDE's hive, behind CRUCIBLE_SOLO_GUIDE_HIVE=1. Its id stays
+# clear of HUNTER_BOT_IDS, which other paths treat as Marine-typed bots.
+HIVE_ENTITY_ID = 0x01000006
+HIVE_SLICE_HASH = 3885309295    # stringhashlibrary: slices/creatures/hive/hive
+# Its shared component types, derived from the exe and validated against live
+# captures (snapshots/guide-objectives-20261025/objective-shared-sets.json).
+HIVE_SHARED_TYPES = (5, 8, 13, 18, 24, 27, 44, 46, 79, 80, 98, 101, 107, 115,
+                     132, 145, 146, 156, 158, 163, 165, 166)
+HIVE_HEALTH_MAX = 5000.0        # hive.dynamicslice
+HIVE_TEAM = 3                   # it has none: everyone's enemy
+# hive_outofcombatregen.cdl: HiveOutOfCombat counts 1/s from the last hit and
+# at 19.5 runs DoHealing 100 every 1.0 s until full; a hit stops it.
+HIVE_REGEN_AFTER = 19.5
+HIVE_REGEN_STEP = 100.0
+HIVE_REGEN_INTERVAL = 1.0
+HIVE_DROP_DISTANCE = 30.0       # the placeholder spot's distance from the drop
+
+
+def guide_hive_enabled(profile=None):
+    """CRUCIBLE_SOLO_GUIDE_HIVE=1 in a HOTH_GUIDE profile (docs/37)."""
+    profile = solo_modes.selected() if profile is None else profile
+    return (os.environ.get('CRUCIBLE_SOLO_GUIDE_HIVE') == '1'
+            and profile.mode_profile is solo_modes.MODES['hoth-guide'])
+
+
+def guide_hive_position(profile):
+    """Where the hive stands, on the level's navigation mesh, or None.
+
+    A placeholder either way: which hive node retail's overlord picks is not
+    decoded. HotH_02 uses its authored hive node nearest the drop. A map with
+    none (april2018) gets the point HIVE_DROP_DISTANCE from the drop, directly
+    away from the first bot point, off the hunters' circuits, turning in
+    45-degree steps until a point is on the mesh.
+    """
+    import hunter_patrol
+    import navigation
+    drop = profile.player_position
+    nodes = profile.map_profile.hive_spawns if profile.map_profile else ()
+    mesh = navigation.installed_mesh(hunter_patrol.level_key(profile.level))
+    if nodes:
+        node = min((spot for _, _, spot in nodes), key=lambda spot: math.dist(spot, drop))
+        located = mesh.locate(node, 20.0)
+        return None if located is None else located[1]
+    bot = profile.bot_positions[0] if profile.bot_positions else (drop[0] - 1., drop[1], drop[2])
+    away = math.atan2(drop[1] - bot[1], drop[0] - bot[0])
+    for step in (0, 1, -1, 2, -2, 3, -3, 4):
+        angle = away + step * math.pi / 4
+        located = mesh.locate((drop[0] + HIVE_DROP_DISTANCE * math.cos(angle),
+                               drop[1] + HIVE_DROP_DISTANCE * math.sin(angle), drop[2]), 20.0)
+        if located is not None:
+            return located[1]
+    return None
+
+
+def build_guide_hive_probe(position, *, previous_id=0):
+    """Spawn the hive: every shared root false but Location, as the spitters."""
+    properties = (build_replication_record(location_bits(HIVE_SHARED_TYPES))
+                  + pack_practice_spawn_transform(position))
+    return build_entity_message(
+        HIVE_ENTITY_ID & 0xffffff, pack_type_and_flags(ENTITY_ROLE_CLIENT_SIMULATION, bit4=True),
+        slice_hash=HIVE_SLICE_HASH, slice_entry_index=0, payload=properties,
+        previous_id=previous_id)
+
+
 def encode_varint(value):
     """LEB128, low 7 bits per byte, high bit = continuation."""
     if value < 0:
@@ -1031,6 +1095,16 @@ def practice_npcs_reply(state):
         messages = build_practice_npc_probes()
     else:
         messages = []
+    if messages and guide_hive_enabled(profile):
+        position = guarded(state, 'guide hive', guide_hive_position, profile)
+        if position is None:
+            log('      GUIDE HIVE: no spot on the mesh near the drop; no hive')
+        else:
+            state['guide_hive'] = {'position': position, 'next_heal': None, 'regens': 0}
+            messages.append(build_guide_hive_probe(
+                position, previous_id=solo_bot_slots(profile)[-1].entity & 0xffffff))
+            log('      GUIDE HIVE spawned %08x at (%.1f, %.1f, %.1f)'
+                % ((HIVE_ENTITY_ID,) + tuple(position)))
     if not messages:
         # Nothing authored for this map yet; say nothing rather than send an
         # empty update the client would have to parse.
@@ -1217,6 +1291,9 @@ def start_solo_simulation(state):
         for slot in bots:
             arena.register(slot.entity, MARINE_SHARED_TYPES,
                            maximum=slot.health_max, team=slot.team)
+        if 'guide_hive' in state:
+            arena.register(HIVE_ENTITY_ID, HIVE_SHARED_TYPES,
+                           maximum=HIVE_HEALTH_MAX, team=HIVE_TEAM)
         for place in practice_population.population(profile.level):
             respawn = (combat.PRACTICE_SPITTER_RESPAWN_SECONDS if place.profile
                        else combat.PRACTICE_TARGET_RESPAWN_SECONDS)
@@ -1276,6 +1353,7 @@ def start_solo_simulation(state):
             # One line confirms which drop-ins took effect (match_acceptance B0).
             switches = [name for name, on in (
                 ('guide-saboteur', guide_saboteur_enabled(profile)),
+                ('guide-hive', 'guide_hive' in state),
                 ('reload', bot_reload_enabled()),
                 ('strafe', os.environ.get('CRUCIBLE_SOLO_BOT_STRAFE') == '1'),
                 ('turn', os.environ.get('CRUCIBLE_SOLO_BOT_TURN') == '1'),
@@ -1374,6 +1452,12 @@ def observe_solo_combat(message, state):
     log('      SOLO COMBAT %s hit target=%08x damage=%.0f health=%.0f%s' %
         ('player' if shooter == PLAYER_CHARACTER_ID else 'hunter %08x' % shooter,
          hit.target, hit.damage, hit.health, ' KILLED' if hit.killed else ''))
+    hive = state.get('guide_hive')
+    if hive is not None and hit.target == HIVE_ENTITY_ID:
+        # hive_ondamage.cdl zeroes HiveOutOfCombat: regeneration waits again.
+        hive['next_heal'] = now + HIVE_REGEN_AFTER
+        if hit.killed:
+            log('      GUIDE HIVE destroyed at %.1f s' % now)
     if shooter == PLAYER_CHARACTER_ID:
         confirm_player_hit(state, hit, weapon)
         import feedback_rings
@@ -1428,6 +1512,8 @@ def reported_hit_range(state, shooter):
     squad = state.get('squad')
     if squad is not None:
         positions.update((bot.entity, bot.position) for bot in squad.bots)
+    if 'guide_hive' in state:
+        positions[HIVE_ENTITY_ID] = state['guide_hive']['position']
 
     def distance(target):
         position = positions.get(target)
@@ -1614,6 +1700,21 @@ def solo_match_rank(state):
     return rank
 
 
+def regenerate_guide_hive(state, arena, now):
+    """hive_outofcombatregen.cdl: +100 health a second, 19.5 s after a hit."""
+    hive = state['guide_hive']
+    if (hive['next_heal'] is None or now < hive['next_heal']
+            or HIVE_ENTITY_ID not in arena.entities or not arena.alive(HIVE_ENTITY_ID)):
+        return
+    if arena.heal(HIVE_ENTITY_ID, HIVE_REGEN_STEP):
+        hive['regens'] += 1
+        if hive['regens'] & (hive['regens'] - 1) == 0:
+            log('      GUIDE HIVE regenerating (count %d, health %.0f)'
+                % (hive['regens'], arena.health(HIVE_ENTITY_ID)))
+    hive['next_heal'] = (now + HIVE_REGEN_INTERVAL
+                         if arena.health(HIVE_ENTITY_ID) < HIVE_HEALTH_MAX else None)
+
+
 def solo_simulation_messages(state, now, *, previous_id=0):
     """AI and combat entity messages for one clock tick, chained by RelativeId."""
     if state.get('match_result') is not None:
@@ -1636,6 +1737,8 @@ def solo_simulation_messages(state, now, *, previous_id=0):
     if rings is not None:
         messages.append(rings(previous_id))
         previous_id = PLAYER_CHARACTER_ID & 0xffffff
+    if 'guide_hive' in state and arena is not None:
+        regenerate_guide_hive(state, arena, now)
     health_entities = arena.tick(now) if arena is not None else []
     active_entities = ({entity for entity in arena.entities if arena.alive(entity)}
                        if arena is not None else None)

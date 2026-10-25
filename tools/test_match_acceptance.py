@@ -140,7 +140,32 @@ class BotSightRowTests(unittest.TestCase):
 
     def test_the_rows_appear_only_when_used(self):
         rows = self.rows([])
-        self.assertFalse({'B0', 'B1', 'B2', 'B3', 'B4', 'F4'} & set(rows))
+        self.assertFalse({'B0', 'B1', 'B2', 'B3', 'B4', 'B5', 'F4'} & set(rows))
+
+    def test_the_hive_row(self):
+        rows = self.rows([
+            'GUIDE HIVE spawned 01000006 at (1250.0, 1300.0, 30.0)',
+            'SOLO COMBAT player hit target=01000006 damage=40 health=4960',
+            'GUIDE HIVE regenerating (count 2, health 5000)',
+        ])
+        self.assertEqual(rows['B5'][1], 'LOGS-OK')
+        self.assertIn('(1250.0, 1300.0, 30.0)', rows['B5'][2])
+        self.assertIn('1 player hits, lowest health 4960; 2 regenerations', rows['B5'][2])
+        rows = self.rows(['GUIDE HIVE spawned 01000006 at (1.0, 2.0, 3.0)',
+                          'SOLO COMBAT player hit target=01000006 damage=40 health=0 KILLED',
+                          'GUIDE HIVE destroyed at 91.5 s'])
+        self.assertIn('destroyed at 91.5 s', rows['B5'][2])
+        # The hive is not a hunter: its kill is not A5's.
+        self.assertIn('killed 01000003 (1 player hits)', rows['A5'][2])
+
+    def test_hive_hits_do_not_fail_the_flinch_row(self):
+        rows = self.rows(['HIT REACTION on: hunters the player hits flinch (component 80)',
+                          'SOLO COMBAT player hit target=01000006 damage=40 health=4960'])
+        hunter_hits = [l for l in SHARD if 'player hit target=0100000' in l and '01000006' not in l]
+        if not hunter_hits:
+            self.assertNotIn('F4', rows)
+        else:
+            self.assertIn('%d player hits on hunters' % len(hunter_hits), rows['F4'][2])
 
     def test_flights_are_counted(self):
         rows = self.rows(['HUNTER AI 01000005 fleeing a losing fight (count 2)'])

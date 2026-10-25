@@ -1,0 +1,159 @@
+"""HOTH_GUIDE's hive behind CRUCIBLE_SOLO_GUIDE_HIVE=1 (docs/37)."""
+import os
+import unittest
+from unittest.mock import patch
+
+import combat
+import death_events
+import shard_stub as shard
+import solo_modes
+
+HIVE = shard.HIVE_ENTITY_ID
+ENV = {'CRUCIBLE_SOLO_MODE': 'hoth-guide-april2018', 'CRUCIBLE_SOLO_GUIDE_HIVE': '1',
+       'CRUCIBLE_SOLO_COMBAT': '1', 'CRUCIBLE_SOLO_AI': '0', 'CRUCIBLE_SOLO_HERO': 'saboteur'}
+SPOT = (1250.0, 1300.0, 30.0)
+
+
+def rpc(entity, component, rpc_id, data, delivery=3):
+    return shard.EntityRpc(delivery, entity, component, rpc_id, data)
+
+
+def hit_on(projectile, target):
+    return rpc(shard.PLAYER_CHARACTER_ID, 115, 4,
+               bytes([projectile & 0xff, 1]) + target.to_bytes(4, 'big'))
+
+
+class Mesh:
+    """Flat ground at z = 30 over x >= 1200; nothing west of it."""
+    def locate(self, point, tolerance=2.):
+        if point[0] < 1200.:
+            return None
+        return 'tile', (point[0], point[1], 30.)
+
+
+@patch.object(shard, 'log')
+class GuideHiveTests(unittest.TestCase):
+    def start(self, env=ENV):
+        state = {'guide_hive': {'position': SPOT, 'next_heal': None, 'regens': 0}}
+        with patch.dict('os.environ', env, clear=True):
+            shard.start_solo_simulation(state)
+        return state
+
+    def test_the_slice_hash_is_the_level_librarys(self, _log):
+        # levels/april2018/commondata/stringhashlibrary.xml: Key="3885309295"
+        # Value="slices/creatures/hive/hive".
+        self.assertEqual(solo_modes.level_name_hash('slices/creatures/hive/hive'),
+                         shard.HIVE_SLICE_HASH)
+
+    def test_the_spawn_message(self, _log):
+        message = shard.build_guide_hive_probe(SPOT, previous_id=3)
+        counter, offset = shard.decode_entity_id(message.header, previous_id=3)
+        self.assertEqual(counter, 6)
+        self.assertEqual(message.header[offset], 0x11)
+        self.assertEqual(int.from_bytes(message.header[offset+1:offset+5], 'big'),
+                         shard.HIVE_SLICE_HASH)
+        self.assertEqual(message.payload,
+                         shard.build_replication_record(shard.location_bits(shard.HIVE_SHARED_TYPES))
+                         + shard.pack_practice_spawn_transform(SPOT))
+
+    def test_only_a_hoth_guide_profile_with_the_switch(self, _log):
+        for env, on in ((ENV, True), (dict(ENV, CRUCIBLE_SOLO_GUIDE_HIVE='0'), False),
+                        (dict(ENV, CRUCIBLE_SOLO_MODE='alpha-hunters'), False)):
+            with self.subTest(env=env), patch.dict('os.environ', env, clear=True):
+                self.assertEqual(shard.guide_hive_enabled(), on)
+
+    def test_its_spot_is_off_the_hunters_side_and_on_the_mesh(self, _log):
+        import navigation
+        with patch.dict('os.environ', ENV, clear=True), \
+                patch.object(navigation, 'installed_mesh', return_value=Mesh()):
+            profile = solo_modes.selected()
+            spot = shard.guide_hive_position(profile)
+        drop, bot = profile.player_position, profile.bot_positions[0]
+        self.assertAlmostEqual(math_dist2(spot, drop), shard.HIVE_DROP_DISTANCE, places=6)
+        self.assertEqual(spot[2], 30.)
+        # Farther from the first bot point than the drop is, when the mesh allows.
+        if spot[0] >= 1200.:
+            self.assertGreater(math_dist2(spot, bot), math_dist2(drop, bot) - 1e-6)
+
+    def test_it_is_registered_as_its_own_entity(self, _log):
+        state = self.start()
+        arena = state['combat']
+        entity = arena.entities[HIVE]
+        self.assertEqual((entity.shared_types, entity.maximum, entity.team),
+                         (shard.HIVE_SHARED_TYPES, 5000., shard.HIVE_TEAM))
+
+    def test_every_message_from_hit_to_death_uses_the_hives_types(self, _log):
+        env = dict(ENV, CRUCIBLE_SOLO_DEATH_EVENTS='authored', CRUCIBLE_SOLO_HIT_REACTION='1',
+                   CRUCIBLE_SOLO_COMBAT_ANIMATION='1', CRUCIBLE_SOLO_HIT_RANGE='1',
+                   CRUCIBLE_SOLO_HIT_CONFIRM='1', CRUCIBLE_SOLO_KILL_CONFIRM='1')
+        state = self.start(env)
+        state['player_position'] = (SPOT[0] - 10., SPOT[1], SPOT[2])
+        built = []
+
+        def record(original):
+            def wrapper(entity_id, shared_types, *args, **kwargs):
+                built.append((entity_id, tuple(shared_types)))
+                return original(entity_id, shared_types, *args, **kwargs)
+            return wrapper
+        import animation_events
+        with patch.dict('os.environ', env, clear=True), \
+                patch.object(combat, 'build_health_update', record(combat.build_health_update)), \
+                patch.object(death_events, 'build_death_update', record(death_events.build_death_update)), \
+                patch.object(animation_events, 'build_animation_update',
+                             record(animation_events.build_animation_update)):
+            for projectile in range(1, 200):
+                shard.observe_solo_combat(hit_on(projectile, HIVE), state)
+                shard.solo_simulation_messages(state, 1. + projectile * .1)
+                if not state['combat'].alive(HIVE):
+                    break
+        self.assertFalse(state['combat'].alive(HIVE))
+        to_hive = [types for entity, types in built if entity == HIVE]
+        self.assertTrue(to_hive)
+        self.assertEqual(set(to_hive), {shard.HIVE_SHARED_TYPES})
+        self.assertNotIn(HIVE, state.get('hit_reaction', {}))
+
+    def test_it_regenerates_after_19_5_s_without_a_hit(self, _log):
+        state = self.start(dict(ENV, CRUCIBLE_SOLO_HIT_RANGE='1'))
+        state['player_position'] = (SPOT[0] - 10., SPOT[1], SPOT[2])
+        arena = state['combat']
+        with patch.dict('os.environ', ENV, clear=True):
+            shard.observe_solo_combat(hit_on(1, HIVE), state)
+            damaged = arena.health(HIVE)
+            self.assertLess(damaged, 5000.)
+            hit_at = state['guide_hive']['next_heal'] - shard.HIVE_REGEN_AFTER
+            shard.solo_simulation_messages(state, hit_at + 19.4)
+            self.assertEqual(arena.health(HIVE), damaged)
+            shard.solo_simulation_messages(state, hit_at + 19.5)
+            self.assertEqual(arena.health(HIVE), min(5000., damaged + 100.))
+            shard.solo_simulation_messages(state, hit_at + 20.0)
+            self.assertEqual(arena.health(HIVE), min(5000., damaged + 100.))
+            shard.solo_simulation_messages(state, hit_at + 20.5)
+            self.assertEqual(arena.health(HIVE), min(5000., damaged + 200.))
+
+
+class GuideHiveSwitchLineTests(unittest.TestCase):
+    def test_b0_confirms_the_hive_only_where_it_spawned(self):
+        import hunter_ai
+        import hunter_patrol
+        route = ((0., 0., 0.), (1., 0., 0.))
+        env = dict(ENV, CRUCIBLE_SOLO_AI='1')
+        for state, line in (({'guide_hive': {'position': SPOT, 'next_heal': None, 'regens': 0}},
+                             'HUNTER AI switches: guide-hive; sight off'),
+                            ({}, None)):
+            squad = hunter_ai.Squad([hunter_ai.Bot(0x1000003, route, hunter_ai.MARINE)])
+            with self.subTest(state=bool(state)), patch.dict('os.environ', env, clear=True), \
+                    patch.object(hunter_patrol, 'squad', return_value=squad), \
+                    patch.object(shard, 'level_sight', return_value=None), \
+                    patch.object(shard, 'log') as log:
+                shard.start_solo_simulation(state)
+            lines = [c.args[0].strip() for c in log.call_args_list
+                     if 'HUNTER AI switches' in c.args[0]]
+            self.assertEqual(lines, [line] if line else [])
+
+
+def math_dist2(a, b):
+    return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** .5
+
+
+if __name__ == '__main__':
+    unittest.main()

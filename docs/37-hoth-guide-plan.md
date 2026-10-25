@@ -5,8 +5,8 @@ Status (25 October), all tested offline and none of it played:
 - Of stages 3 and 4, the one hostile bot is in, behind a switch: a Saboteur
   guide bot with its own AI, primary and flight. The three allies are not.
 - Stage 5's rules are decoded, and its objective entities' component sets
-  are derived offline and validated. No objective entity has been spawned
-  live.
+  are derived offline and validated. One hive can be spawned, behind a
+  switch; no objective entity has been seen in the client yet.
 - Stage 6 is plan only.
 
 The Alpha Hunters bot match (docs/30, docs/35, docs/36) is local: retail
@@ -382,6 +382,42 @@ roster, the spawn, the arena, the squad and the gunnery, so they agree.
   no simulation errors. In "lose" it fired 64 rounds and landed 17, 680
   damage. Its teleport and flank scripts address the second and third bot,
   so they cannot run against one bot.
+
+## The hive (switch)
+
+`CRUCIBLE_SOLO_GUIDE_HIVE=1` spawns one hive in a HOTH_GUIDE profile, the
+first objective entity the client is sent. It is a live experiment: no
+objective entity has been seen in the client yet. B0 lists `guide-hive` only
+when the hive spawned, and `match_acceptance` row B5 reports it.
+
+- **The spawn.** It uses `slices/creatures/hive/hive` (hash 3885309295, the
+  level's library key; april2018's resource list preloads the slice) at
+  entry 0. Its 22 shared types come from the exe-derived table, and every
+  root is false except Location, as for the spitters. Its id, 0x01000006,
+  stays clear of the bot ids that Marine-typed code paths iterate.
+- **Where.** A placeholder. On HotH_02 it is the authored hive node nearest
+  the drop. april2018 has no hive nodes, so there it is the navmesh point
+  30 m from the drop on the side away from the first bot point, off the
+  hunters' circuits. Retail's overlord pick is not decoded.
+- **Its health.** 5,000 in the arena on a team of its own, so the player's
+  reported hits damage it, with range falloff from its position. At zero
+  the shard sends its death update, with the player's killer tag.
+- **Regeneration.** As `hive_outofcombatregen.cdl`: 19.5 s after its last
+  hit it heals 100 every 1.0 s until full, and any hit stops it.
+- **Not modelled:**
+  - the wasps and the damage field;
+  - its heart, whose capture needs the untraced interaction wire;
+  - the score;
+  - its HUD marker (the untraced DataStoreMatch hive record);
+  - its animation flags (`is_active`, `is_dead`), each another message
+    kind to a never-seen entity;
+  - its dissolve and despawn: a dead hive stays.
+
+  The match still ends on the timer.
+- **Offline check.** The scripted player's hits on the hive (a scratch
+  harness target) took it to 3,200. It regenerated from 26.5 s, 19.5 s
+  after the last hit, and died at 40.5 s. GameOver landed on the timer with
+  no errors, with and without the Saboteur.
 
 ## Per-map navigation (stage 2)
 

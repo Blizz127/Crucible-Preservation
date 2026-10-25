@@ -32,6 +32,7 @@ Rows that appear only when their docs/36 switch is used:
   B2 blocked    hunter rounds stopped by line of sight
   B3 rests      the Marines' idle rests between patrol hops
   B4 flee       Marines that fled a losing fight
+  B5 hive       HOTH_GUIDE's hive: spawned, damaged, destroyed or regenerating
 
 The script only reads files and uses only the standard library, so it can
 run on the game host over SSH, reading that host's journal and newest
@@ -56,6 +57,8 @@ CLIENT_LOGS = os.path.expanduser(
     '~/.local/share/Steam/steamapps/compatdata/1057240/pfx/drive_c/users/'
     'steamuser/AppData/Local/AGS/Crucible/NovaNetLogs')
 PLAYER = '01000002'
+HUNTERS = ('01000003', '01000004', '01000005')   # shard_stub.HUNTER_BOT_IDS
+HIVE = '01000006'                                  # shard_stub.HIVE_ENTITY_ID
 MIN_CONNECTED_SECONDS = 600
 
 POPULATION = re.compile(r'SOLO POPULATION PROBE: (.*)')
@@ -91,6 +94,9 @@ SIGHT_BROKEN = re.compile(r'LINE OF SIGHT (unavailable on|static geometry unread
 BLOCKED = re.compile(r'HUNTER AI rounds blocked by line of sight \(count (\d+)\)')
 RESTS = re.compile(r'HUNTER AI ([0-9a-f]{8}) resting between patrol hops \(count (\d+)\)')
 FLEES = re.compile(r'HUNTER AI ([0-9a-f]{8}) fleeing a losing fight \(count (\d+)\)')
+HIVE_SPAWNED = re.compile(r'GUIDE HIVE spawned ([0-9a-f]{8}) at (\([^)]*\))')
+HIVE_DESTROYED = re.compile(r'GUIDE HIVE destroyed at ([\d.]+) s')
+HIVE_REGEN = re.compile(r'GUIDE HIVE regenerating \(count (\d+)')
 # docs/36: the Marines' networked flinch (component 80), logged at indexes
 # 1, 2, 4, ..., and the switch left without the split it needs.
 FLINCH = re.compile(r'HIT REACTION ([0-9a-f]{8}) index (\d+)')
@@ -126,7 +132,8 @@ def shard_facts(lines):
              'population_after_over': 0, 'feedback': {}, 'reloads': 0, 'rings': {},
              'valves': [], 'timer': [], 'sight': None, 'sight_fallback': 0,
              'sight_broken': [], 'blocked': 0, 'rests': {}, 'flinches': {},
-             'flinch_split_off': 0, 'flinch_on': 0, 'switches': None, 'flees': {}}
+             'flinch_split_off': 0, 'flinch_on': 0, 'switches': None, 'flees': {},
+             'hive': None, 'hive_destroyed': None, 'hive_regens': 0}
     for line in lines:
         if VALVE.search(line):
             facts['valves'].append(VALVE.search(line).group(1))
@@ -146,6 +153,12 @@ def shard_facts(lines):
         elif FLEES.search(line):
             entity, count = FLEES.search(line).groups()
             facts['flees'][entity] = max(facts['flees'].get(entity, 0), int(count))
+        elif HIVE_SPAWNED.search(line):
+            facts['hive'] = HIVE_SPAWNED.search(line).groups()
+        elif HIVE_DESTROYED.search(line):
+            facts['hive_destroyed'] = HIVE_DESTROYED.search(line).group(1)
+        elif HIVE_REGEN.search(line):
+            facts['hive_regens'] = max(facts['hive_regens'], int(HIVE_REGEN.search(line).group(1)))
         elif FLINCH.search(line):
             entity, index = FLINCH.search(line).groups()
             facts['flinches'][entity] = max(facts['flinches'].get(entity, 0), int(index))
@@ -297,8 +310,9 @@ def score(shard, client):
                      % (refused, '' if refused != 'none'
                         else ' (client may not report remote projectiles)')))
 
-    kills = [h for h in shard['hits'] if h['shooter'] == PLAYER and h['killed']]
-    player_hits = [h for h in shard['hits'] if h['shooter'] == PLAYER]
+    kills = [h for h in shard['hits'] if h['shooter'] == PLAYER and h['killed']
+             and h['target'] != HIVE]
+    player_hits = [h for h in shard['hits'] if h['shooter'] == PLAYER and h['target'] != HIVE]
     if kills:
         rows.append(('A5 kills', 'LOGS-OK', 'killed %s (%d player hits); eyes: visible death'
                      % (' '.join(sorted({h['target'] for h in kills})), len(player_hits))))
@@ -386,7 +400,7 @@ def score(shard, client):
                          '%s >=%d' % item for item in sorted(shard['flinches'].items()))))
     elif shard['flinch_on']:
         hunter_hits = [h for h in shard['hits'] if h['shooter'] == PLAYER
-                       and h['target'].startswith('0100000')]
+                       and h['target'] in HUNTERS]
         if hunter_hits:
             rows.append(('F4 flinch', 'FAIL', 'hit reactions on and %d player hits on hunters '
                          'accepted, but no flinch was sent (no decoded player position?)'
@@ -405,6 +419,16 @@ def score(shard, client):
     if shard['blocked']:
         rows.append(('B2 blocked', 'LOGS-OK', '>=%d hunter rounds stopped by line of sight; '
                      'eyes: no damage through cover' % shard['blocked']))
+    if shard['hive']:
+        entity, where = shard['hive']
+        hits = [h for h in shard['hits'] if h['target'] == entity]
+        state = ('destroyed at %s s' % shard['hive_destroyed'] if shard['hive_destroyed']
+                 else 'lowest health %d' % min(h['health'] for h in hits) if hits
+                 else 'never hit')
+        rows.append(('B5 hive', 'LOGS-OK', 'spawned at %s; %d player hits, %s; %d regenerations; '
+                     'eyes: a hive about 30 m from the drop, which may look dormant (no '
+                     'marker, wasps, heart or death animation)'
+                     % (where, len(hits), state, shard['hive_regens'])))
     if shard['flees']:
         rows.append(('B4 flee', 'LOGS-OK', 'flights %s; eyes: a losing Marine finishes its '
                      'burst (up to 2 s), runs about 4 s, then comes back' % ', '.join(
