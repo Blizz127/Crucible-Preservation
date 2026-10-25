@@ -24,6 +24,28 @@ def asset_reference(hint):
     return bytes(48) + len(encoded).to_bytes(8, 'big') + encoded
 
 
+def baked_name(text, inline=False):
+    encoded = text.encode('ascii')
+    if inline:
+        return bytes([0x58 | len(encoded)]) + fire.ELEMENT_ID + encoded + b'\0'
+    return fire.ELEMENT_KEY + bytes([len(encoded)]) + encoded + b'\0'
+
+
+class BakedNameTableTests(unittest.TestCase):
+    def test_short_names_in_the_inline_size_form_keep_their_index(self):
+        # healthchangesource.names: "Ability" is flag 0x5f between two 0x79s.
+        raw = (b'\0' * 5 + baked_name('HeroForcePunch') + baked_name('Ability', inline=True)
+               + baked_name('RobotanistTurret') + baked_name('stance', inline=True))
+        self.assertEqual(fire.names(raw),
+                         ['HeroForcePunch', 'Ability', 'RobotanistTurret', 'stance'])
+
+    def test_reject_tables_without_elements_or_with_unknown_flags(self):
+        with self.assertRaises(ValueError):
+            fire.names(b'\0' * 32)
+        with self.assertRaises(ValueError):
+            fire.names(b'\x99' + fire.ELEMENT_ID + b'abc')
+
+
 class ProjectileRequestInspectionTests(unittest.TestCase):
     def test_wire_names_include_static_prefix(self):
         self.assertEqual(fire.combine_names(['None', 'Camera'], ['Muzzle']),

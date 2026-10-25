@@ -64,20 +64,41 @@ def tables(pak_path):
     return found
 
 
+ELEMENT_ID = ELEMENT_KEY[1:]   # name CRC and type UUID, after the flag byte
+
+
 def names(raw):
-    """Ordered asset names; their index excludes the executable's prefix."""
-    chunks = raw.split(ELEMENT_KEY)
-    if len(chunks) < 2:
-        raise ValueError("not a baked-name table, or an unsupported layout")
-    result = []
-    for chunk in chunks[1:]:
-        if not chunk:
-            raise ValueError("truncated baked-name element")
-        length = chunk[0]
-        text = chunk[1:1 + length]
-        if len(text) != length or b"\0" in text:
+    """Ordered asset names; their index excludes the executable's prefix.
+
+    The flag byte before each element is an AZ ObjectStream binary flag set:
+    0x40 name, 0x10 value, 0x08 element header, and in the low three bits
+    either the width of an extra size field (0x20 set; 0x79 for one byte) or
+    the value size itself (0x20 clear). Names of up to seven characters take
+    the inline form: "Ability" in healthchangesource.names is flag 0x5f. A
+    split on the 0x79 form alone dropped those and shifted every later id.
+    """
+    result, start = [], 0
+    while True:
+        at = raw.find(ELEMENT_ID, start)
+        if at < 0:
+            break
+        flag = raw[at - 1] if at else 0
+        if flag & 0xd8 != 0x58:
+            raise ValueError("unsupported baked-name element flags 0x%02x" % flag)
+        offset = at + len(ELEMENT_ID)
+        if flag & 0x20:
+            width = flag & 7
+            length = int.from_bytes(raw[offset:offset + width], "big")
+            offset += width
+        else:
+            length = flag & 7
+        text = raw[offset:offset + length]
+        if not length or len(text) != length or b"\0" in text:
             raise ValueError("truncated baked-name element")
         result.append(text.decode("ascii", "replace"))
+        start = offset + length
+    if not result:
+        raise ValueError("not a baked-name table, or an unsupported layout")
     return result
 
 
