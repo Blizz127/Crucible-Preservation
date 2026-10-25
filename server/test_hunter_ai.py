@@ -259,6 +259,8 @@ class WanderTests(unittest.TestCase):
             # One idle animation plus ExtraIdleTimeAtEndOfAnim, to the tick.
             self.assertTrue(any(abs(rest - want) <= .1 for want in (4.0, 7.0)), rest)
         self.assertEqual({round(r) for r in rests}, {4, 7})
+        # The shard logs this count; a rest still running at the end counts too.
+        self.assertIn(bot.rests, (len(rests), len(rests) + 1))
 
     def test_without_the_switch_a_marine_never_rests(self):
         bot = self.bot(idle_durations=(3.0,), idle_extra=1.0)

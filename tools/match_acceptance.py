@@ -22,6 +22,14 @@ screen, so those criteria stop at LOGS-OK.
                 GameOver; next READY re-enters
   A7 stable     >= 10 min connected, no shard restart, no traceback
 
+Rows that appear only when their docs/36 switch is used:
+  S1 refused    entity updates the client refused as old (a wrap fails)
+  F1-F3         hit and kill markers, Marine reloads, damage-number rings
+  B1 sight      which line of sight loaded; a static request that fell back
+                to the terrain fails
+  B2 blocked    hunter rounds stopped by line of sight
+  B3 rests      the Marines' idle rests between patrol hops
+
 The script only reads files and uses only the standard library, so it can
 run on the game host over SSH, reading that host's journal and newest
 client log:
@@ -68,6 +76,15 @@ VALVE = re.compile(r'(SIMULATION FAILED on \d+ of \d+ ticks|SEQUENCE LIMIT: Loca
 RINGS = re.compile(r'SOLO FEEDBACK (damage numbers|hit arcs) index \d+ \(count (\d+)\)')
 # docs/37: CRUCIBLE_SOLO_MATCH_MAX_SECONDS, an intended ending (a draw).
 TIMER = re.compile(r'MATCH TIMER: ([\d.]+) s of play; ending the match with GameOver')
+# docs/36: which line of sight loaded, a static request that fell back to the
+# terrain, rounds the line of sight stopped, and the Marines' idle rests
+# (the last two logged at counts 1, 2, 4, ...).
+SIGHT = re.compile(r'prewarmed line of sight \((terrain|static)\)')
+SIGHT_FALLBACK = 'LINE OF SIGHT: no static geometry cache'
+# Logged at prewarm and at every match start when the sight test is lost.
+SIGHT_BROKEN = re.compile(r'LINE OF SIGHT (unavailable on|static geometry unreadable on) (\S+)')
+BLOCKED = re.compile(r'HUNTER AI rounds blocked by line of sight \(count (\d+)\)')
+RESTS = re.compile(r'HUNTER AI ([0-9a-f]{8}) resting between patrol hops \(count (\d+)\)')
 JOURNAL_TIME = re.compile(r'^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)([+-]\d\d):?(\d\d)')
 
 CLIENT_TIME = re.compile(r'^\[(\d\d)-(\d\d)-(\d{4}):(\d\d):(\d\d):(\d\d)\.(\d+)-GMT\]')
@@ -96,10 +113,22 @@ def shard_facts(lines):
     facts = {'population': [], 'input': 0, 'states': {}, 'fire': 0, 'hits': [],
              'refused': {}, 'over': [], 'rank': None, 'starts': [], 'tracebacks': 0,
              'population_after_over': 0, 'feedback': {}, 'reloads': 0, 'rings': {},
-             'valves': [], 'timer': []}
+             'valves': [], 'timer': [], 'sight': None, 'sight_fallback': 0,
+             'sight_broken': [], 'blocked': 0, 'rests': {}}
     for line in lines:
         if VALVE.search(line):
             facts['valves'].append(VALVE.search(line).group(1))
+        elif SIGHT.search(line):
+            facts['sight'] = SIGHT.search(line).group(1)
+        elif SIGHT_FALLBACK in line:
+            facts['sight_fallback'] += 1
+        elif SIGHT_BROKEN.search(line):
+            facts['sight_broken'].append(' '.join(SIGHT_BROKEN.search(line).groups()))
+        elif BLOCKED.search(line):
+            facts['blocked'] = max(facts['blocked'], int(BLOCKED.search(line).group(1)))
+        elif RESTS.search(line):
+            entity, count = RESTS.search(line).groups()
+            facts['rests'][entity] = max(facts['rests'].get(entity, 0), int(count))
         elif TIMER.search(line):
             facts['timer'].append(float(TIMER.search(line).group(1)))
         elif RINGS.search(line):
@@ -324,6 +353,22 @@ def score(shard, client):
     if shard['reloads']:
         rows.append(('F2 reloads', 'LOGS-OK', '%d Marine reloads; eyes: reload animation, '
                      'about 2 s without fire' % shard['reloads']))
+    if shard['sight_broken']:
+        rows.append(('B1 sight', 'FAIL', 'line of sight requested but lost: %s'
+                     % shard['sight_broken'][0]))
+    elif shard['sight_fallback']:
+        rows.append(('B1 sight', 'FAIL', 'static sight requested, but there is no cache: '
+                     'terrain only (%dx); build it with tools/build_static_geometry.py'
+                     % shard['sight_fallback']))
+    elif shard['sight']:
+        rows.append(('B1 sight', 'LOGS-OK', '%s line of sight loaded at prewarm' % shard['sight']))
+    if shard['blocked']:
+        rows.append(('B2 blocked', 'LOGS-OK', '>=%d hunter rounds stopped by line of sight; '
+                     'eyes: no damage through cover' % shard['blocked']))
+    if shard['rests']:
+        rows.append(('B3 rests', 'LOGS-OK', 'idle rests %s; eyes: an idle animation between '
+                     'patrol hops' % ', '.join('%s >=%d' % item
+                                               for item in sorted(shard['rests'].items()))))
     return rows
 
 

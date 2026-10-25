@@ -133,5 +133,39 @@ class ValveRowTests(unittest.TestCase):
         self.assertIn('re-entered 1x after GameOver', rows['A6'][2])
 
 
+class BotSightRowTests(unittest.TestCase):
+    def rows(self, extra):
+        shard = SHARD[:1] + [J % (1, 1) + line for line in extra] + SHARD[1:]
+        return {row[0].split()[0]: row for row in score(shard_facts(shard), client_facts(CLIENT))}
+
+    def test_the_rows_appear_only_when_used(self):
+        rows = self.rows([])
+        self.assertFalse({'B1', 'B2', 'B3'} & set(rows))
+
+    def test_static_sight_blocked_rounds_and_rests(self):
+        rows = self.rows([
+            'prewarmed line of sight (static) in 3.10s',
+            'HUNTER AI rounds blocked by line of sight (count 1)',
+            'HUNTER AI rounds blocked by line of sight (count 4)',
+            'HUNTER AI 01000003 resting between patrol hops (count 2)',
+            'HUNTER AI 01000004 resting between patrol hops (count 1)'])
+        self.assertEqual(rows['B1'][1:], ('LOGS-OK', 'static line of sight loaded at prewarm'))
+        self.assertIn('>=4 hunter rounds', rows['B2'][2])
+        self.assertIn('01000003 >=2, 01000004 >=1', rows['B3'][2])
+
+    def test_a_lost_sight_test_fails_rather_than_vanishing(self):
+        # No prewarm line follows, so without this the row would just be absent.
+        rows = self.rows(["LINE OF SIGHT unavailable on april2018: OSError('x')"])
+        self.assertEqual(rows['B1'][1], 'FAIL')
+        self.assertIn('unavailable on april2018', rows['B1'][2])
+
+    def test_a_static_request_without_a_cache_fails(self):
+        rows = self.rows([
+            'LINE OF SIGHT: no static geometry cache for april2018 (x); terrain only',
+            'prewarmed line of sight (static) in 0.31s'])
+        self.assertEqual(rows['B1'][1], 'FAIL')
+        self.assertIn('terrain only', rows['B1'][2])
+
+
 if __name__ == '__main__':
     unittest.main()

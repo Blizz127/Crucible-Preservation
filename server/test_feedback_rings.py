@@ -203,6 +203,38 @@ class ShardRingTests(unittest.TestCase):
                 self.assertEqual(len(state.get('hunter_landings', [])), landed)
                 self.assertEqual(state.get('hunter_rounds_blocked', 0), 1 - landed)
 
+    def test_blocked_rounds_and_idle_rests_are_logged_at_powers_of_two(self, log):
+        # Neither leaves a state change in the journal, so runs 3b and 3c are
+        # scored from these lines (tools/match_acceptance.py B2, B3).
+        env = dict(ALPHA, CRUCIBLE_SOLO_BOT_DAMAGE='server', CRUCIBLE_SOLO_FIRE='1')
+        shot = hunter_ai.Shot(0x1000003, shard.PLAYER_CHARACTER_ID, 1., (0., 0., 1.),
+                              (0., 1., 0.), 10.)
+        step = hunter_ai.Step(0x1000003, (0., 0., 0.), (0., 1., 0.), 0., 0.,
+                              hunter_ai.ATTACK, target=shard.PLAYER_CHARACTER_ID,
+                              shots=(shot,), firing=True)
+
+        class Lands:
+            def resolve(self, shot):
+                return 'landing'
+        with patch.dict('os.environ', env, clear=True):
+            state = self.start()
+            state['squad'] = squad_at((0., 0., 0.), (0., 0., 0.), (0., 0., 0.))
+            state['sight'] = lambda eye, target: False
+            state['hunter_gunnery'] = Lands()
+            log.reset_mock()
+            for count in range(1, 6):
+                state['squad'].bots[0].rests = count
+                with patch.object(shard, 'build_hunter_ai_updates',
+                                  return_value=([], [step])):
+                    shard.solo_simulation_messages(state, float(count))
+        lines = [call.args[0].strip() for call in log.call_args_list]
+        self.assertEqual([line for line in lines if 'rounds blocked' in line],
+                         ['HUNTER AI rounds blocked by line of sight (count %d)' % n
+                          for n in (1, 2, 4)])
+        self.assertEqual([line for line in lines if 'resting' in line],
+                         ['HUNTER AI 01000003 resting between patrol hops (count %d)' % n
+                          for n in (1, 2, 4)])
+
     def test_terrain_sight_is_given_to_every_bot(self, _log):
         import hunter_patrol
         squad = squad_at((0., 0., 0.), (0., 0., 0.), (0., 0., 0.))

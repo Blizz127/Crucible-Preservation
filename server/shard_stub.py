@@ -1508,9 +1508,13 @@ def solo_simulation_messages(state, now, *, previous_id=0):
                         aim = tuple(shot.origin[i] + shot.direction[i] * shot.range
                                     for i in range(3))
                         if not sight(shot.origin, aim):
-                            # The terrain stops the round (docs/36).
-                            state['hunter_rounds_blocked'] = (
+                            # The terrain or a static collider stops the
+                            # round (docs/36). Logged at counts 1, 2, 4, ...
+                            blocked = state['hunter_rounds_blocked'] = (
                                 state.get('hunter_rounds_blocked', 0) + 1)
+                            if blocked & (blocked - 1) == 0:
+                                log('      HUNTER AI rounds blocked by line of sight (count %d)'
+                                    % blocked)
                             landing = None
                     if landing is not None:
                         state.setdefault('hunter_landings', []).append(landing)
@@ -1526,6 +1530,17 @@ def solo_simulation_messages(state, now, *, previous_id=0):
             if now_reloading and not reloading.get(step.entity):
                 log('      HUNTER AI %08x reloading' % step.entity)
             reloading[step.entity] = now_reloading
+        # Idle rests change no logged state (the bot stays in PATROL), so
+        # count them: logged at counts 1, 2, 4, ... per bot.
+        for bot in getattr(state.get('squad'), 'bots', ()):
+            rests = getattr(bot, 'rests', 0)
+            if not rests:
+                continue
+            rests_logged = state.setdefault('hunter_rests_logged', {})
+            if rests.bit_length() != rests_logged.get(bot.entity, 0):
+                rests_logged[bot.entity] = rests.bit_length()
+                log('      HUNTER AI %08x resting between patrol hops (count %d)'
+                    % (bot.entity, rests))
         if os.environ.get('CRUCIBLE_SOLO_FIRE') == '1':
             from combat import MARINE_PRIMARY
             from projectile_events import build_hybrid_activation_update

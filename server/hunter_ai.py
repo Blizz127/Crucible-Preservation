@@ -263,6 +263,7 @@ class Bot:
     strafe: bool = False          # opt-in: move while attacking (StrafeParams)
     move_turn: bool = False       # opt-in: steer at tuning.move_turn_rate when moving
     idle: bool = False            # opt-in: rest between wander hops (IdleParams)
+    rests: int = 0                # idle rests started, for the shard's log
     # Opt-in sight test visible(eye, target) -> bool. None: everything is seen.
     visible: object = None
     sight_interval: float = 0.2   # not authored: how often the sight line is re-tested
@@ -670,6 +671,7 @@ class Bot:
                           and self.tuning.idle_durations and not self.dit_patrol_pause_range):
                         self._idle_until = now + (self.rng.choice(self.tuning.idle_durations)
                                                   + self.tuning.idle_extra)
+                        self.rests += 1
                     self._forward = self.wander or not self._forward
                     self._patrol_plan()
                 elif self.state == RETURN:
