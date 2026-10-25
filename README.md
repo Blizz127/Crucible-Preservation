@@ -33,6 +33,7 @@ rules, client patched only where unavoidable).
 > - the Marines' magazine and reload, forced aggro, strafing and turn rate;
 > - line of sight over the terrain, and through the level's walls, rocks
 >   and buildings, decoded from the cooked PhysX colliders;
+> - the Marines' authored idle rests between patrol hops;
 > - range falloff;
 > - the client's 32 ms server tick;
 > - the answer to the client's damage-floater setting.

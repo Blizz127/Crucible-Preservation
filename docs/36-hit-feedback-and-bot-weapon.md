@@ -17,6 +17,8 @@ Alienware install by SHA-256.
 | `CRUCIBLE_SOLO_BOT_STRAFE=1` | Marines strafe while attacking instead of standing still |
 | `CRUCIBLE_SOLO_BOT_TURN=1` | Moving Marines turn at the movement turn speed, 1440°/s |
 | `CRUCIBLE_SOLO_LOS=terrain` | Marines need sight over the terrain to acquire and attack; terrain stops their rounds |
+| `CRUCIBLE_SOLO_LOS=static` | As `terrain`, and walls, rocks and buildings also block (needs the offline cache) |
+| `CRUCIBLE_SOLO_BOT_IDLE=1` | Patrolling Marines rest one authored idle animation, plus 1 s, between hops |
 | `CRUCIBLE_SOLO_DAMAGE_NUMBERS=1` | Damage numbers over Marines the player hits |
 | `CRUCIBLE_SOLO_HIT_DIRECTION=1` | Incoming-hit arcs pointing at the Marine that hit the player |
 | `CRUCIBLE_SHARD_TICK_MS=32` | Clock and simulation at the client's default 32 ms server tick, not 50 ms |
@@ -482,6 +484,26 @@ configuration may have overridden this. Retail servers probably did run at
 replication, at 32 ms. The socket wakes twice per tick. Without the switch,
 both the 50 ms gate and the 50 ms wake are unchanged.
 
+## Resting between patrol hops
+
+`marine_guide_dummy.ai` authors `IdleParams`:
+`IdleAnimationDurations` 10.8, 5.8, 4.67, 11.73, 9.67 and 2.67 s
+(0x1c6..0x248), and `ExtraIdleTimeAtEndOfAnim` 1.0 s (0x263). With
+`CRUCIBLE_SOLO_BOT_IDLE=1`, a wandering Marine that finishes a patrol hop
+stands for one of those durations, chosen uniformly, plus 1 s, and then
+walks its next 5–15 m hop. A target ends the rest at once.
+
+The reading is inferred from the names: a rest between hops, one idle
+animation long, plus the extra time. The exe only shows these fields'
+reflection registration (`0x5727a00..0x5727e40`); the code that uses them
+is not traced. Nor is how retail picks the animation. The client chooses
+which idle animation to play; the server only holds the bot still.
+
+At the Marine's 5.5 m/s patrol speed, a 10 m hop takes about 2 s, and a
+rest 3.7–12.7 s. So with the switch on, a patrolling Marine stands far more
+than it walks, as the authored values imply. Without it, Marines never stop.
+The DIT patrol pauses, when approved, replace this rest.
+
 ## Turning while moving
 
 Bots used PassiveTurnParams' 90°/s turn-in-place rate for every turn
@@ -558,3 +580,5 @@ None of these has run in the retail client yet. The live checks are:
 11. Toggling Settings > Gameplay > Visuals > "Enable Damage Floaters" logs
     one "client asks for damage floaters" line per change, and nothing
     fails to deserialize.
+12. With idle rests on, a patrolling Marine stands and plays an idle
+    animation between hops, rather than sliding in a still pose.

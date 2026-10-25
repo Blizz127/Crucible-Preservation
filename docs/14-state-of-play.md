@@ -9,6 +9,7 @@
 >   strafing, and their movement turn rate;
 > - line of sight over the decoded terrain, and through walls, rocks and
 >   buildings (the cooked PhysX colliders, from an offline cache);
+> - the Marines' authored idle rests between patrol hops;
 > - range falloff on the player's hits;
 > - an option for the client's 32 ms server tick;
 > - the answer to the client's EnableDamageFloaters setting.
@@ -21,6 +22,30 @@
 > evidence and switches are in [36-hit-feedback-and-bot-weapon.md](36-hit-feedback-and-bot-weapon.md).
 > [37-hoth-guide-plan.md](37-hoth-guide-plan.md) scopes HOTH_GUIDE, the
 > only bot mode retail shipped.
+>
+> **The 24 September accuracy audit, row by row (25 October).**
+> `snapshots/accuracy-20260924/accuracy-audit.md` ranks fifteen non-retail
+> gaps by what a player sees. Everything marked done is behind a switch. None
+> of it has been confirmed in a live match yet (docs/35, docs/36). In the
+> audit's order:
+>
+> | # | Gap | Now |
+> |---|---|---|
+> | 1 | Bot rate of fire | Done: 96 ms rounds through a 2 s attack (docs/35) |
+> | 2 | Bot rounds never hurt the player | Done: server-resolved rounds, with the player's Health sent when it changes (docs/35) |
+> | 3 | Shots fired feet to feet | Done in substance: from 1 m above the bot to 1 m above the target (the authored offsets). The muzzle socket is not modelled |
+> | 4 | Attack cone, vertical range, turn speed | Done |
+> | 5 | Combat movement | Done: strafing and approach stop distances |
+> | 6 | No reaction to hits; sight through walls | Done: forced aggro, plus line of sight over the terrain and through walls, rocks and buildings |
+> | 7 | The player's damage | Partly: range falloff, and the Saboteur's own primary (the owner's hero). Other heroes still use Marine numbers. Crits stay open: the client's hit report carries no hit location |
+> | 8 | Visible death and respawn | Partly: authored death tags. Respawn presentation stays open |
+> | 9 | Hit feedback | Partly: markers, damage numbers and hit arcs are done. Victim flinches (HitReaction) stay open |
+> | 10 | Tick rate | Done: the 32 ms option |
+> | 11 | Creature presentation and alerting | Partly: `creature_ai` models the wind-up and alert timing. Not re-audited |
+> | 12 | Navigation only on April2018 | Done: each map's own mesh (480c4b1) |
+> | 13 | Patrol feel | Partly: authored wander hops and idle rests. Acceleration stays open |
+> | 14 | Teams and targeting | Open. HOTH_GUIDE's allies and Saboteur are now read (docs/37) |
+> | 15 | HUD ammo and ability icons | Open: needs a live capture of component 46's schema |
 >
 > **Deployed on the Alienware:** commit 38db54f (465 tests pass there), at
 > 00:03 CDT, with no new switches. That build behaves like 3a09282 but

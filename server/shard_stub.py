@@ -1185,6 +1185,9 @@ def start_solo_simulation(state):
             if os.environ.get('CRUCIBLE_SOLO_BOT_TURN') == '1':
                 for bot in state['squad'].bots:
                     bot.move_turn = True
+            if os.environ.get('CRUCIBLE_SOLO_BOT_IDLE') == '1':
+                for bot in state['squad'].bots:
+                    bot.idle = True
             sight = level_sight()
             if sight is not None:
                 state['sight'] = sight

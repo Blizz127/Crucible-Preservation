@@ -238,6 +238,44 @@ class WanderTests(unittest.TestCase):
             step = bot.update(.05 * (index + 1))
             self.assertLessEqual(math.dist(step.position, bot.anchor), 20. + 1e-6)
 
+    def rests(self, bot, steps=6000, dt=.05):
+        """Durations of the still stretches between moves, in seconds."""
+        bot.update(dt)                  # the first tick has no clock to measure speed
+        stretches, still = [], 0
+        for index in range(1, steps):
+            if bot.update(dt * (index + 1)).speed == 0.:
+                still += 1
+            elif still:
+                stretches.append(still * dt)
+                still = 0
+        return stretches
+
+    def test_an_idle_marine_rests_one_authored_idle_between_hops(self):
+        bot = self.bot(idle_durations=(3.0, 6.0), idle_extra=1.0)
+        bot.idle = True
+        rests = self.rests(bot)
+        self.assertGreater(len(rests), 5)
+        for rest in rests:
+            # One idle animation plus ExtraIdleTimeAtEndOfAnim, to the tick.
+            self.assertTrue(any(abs(rest - want) <= .1 for want in (4.0, 7.0)), rest)
+        self.assertEqual({round(r) for r in rests}, {4, 7})
+
+    def test_without_the_switch_a_marine_never_rests(self):
+        bot = self.bot(idle_durations=(3.0,), idle_extra=1.0)
+        self.assertEqual(self.rests(bot, steps=2000), [])
+
+    def test_a_target_ends_the_rest(self):
+        bot = self.bot(idle_durations=(30.0,), idle_extra=1.0)
+        bot.idle = True
+        now = 0.
+        while bot._idle_until is None:
+            now += .05
+            bot.update(now)
+        target = tuple(bot.position[i] + (3., 0., 0.)[i] for i in range(3))
+        step = bot.update(now + .05, 2, target)
+        self.assertEqual(step.target, 2)
+        self.assertIsNone(bot._idle_until)
+
     def test_the_same_seed_replays_the_same_patrol(self):
         def run(seed):
             bot = self.bot(seed)

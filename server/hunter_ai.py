@@ -48,6 +48,8 @@ class Tuning:
     patrol_far: float = 15.
     patrol_anchor_limit: float = 50.
     patrol_attempts: int = 5
+    idle_durations: tuple = ()             # rest after a patrol hop: one of these
+    idle_extra: float = 0.                 # ...plus this, seconds
     repath_interval: float = 0.5
     repath_distance: float = 1.0
     turn_rate: float = math.tau            # radians/second
@@ -147,6 +149,12 @@ MARINE = Tuning(
     patrol_far=15.0,                       # PatrolParams/MaxDistance, 0x2dc
     patrol_anchor_limit=50.0,              # PatrolParams/MaxDistanceFromCurrent, 0x310
     patrol_attempts=5,                     # MaxAttemptsForFindingPatrolDestination, 0x2ab
+    # IdleParams: IdleAnimationDurations (0x1c6..0x248), the lengths of the
+    # six idle animations, and ExtraIdleTimeAtEndOfAnim 1.0 (0x263). Read as
+    # a rest between patrol hops: one idle animation, then 1 s more. That
+    # reading, and the uniform pick, are inferred from the names.
+    idle_durations=(10.8, 5.8, 4.67, 11.73, 9.67, 2.67),
+    idle_extra=1.0,
     # PassiveTurnParams/TurnInPlaceSpeed (0xc93) turns a standing bot. A
     # moving one steers through its spoofed player inputs, so its body turns
     # at marine_default.movementconfig's Max Turn Speed (0x143), 1440 deg/s.
@@ -254,6 +262,7 @@ class Bot:
     forced_until: float = None
     strafe: bool = False          # opt-in: move while attacking (StrafeParams)
     move_turn: bool = False       # opt-in: steer at tuning.move_turn_rate when moving
+    idle: bool = False            # opt-in: rest between wander hops (IdleParams)
     # Opt-in sight test visible(eye, target) -> bool. None: everything is seen.
     visible: object = None
     sight_interval: float = 0.2   # not authored: how often the sight line is re-tested
@@ -276,6 +285,7 @@ class Bot:
     dit_patrol_pause_range: tuple = ()
     dit_patrol_move_range: tuple = ()
     _dit_patrol_pause_until: float = None
+    _idle_until: float = None
     _dit_patrol_move_until: float = None
 
     def __post_init__(self):
@@ -589,6 +599,8 @@ class Bot:
                 and (self.target is not None or distance <= self.tuning.aggro_far)
                 and self._can_see(now, aim_target))
         engaged = self._sense(now, target, distance, aim, seen)
+        if engaged:
+            self._idle_until = None
 
         shots, speed, heading = (), 0., None
         if not engaged:
@@ -617,11 +629,17 @@ class Bot:
                     speed = 0.0
             elif self.state != PATROL:
                 self._dit_patrol_pause_until = self._dit_patrol_move_until = None
+                self._idle_until = None
             elif self._dit_patrol_pause_until is not None:
                 if now < self._dit_patrol_pause_until:
                     speed = 0.0
                 else:
                     self._dit_patrol_pause_until = None
+            elif self._idle_until is not None:
+                if now < self._idle_until:
+                    speed = 0.0
+                else:
+                    self._idle_until = None
         elif distance <= self.tuning.range_max - (
                 0. if self.state == ATTACK else ATTACK_ENTRY_MARGIN):
             # In range, including closer than RangeMin: stand and face. A
@@ -648,6 +666,10 @@ class Bot:
                             and not self.dit_patrol_move_range):
                         low, high = self.dit_patrol_pause_range
                         self._dit_patrol_pause_until = now + self.rng.uniform(low, high)
+                    elif (self.idle and self.wander and self.rng is not None
+                          and self.tuning.idle_durations and not self.dit_patrol_pause_range):
+                        self._idle_until = now + (self.rng.choice(self.tuning.idle_durations)
+                                                  + self.tuning.idle_extra)
                     self._forward = self.wander or not self._forward
                     self._patrol_plan()
                 elif self.state == RETURN:
