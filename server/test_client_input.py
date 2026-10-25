@@ -1,3 +1,4 @@
+import math
 import unittest
 
 import client_input
@@ -87,6 +88,33 @@ class ClientInputTests(unittest.TestCase):
 def math_dist(a, b):
     import math
     return math.dist(a, b)
+
+
+class FacingTests(unittest.TestCase):
+    def test_the_walking_capture_faces_the_way_it_walks(self):
+        newest, _, oldest = client_input.parse_input_positions(MOVING)
+        walking = math.degrees(math.atan2(newest[0] - oldest[0], newest[1] - oldest[1]))
+        facing = client_input.parse_input_facings(MOVING)[0]
+        self.assertAlmostEqual(math.degrees(math.atan2(facing[0], facing[1])), walking,
+                               delta=1.)
+        self.assertAlmostEqual(math.hypot(*facing), 1., places=3)
+
+    def test_the_rotation_is_upright_and_the_still_capture_does_not_turn(self):
+        for data in (MOVING, STILL):
+            for k in range(client_input.FRAME_COUNT):
+                base = client_input.FIRST_POSITION + client_input.FRAME_STRIDE * k + 8
+                _, x, y, _ = client_input.unpack_rotation(data[base:base + 4])
+                self.assertEqual((x, y), (0., 0.))
+        facings = client_input.parse_input_facings(STILL)
+        self.assertEqual(len(set(facings)), 1)
+
+    def test_the_shard_keeps_the_newest_facing(self):
+        import shard_stub as shard
+        state = {}
+        shard.observe_client_input(shard.EntityRpc(
+            client_input.INPUT_DELIVERY, shard.PLAYER_CONNECTION_ID,
+            client_input.INPUT_COMPONENT, client_input.INPUT_RPC, MOVING), state)
+        self.assertEqual(state['player_facing'], client_input.parse_input_facings(MOVING)[0])
 
 
 if __name__ == '__main__':

@@ -22,10 +22,17 @@ The position uses the same packing as every other transform on this wire —
 `hunter_patrol.unpack_position`, i.e. retail packer 4f47e10: X and Y in 22
 bits over +/-4500 m, Z in 20 bits over +/-1300 m.
 
-Nothing outside those three position slots is decoded. The rest of the frame
-is presumably button/axis input and a client tick id; it is deliberately left
-alone rather than guessed at.
+Each position is the front of a full 12-byte packed transform: the 4 bytes
+after it are the character's rotation, in the shard's own smallest-three
+packing (`shard_stub.pack_upright_rotation`). In both captured payloads the
+quaternion's x and y decode to exactly zero, an upright turn about Z. In the
+walking one the facing (36.4, 37.2, 37.9 degrees, newest first) follows the
+walking direction (35.8). Nothing else in the frame is decoded; the rest is
+presumably button/axis input and a client tick id, deliberately left alone
+rather than guessed at.
 """
+import math
+
 import hunter_patrol
 
 INPUT_COMPONENT = 172
@@ -40,6 +47,7 @@ INPUT_SIZE = 326
 FRAME_STRIDE = 106
 FRAME_COUNT = 3
 FIRST_POSITION = 80
+ROTATION_OFFSET = 8          # the packed rotation follows each 8-byte position
 
 
 def is_input(message):
@@ -65,3 +73,29 @@ def parse_input_positions(data):
 def latest_position(data):
     """The newest buffered input frame's position."""
     return parse_input_positions(data)[0]
+
+
+def unpack_rotation(packed):
+    """(w, x, y, z) from 4 bytes of the retail smallest-three packing: the
+    largest component's index in the top two bits, the other three in 10 bits
+    each (scale 723.37, bias 512), the largest restored as positive."""
+    if len(packed) != 4:
+        raise ValueError('expected a 4-byte packed rotation')
+    value = int.from_bytes(packed, 'big')
+    rest = [(((value >> shift) & 0x3ff) - 512) / 723.3699951171875 for shift in (20, 10, 0)]
+    quaternion = rest[:]
+    quaternion.insert(value >> 30, math.sqrt(max(0., 1. - sum(c * c for c in rest))))
+    return tuple(quaternion)
+
+
+def parse_input_facings(data):
+    """Forward vectors (the rotation applied to +Y, Cry's forward) of the
+    three buffered input frames, newest first."""
+    if len(data) != INPUT_SIZE:
+        raise ValueError('unsupported client input size %d' % len(data))
+    facings = []
+    for k in range(FRAME_COUNT):
+        base = FIRST_POSITION + FRAME_STRIDE * k + ROTATION_OFFSET
+        w, x, y, z = unpack_rotation(data[base:base + 4])
+        facings.append((2 * (x * y - w * z), 1 - 2 * (x * x + z * z), 2 * (y * z + w * x)))
+    return tuple(facings)

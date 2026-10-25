@@ -76,6 +76,26 @@ frame — presumably tick ids, buttons and axes — are **not decoded**; the
 first four bytes of each frame do look like a sequence number (`001225f0 02`,
 `… 01`, `… 00`) but that is an observation, not a claim.
 
+## The facing (25 October)
+
+Each frame's position is the front of a full 12-byte packed transform. The
+4 bytes after it (`88 + 106·k`) are the character's rotation, in the same
+smallest-three packing the shard sends (`pack_upright_rotation`): the
+largest component's index in the top two bits, then three 10-bit components
+(scale 723.37, bias 512). Three checks against the two committed captures:
+- **Upright.** In every frame of both, the quaternion's x and y decode to
+  exactly zero: a pure turn about Z, as a character's rotation should be.
+- **Walking.** In the walking capture the facing (+Y rotated by it) is
+  36.4°, 37.2° and 37.9°, newest first: a slight turn. The walking
+  direction over the same three frames is 35.8°.
+- **Standing.** In the still capture the facing is −171.8° in all three
+  frames.
+
+`client_input.parse_input_facings` decodes it, and the shard keeps the
+newest as `state['player_facing']`. Nothing yet uses it on the wire. It is
+what a flinch on the player needs: the yaw is measured in the victim's frame
+(docs/36).
+
 ## Implementation
 
 `server/client_input.py` decodes exactly this shape and nothing else:

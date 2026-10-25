@@ -2080,6 +2080,7 @@ def observe_client_input(message, state):
         state['input_unknown_shape'] = state.get('input_unknown_shape', 0) + 1
         return
     state['player_position'] = position
+    state['player_facing'] = client_input.parse_input_facings(message.data)[0]
     from dit_motion import transport_for_state
     transport = transport_for_state(state)
     if transport is not None:
