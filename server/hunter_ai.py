@@ -257,7 +257,10 @@ class Bot:
     # Opt-in sight test visible(eye, target) -> bool. None: everything is seen.
     visible: object = None
     sight_interval: float = 0.2   # not authored: how often the sight line is re-tested
+    # _seen_at also counts damage, so a target that just hit the bot is not
+    # forgotten; _sighted_at counts the sight test only and gates the attack.
     _seen_at: float = None
+    _sighted_at: float = None
     _sight_checked: float = None
     _sight: bool = True
     _strafe_sign: float = 0.
@@ -360,7 +363,7 @@ class Bot:
                   and self.target == target)
         if self.target is not None:
             if seen:
-                self._seen_at = now
+                self._seen_at = self._sighted_at = now
             elif (not forced and self._seen_at is not None
                   and now - self._seen_at > self.tuning.forget_without_sight):
                 self._disengage()
@@ -378,6 +381,7 @@ class Bot:
             if abs(offset) > self.tuning.aggro_angle / 2:
                 return False
         self.target, self.acquired_at, self._seen_at = target, now, now
+        self._sighted_at = now
         self.attack_started = self.attack_ended = None
         return True
 
@@ -386,7 +390,7 @@ class Bot:
         self.attack_started = self.attack_ended = None
         self.rounds_fired = 0
         self.forced_until = None
-        self._seen_at = None
+        self._seen_at = self._sighted_at = None
 
     def note_damage(self, now, attacker):
         """ForcedAggroDurationOnDamage: whoever hit the bot becomes its target.
@@ -401,6 +405,7 @@ class Bot:
             self.target, self.acquired_at = attacker, now
             self.attack_started = self.attack_ended = None
             self.rounds_fired = 0
+            self._sighted_at = None
         self._seen_at = now
         self.forced_until = now + self.tuning.forced_aggro_on_damage
 
@@ -663,8 +668,8 @@ class Bot:
 
         shots = []
         if engaged:
-            if (self.attack_started is not None and self._seen_at is not None
-                    and now - self._seen_at > self.tuning.abandon_attack_without_sight):
+            if (self.attack_started is not None and self._sighted_at is not None
+                    and now - self._sighted_at > self.tuning.abandon_attack_without_sight):
                 # TimeWithoutLoSToTargetUntilAbandoningAttack
                 self.attack_started, self.attack_ended = None, now
                 self.rounds_fired = 0
@@ -674,7 +679,14 @@ class Bot:
                 self.position[i] + self.tuning.aggro_origin_offset_local[i]
                 for i in range(3))
             aim = tuple(aim_target[i] - current_origin[i] for i in range(3))
-            if (self.attack_started is None and seen
+            # TimeWithoutLoSToTargetUntilAbandoningAttack: a held target out of
+            # sight for less than the window still draws back-to-back attacks;
+            # past it the attack is abandoned (above) and none restarts. Damage
+            # does not open the window: an attacker never seen is not fired on.
+            in_sight_window = seen or (
+                self._sighted_at is not None
+                and now - self._sighted_at <= self.tuning.abandon_attack_without_sight)
+            if (self.attack_started is None and in_sight_window
                     and self._may_attack(now, math.dist(current_origin, aim_target), aim)):
                 self.attack_started, self.rounds_fired = now, 0
                 self._round_anchor, self._anchor_rounds = now, 0

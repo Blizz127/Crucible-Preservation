@@ -540,13 +540,29 @@ class AttackTests(unittest.TestCase):
         self.assertTrue(steps[-1].firing)
         seen[0] = False
         blind = [bot.update(.5 + .05 * i, 2, (0., 8., 0.)) for i in range(1, 81)]
-        # Last seen at .5 s (the throttled test re-runs every .2 s), so the
-        # attack runs on, then stops once 3 s pass unseen. No new one starts.
-        late = [s for s in blind if s.shots and s.shots[0].time > 3.75]
-        self.assertFalse(late)
-        self.assertTrue(any(s.shots for s in blind[:20]))
+        # Last seen at about .5 s (the throttled test re-runs every .2 s).
+        # The attack runs on, a new one starts at its end while the target
+        # is still inside the 3 s window, and firing stops once 3 s pass.
+        times = [shot.time for s in blind for shot in s.shots]
+        self.assertTrue([t for t in times if 2.3 <= t < 3.4])   # restarted unseen
+        self.assertFalse([t for t in times if t > 3.75])        # then abandoned
         self.assertFalse(blind[-1].firing)
         self.assertEqual(blind[-1].target, 2)
+
+    def test_an_unseen_attacker_is_held_but_not_fired_on(self):
+        seen = [False]
+        bot, _ = self.sighted(seen)
+        steps = []
+        for i in range(1, 61):                  # hit every .5 s for 3 s, unseen
+            now = .05 * i
+            if i % 10 == 1:
+                bot.note_damage(now, 2)
+            steps.append(bot.update(now, 2, (0., 8., 0.)))
+        self.assertEqual(steps[-1].target, 2)   # forced aggro holds it
+        self.assertFalse([s for s in steps if s.shots or s.firing])
+        seen[0] = True                          # once it is seen, the attack starts
+        later = [bot.update(3. + .05 * i, 2, (0., 8., 0.)) for i in range(1, 11)]
+        self.assertTrue(any(s.shots for s in later))
 
     def test_a_target_unseen_for_8_s_is_forgotten_unless_forced(self):
         for forced, kept in ((False, False), (True, True)):

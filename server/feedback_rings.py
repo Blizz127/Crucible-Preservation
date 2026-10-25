@@ -64,9 +64,16 @@ def _slots(selected, size):
     return [index in selected for index in range(size)]
 
 
-def floater_bits(slots):
-    """Component 36: root, the 32-entry array, its entries, FloatersEnabled, index."""
-    return [True, True, *_slots(slots, FLOATER_SLOTS), False, True]
+def floater_bits(slots, *, enabled=None):
+    """Component 36: root, the 32-entry array, its entries, FloatersEnabled, index.
+
+    With no slots the array and index are skipped (a 0 skips a subtree); a
+    FloatersEnabled value of None leaves that record out.
+    """
+    entries = [True, *_slots(slots, FLOATER_SLOTS)] if slots else [False]
+    if not slots and enabled is None:
+        raise ValueError('a floater update needs entries or FloatersEnabled')
+    return [True, *entries, enabled is not None, bool(slots)]
 
 
 def indicator_bits(slots):
@@ -84,10 +91,11 @@ def autonomous_bits(subtrees):
     return bits
 
 
-def _floater_values(entries, last_index):
+def _floater_values(entries, last_index, enabled=None):
     """Serializer 0x86eae0: each selected entry as u32 target, f32 damage,
-    u8 flags (0x870d20), then LastServerIndex as u8."""
-    if last_index not in entries:
+    u8 flags (0x870d20), then FloatersEnabled as a packed bool (a fresh
+    byte, bit 0: no other bool precedes it here), then LastServerIndex u8."""
+    if entries and last_index not in entries:
         raise ValueError('LastServerIndex must name a slot this update writes')
     values = b''
     for slot in sorted(entries):
@@ -95,7 +103,9 @@ def _floater_values(entries, last_index):
         if not 0 < target <= 0xffffffff or not math.isfinite(damage) or not 0 <= flags <= 0xff:
             raise ValueError('invalid floater entry')
         values += struct.pack('>IfB', target, damage, flags)
-    return values + bytes([last_index])
+    if enabled is not None:
+        values += bytes([int(bool(enabled))])
+    return values + (bytes([last_index]) if entries else b'')
 
 
 def _indicator_values(entries, last_index):
@@ -114,18 +124,22 @@ def _indicator_values(entries, last_index):
     return values
 
 
-def build_ring_update(*, floaters=None, indicators=None, previous_id=0):
+def build_ring_update(*, floaters=None, indicators=None, floaters_enabled=None,
+                      previous_id=0):
     """One player message writing either ring or both.
 
     `floaters` and `indicators` are (entries, last_index). The autonomous
     record selects both components in type order, and their values follow
-    in the same order, after an all-false shared record.
+    in the same order, after an all-false shared record. `floaters_enabled`
+    also replicates FloatersEnabled (record 34), answering the client's
+    EnableDamageFloaters request.
     """
     import shard_stub
     subtrees, values = {}, b''
-    if floaters is not None:
-        subtrees[DAMAGE_FLOATER] = floater_bits(set(floaters[0]))
-        values += _floater_values(*floaters)
+    if floaters is not None or floaters_enabled is not None:
+        entries, last = floaters if floaters is not None else ({}, 0)
+        subtrees[DAMAGE_FLOATER] = floater_bits(set(entries), enabled=floaters_enabled)
+        values += _floater_values(entries, last, floaters_enabled)
     if indicators is not None:
         subtrees[HIT_INDICATOR] = indicator_bits(set(indicators[0]))
         values += _indicator_values(*indicators)

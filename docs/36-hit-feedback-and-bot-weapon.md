@@ -265,10 +265,16 @@ samples. Decoding April2018 takes 0.26 s, and one 39 m sight test about
 
 With `CRUCIBLE_SOLO_LOS=terrain`, each Marine gets a sight test from its eye
 (1 m above its feet) to the target's aim point (1 m above theirs). The test
-is re-run at most every 0.2 s; that interval is not authored. With the test:
+is re-run at most every 0.2 s, and only for a target that is held or within
+acquisition range; that interval is not authored. With the test:
 - an unseen target is not acquired;
 - a held target is forgotten after 8 s unseen, unless forced aggro holds it;
-- an attack does not start unseen and is abandoned after 3 s unseen;
+- a held target out of sight for under 3 s still draws back-to-back
+  attacks; after 3 s the attack is abandoned and none restarts.
+  `TimeWithoutLoSToTargetUntilAbandoningAttack` (3 s) is longer than one
+  attack (2 s), so the window must span attacks, or it could never act.
+  Only a sight test opens the window. Damage forces aggro and holds the
+  target, but an attacker the Marine has never seen is not fired on;
 - a server-resolved round whose line is blocked does no damage.
 
 An end point whose eye or aim point is under the heightfield skips the
@@ -351,12 +357,24 @@ written (`RESEND_SECONDS`, `RESEND_ENTRIES`; not authored). Re-sending a
 slot the client has already consumed is harmless, because it reads only
 slots between its cursor and LastServerIndex.
 
-**Not handled: EnableDamageFloaters.** If the player has turned damage
-floaters off in settings, the client sends `EnableDamageFloaters(false)`
-(component 36, delivery 3) every tick while the replicated FloatersEnabled
-stays true. It also stops walking its ring while it does so. The shard does
-not answer yet, so with that setting off no numbers show and the RPC
-repeats. The default setting is on.
+**EnableDamageFloaters.** The client sends this every tick while the
+player's floater setting differs from the replicated FloatersEnabled. The
+default for both is on. The request travels on component 36 as RPC 0,
+delivery 3, with one packed bool; the send site is `0xdab8a4` and the
+struct `0x86d920`. With `CRUCIBLE_SOLO_DAMAGE_NUMBERS=1` (and the split,
+which every ring update needs), the shard:
+- records the player's choice;
+- writes no damage numbers while floaters are off, because the client stops
+  walking its ring then and would replay them later;
+- echoes the value as FloatersEnabled (record 34) for 10 ticks, so the
+  client stops asking.
+
+Record 34 is a packed bool. It comes after any entries and before the
+index, and it can be sent on its own, with the array and index records
+skipped. The shard always sends it on its own: while the echo runs, new
+damage numbers wait in the ring. That way the shard never relies on the
+entry flags (`0x870d20`) being a whole byte rather than packed bools, an
+assumption not yet checked live.
 
 One risk is recorded but not resolved. If the client's screen-edge effects
 asset failed to load, `PlayEdgeOfScreenEffect` (`0xdacd30`) logs "Edge

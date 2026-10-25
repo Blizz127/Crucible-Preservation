@@ -1233,7 +1233,8 @@ def observe_solo_combat(message, state):
     if shooter == PLAYER_CHARACTER_ID:
         confirm_player_hit(state, hit, weapon)
         import feedback_rings
-        if feedback_rings.damage_numbers_enabled():
+        if (feedback_rings.damage_numbers_enabled()
+                and state.get('floaters_enabled', True)):
             state.setdefault('floater_ring', feedback_rings.FloaterRing()).hit(
                 hit.target, hit.damage, now)
         squad = state.get('squad')
@@ -1299,10 +1300,16 @@ def confirm_player_hit(state, hit, weapon):
 def feedback_ring_message(state, now):
     """docs/36: a builder for this tick's damage-number/hit-arc update, or None."""
     import feedback_rings
+    enabled = None
+    if state.get('floaters_enabled_resend'):
+        state['floaters_enabled_resend'] -= 1
+        enabled = state['floaters_enabled']
     taken = {}
     for key, name in (('floater_ring', 'damage numbers'), ('indicator_ring', 'hit arcs')):
         ring = state.get(key)
-        if ring is None:
+        if ring is None or (key == 'floater_ring' and enabled is not None):
+            # While FloatersEnabled is echoed it goes alone, as the bare
+            # 4-bit record; damage numbers wait in the ring (docs/36).
             continue
         taken[key] = ring.take(now)
         # Log each time the count reaches a new power of two; several hits in
@@ -1313,7 +1320,7 @@ def feedback_ring_message(state, now):
             log('      SOLO FEEDBACK %s index %d (count %d)'
                 % (name, ring.last_index, ring.written))
     floaters, indicators = taken.get('floater_ring'), taken.get('indicator_ring')
-    if floaters is None and indicators is None:
+    if floaters is None and indicators is None and enabled is None:
         return None
     if not split_updates_enabled():
         # The ring message and the player's own health are both for the
@@ -1323,7 +1330,8 @@ def feedback_ring_message(state, now):
             log('      SOLO FEEDBACK rings disabled: they need CRUCIBLE_SHARD_SPLIT_UPDATES=1')
         return None
     return lambda previous_id: feedback_rings.build_ring_update(
-        floaters=floaters, indicators=indicators, previous_id=previous_id)
+        floaters=floaters, indicators=indicators, floaters_enabled=enabled,
+        previous_id=previous_id)
 
 
 def solo_match_rank(state):
@@ -1888,6 +1896,31 @@ def observe_client_input(message, state):
         log('      CLIENT INPUT decoded: player at (%.2f, %.2f, %.2f)' % position)
 
 
+# The client's DamageFloaterComponent::EnableDamageFloaters (delivery 3,
+# component 36, RPC 0, one packed bool; send site 0xdab8a4, struct 0x86d920).
+# DamageFloaterAutonomousSystem sends it every tick while the player's
+# floater setting differs from the replicated FloatersEnabled (docs/36).
+FLOATER_SETTING_RESEND_TICKS = 10
+
+
+def observe_floater_setting(message, state):
+    """Record the player's damage-floater setting and schedule its echo.
+
+    Opt-in with the damage numbers (CRUCIBLE_SOLO_DAMAGE_NUMBERS=1).
+    """
+    import feedback_rings
+    if ((message.delivery, message.entity_id, message.component, message.rpc)
+            != (3, PLAYER_CHARACTER_ID, 36, 0) or len(message.data) != 1
+            or not feedback_rings.damage_numbers_enabled()):
+        return
+    enabled = bool(message.data[0] & 1)
+    if state.get('floaters_enabled', True) != enabled or 'floaters_enabled' not in state:
+        log('      SOLO FEEDBACK client asks for damage floaters %s'
+            % ('on' if enabled else 'off'))
+    state['floaters_enabled'] = enabled
+    state['floaters_enabled_resend'] = FLOATER_SETTING_RESEND_TICKS
+
+
 def observe_client_rpcs(region, state):
     """Record valid requests from this peer's activated player once.
 
@@ -1926,6 +1959,7 @@ def observe_client_rpcs(region, state):
         else:
             observe_practice_damage(message, state)
         observe_client_input(message, state)
+        observe_floater_setting(message, state)
         if message.entity_id != PLAYER_CONNECTION_ID:
             continue
         if (message.delivery == 3 and message.component == 169

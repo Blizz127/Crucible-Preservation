@@ -227,5 +227,82 @@ class UnsentEntryTests(unittest.TestCase):
         self.assertEqual(len(ring.take(5.1)[0]), rings.RESEND_ENTRIES)
 
 
+@patch.object(shard, 'log')
+class FloaterSettingTests(unittest.TestCase):
+    def test_floaters_enabled_bits_and_values(self, _log):
+        self.assertEqual(rings.floater_bits(set(), enabled=False), [True, False, True, False])
+        self.assertEqual(rings.floater_bits({1}, enabled=True)[-2:], [True, True])
+        alone = rings.build_ring_update(floaters_enabled=False)
+        self.assertTrue(alone.payload.endswith(
+            shard.build_replication_record(rings.autonomous_bits(
+                {36: [True, False, True, False]})) + b'\x00'))
+        both = rings.build_ring_update(floaters=({1: (0x01000003, 40., 0)}, 1),
+                                       floaters_enabled=True)
+        self.assertTrue(both.payload.endswith(bytes.fromhex('01000003 42200000 00 01 01')))
+        with self.assertRaises(ValueError):
+            rings.floater_bits(set())
+
+    def test_the_client_request_pauses_floaters_and_is_echoed(self, _log):
+        env = dict(ALPHA, CRUCIBLE_SOLO_DAMAGE_NUMBERS='1', CRUCIBLE_SHARD_SPLIT_UPDATES='1')
+        with patch.dict('os.environ', env, clear=True):
+            state = {}
+            shard.start_solo_simulation(state)
+            off = shard.EntityRpc(3, shard.PLAYER_CHARACTER_ID, 36, 0, b'\x00')
+            shard.observe_floater_setting(off, state)
+            self.assertFalse(state['floaters_enabled'])
+            shard.observe_solo_combat(player_hit(1, 0x1000003), state)
+            self.assertNotIn('floater_ring', state)
+            message = shard.feedback_ring_message(state, 1.)(0)
+            self.assertEqual(message, rings.build_ring_update(floaters_enabled=False))
+            for _ in range(shard.FLOATER_SETTING_RESEND_TICKS - 1):
+                self.assertIsNotNone(shard.feedback_ring_message(state, 1.))
+            self.assertIsNone(shard.feedback_ring_message(state, 1.))
+            # Turned back on, hits feed the ring again.
+            on = shard.EntityRpc(3, shard.PLAYER_CHARACTER_ID, 36, 0, b'\x01')
+            shard.observe_floater_setting(on, state)
+            self.assertTrue(state['floaters_enabled'])
+            shard.observe_solo_combat(player_hit(2, 0x1000003), state)
+            self.assertIn('floater_ring', state)
+            # The echo goes alone; the number waits for it to finish.
+            for _ in range(shard.FLOATER_SETTING_RESEND_TICKS):
+                self.assertEqual(shard.feedback_ring_message(state, 1.)(0),
+                                 rings.build_ring_update(floaters_enabled=True))
+            entries, last = state['floater_ring'].take(1.)
+            self.assertEqual(len(entries), 1)
+
+    def test_a_client_packet_reaches_the_setting(self, _log):
+        def packet(sequence, enabled):
+            payload = (b'\0\1' + struct.pack('>BIBBH', 3, shard.PLAYER_CHARACTER_ID, 36, 0, 1)
+                       + bytes([enabled]))
+            return (bytes.fromhex('000b') + struct.pack('>H', sequence) + bytes(6)
+                    + b'\1' + struct.pack('>H', sequence) + payload)
+        with patch.dict('os.environ', {'CRUCIBLE_SOLO_DAMAGE_NUMBERS': '1'}, clear=True):
+            state = {'bootstrap_sent': True}
+            shard.observe_client_rpcs(packet(1, 0), state)
+            self.assertEqual((state['floaters_enabled'], state['floaters_enabled_resend']),
+                             (False, shard.FLOATER_SETTING_RESEND_TICKS))
+            # The next tick's request, in a new packet, re-arms the echo.
+            state['floaters_enabled_resend'] = 1
+            shard.observe_client_rpcs(packet(2, 0), state)
+            self.assertEqual(state['floaters_enabled_resend'],
+                             shard.FLOATER_SETTING_RESEND_TICKS)
+
+    def test_other_rpcs_are_not_the_setting(self, _log):
+        state = {}
+        with patch.dict('os.environ', {'CRUCIBLE_SOLO_DAMAGE_NUMBERS': '1'}):
+            for rpc in (shard.EntityRpc(3, shard.PLAYER_CONNECTION_ID, 36, 0, b'\x00'),
+                        shard.EntityRpc(3, shard.PLAYER_CHARACTER_ID, 36, 1, b'\x00'),
+                        shard.EntityRpc(3, shard.PLAYER_CHARACTER_ID, 36, 0, b'\x00\x00')):
+                shard.observe_floater_setting(rpc, state)
+        self.assertEqual(state, {})
+
+    def test_the_setting_is_left_alone_without_damage_numbers(self, _log):
+        state = {}
+        with patch.dict('os.environ', {}, clear=True):
+            shard.observe_floater_setting(
+                shard.EntityRpc(3, shard.PLAYER_CHARACTER_ID, 36, 0, b'\x00'), state)
+        self.assertEqual(state, {})
+
+
 if __name__ == '__main__':
     unittest.main()
