@@ -151,7 +151,11 @@ States are `patrol`, `pursue`, `attack` and `return`.
 - **Patrol.** With `wander=True` and a mesh, the bot asks
   `Mesh.wander_point` for a reachable destination 5–15 m away and within 50 m
   of its anchor, up to five attempts, and funnels a path to it; a failed
-  search holds position for the tick rather than forcing a hop. Its RNG is
+  search holds position for the tick rather than forcing a hop. The editor
+  tooltips later showed that reading inverted: retail draws destinations
+  5–15 m from the anchor, within 50 m of the current position. The opt-in
+  `CRUCIBLE_SOLO_BOT_ANCHORED=1` follows the tooltips; the default keeps the
+  earlier reading for the deployed baseline (docs/36). Its RNG is
   injected and seeded from the entity id, so a restart replays the same
   patrol. Without a mesh it falls back to the fixed ping-pong route, which is
   what `build_hunter_patrol_updates` still uses.
