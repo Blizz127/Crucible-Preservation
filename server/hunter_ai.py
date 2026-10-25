@@ -19,6 +19,7 @@ ATTACK = 'attack'
 # (docs/21). Stabilises the PURSUE/ATTACK boundary observed flapping live.
 ATTACK_ENTRY_MARGIN = 1.0
 RETURN = 'return'
+FLEE = 'flee'
 # Not authored: the largest height change one strafe step may take. A 0.225 m
 # step (4.5 m/s at 20 Hz) on a 45-degree slope rises 0.225 m.
 STRAFE_STEP_HEIGHT = 0.5
@@ -53,6 +54,11 @@ class Tuning:
     idle_extra: float = 0.                 # ...plus this, seconds
     start_stop_acceleration: float = 0.    # m/s^2; 0 changes speed at once
     config_ramp_seconds: float = 0.        # movement config: 0 to full speed
+    flee_time: float = 0.                  # seconds; 0 never flees
+    flee_speed: float = 0.
+    flee_near: float = 20.                 # destination, metres from where it stands
+    flee_far: float = 40.
+    flee_attempts: int = 30
     repath_interval: float = 0.5
     repath_distance: float = 1.0
     turn_rate: float = math.tau            # radians/second
@@ -172,6 +178,13 @@ MARINE = Tuning(
     # on whether the pipeline scales speed by input magnitude (not traced).
     start_stop_acceleration=10.0,
     config_ramp_seconds=0.15,
+    # marine_guide_on_hit.cdl (in the Marine dummy's script list) requests
+    # Flee for User_flee_time 4.0 s and holds Ability3 (sprint) as long. The
+    # flight is assumed to run at marine_sprint's 8.5 m/s (5.5 if sprint never
+    # starts: its check needs forward input >= 0.1 at the press, docs/36).
+    # FleeParams: destination 20..40 m "from current pos" (0x3a6/0x3c0),
+    # directly away from the enemy, in up to 30 attempts (0x35b).
+    flee_time=4.0, flee_speed=8.5, flee_near=20.0, flee_far=40.0, flee_attempts=30,
     # PassiveTurnParams/TurnInPlaceSpeed (0xc93) turns a standing bot. A
     # moving one steers through its spoofed player inputs, so its body turns
     # at marine_default.movementconfig's Max Turn Speed (0x143), 1440 deg/s.
@@ -290,6 +303,8 @@ class Bot:
     accelerate: bool = False      # opt-in: ramp speed (accel_model picks how)
     accel_model: str = 'ai'       # 'ai': StartStopAcceleration; 'config': 0.15 s ramp
     pursue_cap: float = None      # opt-in: the chase's top speed (5.5, the Default config)
+    flee: bool = False            # opt-in: flee a losing fight (marine_guide_on_hit.cdl)
+    flees: int = 0                # flights started, for the shard's log
     anchored: bool = False        # opt-in: wander 5-15 m around the anchor (tooltips)
     rests: int = 0                # idle rests started, for the shard's log
     # Opt-in sight test visible(eye, target) -> bool. None: everything is seen.
@@ -317,6 +332,7 @@ class Bot:
     _idle_until: float = None
     _speed: float = 0.
     _patrol_failed_attempts: int = 0
+    _flee_until: float = None
     _dit_patrol_move_until: float = None
 
     def __post_init__(self):
@@ -467,6 +483,9 @@ class Bot:
         """
         if not self.tuning.forced_aggro_on_damage:
             return
+        if self._flee_until is not None and now < self._flee_until:
+            # IgnoreTargetsTime: while fleeing, damage does not aggro it.
+            return
         if self.target != attacker:
             self.target, self.acquired_at = attacker, now
             self.attack_started = self.attack_ended = None
@@ -474,6 +493,66 @@ class Bot:
             self._sighted_at = None
         self._seen_at = now
         self.forced_until = now + self.tuning.forced_aggro_on_damage
+
+    def consider_flee(self, now, attacker_position, own_ratio, attacker_ratio):
+        """marine_guide_on_hit.cdl's decision on taking damage (docs/36).
+
+        It flees when the attacker is healthier (its health ratio is higher)
+        and sqrt(Distance2D) * own ratio < 1.5. The flight goes 20..40 m
+        directly away from the attacker for flee_time. It keeps its combat
+        target (FleeParams flee from "the current combat target") but neither
+        attacks nor senses; afterwards the held target's deaggro radius, not
+        the acquisition cone, decides whether it fights on. A hit during a
+        flight that still meets the test only extends it (inferred: the
+        script requests Flee again). Returns True when it flees.
+        """
+        if not self.flee or not self.tuning.flee_time or self.mesh is None or self.rng is None:
+            return False
+        dx = self.position[0] - attacker_position[0]
+        dy = self.position[1] - attacker_position[1]
+        distance = math.hypot(dx, dy)
+        if not (attacker_ratio > own_ratio and math.sqrt(distance) * own_ratio < 1.5):
+            return False
+        if self._flee_until is not None and now < self._flee_until:
+            self._flee_until = now + self.tuning.flee_time     # keep the path
+            return True
+        plan = self._flee_plan(dx, dy, distance)
+        if plan is None:
+            return False
+        self.flees += 1
+        self._plan, self._index = plan, 1
+        self._planned_at = self._planned_for = None
+        self.attack_started, self.attack_ended, self.rounds_fired = None, now, 0
+        self.state, self._flee_until = FLEE, now + self.tuning.flee_time
+        return True
+
+    def _flee_plan(self, dx, dy, distance):
+        """A reachable point flee_near..flee_far m away, directly away from the
+        attacker, widening up to +/-60 degrees over the attempts (the spread is
+        not authored). None when every attempt fails."""
+        away = (math.atan2(dy, dx) if distance > 1e-6
+                else self.rng.uniform(-math.pi, math.pi))
+        # A candidate in another mesh component has no path, and the search
+        # that proves it is the slow one: skip those before searching. The
+        # start is located as Mesh.path locates it.
+        index = getattr(self.mesh, 'component_index', None)
+        index = index() if index is not None else None
+        here = self.mesh.locate(self.position) if index is not None else None
+        home = index.get(here[0]) if here is not None else None
+        attempts = self.tuning.flee_attempts
+        for attempt in range(attempts):
+            spread = math.radians(60.) * attempt / max(1, attempts - 1)
+            angle = away + self.rng.uniform(-spread, spread)
+            reach = self.rng.uniform(self.tuning.flee_near, self.tuning.flee_far)
+            candidate = (self.position[0] + math.cos(angle) * reach,
+                         self.position[1] + math.sin(angle) * reach, self.position[2])
+            located = self.mesh.locate(candidate, 3.0)
+            if located is None or (home is not None and index.get(located[0]) != home):
+                continue
+            plan = self._navigate(located[1])
+            if plan is not None and len(plan) >= 2:
+                return list(plan)
+        return None
 
     def _may_attack(self, now, distance, aim):
         """Attacks[0]'s start gate: range, vertical range, cone and delays."""
@@ -687,12 +766,20 @@ class Bot:
         seen = (aim_target is not None
                 and (self.target is not None or distance <= self.tuning.aggro_far)
                 and self._can_see(now, aim_target))
-        engaged = self._sense(now, target, distance, aim, seen)
+        fleeing = self._flee_until is not None and now < self._flee_until
+        if self._flee_until is not None and not fleeing:
+            # The flight is over and IgnoreTargetsTime with it: sense again.
+            self._flee_until = None
+            self.state = PATROL
+            self._patrol_plan()
+        engaged = False if fleeing else self._sense(now, target, distance, aim, seen)
         if engaged:
             self._idle_until = None
 
         shots, speed, heading = (), 0., None
-        if not engaged:
+        if fleeing:
+            speed = self.tuning.flee_speed
+        elif not engaged:
             if self.state in (PURSUE, ATTACK):
                 self.state = RETURN
                 if not self._repath(now, self._home()):

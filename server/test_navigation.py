@@ -168,6 +168,14 @@ class MeshTests(unittest.TestCase):
         mesh = navigation.read_mnm(square())
         self.assertEqual([len(c) for c in mesh.components()], [2, 1])
 
+    def test_component_index_names_each_triangles_component(self):
+        mesh = navigation.read_mnm(square())
+        index = mesh.component_index()
+        self.assertEqual(sorted(index), sorted(mesh.centres))
+        for number, group in enumerate(mesh.components()):
+            self.assertEqual({index[key] for key in group}, {number})
+        self.assertIs(mesh.component_index(), index)
+
     def test_parser_rejects_wrong_version_truncation_and_trailing_bytes(self):
         data = square()
         for invalid in (b'\x08\0' + data[2:], data[:-1], data + b'\0'):

@@ -136,7 +136,8 @@ class HunterCombatAnimationTests(unittest.TestCase):
                   'CRUCIBLE_SOLO_LOS': 'terrain'},
                  'HUNTER AI switches: strafe accel-ai; sight terrain'),
                 ({'CRUCIBLE_SOLO_BOT_ACCEL': 'config', 'CRUCIBLE_SOLO_BOT_CHASE_CAP': '1'},
-                 'HUNTER AI switches: accel-config chase-cap; sight off')):
+                 'HUNTER AI switches: accel-config chase-cap; sight off'),
+                ({'CRUCIBLE_SOLO_BOT_FLEE': '1'}, 'HUNTER AI switches: flee; sight off')):
             squad = hunter_ai.Squad([hunter_ai.Bot(e, route, hunter_ai.MARINE) for e in BOTS])
             env = dict(flags, CRUCIBLE_SOLO_AI='1', CRUCIBLE_SOLO_MODE='alpha-hunters')
             with self.subTest(flags=flags), patch.dict('os.environ', env, clear=True), \

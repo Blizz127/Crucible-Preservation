@@ -1205,6 +1205,13 @@ def start_solo_simulation(state):
             if os.environ.get('CRUCIBLE_SOLO_BOT_CHASE_CAP') == '1':
                 for bot in state['squad'].bots:
                     bot.pursue_cap = MARINE_DEFAULT_FORWARD_SPEED
+            if os.environ.get('CRUCIBLE_SOLO_BOT_FLEE') == '1':
+                for bot in state['squad'].bots:
+                    bot.flee = True
+                    # The flight search's component index takes a quarter
+                    # second to build: here, not on the first hit.
+                    if hasattr(bot.mesh, 'component_index'):
+                        bot.mesh.component_index()
             if os.environ.get('CRUCIBLE_SOLO_BOT_ANCHORED') == '1':
                 for bot in state['squad'].bots:
                     bot.anchored = True
@@ -1222,6 +1229,7 @@ def start_solo_simulation(state):
                 ('accel-ai', os.environ.get('CRUCIBLE_SOLO_BOT_ACCEL') in ('1', 'ai')),
                 ('accel-config', os.environ.get('CRUCIBLE_SOLO_BOT_ACCEL') == 'config'),
                 ('chase-cap', os.environ.get('CRUCIBLE_SOLO_BOT_CHASE_CAP') == '1'),
+                ('flee', os.environ.get('CRUCIBLE_SOLO_BOT_FLEE') == '1'),
                 ('anchored', os.environ.get('CRUCIBLE_SOLO_BOT_ANCHORED') == '1'),
                 ('forced-aggro', os.environ.get('CRUCIBLE_SOLO_FORCED_AGGRO') == '1'),
                 ('flinch', hit_reaction_enabled() and not player_flinch_enabled()),
@@ -1323,6 +1331,17 @@ def observe_solo_combat(message, state):
         if hit_reaction_enabled():
             note_hit_reaction(state, hit.target)
         squad = state.get('squad')
+        player = state.get('player_position')
+        if squad is not None and not hit.killed and player is not None:
+            # marine_guide_on_hit.cdl's flight (docs/36): before forced aggro,
+            # which a fleeing Marine ignores.
+            victim = arena.entities.get(hit.target)
+            shooter_entity = arena.entities.get(PLAYER_CHARACTER_ID)
+            for bot in squad.bots:
+                if (bot.entity == hit.target and getattr(bot, 'flee', False)
+                        and victim is not None and shooter_entity is not None):
+                    bot.consider_flee(now, player, victim.health / victim.maximum,
+                                      shooter_entity.health / shooter_entity.maximum)
         if (squad is not None and not hit.killed
                 and os.environ.get('CRUCIBLE_SOLO_FORCED_AGGRO') == '1'):
             for bot in squad.bots:
@@ -1678,14 +1697,16 @@ def solo_simulation_messages(state, now, *, previous_id=0):
         # Idle rests change no logged state (the bot stays in PATROL), so
         # count them: logged at counts 1, 2, 4, ... per bot.
         for bot in getattr(state.get('squad'), 'bots', ()):
-            rests = getattr(bot, 'rests', 0)
-            if not rests:
-                continue
-            rests_logged = state.setdefault('hunter_rests_logged', {})
-            if rests.bit_length() != rests_logged.get(bot.entity, 0):
-                rests_logged[bot.entity] = rests.bit_length()
-                log('      HUNTER AI %08x resting between patrol hops (count %d)'
-                    % (bot.entity, rests))
+            for attribute, key, text in (
+                    ('rests', 'hunter_rests_logged', 'resting between patrol hops'),
+                    ('flees', 'hunter_flees_logged', 'fleeing a losing fight')):
+                count = getattr(bot, attribute, 0)
+                if not count:
+                    continue
+                logged = state.setdefault(key, {})
+                if count.bit_length() != logged.get(bot.entity, 0):
+                    logged[bot.entity] = count.bit_length()
+                    log('      HUNTER AI %08x %s (count %d)' % (bot.entity, text, count))
         if os.environ.get('CRUCIBLE_SOLO_FIRE') == '1':
             from combat import MARINE_PRIMARY
             from projectile_events import build_hybrid_activation_update

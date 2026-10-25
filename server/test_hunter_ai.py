@@ -263,6 +263,103 @@ class AccelerationTests(unittest.TestCase):
             self.assertAlmostEqual(step.yaw, want, places=6)
 
 
+class FleeTests(unittest.TestCase):
+    """marine_guide_on_hit.cdl's flight from a losing fight (docs/36)."""
+
+    def bot(self, half=100., **kwargs):
+        # The Marine's own aggro geometry: a 120-degree cone, 5 m near, 40 m
+        # far, 50 m deaggro. A flight ends 20-40 m off, facing away.
+        values = dict(flee_time=4., flee_speed=8.5, flee_near=20., flee_far=40.,
+                      flee_attempts=30, aggro_near=5., aggro_far=40.,
+                      aggro_angle=math.radians(120.), deaggro=50.)
+        values.update(kwargs)
+        bot = hunter_ai.Bot(3, straight(), tuning(**values), mesh=WanderTests.Flat(half),
+                            rng=random.Random(5), position=(0., 0., 0.))
+        bot.flee = True
+        return bot
+
+    def test_the_scripts_condition(self):
+        # Flee when the attacker is healthier and sqrt(distance) * ratio < 1.5.
+        for attacker, own, other, flees in (((0., 9., 0.), .4, .8, True),    # 3 * .4 = 1.2
+                                            ((0., 25., 0.), .4, .8, False),  # 5 * .4 = 2.0
+                                            ((0., 4., 0.), .6, .5, False),   # it is healthier
+                                            ((0., 4., 0.), .5, .5, False)):  # not strictly
+            with self.subTest(attacker=attacker, own=own, other=other):
+                self.assertEqual(self.bot().consider_flee(1., attacker, own, other), flees)
+        bot = self.bot()
+        bot.flee = False
+        self.assertFalse(bot.consider_flee(1., (0., 9., 0.), .4, .8))
+
+    def test_it_runs_away_without_firing_then_fights_again(self):
+        bot = self.bot()
+        player = (0., 8., 0.)
+        for i in range(1, 30):                        # engaged and firing
+            bot.update(.05 * i, 2, player)
+        self.assertEqual(bot.target, 2)
+        self.assertTrue(bot.consider_flee(1.5, player, .3, .9))
+        steps = [bot.update(1.5 + .05 * i, 2, player) for i in range(1, 80)]
+        flight = [s for s in steps if s.state == hunter_ai.FLEE]
+        self.assertEqual(len(flight), 79)             # 4 s at 50 ms, minus the last tick
+        self.assertFalse([s for s in flight if s.shots or s.firing])
+        self.assertTrue(all(s.target == 2 for s in flight))   # the target is kept
+        self.assertAlmostEqual(max(s.speed for s in flight), 8.5, places=6)
+        away = [math.dist(s.position, player) for s in flight]
+        self.assertGreater(away[-1], 20.)
+        after = [bot.update(5.5 + .05 * i, 2, player) for i in range(1, 30)]
+        # IgnoreTargetsTime over: inside the 50 m deaggro radius it fights on,
+        # though it faces away, outside its 120-degree acquisition cone.
+        self.assertEqual(after[-1].target, 2)
+        self.assertIn(after[-1].state, (hunter_ai.PURSUE, hunter_ai.ATTACK))
+
+    def test_a_hit_during_the_flight_extends_it_on_the_same_path(self):
+        bot = self.bot()
+        self.assertTrue(bot.consider_flee(1., (0., 9., 0.), .4, .8))
+        path = list(bot._plan)
+        self.assertTrue(bot.consider_flee(2., (0., 9., 0.), .3, .8))
+        self.assertEqual((bot.flees, bot._flee_until, bot._plan), (1, 6., path))
+
+    def test_damage_during_the_flight_does_not_aggro(self):
+        bot = self.bot(forced_aggro_on_damage=6.)
+        self.assertTrue(bot.consider_flee(1., (0., 9., 0.), .4, .8))
+        bot.note_damage(1.5, 7)                      # a different attacker
+        self.assertIsNone(bot.target)
+        self.assertIsNone(bot.forced_until)
+
+    def test_without_a_reachable_destination_it_stays(self):
+        bot = self.bot(half=5.)                       # nowhere 20-40 m away
+        self.assertFalse(bot.consider_flee(1., (0., 3., 0.), .2, .9))
+        self.assertNotEqual(bot.state, hunter_ai.FLEE)
+
+    def test_destinations_in_another_component_are_never_searched(self):
+        class Split(WanderTests.Flat):
+            """Flat ground cut at x = 0 into two unconnected halves."""
+            searches = 0
+
+            def locate(self, point, tolerance=2.):
+                located = super().locate(point, tolerance)
+                if located is None:
+                    return None
+                return ('west' if point[0] < 0. else 'east'), located[1]
+
+            def path(self, start, end, step=1.):
+                self.searches += 1
+                return [start, end]
+
+            def component_index(self):
+                return {'west': 0, 'east': 1}
+
+        # Away from (-14, 0) is east: every candidate, even at the widest
+        # 60-degree spread, lands across the cut, where no path leads.
+        bot = self.bot()
+        bot.mesh, bot.position = Split(), (-5., 0., 0.)
+        self.assertFalse(bot.consider_flee(1., (-14., 0., 0.), .2, .9))
+        self.assertEqual(bot.mesh.searches, 0)
+        # Fleeing west from (4, 0) stays on its own side and goes.
+        bot.position = (-5., 0., 0.)
+        self.assertTrue(bot.consider_flee(1., (4., 0., 0.), .2, .9))
+        self.assertEqual(bot.mesh.searches, 1)
+
+
 class WanderTests(unittest.TestCase):
     """PatrolParams author a bounded random walk, not a fixed route."""
 

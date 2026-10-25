@@ -140,7 +140,12 @@ class BotSightRowTests(unittest.TestCase):
 
     def test_the_rows_appear_only_when_used(self):
         rows = self.rows([])
-        self.assertFalse({'B0', 'B1', 'B2', 'B3', 'F4'} & set(rows))
+        self.assertFalse({'B0', 'B1', 'B2', 'B3', 'B4', 'F4'} & set(rows))
+
+    def test_flights_are_counted(self):
+        rows = self.rows(['HUNTER AI 01000005 fleeing a losing fight (count 2)'])
+        self.assertEqual(rows['B4'][1], 'LOGS-OK')
+        self.assertIn('01000005 >=2', rows['B4'][2])
 
     def test_the_switches_line_is_echoed(self):
         rows = self.rows(['HUNTER AI switches: reload strafe idle accel; sight static'])

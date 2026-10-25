@@ -35,7 +35,7 @@
 > | 2 | Bot rounds never hurt the player | Done: server-resolved rounds, with the player's Health sent when it changes (docs/35) |
 > | 3 | Shots fired feet to feet | Done in substance: from 1 m above the bot to 1 m above the target (the authored offsets). The muzzle socket is not modelled |
 > | 4 | Attack cone, vertical range, turn speed | Done |
-> | 5 | Combat movement | Done: strafing and approach stop distances |
+> | 5 | Combat movement | Done: strafing and approach stop distances, and the on-hit flight from a losing fight (`CRUCIBLE_SOLO_BOT_FLEE`, from the Marine's own script; its sprint start and its rule for a hit mid-flight are inferred) |
 > | 6 | No reaction to hits; sight through walls | Done: forced aggro, plus line of sight over the terrain and through walls, rocks and buildings |
 > | 7 | The player's damage | Partly: range falloff, and the Saboteur's own primary (the owner's hero). Other heroes still use Marine numbers. Crits stay open: the client's hit report carries no hit location |
 > | 8 | Visible death and respawn | Partly: authored death tags. Respawn presentation stays open |
@@ -43,7 +43,7 @@
 > | 10 | Tick rate | Done: the 32 ms option |
 > | 11 | Creature presentation and alerting | Partly: `creature_ai` models the wind-up and alert timing. Not re-audited |
 > | 12 | Navigation only on April2018 | Done: each map's own mesh (480c4b1) |
-> | 13 | Patrol feel | Mostly. Opt-in: idle rests (an inferred reading); destinations 5–15 m from the anchor per the editor tooltips (`CRUCIBLE_SOLO_BOT_ANCHORED`; the default wander keeps the earlier, inverted reading); a chase cap of 5.5 m/s (`CRUCIBLE_SOLO_BOT_CHASE_CAP`). Patrol at 5.5 is supported, and the AI's 8.0 chase cannot be realised through the spoofed player pipeline (snapshots/speed-20261025). Open: which ramp a spoofed Marine obeys (`CRUCIBLE_SOLO_BOT_ACCEL=ai` or `config`) depends on whether input magnitude scales speed; the server-side mapping is not in the install. Sprint bursts are not modelled |
+> | 13 | Patrol feel | Mostly. Opt-in: idle rests (an inferred reading); destinations 5–15 m from the anchor per the editor tooltips (`CRUCIBLE_SOLO_BOT_ANCHORED`; the default wander keeps the earlier, inverted reading); a chase cap of 5.5 m/s (`CRUCIBLE_SOLO_BOT_CHASE_CAP`). Patrol at 5.5 is supported, and the AI's 8.0 chase cannot be realised through the spoofed player pipeline (snapshots/speed-20261025). Open: which ramp a spoofed Marine obeys (`CRUCIBLE_SOLO_BOT_ACCEL=ai` or `config`) depends on whether input magnitude scales speed; the server-side mapping is not in the install. The flight's sprint is modelled at an assumed 8.5 m/s; the attack selector's sprint is decoded but not modelled (firing cancels it) |
 > | 14 | Teams and targeting | Open. HOTH_GUIDE's allies and Saboteur are now read (docs/37) |
 > | 15 | HUD ammo and ability icons | Open: needs a live capture of component 46's schema |
 >

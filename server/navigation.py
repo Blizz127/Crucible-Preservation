@@ -183,6 +183,7 @@ class Mesh:
             for cell in self._cells(triangle):
                 self.index.setdefault(cell, []).append(key)
         self._components = None
+        self._component_index = None
 
     @staticmethod
     def _cells(triangle):
@@ -235,6 +236,18 @@ class Mesh:
         groups.sort(key=len, reverse=True)
         self._components = groups
         return groups
+
+    def component_index(self):
+        """{triangle key: its component's index in components()}, cached.
+
+        Two points in different components have no path between them, and a
+        search that proves it explores the whole component first.
+        """
+        if self._component_index is None:
+            self._component_index = {key: number
+                                     for number, group in enumerate(self.components())
+                                     for key in group}
+        return self._component_index
 
     def corridor(self, first, last, limit=200000):
         """A* triangle corridor as [(key, entry portal or None), ...]."""

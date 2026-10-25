@@ -235,6 +235,49 @@ class ShardRingTests(unittest.TestCase):
                          ['HUNTER AI 01000003 resting between patrol hops (count %d)' % n
                           for n in (1, 2, 4)])
 
+    def test_an_accepted_hit_asks_the_marine_whether_to_flee(self, _log):
+        env = dict(ALPHA, CRUCIBLE_SOLO_AI='1', CRUCIBLE_SOLO_BOT_FLEE='1')
+        import hunter_patrol
+        squad = squad_at((0., 9., 0.), (20., 0., 0.), (30., 0., 0.))
+
+        class Mesh:
+            built = 0
+
+            def component_index(self):
+                self.built += 1
+                return {}
+        mesh = Mesh()
+        for bot in squad.bots:
+            bot.mesh = mesh
+        with patch.dict('os.environ', env, clear=True), \
+                patch.object(hunter_patrol, 'squad', return_value=squad), \
+                patch.object(shard, 'level_sight', return_value=None):
+            state = self.start()
+            self.assertTrue(all(bot.flee for bot in squad.bots))
+            self.assertGreater(mesh.built, 0)     # at the start, not on a hit
+            state['player_position'] = (0., 0., 0.)
+            with patch.object(hunter_ai.Bot, 'consider_flee', return_value=True) as flee:
+                shard.observe_solo_combat(player_hit(1, 0x1000003), state)
+        args = flee.call_args.args
+        self.assertEqual(args[1], (0., 0., 0.))
+        marine = state['combat'].entities[0x1000003]
+        self.assertAlmostEqual(args[2], marine.health / marine.maximum)
+        self.assertAlmostEqual(args[3], 1.)          # the player is unhurt
+
+    def test_flights_are_logged_at_powers_of_two(self, log):
+        env = dict(ALPHA, CRUCIBLE_SOLO_BOT_DAMAGE='server')
+        with patch.dict('os.environ', env, clear=True):
+            state = self.start()
+            state['squad'] = squad_at((0., 0., 0.), (0., 0., 0.), (0., 0., 0.))
+            log.reset_mock()
+            for count in range(1, 6):
+                state['squad'].bots[1].flees = count
+                with patch.object(shard, 'build_hunter_ai_updates', return_value=([], [])):
+                    shard.solo_simulation_messages(state, float(count))
+        lines = [c.args[0].strip() for c in log.call_args_list if 'fleeing' in c.args[0]]
+        self.assertEqual(lines, ['HUNTER AI 01000004 fleeing a losing fight (count %d)' % n
+                                 for n in (1, 2, 4)])
+
     def test_terrain_sight_is_given_to_every_bot(self, _log):
         import hunter_patrol
         squad = squad_at((0., 0., 0.), (0., 0., 0.), (0., 0., 0.))

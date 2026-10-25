@@ -21,6 +21,7 @@ Alienware install by SHA-256.
 | `CRUCIBLE_SOLO_BOT_IDLE=1` | Patrolling Marines rest one authored idle animation, plus 1 s, between hops |
 | `CRUCIBLE_SOLO_BOT_ACCEL=ai` or `=config` | Marines ramp their speed: the AI's 10 m/s² (`ai`, also `1`), or the movement config's 0.15 s with a stop at once (`config`) |
 | `CRUCIBLE_SOLO_BOT_CHASE_CAP=1` | A chasing Marine holds the Default config's 5.5 m/s, not the AI's unrealisable 8.0 |
+| `CRUCIBLE_SOLO_BOT_FLEE=1` | A Marine losing a fight sprints 20–40 m away for 4 s, then fights on if the player is within 50 m |
 | `CRUCIBLE_SOLO_BOT_ANCHORED=1` | Patrolling Marines pick destinations 5–15 m from their anchor, as the editor tooltips say |
 | `CRUCIBLE_SOLO_HIT_REACTION=1` | A Marine the player hits flinches away from the shot (needs the split); `=all` also flinches the player when a Marine's round lands |
 | `CRUCIBLE_SOLO_DAMAGE_NUMBERS=1` | Damage numbers over Marines the player hits |
@@ -630,6 +631,68 @@ length. Not modelled:
 `CruiseAcceleration` (10), `MaxSpeedMultiplier` 1.1 (flocking catch-up),
 `PathAcceleration` 20 (steering), and strafing's own 10 m/s².
 
+## A losing Marine flees
+
+`cdl/player/marine/guide/marine_guide_on_hit.cdl` is in the Marine dummy's
+script list (`marine_character_dummy.dynamicslice`), next to the attack
+selector, so it runs. Decoded with the bot-weapon track's
+`inspect_cdl_logic.py`, it does this on each damage event:
+- **It measures.** Its health ratio after damage over time, a heal
+  threshold drawn at 30–50% of its maximum, and its nearest attacker's
+  health ratio.
+- **It flees.** If the attacker is healthier and √(distance) × its own
+  ratio < 1.5, it requests the Flee state for 4 s (`User_flee_time`) and
+  holds Ability3, sprint, as long. Afterwards it uses a medpack if it has
+  one.
+- **Otherwise it heals.** At or below the heal threshold it uses a medpack,
+  if it has one.
+
+`FleeParams` and its tooltips give the flight:
+- **Destination.** 20–40 m "from current pos", directly away from the
+  enemies' average position (the current target weighted 2). Up to 30
+  attempts.
+- **Ignoring targets.** For `IgnoreTargetsTime`, 4 s, it neither senses nor
+  is aggroed by damage, "allowing it to break out of the flee state early"
+  afterwards.
+- **Speed.** Assumed: 8.5 m/s, sprint's forward speed, for the whole 4 s.
+  The alternative is 5.5, the Default config's. `marine_sprint.cdl` starts
+  sprint on an Ability3 input only while forward input is at least 0.1 (its
+  check [192]). The on-hit script's own forward override (MoveAxisY 4.0) is
+  connected to nothing, so that input must come from the Flee state's path
+  following, and whether a held override re-fires the check once the
+  Marine moves is not traced. The script cancels sprint when forward input
+  stops, or on aiming, firing (except while placing a bunker), melee or
+  death. Native cancels were not checked. Running out of the Sprint
+  resource (max 1, +4/s, drained at 8/s) is not one of the script's cancel
+  conditions.
+
+With `CRUCIBLE_SOLO_BOT_FLEE=1`, an accepted, non-killing player hit runs
+that test on the hunter it hit, with the arena's health ratios and the
+horizontal distance. A fleeing Marine keeps its target (FleeParams flee
+from "the current combat target") but starts no attack and senses nothing.
+It runs its flight path at 8.5 m/s for 4 s; the chase cap does not limit
+the flight. Afterwards the held target's 50 m deaggro radius decides: a
+player within it is fought again, even one behind the Marine, outside its
+acquisition cone. Otherwise the Marine drops the target and patrols. Each
+flight is logged (`match_acceptance` B4).
+
+Inferred or left out:
+- **Script variables.** Each trigger is taken to start from the script's
+  defaults (nearest distance 99999).
+- **A hit during the flight** that still meets the test extends it to 4 s
+  from that hit, on the same path. The script requests Flee again; how the
+  AI treats a repeated request is not traced.
+- **The search's angular spread** (widening to ±60°) is not authored.
+  Candidates in another navmesh component than the Marine's are skipped
+  unsearched: no path reaches them, and proving that took up to a second.
+- **No destination.** No flight starts when no destination is found.
+- **Medpacks.** No medpack is ever used: `MedPackCount` is not one of the
+  Marine's resources.
+- **The attack selector's sprint.** Its sprint (Ability3 for 3 s, when the
+  target is over 20 m away or a random draw is above 0.5) is decoded but
+  not modelled. The selector holds fire straight after, which cancels the
+  sprint, and attack-time approach movement is not modelled.
+
 ## The chase speed
 
 The guide AI asks for 8.0 m/s when chasing (`SpeedChase`), but the player
@@ -645,9 +708,10 @@ Default config's forward speed. The guide scripts press Ability3 themselves:
 - `marine_guide_on_hit.cdl`: on being hit, Flee and Ability3 for 4 s;
 - `marine_guide_attack_selector.cdl`: Ability3 and MoveBackward for 3 s.
 
-Those 8.5 m/s sprint bursts are not modelled: neither the scripts' gating
-nor the Sprint resource's capacity is decoded. With the cap, Ajonah's
-Default config (6.5 m/s forward) outruns a Marine that isn't sprinting.
+The on-hit flight is modelled, at an assumed 8.5 m/s, behind
+`CRUCIBLE_SOLO_BOT_FLEE` (above). The selector's burst is decoded but not
+modelled. With the cap, Ajonah's Default config (6.5 m/s forward) outruns a
+Marine that isn't fleeing.
 
 ## Turning while moving
 

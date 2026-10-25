@@ -31,6 +31,7 @@ Rows that appear only when their docs/36 switch is used:
                 to the terrain fails
   B2 blocked    hunter rounds stopped by line of sight
   B3 rests      the Marines' idle rests between patrol hops
+  B4 flee       Marines that fled a losing fight
 
 The script only reads files and uses only the standard library, so it can
 run on the game host over SSH, reading that host's journal and newest
@@ -89,6 +90,7 @@ SIGHT_FALLBACK = 'LINE OF SIGHT: no static geometry cache'
 SIGHT_BROKEN = re.compile(r'LINE OF SIGHT (unavailable on|static geometry unreadable on) (\S+)')
 BLOCKED = re.compile(r'HUNTER AI rounds blocked by line of sight \(count (\d+)\)')
 RESTS = re.compile(r'HUNTER AI ([0-9a-f]{8}) resting between patrol hops \(count (\d+)\)')
+FLEES = re.compile(r'HUNTER AI ([0-9a-f]{8}) fleeing a losing fight \(count (\d+)\)')
 # docs/36: the Marines' networked flinch (component 80), logged at indexes
 # 1, 2, 4, ..., and the switch left without the split it needs.
 FLINCH = re.compile(r'HIT REACTION ([0-9a-f]{8}) index (\d+)')
@@ -124,7 +126,7 @@ def shard_facts(lines):
              'population_after_over': 0, 'feedback': {}, 'reloads': 0, 'rings': {},
              'valves': [], 'timer': [], 'sight': None, 'sight_fallback': 0,
              'sight_broken': [], 'blocked': 0, 'rests': {}, 'flinches': {},
-             'flinch_split_off': 0, 'flinch_on': 0, 'switches': None}
+             'flinch_split_off': 0, 'flinch_on': 0, 'switches': None, 'flees': {}}
     for line in lines:
         if VALVE.search(line):
             facts['valves'].append(VALVE.search(line).group(1))
@@ -141,6 +143,9 @@ def shard_facts(lines):
         elif RESTS.search(line):
             entity, count = RESTS.search(line).groups()
             facts['rests'][entity] = max(facts['rests'].get(entity, 0), int(count))
+        elif FLEES.search(line):
+            entity, count = FLEES.search(line).groups()
+            facts['flees'][entity] = max(facts['flees'].get(entity, 0), int(count))
         elif FLINCH.search(line):
             entity, index = FLINCH.search(line).groups()
             facts['flinches'][entity] = max(facts['flinches'].get(entity, 0), int(index))
@@ -400,6 +405,10 @@ def score(shard, client):
     if shard['blocked']:
         rows.append(('B2 blocked', 'LOGS-OK', '>=%d hunter rounds stopped by line of sight; '
                      'eyes: no damage through cover' % shard['blocked']))
+    if shard['flees']:
+        rows.append(('B4 flee', 'LOGS-OK', 'flights %s; eyes: a losing Marine turns, runs '
+                     'about 4 s, then comes back' % ', '.join(
+                         '%s >=%d' % item for item in sorted(shard['flees'].items()))))
     if shard['rests']:
         rows.append(('B3 rests', 'LOGS-OK', 'idle rests %s; eyes: an idle animation between '
                      'patrol hops' % ', '.join('%s >=%d' % item
