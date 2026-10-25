@@ -26,3 +26,19 @@ def guarded(state, where, function, *args, **kwargs):
         if (count & (count - 1)) == 0:
             logging.getLogger(__name__).exception('Simulation error in %s (count %d)', where, count)
         return None
+
+
+def group_unique(items, key):
+    """Distribute items so each group has distinct keys."""
+    groups = []
+    for item in items:
+        identity = key(item)
+        for group, seen in groups:
+            if identity not in seen:
+                break
+        else:
+            group, seen = [], set()
+            groups.append((group, seen))
+        group.append(item)
+        seen.add(identity)
+    return [group for group, _ in groups]
