@@ -6,6 +6,7 @@ import hunter_ai
 import hunter_patrol
 import navigation
 import shard_stub as shard
+import solo_modes
 
 STUB_ROUTE = ((0., 0., 0.), (3., 0., 0.))
 
@@ -204,6 +205,67 @@ class InstalledRouteTests(unittest.TestCase):
             self.assertEqual(step.state, hunter_ai.PATROL)
             self.assertIsNotNone(mesh.locate(step.position, .05), step.position)
             self.assertLessEqual(step.speed, hunter_ai.MARINE.patrol_speed + 1e-6)
+
+
+class LevelRouteTests(unittest.TestCase):
+    """Each map's own mesh and bot points (docs/37 stage 2). Read-only."""
+
+    @classmethod
+    def setUpClass(cls):
+        if not navigation.level_pak('HotH_02').exists():
+            raise unittest.SkipTest('HotH_02 is not installed')
+
+    def test_hoth_02_ships_april2018s_navigation_mesh(self):
+        # mnmnavmission0.bai is byte-identical in both paks (docs/37), so
+        # retail's guide bots walked April2018's mesh on HotH_02.
+        hoth = navigation.installed_mesh('HotH_02')
+        self.assertIsNot(hoth, navigation.installed_mesh())
+        self.assertEqual(hoth.triangles, navigation.installed_mesh().triangles)
+
+    def test_every_spelling_of_a_level_shares_one_entry(self):
+        self.assertIs(hunter_patrol.routes(), hunter_patrol.routes('april2018'))
+        self.assertIs(hunter_patrol.routes(None), hunter_patrol.routes(level='APRIL2018'))
+        self.assertIs(hunter_patrol.circuits('HotH_02'), hunter_patrol.circuits('hoth_02'))
+        self.assertEqual(hunter_patrol.level_key('hoth_02'), 'HotH_02')
+        with self.assertRaises(KeyError):
+            hunter_patrol.level_key('nowhere')
+
+    def test_hoth_02_hunters_start_on_their_guide_nodes(self):
+        mesh = navigation.installed_mesh('HotH_02')
+        nodes = dict(solo_modes.HOTH_02_GUIDE_BOT_SPAWNS)
+        squad = hunter_patrol.squad(level='hoth_02')
+        self.assertEqual(len(squad.bots), 3)
+        for bot, entry in zip(squad.bots, solo_modes.HOTH_02_BOT_NODES):
+            self.assertIs(bot.mesh, mesh)
+            self.assertLess(math.dist(bot.position, nodes[entry]), 1.)
+            self.assertIsNotNone(mesh.locate(bot.position, .05))
+
+    def test_the_bot_nodes_are_the_routable_guide_nodes_nearest_the_drop(self):
+        mesh = navigation.installed_mesh('HotH_02')
+        lengths = {}
+        for entry, node in solo_modes.HOTH_02_GUIDE_BOT_SPAWNS:
+            path = mesh.path(solo_modes.HOTH_02.player_position, node)
+            if path:
+                lengths[entry] = hunter_ai.plan_distance(path)
+        self.assertEqual(sorted(set(range(33, 45)) - set(lengths)), [33, 34, 41, 42])
+        self.assertEqual(tuple(sorted(lengths, key=lengths.get)[:3]),
+                         solo_modes.HOTH_02_BOT_NODES)
+
+    def test_every_selection_with_hunters_routes_unless_listed(self):
+        # The tutorials' bot points are creature and dummy nodes, mostly off
+        # their small mesh (the practice arena's, shared): their hunters
+        # stand where they spawn.
+        squadless = {'tutorial_02', 'tutorial_03'}
+        for name, pair in solo_modes.SELECTIONS.items():
+            profile = solo_modes.compose(*pair)
+            if not profile.bot_positions:
+                continue
+            with self.subTest(selection=name):
+                if profile.level in squadless:
+                    with self.assertRaises(ValueError):
+                        hunter_patrol.circuits(profile.level)
+                else:
+                    self.assertEqual(len(hunter_patrol.circuits(profile.level)), 3)
 
 
 if __name__ == '__main__':

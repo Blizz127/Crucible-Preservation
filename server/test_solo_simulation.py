@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 import client_input
 import shard_stub as shard
+import solo_modes
 import test_client_input
 from practice_population import SPITTER_SHARED_TYPES, DUMMY_SHARED_TYPES
 
@@ -77,6 +78,34 @@ class SoloSimulationStartTests(unittest.TestCase):
         self.assertNotIn('squad', state)   # Practice has no hunters
         self.assertEqual(sorted(state['creatures'].creatures), [0x1000003, 0x1000004])
         self.assertEqual(state['creature_types'][0x1000003], (SPITTER_SHARED_TYPES, False))
+
+    @patch.dict('os.environ', dict(AI_ON, CRUCIBLE_SOLO_MODE='hoth-guide'))
+    def test_the_squad_walks_the_selected_maps_mesh(self):
+        state = {}
+        with patch('hunter_patrol.squad', return_value=FakeSquad()) as squad:
+            shard.start_solo_simulation(state)
+        self.assertEqual(squad.call_args.kwargs['level'], 'HotH_02')
+        self.assertIs(state['squad'], squad.return_value)
+
+    @patch.dict('os.environ', dict(AI_ON, CRUCIBLE_SOLO_MODE='tutorial'))
+    def test_a_map_whose_points_do_not_route_keeps_standing_hunters(self):
+        state = {}
+        with patch('hunter_patrol.squad', side_effect=ValueError('not connected')), \
+                patch.object(shard, 'log'):
+            shard.start_solo_simulation(state)
+        self.assertNotIn('squad', state)
+        self.assertEqual(state['simulation_errors'], {'hunter squad': 1})
+
+    @patch.dict('os.environ', dict(AI_ON, CRUCIBLE_SOLO_MODE='tutorial',
+                                   CRUCIBLE_SOLO_PATROL='1'))
+    def test_unroutable_patrol_probes_keep_the_authored_points(self):
+        with patch('hunter_patrol.routes', side_effect=ValueError('not connected')), \
+                patch.object(shard, 'log'), \
+                patch.object(shard, 'build_practice_character_probe',
+                             side_effect=lambda **kw: kw['position']) as probe:
+            positions = shard.build_solo_hunter_probes()
+        self.assertEqual(tuple(positions), solo_modes.TUTORIAL_02.bot_positions)
+        self.assertEqual(probe.call_count, 3)
 
 
 class SoloCombatTests(unittest.TestCase):

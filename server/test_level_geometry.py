@@ -521,8 +521,8 @@ class InstalledNavmeshTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.terrain = level_geometry.installed_terrain()
-        # Not installed_mesh('april2018'): that argument is a pak path. The bare
-        # call is also the cache key the rest of the suite uses.
+        # installed_mesh() and installed_mesh('april2018') read the same pak
+        # and share one cached mesh with the rest of the suite.
         cls.mesh = navigation.installed_mesh()
         cls.offsets = navmesh_offsets(cls.mesh, cls.terrain, 5000, 20261025)
 

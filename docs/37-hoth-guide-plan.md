@@ -1,6 +1,7 @@
 # HOTH_GUIDE: the retail bot match, and how to get there
 
-Status: **plan only**. None of it is implemented or played.
+Status: stage 2 and stage 1's match timer are implemented and tested
+offline (25 October), but not played. The other stages are plan only.
 
 The Alpha Hunters bot match (docs/30, docs/35, docs/36) is local: retail
 Alpha Hunters had no bots, and its three Marine hunters are our own
@@ -67,16 +68,29 @@ GameOver, never by leaving mid-match: leaving arms the rejoin trap
 (docs/30).
 
 1. **HotH_02 entry.** Its level hash is computed but its baked counter bias
-   is unmeasured (docs/23). Use the existing `hoth-guide` profile with no
-   bots, plus a timer GameOver (`CRUCIBLE_SOLO_MATCH_MAX_SECONDS`, from the
-   match-flow track's `match_director.py`). Measure the bias from the client
-   log, as for April2018. Gate: GamePlay, then the timer ends the match
-   cleanly.
-2. **Per-map navigation.** `navigation.LEVEL_PAK` and
-   `hunter_patrol.routes()` are hard-wired to April2018 (accuracy audit
-   item 12, disagreement D3). Load `levels/hotH_02/level.pak`
-   `mnmnavmission0.bai` for the selected map, and spawn bots on
-   `SpawnNode_Guide_EnemyBot` nodes rather than drop points.
+   is unmeasured (docs/23). The timer exists:
+   `CRUCIBLE_SOLO_MATCH_MAX_SECONDS=<s>` ends the match with GameOver after
+   that many seconds of play. The count starts at the connection's first
+   simulation tick, as in the match-flow track's `match_director.py`, which
+   reads the same variable. A timeout is a draw: no team wins, so a
+   published rank is 2.
+   - **The timer only helps if GameOver reaches the client.** GameOver goes
+     to `phase_entry + baked_counter_bias`. With a wrong bias the client
+     keeps inert replicas and logs "GameModeComponent not ready" (docs/23),
+     so no GameOver lands.
+   - **Run order** (docs/23's launch order):
+     1. `hoth-guide-april2018`: configuration 9 on a live bias (787).
+     2. `tutorial`, to measure a computed map's bias.
+     3. `hoth-guide`: measure the bias with `tools/inspect_map_baked_bias.py`,
+        then relaunch with `CRUCIBLE_BAKED_BIAS`.
+   - **Open question for the owner before `hoth-guide`:** how does the run
+     exit if the bias proves wrong?
+   - **Gate:** GamePlay, then the timer ends the match cleanly.
+2. **Per-map navigation.** Done offline; see "Per-map navigation" below.
+   The hunters walk the selected map's own `mnmnavmission0.bai`, from
+   `NvGameSdk/levels/<level>/level.pak` (the directory is `HotH_02`; case
+   matters on Linux). On HotH_02 they start on `SpawnNode_Guide_EnemyBot`
+   nodes, not drop points.
 3. **One guide dummy.** Generalise `hunter_ai.Tuning` to every
    `*_guide*.ai` and spawn one hero dummy slice. That slice's shared
    component set must be captured live first, as was done for the Marine.
@@ -99,3 +113,41 @@ GameOver, never by leaving mid-match: leaving arms the rejoin trap
 
 Stages 1–2 are small and unblock everything else. Stages 3–5 are each
 larger than the whole Alpha Hunters bot work so far.
+
+## Per-map navigation (stage 2)
+
+`navigation.installed_mesh(level)` reads the named level's pak, and caches
+one mesh per pak. `hunter_patrol.routes`, `circuits` and `squad` take the
+level, and all spellings of one level share a cache entry
+(`hunter_patrol.level_key`). The shard passes `solo_modes.selected().level`
+in three places: the prewarm, the patrol probes and the squad. The squad
+build and the patrol are guarded: a map whose bot points do not route
+keeps its hunters standing where they spawned, and logs a simulation
+error. It does not fail the population reply mid-handshake.
+
+What the shipped files say (read on the devbox reference copy):
+- **HotH_02's navmesh is April2018's.** Their `mnmnavmission0.bai` entries
+  are byte-identical (1,397,671 bytes, SHA-256 `f0cfcc3d2079280e…`), so
+  retail's guide bots walked April2018's mesh. The old hard-wiring
+  (accuracy audit item 12, D3) therefore had the right mesh for HotH_02,
+  but the wrong points.
+- **The terrains are not the same.** On a 10 m grid over x 600–1500,
+  y 600–1400, 8% of HotH_02's samples differ from April2018's by more
+  than 0.5 m (p99 33 m, max 54 m). The navmesh fits both equally well
+  overall (64% of sampled triangle centres within 0.75 m of either). Where
+  HotH_02 was re-sculpted, bots on the stale mesh float or sink. Retail's
+  bots would have done the same.
+- **practicearena, tutorial_02 and tutorial_03 share one mesh**: 49,893
+  bytes, 1,190 triangles. The tutorials' bot points are creature and dummy
+  nodes, and most of them are off that mesh. With AI on, their hunters
+  stand still (`test_every_selection_with_hunters_routes_unless_listed`).
+- **Guide nodes.** Four of the twelve (33, 34, 41, 42) are off the mesh:
+  34, 41 and 42 sit 6–8 m above it, and 33 is 21 m from any triangle,
+  where HotH_02's terrain was lowered by about 8 m. The 09b–09d drop pods
+  that the HotH_02 hunters used before are off the mesh too.
+- **Placeholder spawns.** The HotH_02 hunters start on guide nodes 44, 36
+  and 39. Those are the three nearest the player's drop by navigation path
+  (147, 180 and 228 m; `HOTH_02_BOT_NODES`). Stage 4 replaces this with
+  the critical path's SpawnGuideBot choices. Their circuit,
+  44 → 36 → 39, is 784 m. Only 10 of its 813 one-metre samples lie on
+  re-sculpted terrain, all by 0.6 m or less.

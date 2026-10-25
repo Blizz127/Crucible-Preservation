@@ -17,8 +17,9 @@ from pathlib import Path
 import struct
 import sys
 
-LEVEL_PAK = (Path.home() / '.local/share/Steam/steamapps/common/Crucible'
-             / 'NvGameSdk/levels/april2018/level.pak')
+LEVELS = (Path.home() / '.local/share/Steam/steamapps/common/Crucible'
+          / 'NvGameSdk/levels')
+LEVEL_PAK = LEVELS / 'april2018/level.pak'
 NAVIGATION_ENTRY = b'mnmnavmission0.bai'
 
 NEIGHBOURS = ((1,0,0),(1,0,1),(1,0,-1),(0,1,0),(0,1,1),(0,1,-1),
@@ -438,14 +439,34 @@ def read_mnm(data, agent_name='MediumSizedCharacters'):
     return mesh
 
 
-@functools.lru_cache(maxsize=4)
+def level_pak(level=None):
+    """A level's installed pak: April2018 by default, a level directory name
+    such as 'HotH_02' or 'tutorial_02', or an explicit pak path."""
+    if level is None:
+        return LEVEL_PAK
+    text = str(level)
+    if text.endswith('.pak') or '/' in text:
+        return Path(text)
+    return LEVELS / text / 'level.pak'
+
+
 def installed_mesh(level=None):
-    """Parse the shipped level's navigation mesh. Nothing installed is written."""
+    """Parse the shipped level's navigation mesh, once per level pak.
+
+    Nothing installed is written. Each level pak ships its own
+    mnmnavmission0.bai (HotH_02's is a byte copy of April2018's), and the
+    bots walk the selected map's (docs/37).
+    """
+    return _installed_mesh(str(level_pak(level)))
+
+
+@functools.lru_cache(maxsize=4)
+def _installed_mesh(path):
     # The read-only PAK reader copes with CryEngine's local-header separators.
     tools = str(Path(__file__).resolve().parents[1] / 'tools')
     if tools not in sys.path:
         sys.path.insert(0, tools)
     import pak
-    entries = pak.load(Path(level) if level else LEVEL_PAK)
+    entries = pak.load(Path(path))
     data = next(pak.entry_bytes(e) for e in entries if e['name'] == NAVIGATION_ENTRY)
     return read_mnm(data)

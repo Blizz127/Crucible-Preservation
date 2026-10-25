@@ -240,19 +240,43 @@ APRIL2018 = MapProfile(
 # (33..44) that the HOTH_GUIDE configuration is authored around.
 # Its tags.txt, level.cfg and stringhashlibrary.xml are byte-identical to
 # april2018's and it even ships april2018.dds minimaps, so its string hash
-# library was never regenerated and contains no hoth_02 level entry.
+# library was never regenerated and contains no hoth_02 level entry. Its
+# navigation mesh (mnmnavmission0.bai) is byte-identical to april2018's too,
+# though 8% of its terrain was re-sculpted (docs/37).
 HOTH_02_DROP_CLUSTER = (
     (1316.2420654296875, 921.8919677734375, 19.25),     # 586 Player_DropPoint_09a
     (1329.0159912109375, 929.6680297851562, 20.0),      # 572 Player_DropPoint_09b
     (1328.4779663085938, 921.9210205078125, 20.0),      # 593 Player_DropPoint_09c
     (1331.4970703125, 935.1290283203125, 20.0),         # 592 Player_DropPoint_09d
 )
+# The twelve SpawnNode_Guide_EnemyBot nodes, entries 33..44 (docs/23), two
+# beside each hive: the HOTH_GUIDE bot spawns. Exact float32 translations.
+HOTH_02_GUIDE_BOT_SPAWNS = (
+    (33, (754.2969970703125, 1051.093505859375, 56.45686721801758)),
+    (34, (1200.2071533203125, 1203.4083251953125, 25.895103454589844)),
+    (35, (905.9044189453125, 756.08154296875, 16.393978118896484)),
+    (36, (1208.5262451171875, 806.21826171875, 23.87455177307129)),
+    (37, (978.9752807617188, 1209.764892578125, 58.96003341674805)),
+    (38, (940.55078125, 721.4732666015625, 13.03976821899414)),
+    (39, (1259.547119140625, 1062.1329345703125, 30.893030166625977)),
+    (40, (997.5733642578125, 1269.808349609375, 59.713417053222656)),
+    (41, (1194.12548828125, 1256.833740234375, 27.506921768188477)),
+    (42, (1223.384765625, 847.5761108398438, 26.346139907836914)),
+    (43, (817.1101684570312, 1051.6953125, 50.3217658996582)),
+    (44, (1300.6107177734375, 1034.3909912109375, 30.026182174682617)),
+)
+# Placeholder until the critical path's SpawnGuideBot calls are read (docs/37
+# stage 4): the three guide nodes nearest the player's drop by navigation
+# path (147, 180 and 228 m). The 09b-09d drop pods are off the navigation
+# mesh, so bots could not patrol from them.
+HOTH_02_BOT_NODES = (44, 36, 39)
 HOTH_02 = MapProfile(
     'HotH_02', level_hash('HotH_02'), 'computed', 21510,
     617, 621, 627, 619, 2, 'unmeasured',
     HOTH_02_DROP_CLUSTER[0], 586, 'Player_DropPoint_09a',
-    bot_positions=HOTH_02_DROP_CLUSTER[1:],
-    bot_drop_entries=(572, 593, 592),
+    bot_positions=tuple(dict(HOTH_02_GUIDE_BOT_SPAWNS)[entry]
+                        for entry in HOTH_02_BOT_NODES),
+    bot_drop_entries=HOTH_02_BOT_NODES,
     hive_spawns=(
         ('SWAMP', 1605, (1229.125, 821.0330200195312, 18.625)),
         ('LOG', 1606, (989.5509643554688, 1238.8679809570312, 52.20500183105469)),

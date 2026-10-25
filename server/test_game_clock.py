@@ -234,5 +234,44 @@ class SequenceLimitTests(unittest.TestCase):
             self.assertNotIn('match_result', state)
 
 
+class MatchTimerTests(unittest.TestCase):
+    def state(self):
+        return {'character_links_sent': True, 'clock_epoch': 100.0,
+                'clock_last_sent': 100.0, 'seq': 10, 'received_seq': 1,
+                'received_window': 1, 'practice_npcs_sent': True}
+
+    def test_the_timer_ends_the_match_after_that_much_play(self):
+        env = {'CRUCIBLE_SHARD_BOOTSTRAP': 'practice-character',
+               'CRUCIBLE_SOLO_MODE': 'hoth-guide-april2018',
+               'CRUCIBLE_SOLO_MATCH_MAX_SECONDS': '5'}
+        with patch.dict('os.environ', env, clear=True), patch.object(shard, 'log'):
+            state = self.state()
+            shard.game_clock_packets(state, now=101.0)          # play starts at 1 s
+            self.assertEqual(state['match_started_at'], 1.)
+            shard.game_clock_packets(state, now=105.9)
+            self.assertNotIn('match_result', state)
+            shard.game_clock_packets(state, now=106.0)
+            self.assertEqual(state['match_result'],
+                             {'winner_team': 0, 'at_seconds': 6., 'reason': 'match timer'})
+            raw = lz4.block.decompress(shard.game_clock_packets(state, now=107.0)[0][1:],
+                                       uncompressed_size=4096)
+        game_over = shard.build_solo_match_phase_update(
+            shard.solo_modes.selected(), shard.solo_modes.MATCH_PHASE['GameOver'])
+        self.assertIn(game_over.payload, raw)
+
+    def test_no_timer_unless_a_positive_number_is_set(self):
+        for value, seconds in ((None, None), ('', None), ('0', None), ('-3', None),
+                               ('inf', None), ('nan', None), ('x', None), ('90', 90.)):
+            env = {} if value is None else {'CRUCIBLE_SOLO_MATCH_MAX_SECONDS': value}
+            with self.subTest(value=value), patch.dict('os.environ', env, clear=True):
+                self.assertEqual(shard.match_max_seconds(), seconds)
+        env = {'CRUCIBLE_SHARD_BOOTSTRAP': 'practice-character'}
+        with patch.dict('os.environ', env, clear=True), patch.object(shard, 'log'):
+            state = self.state()
+            shard.game_clock_packets(state, now=5000.0)
+        self.assertNotIn('match_result', state)
+        self.assertNotIn('match_started_at', state)
+
+
 if __name__ == '__main__':
     unittest.main()

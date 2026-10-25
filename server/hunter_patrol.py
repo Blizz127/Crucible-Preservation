@@ -1,8 +1,9 @@
 """Solo hunter patrol routes over the shipped navigation, plus the bot squad.
 
-Routes come from `navigation.installed_mesh()`, which reads the retail level
-pak read-only. The behaviour itself lives in `hunter_ai`; this module only
-turns the authored drop points into routes and wires the squad together.
+Routes come from `navigation.installed_mesh(level)`, which reads the
+selected level's retail pak read-only. The behaviour itself lives in
+`hunter_ai`; this module only turns the authored bot points into routes and
+wires the squad together.
 """
 import functools
 import math
@@ -16,11 +17,26 @@ import solo_modes
 ROUTE_STEP = 1.0
 
 
-@functools.lru_cache(maxsize=1)
-def routes():
-    """One funnelled leg per authored drop point, each to the next one."""
-    mesh = navigation.installed_mesh()
-    points = solo_modes.HIVES.bot_positions
+def level_key(level=None):
+    """A level as the routes are cached under: None for April2018 (also the
+    default), else the map profile's own name. Every spelling of one level
+    ('HotH_02', 'hoth_02') then shares one entry, and one parsed mesh."""
+    if level is None:
+        return None
+    profile = solo_modes.MAPS[str(level).lower()]
+    return None if profile is solo_modes.APRIL2018 else profile.level
+
+
+def routes(level=None):
+    """One funnelled leg per bot point, each to the next one, on the level's
+    own navigation mesh (April2018 by default)."""
+    return _routes(level_key(level))
+
+
+@functools.lru_cache(maxsize=4)
+def _routes(level):
+    mesh = navigation.installed_mesh(level)
+    points = solo_modes.MAPS[(level or 'april2018').lower()].bot_positions
     result = []
     for index, start in enumerate(points):
         leg = mesh.path(start, points[(index + 1) % len(points)], step=ROUTE_STEP)
@@ -30,15 +46,19 @@ def routes():
     return tuple(result)
 
 
-@functools.lru_cache(maxsize=1)
-def circuits():
-    """Per-bot closed circuits through all three authored drop points.
+def circuits(level=None):
+    """Per-bot closed circuits through all three bot points.
 
     Each bot starts on a different leg, so the three never walk in step, and
     every circuit has real corners for the funnel to cut rather than the
     single straight leg a pairwise route reduces to.
     """
-    legs = routes()
+    return _circuits(level_key(level))
+
+
+@functools.lru_cache(maxsize=4)
+def _circuits(level):
+    legs = _routes(level)
     result = []
     for index in range(len(legs)):
         circuit = []
@@ -141,11 +161,13 @@ def separate(positions, *, distance=SEPARATION, passes=32, mesh=None):
     return [tuple(p) for p in result]
 
 
-def squad(entities=(0x01000003, 0x01000004, 0x01000005), tuning=None, mesh=None):
-    """Build the three Alpha Hunters bots on their authored circuits."""
+def squad(entities=(0x01000003, 0x01000004, 0x01000005), tuning=None, mesh=None,
+          level=None):
+    """Build the hunter bots on their authored circuits, on the level's mesh."""
     tuning = tuning or hunter_ai.MARINE
-    mesh = mesh if mesh is not None else navigation.installed_mesh()
-    loops = circuits()
+    level = level_key(level)
+    mesh = mesh if mesh is not None else navigation.installed_mesh(level)
+    loops = circuits(level)
     return hunter_ai.Squad([
         hunter_ai.Bot(entity, loops[index % len(loops)], tuning, mesh=mesh,
                       position=loops[index % len(loops)][0], wander=True)

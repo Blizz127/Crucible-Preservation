@@ -771,7 +771,11 @@ def build_solo_hunter_probes():
     positions = solo_modes.selected().bot_positions
     if positions and os.environ.get('CRUCIBLE_SOLO_PATROL') == '1':
         from hunter_patrol import routes
-        positions = tuple(route[0] for route in routes())
+        try:
+            positions = tuple(route[0] for route in routes(solo_modes.selected().level))
+        except Exception as error:      # noqa: BLE001 - keep the authored points
+            log('      HUNTER PATROL unavailable on %s: %r'
+                % (solo_modes.selected().level, error))
     # The three hunters stay Marine whatever CRUCIBLE_SOLO_HERO says: they are
     # the screenshot-accepted Alpha Hunters baseline (docs/18).
     marine = hero_loadout.get('marine')
@@ -836,7 +840,7 @@ def build_hunter_patrol_updates(seconds, *, previous_id=0):
     """Native Location deltas for the three simulation hunters only."""
     from hunter_patrol import routes, sample
     messages = []
-    for counter, route in enumerate(routes(), 3):
+    for counter, route in enumerate(routes(solo_modes.selected().level), 3):
         position, direction = sample(route, seconds)
         messages.append(build_bot_location_message(counter, position, direction,
                                                    previous_id=previous_id))
@@ -1129,10 +1133,17 @@ def start_solo_simulation(state):
                            respawn_seconds=respawn, telegraph_seconds=telegraph)
         state['combat'] = arena
     if solo_ai_enabled():
+        squad = None
         if profile.bot_positions:
             import hunter_patrol
-            state['squad'] = hunter_patrol.squad(
-                HUNTER_BOT_IDS[:len(profile.bot_positions)])
+            # On the selected map's own mesh. A map whose bot points do not
+            # route (the tutorials') keeps its hunters standing where they
+            # spawned, rather than failing this population reply.
+            squad = guarded(state, 'hunter squad', hunter_patrol.squad,
+                            HUNTER_BOT_IDS[:len(profile.bot_positions)],
+                            level=profile.level)
+        if squad is not None:
+            state['squad'] = squad
             if bot_reload_enabled():
                 for bot in state['squad'].bots:
                     bot.ammo = bot.tuning.magazine or None
@@ -1679,6 +1690,21 @@ def sequence_limit():
     return max(0, min(value, 65000))
 
 
+def match_max_seconds():
+    """CRUCIBLE_SOLO_MATCH_MAX_SECONDS: an opt-in match timer, or None.
+
+    Counted from the connection's first simulation tick, which is when
+    GamePlay starts here; the match-flow track's director reads the same
+    variable with the same meaning. A mode with no end condition (HOTH_GUIDE
+    before objectives, docs/37) then still ends with GameOver.
+    """
+    try:
+        value = float(os.environ.get('CRUCIBLE_SOLO_MATCH_MAX_SECONDS') or 0)
+    except ValueError:
+        return None
+    return value if 0 < value < float('inf') else None
+
+
 def game_clock_reply(state, *, now=None):
     """The tick's first packet, or None; game_clock_packets has them all."""
     packets = game_clock_packets(state, now=now)
@@ -1715,8 +1741,11 @@ def game_clock_packets(state, *, now=None):
     previous = 0
     if (os.environ.get('CRUCIBLE_SOLO_PATROL') == '1' and 'squad' not in state
             and solo_modes.selected().bot_positions and state.get('practice_npcs_sent')):
-        messages.extend(build_hunter_patrol_updates(elapsed_ms / 1000.))
-        previous = 5
+        patrol = guarded(state, 'hunter patrol', build_hunter_patrol_updates,
+                         elapsed_ms / 1000.)
+        if patrol:
+            messages.extend(patrol)
+            previous = 5
     if (os.environ.get('CRUCIBLE_PRACTICE_DAMAGE') == '1' and 'combat' not in state
             and state.get('practice_npcs_sent')):
         # Repeat absolute health state so a dropped UDP update cannot lose a hit.
@@ -1725,6 +1754,18 @@ def game_clock_packets(state, *, now=None):
             previous = entity & 0xffffff
     if state.get('practice_npcs_sent'):
         now_s = elapsed_ms / 1000.
+        maximum = match_max_seconds()
+        if maximum is not None and 'match_result' not in state:
+            if 'match_started_at' not in state:
+                state['match_started_at'] = now_s
+                log('      MATCH TIMER: GameOver after %.1f s of play' % maximum)
+            started = state['match_started_at']
+            if now_s - started >= maximum:
+                # A timeout is a draw: no team wins, so a published rank is 2.
+                state['match_result'] = {'winner_team': 0, 'at_seconds': now_s,
+                                         'reason': 'match timer'}
+                log('      MATCH TIMER: %.1f s of play; ending the match with GameOver'
+                    % (now_s - started))
         tick = guarded(state, 'simulation tick', solo_simulation_messages,
                        state, now_s, previous_id=previous)
         # A simulation that keeps failing, even only on some ticks, leaves a
@@ -2508,7 +2549,7 @@ def main():
         try:
             start = time.monotonic()
             import hunter_patrol
-            hunter_patrol.circuits()
+            hunter_patrol.circuits(solo_modes.selected().level)
             log("prewarmed hunter navigation in %.2fs" % (time.monotonic() - start))
         except Exception as error:      # noqa: BLE001 - diagnostic only
             log("hunter navigation prewarm FAILED: %r" % (error,))
