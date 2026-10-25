@@ -336,6 +336,51 @@ def build_entity_updates(prefix, local_seq, remote_seq, messages,
                        seq_window=seq_window)
 
 
+def split_updates_enabled():
+    """docs/36: one message per entity per packet (CRUCIBLE_SHARD_SPLIT_UPDATES=1)."""
+    return os.environ.get('CRUCIBLE_SHARD_SPLIT_UPDATES') == '1'
+
+
+def split_entity_messages(messages):
+    """Lists of EntityMessages with each entity at most once per list.
+
+    EntityReplicationManager::ValidateUpdate (0x4bb5144) drops a message
+    whose sequence is not newer than the last one applied to that entity,
+    and every message in a packet carries the packet's LocalSequence. So a
+    second message for one entity in one packet is refused as "old", which
+    the client logged 25,682 times in the 5 October run (each Marine's
+    animation, fire and health after its Location). Each list goes in its
+    own packet, an entity's messages keep their order across the packets,
+    and RelativeIds restart at zero per packet (0x4b9dfd0).
+    """
+    previous, decoded = 0, []
+    for message in messages:
+        raw, offset = decode_varint(message.header, 0)
+        relative = (raw >> 1) ^ -(raw & 1)
+        counter, local = (relative >> 1) + previous, bool(relative & 1)
+        decoded.append((counter, local, message.header[offset:], message.payload))
+        previous = counter
+    groups = []
+    for item in decoded:
+        for group, seen in groups:
+            if item[:2] not in seen:
+                break
+        else:
+            group, seen = [], set()
+            groups.append((group, seen))
+        group.append(item)
+        seen.add(item[:2])
+    result = []
+    for group, _ in groups:
+        previous, rebuilt = 0, []
+        for counter, local, rest, payload in group:
+            rebuilt.append(EntityMessage(encode_entity_id(counter, previous, local=local)
+                                         + rest, payload))
+            previous = counter
+        result.append(rebuilt)
+    return result
+
+
 def build_replication_record(bits):
     """LEB128 bit count then LSB-first bytes (retail 0x4a930f0).
 
@@ -1269,6 +1314,13 @@ def feedback_ring_message(state, now):
     floaters, indicators = taken.get('floater_ring'), taken.get('indicator_ring')
     if floaters is None and indicators is None:
         return None
+    if not split_updates_enabled():
+        # The ring message and the player's own health are both for the
+        # player; in one packet the client would drop the second (docs/36).
+        if not state.get('rings_need_split_logged'):
+            state['rings_need_split_logged'] = True
+            log('      SOLO FEEDBACK rings disabled: they need CRUCIBLE_SHARD_SPLIT_UPDATES=1')
+        return None
     return lambda previous_id: feedback_rings.build_ring_update(
         floaters=floaters, indicators=indicators, previous_id=previous_id)
 
@@ -1595,7 +1647,31 @@ def guarded(state, where, function, *args, **kwargs):
         return None
 
 
+# ValidateUpdate (0x4bb5144) applies a property message only if its sequence is
+# above the last one applied to that entity, as a plain unsigned compare. In
+# the 5 October log that sequence equals our wire u16 LocalSequence (e.g.
+# 2369 both received and refused). Whether the client unwraps it at 65535 is
+# untested; if not, every update after the wrap is "old", GameOver included.
+# So a connection ends its match before its sequence can wrap (docs/36).
+SEQUENCE_LIMIT_DEFAULT = 64000
+
+
+def sequence_limit():
+    """CRUCIBLE_SHARD_SEQUENCE_LIMIT (0 disables), at most 65000."""
+    try:
+        value = int(os.environ.get('CRUCIBLE_SHARD_SEQUENCE_LIMIT') or SEQUENCE_LIMIT_DEFAULT)
+    except ValueError:
+        value = SEQUENCE_LIMIT_DEFAULT
+    return max(0, min(value, 65000))
+
+
 def game_clock_reply(state, *, now=None):
+    """The tick's first packet, or None; game_clock_packets has them all."""
+    packets = game_clock_packets(state, now=now)
+    return packets[0] if packets else None
+
+
+def game_clock_packets(state, *, now=None):
     """Advance ServerGameTimePoint at up to 20 Hz after solo startup.
 
     Retail input IDs have an 8-bit client offset which saturates at 254 when
@@ -1604,16 +1680,23 @@ def game_clock_reply(state, *, now=None):
     """
     if (os.environ.get('CRUCIBLE_SHARD_BOOTSTRAP') != 'practice-character'
             or not state.get('character_links_sent') or 'clock_epoch' not in state):
-        return None
+        return []
     now = time.monotonic() if now is None else now
     if now - state['clock_last_sent'] < clock_interval():
-        return None
+        return []
     elapsed_ms = int((now - state['clock_epoch']) * 1000)
     game_time_ms = 2000 + elapsed_ms
     if not 2000 <= game_time_ms < 0xffffffff:
-        return None
+        return []
     state['seq'] = (state['seq'] + 1) & 0xffff
     state['clock_last_sent'] = now
+    limit = sequence_limit()
+    if (limit and state['seq'] >= limit and state.get('practice_npcs_sent')
+            and 'match_result' not in state):
+        state['match_result'] = {'winner_team': 0, 'at_seconds': elapsed_ms / 1000.,
+                                 'reason': 'sequence limit'}
+        log('      SEQUENCE LIMIT: LocalSequence %d reached %d; ending the match with '
+            'GameOver before it wraps' % (state['seq'], limit))
     messages = []
     previous = 0
     if (os.environ.get('CRUCIBLE_SOLO_PATROL') == '1' and 'squad' not in state
@@ -1645,9 +1728,15 @@ def game_clock_reply(state, *, now=None):
         else:
             state.pop('simulation_failing_since', None)
             messages.extend(tick)
-    return build_entity_updates(shard_bpt(), state['seq'], state['received_seq'],
-                                messages, game_time_ms=game_time_ms,
-                                seq_window=state['received_window'])
+    groups = split_entity_messages(messages) if split_updates_enabled() else [messages]
+    packets = []
+    for index, group in enumerate(groups or [[]]):
+        if index:
+            state['seq'] = (state['seq'] + 1) & 0xffff
+        packets.append(build_entity_updates(shard_bpt(), state['seq'], state['received_seq'],
+                                            group, game_time_ms=game_time_ms,
+                                            seq_window=state['received_window']))
+    return packets
 
 
 def send_game_clocks(sock, states, *, idle_reset, now=None):
@@ -1657,8 +1746,7 @@ def send_game_clocks(sock, states, *, idle_reset, now=None):
         last_valid = state.get('last_valid_monotonic')
         if last_valid is None or now - last_valid > idle_reset:
             continue
-        packet = game_clock_reply(state, now=now)
-        if packet is not None:
+        for packet in game_clock_packets(state, now=now):
             sock.sendto(packet, addr)
         packet = rpc_reply(state)
         if packet is not None:

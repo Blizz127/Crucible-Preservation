@@ -98,5 +98,20 @@ class RingRowTests(unittest.TestCase):
         self.assertEqual(statuses(shard, client)['F3'], 'FAIL')
 
 
+
+class RefusedUpdateRowTests(unittest.TestCase):
+    OLD = ('[NET_RepUpdate] EntityReplicationManager: Received old PropertyChangeMessage '
+           'message for entity id 16777219, sequence %d latest sequence %d from remote manager id 0')
+
+    def test_refused_updates_are_counted_and_a_wrap_fails(self):
+        self.assertNotIn('S1', statuses(SHARD, CLIENT))
+        client = CLIENT + [C % 5 + self.OLD % (21, 21), C % 6 + self.OLD % (2369, 2369)]
+        rows = {row[0].split()[0]: row for row in score(shard_facts(SHARD), client_facts(client))}
+        self.assertEqual(rows['S1'][1], 'INFO')
+        self.assertIn('2 entity updates refused as old (sequence 21..2369)', rows['S1'][2])
+        wrapped = CLIENT + [C % 7 + self.OLD % (12, 65530)]
+        self.assertEqual(statuses(SHARD, wrapped)['S1'], 'FAIL')
+
+
 if __name__ == '__main__':
     unittest.main()

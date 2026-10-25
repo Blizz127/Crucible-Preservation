@@ -120,3 +120,96 @@ class GuardTests(unittest.TestCase):
             for k in range(1, 52):                 # 1.5 s, one good tick, 1.5 s
                 shard.game_clock_reply(state, now=100.0 + .06 * k)
         self.assertNotIn('match_result', state)
+
+
+def message(counter, previous, tag, local=False):
+    return shard.build_entity_message(counter, shard.pack_type_and_flags(1),
+                                      payload=tag, previous_id=previous, local=local)
+
+
+def entities(packet_messages):
+    """(counter, local, payload) per message, decoding RelativeIds from 0."""
+    previous, out = 0, []
+    for m in packet_messages:
+        raw, _ = shard.decode_varint(m.header, 0)
+        relative = (raw >> 1) ^ -(raw & 1)
+        counter = (relative >> 1) + previous
+        out.append((counter, bool(relative & 1), m.payload))
+        previous = counter
+    return out
+
+
+class SplitTests(unittest.TestCase):
+    def test_each_entity_appears_once_per_packet_in_order(self):
+        tick = [message(2, 0, b'ring'), message(3, 2, b'loc3'), message(4, 3, b'loc4'),
+                message(3, 4, b'anim3'), message(4, 3, b'anim4'), message(3, 4, b'fire3'),
+                message(2, 3, b'health2')]
+        groups = shard.split_entity_messages(tick)
+        self.assertEqual([entities(g) for g in groups], [
+            [(2, False, b'ring'), (3, False, b'loc3'), (4, False, b'loc4')],
+            [(3, False, b'anim3'), (4, False, b'anim4'), (2, False, b'health2')],
+            [(3, False, b'fire3')]])
+        # Nothing but the RelativeId changes in each header.
+        self.assertEqual(groups[1][2].header[1:], tick[6].header[1:])
+
+    def test_a_local_entity_is_not_the_network_entity_with_its_counter(self):
+        tick = [message(0x4b, 0, b'net'), message(0x4b, 0x4b, b'local', local=True)]
+        self.assertEqual([entities(g) for g in shard.split_entity_messages(tick)],
+                         [[(0x4b, False, b'net'), (0x4b, True, b'local')]])
+
+    def test_the_clock_sends_one_packet_per_group_only_with_the_switch(self):
+        tick = [message(3, 0, b'loc3'), message(3, 3, b'anim3')]
+        for split, count in (('0', 1), ('1', 2)):
+            env = {'CRUCIBLE_SHARD_BOOTSTRAP': 'practice-character',
+                   'CRUCIBLE_SHARD_SPLIT_UPDATES': split}
+            state = {'character_links_sent': True, 'clock_epoch': 100.0,
+                     'clock_last_sent': 100.0, 'seq': 7, 'received_seq': 1,
+                     'received_window': 1, 'practice_npcs_sent': True}
+            with self.subTest(split=split), patch.dict('os.environ', env, clear=True), \
+                    patch.object(shard, 'solo_simulation_messages', return_value=tick):
+                packets = shard.game_clock_packets(state, now=101.0)
+                self.assertEqual(len(packets), count)
+                sequences = [int.from_bytes(lz4.block.decompress(
+                    p[1:], uncompressed_size=4096)[2:4], 'big') for p in packets]
+                self.assertEqual(sequences, list(range(8, 8 + count)))
+                self.assertEqual(state['seq'], 7 + count)
+
+
+
+class SequenceLimitTests(unittest.TestCase):
+    def state(self, seq):
+        return {'character_links_sent': True, 'clock_epoch': 100.0,
+                'clock_last_sent': 100.0, 'seq': seq, 'received_seq': 1,
+                'received_window': 1, 'practice_npcs_sent': True}
+
+    def test_the_match_ends_before_the_sequence_wraps(self):
+        env = {'CRUCIBLE_SHARD_BOOTSTRAP': 'practice-character',
+               'CRUCIBLE_SOLO_MODE': 'alpha-hunters'}
+        with patch.dict('os.environ', env, clear=True), patch.object(shard, 'log'):
+            self.assertEqual(shard.sequence_limit(), 64000)
+            state = self.state(63998)
+            shard.game_clock_packets(state, now=101.0)          # sends 63999
+            self.assertNotIn('match_result', state)
+            shard.game_clock_packets(state, now=102.0)          # sends 64000
+            self.assertEqual(state['match_result']['reason'], 'sequence limit')
+            raw = lz4.block.decompress(shard.game_clock_packets(state, now=103.0)[0][1:],
+                                       uncompressed_size=4096)
+        game_over = shard.build_solo_match_phase_update(
+            shard.solo_modes.selected(), shard.solo_modes.MATCH_PHASE['GameOver'])
+        self.assertIn(game_over.payload, raw)
+
+    def test_the_limit_can_be_moved_or_disabled(self):
+        for value, limit in (('0', 0), ('1000', 1000), ('99999', 65000), ('x', 64000)):
+            with self.subTest(value=value), \
+                    patch.dict('os.environ', {'CRUCIBLE_SHARD_SEQUENCE_LIMIT': value}):
+                self.assertEqual(shard.sequence_limit(), limit)
+        env = {'CRUCIBLE_SHARD_BOOTSTRAP': 'practice-character',
+               'CRUCIBLE_SHARD_SEQUENCE_LIMIT': '0'}
+        with patch.dict('os.environ', env, clear=True), patch.object(shard, 'log'):
+            state = self.state(65000)
+            shard.game_clock_packets(state, now=101.0)
+            self.assertNotIn('match_result', state)
+
+
+if __name__ == '__main__':
+    unittest.main()

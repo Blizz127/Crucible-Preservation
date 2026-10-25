@@ -12,6 +12,7 @@ Alienware install by SHA-256.
 | `CRUCIBLE_SOLO_DEATH_EVENTS=authored` | Each kill carries its killer's own on-hit tag |
 | `CRUCIBLE_SOLO_HIT_RANGE=1` | The player's hits take the authored falloff from the real shooter-to-target range |
 | `CRUCIBLE_SOLO_BOT_RELOAD=1` | Marines fire from a 24-round magazine and reload |
+| `CRUCIBLE_SHARD_SPLIT_UPDATES=1` | **One message per entity per packet**, so the client applies them all (see below) |
 | `CRUCIBLE_SOLO_FORCED_AGGRO=1` | A Marine the player shoots targets the player for 6 s |
 | `CRUCIBLE_SOLO_BOT_STRAFE=1` | Marines strafe while attacking instead of standing still |
 | `CRUCIBLE_SOLO_BOT_TURN=1` | Moving Marines turn at the movement turn speed, 1440°/s |
@@ -19,6 +20,60 @@ Alienware install by SHA-256.
 | `CRUCIBLE_SOLO_DAMAGE_NUMBERS=1` | Damage numbers over Marines the player hits |
 | `CRUCIBLE_SOLO_HIT_DIRECTION=1` | Incoming-hit arcs pointing at the Marine that hit the player |
 | `CRUCIBLE_SHARD_TICK_MS=32` | Clock and simulation at the client's default 32 ms server tick, not 50 ms |
+
+## The client applied only one message per entity per packet
+
+This is the most consequential finding of the pass. The client logs
+"Received old PropertyChangeMessage message for entity id %u, sequence %d
+latest sequence %d". `EntityReplicationManager::ValidateUpdate`
+(`0x4bb4f80`) drops a property message unless its sequence is greater than
+the last one applied to that entity:
+- the latest per entity is at subscriber `+0x10`, and -1 means none yet;
+- the unsigned compare is at `0x4bb5144`.
+
+The sequence comes from the received request
+(`ClientNetworkAgent::HandleRequest`, `0xe24300` → `0xe251d2`). It is the
+same for every message of the packet, and it is the shard's wire
+LocalSequence. At 18:22:01.047 GMT on 5 October the client logged
+"Receiving local sequence id 2369", then refused "sequence 2369". The
+shard's own log decodes to the matching sends. The values rise about 80
+a second: 20 clock packets plus about 60 input ACKs.
+
+So in each tick only the **first** message for an entity applied. The shard
+sent each Marine's Location first, then its animation, fire activation and
+health. The client refused the rest **25,682 times** in that one
+five-minute run, about 8,500 per Marine. This is why a Marine's fire,
+death animation, idle/move flag and health were never seen live: they were
+never applied.
+
+With `CRUCIBLE_SHARD_SPLIT_UPDATES=1`, a tick with several messages for one
+entity becomes several EntityUpdates packets:
+- the first message for each entity goes in the first packet, the second in
+  the second packet, and so on, so each entity's messages keep their order;
+- each packet takes the next LocalSequence;
+- RelativeIds restart at zero per packet, as the reader requires
+  (`0x4b9dfd0`).
+
+The rings below also need this: their message and the player's own health
+are both for the player.
+
+The switch is opt-in because it changes what the client applies. Bot
+animation, fire and health reach it for the first time.
+
+One risk is open: whether the client unwraps that u16 before comparing.
+The compare itself is a plain unsigned `ja`. The shard's LocalSequence
+wraps after 65,536 packets:
+- about 13.6 minutes at 80 a second;
+- about 8 minutes with the split, at about 140 a second.
+
+If the client does not unwrap it, every update after the wrap counts as
+old, MatchPhase GameOver included, and the match could then end only by
+leaving it. So each connection ends its match with a no-winner GameOver
+once its LocalSequence reaches 64,000 (`CRUCIBLE_SHARD_SEQUENCE_LIMIT`;
+0 disables it). That leaves 10–20 s of repeated GameOver before any wrap.
+Remove the valve once a long run shows the client unwrapping.
+`match_acceptance.py` counts the client's refusals (row S1) and fails on
+any that come after a wrap.
 
 ## Hit and kill markers
 

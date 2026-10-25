@@ -75,6 +75,12 @@ DROPPED_RPC = 'Dropping RPC'
 # PlayEdgeOfScreenEffect 0xdacd30 logs this and then dereferences the null
 # asset, so it marks an imminent crash on the first incoming-hit arc.
 EDGE_ASSET_NULL = 'Edge effects asset is null'
+# ValidateUpdate 0x4bb5144: a property message refused because its packet
+# sequence is not above the entity's latest (docs/36). Without the split each
+# Marine draws about 28 a second; with it, about none. A refusal far below the
+# latest marks a wrapped u16 sequence.
+OLD_UPDATE = re.compile(r'Received old PropertyChangeMessage message for entity id \d+, '
+                        r'sequence (\d+) latest sequence (\d+)')
 # HybridProjectileSystemClient drops a bad activation with a log line, e.g.
 # ValidateNetData "Network data validation failure" (docs/29 5b).
 ACTIVATION_REFUSED = re.compile(r'HybridProjectileSystemClient::\w+: .*'
@@ -148,7 +154,8 @@ def client_time(line):
 def client_facts(lines):
     facts = {'connected': None, 'disconnecting': None, 'match_exit': False,
              'phases': [], 'asserts': 0, 'multi_hit': 0, 'refused_activations': 0,
-             'dropped_rpcs': 0, 'edge_asset_null': 0, 'last': None}
+             'dropped_rpcs': 0, 'edge_asset_null': 0, 'old_updates': 0,
+             'old_range': None, 'wrapped_updates': 0, 'last': None}
     for line in lines:
         when = client_time(line)
         if when is not None:
@@ -172,6 +179,14 @@ def client_facts(lines):
             facts['dropped_rpcs'] += 1
         if EDGE_ASSET_NULL in line:
             facts['edge_asset_null'] += 1
+        m = OLD_UPDATE.search(line)
+        if m:
+            sequence, latest = int(m.group(1)), int(m.group(2))
+            facts['old_updates'] += 1
+            low, high = facts['old_range'] or (sequence, sequence)
+            facts['old_range'] = (min(low, sequence), max(high, sequence))
+            if latest - sequence > 30000:
+                facts['wrapped_updates'] += 1
     return facts
 
 
@@ -267,6 +282,15 @@ def score(shard, client):
         rows.append(('A7 stable', 'NO-DATA', 'needs the client log'))
     else:
         rows.append(('A7 stable', 'FAIL' if problems else 'PASS', evidence))
+
+    if client is not None and (client['old_updates'] or client['wrapped_updates']):
+        low, high = client['old_range']
+        rows.append(('S1 refused', 'FAIL' if client['wrapped_updates'] else 'INFO',
+                     '%d entity updates refused as old (sequence %d..%d)%s; expected about '
+                     '28/s per Marine without CRUCIBLE_SHARD_SPLIT_UPDATES and about 0 with it'
+                     % (client['old_updates'], low, high,
+                        '; %d after a sequence wrap' % client['wrapped_updates']
+                        if client['wrapped_updates'] else '')))
 
     # Opt-in docs/36 features: reported only when the shard used them.
     if shard['feedback'] or (client is not None and client['dropped_rpcs']):

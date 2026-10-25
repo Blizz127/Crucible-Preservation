@@ -148,7 +148,7 @@ class ShardRingTests(unittest.TestCase):
             self.assertIsNone(shard.feedback_ring_message(state, 1.))
 
     def test_a_player_hit_leads_the_next_tick_with_its_damage_number(self, _log):
-        env = dict(ALPHA, CRUCIBLE_SOLO_DAMAGE_NUMBERS='1')
+        env = dict(ALPHA, CRUCIBLE_SOLO_DAMAGE_NUMBERS='1', CRUCIBLE_SHARD_SPLIT_UPDATES='1')
         with patch.dict('os.environ', env, clear=True):
             state = self.start()
             state['clock_epoch'] = 9.     # session time 1.0 s
@@ -163,7 +163,7 @@ class ShardRingTests(unittest.TestCase):
             self.assertNotIn(messages[0], shard.solo_simulation_messages(state, 1.6))
 
     def test_a_hunter_round_on_the_player_draws_an_arc_from_the_shooter(self, _log):
-        env = dict(ALPHA, CRUCIBLE_SOLO_HIT_DIRECTION='1')
+        env = dict(ALPHA, CRUCIBLE_SOLO_HIT_DIRECTION='1', CRUCIBLE_SHARD_SPLIT_UPDATES='1')
         with patch.dict('os.environ', env, clear=True):
             state = self.start()
             state['squad'] = squad_at((5., 6., 7.), (0., 0., 0.), (0., 0., 0.))
@@ -173,6 +173,15 @@ class ShardRingTests(unittest.TestCase):
                 messages = shard.solo_simulation_messages(state, 1.)
             self.assertEqual(messages[0], rings.build_indicator_update(
                 {1: (20., (5., 6., 7.))}, 1))
+
+    def test_rings_stay_off_without_the_split(self, _log):
+        env = dict(ALPHA, CRUCIBLE_SOLO_DAMAGE_NUMBERS='1')
+        with patch.dict('os.environ', env, clear=True):
+            state = self.start()
+            shard.observe_solo_combat(player_hit(1, 0x1000003), state)
+            self.assertIn('floater_ring', state)
+            self.assertIsNone(shard.feedback_ring_message(state, 0.))
+            self.assertTrue(state['rings_need_split_logged'])
 
     def test_terrain_sight_blocks_server_resolved_rounds(self, _log):
         env = dict(ALPHA, CRUCIBLE_SOLO_BOT_DAMAGE='server', CRUCIBLE_SOLO_FIRE='1')
