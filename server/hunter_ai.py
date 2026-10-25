@@ -48,11 +48,19 @@ class Tuning:
     repath_interval: float = 0.5
     repath_distance: float = 1.0
     turn_rate: float = math.tau            # radians/second
+    forced_aggro_on_damage: float = 0.     # seconds; 0: damage changes nothing
+    magazine: int = 0                      # rounds; 0: no magazine authored
+    reload_fill: float = 0.                # seconds from reload start to refill
+    reload_animation: float = 0.           # ... to the end of using_reload
+    reload_duration: float = 0.            # ... until the primary may fire again
 
     def __post_init__(self):
         ordered = (self.aggro_near <= self.aggro_far <= self.deaggro
                    and self.range_min < self.range_max
-                   and 0 <= self.patrol_near <= self.patrol_far)
+                   and 0 <= self.patrol_near <= self.patrol_far
+                   and 0 <= self.reload_fill <= self.reload_duration
+                   and 0 <= self.reload_animation <= self.reload_duration
+                   and self.magazine >= 0 and self.forced_aggro_on_damage >= 0)
         positive = min(self.patrol_speed, self.pursue_speed, self.attack_duration,
                        self.round_interval, self.repath_interval, self.turn_rate,
                        self.aggro_angle, self.attack_angle, self.range_vertical_max,
@@ -78,6 +86,10 @@ MARINE = Tuning(
     aggro_far=40.0,                        # AggroRadiusFar, 0x10ac
     aggro_angle=math.radians(120.),        # AggroAngleFar, 0x10c6
     deaggro=50.0,                          # DeaggroRadius, 0x10e0
+    # ForcedAggroDurationOnDamage (0x1114): "When damaged by an entity,
+    # consider it as a possible target for this many seconds, even if it is
+    # outside our aggro range."
+    forced_aggro_on_damage=6.0,
     attack_delay=0.25,                     # AttackDelayForNewTargets, 0x12a6
     range_min=0.0,                         # Attacks[0].RangeMin, 0x1339
     range_max=30.0,                        # Attacks[0].RangeMax, 0x1353
@@ -103,7 +115,15 @@ MARINE = Tuning(
     patrol_attempts=5,                     # MaxAttemptsForFindingPatrolDestination, 0x2ab
     # PassiveTurnParams/TurnInPlaceSpeed (0xc93). The movement config's own
     # Max Turn Speed is 1440 deg/s; this is the AI's turn, which is slower.
-    turn_rate=math.radians(90.))
+    turn_rate=math.radians(90.),
+    # assets/player/marine/marine_resources.resourcesdata: Ammunition 0..24
+    # (m_max 0xf9, m_Value 0x113); marine_primary.ability costs 1 per shot,
+    # taken by the rifle loop 96 ms after each CreateProjectile.
+    # cdl/player/marine/ability/marine_reload.cdl (sha256 a3a8c702...)
+    # reloads by itself at Ammunition == min: FillResource after Delay
+    # 0.224 + 0.384 + 0.608 = 1.216 s, using_reload off at +0.384 = 1.6 s and
+    # Reload_Active off, which the rifle loop's entry waits on, at 1.984 s.
+    magazine=24, reload_fill=1.216, reload_animation=1.6, reload_duration=1.984)
 
 
 @dataclass(frozen=True)
@@ -129,6 +149,7 @@ class Step:
     target: int = None
     shots: tuple = ()
     firing: bool = False     # the primary is held: an attack is in progress
+    reloading: bool = False  # inside marine_reload.cdl's using_reload window
 
 
 def plan_distance(points):
@@ -190,6 +211,13 @@ class Bot:
     attack_started: float = None
     attack_ended: float = None
     rounds_fired: int = 0
+    # Rounds left in the magazine. None (the default) models no magazine, so
+    # the rifle never reloads; the shard opts in with tuning.magazine.
+    ammo: int = None
+    reload_started: float = None
+    forced_until: float = None
+    _round_anchor: float = None
+    _anchor_rounds: int = 0
     _clock: float = None
     _plan: list = field(default_factory=list)
     _index: int = 1
@@ -281,8 +309,10 @@ class Bot:
         if target is None or distance is None:
             self._disengage()
             return False
+        forced = (self.forced_until is not None and now < self.forced_until
+                  and self.target == target)
         if self.target is not None:
-            if distance > self.tuning.deaggro:
+            if distance > self.tuning.deaggro and not forced:
                 self._disengage()
                 return False
             return True
@@ -300,6 +330,22 @@ class Bot:
         self.target = self.acquired_at = None
         self.attack_started = self.attack_ended = None
         self.rounds_fired = 0
+        self.forced_until = None
+
+    def note_damage(self, now, attacker):
+        """ForcedAggroDurationOnDamage: whoever hit the bot becomes its target.
+
+        A new target restarts AttackDelayForNewTargets; the deaggro radius is
+        ignored until the forced window ends. Line of sight is not modelled,
+        so it cannot end the window early either.
+        """
+        if not self.tuning.forced_aggro_on_damage:
+            return
+        if self.target != attacker:
+            self.target, self.acquired_at = attacker, now
+            self.attack_started = self.attack_ended = None
+            self.rounds_fired = 0
+        self.forced_until = now + self.tuning.forced_aggro_on_damage
 
     def _may_attack(self, now, distance, aim):
         """Attacks[0]'s start gate: range, vertical range, cone and delays."""
@@ -328,7 +374,14 @@ class Bot:
         shots = []
         end = self.attack_started + self.tuning.attack_duration
         while True:
-            due = self.attack_started + self.rounds_fired * self.tuning.round_interval
+            due = self._round_anchor + self._anchor_rounds * self.tuning.round_interval
+            if self.reload_started is not None:
+                # The held trigger fires again only once Reload_Active clears.
+                ready = self.reload_started + self.tuning.reload_duration
+                if ready > now or ready >= end - 1e-9:
+                    break
+                self._finish_reload(ready)
+                due = self._round_anchor + self._anchor_rounds * self.tuning.round_interval
             if due > now or due >= end - 1e-9:
                 break
             origin = tuple(self.position[i] + self.tuning.aggro_origin_offset_local[i]
@@ -340,10 +393,35 @@ class Bot:
             shots.append(Shot(self.entity, self.target, due, origin,
                               tuple(v / length for v in aim), length))
             self.rounds_fired += 1
+            self._anchor_rounds += 1
+            if self.ammo is not None:
+                self.ammo -= 1
+                if self.ammo <= 0:
+                    # The loop's Ammunition -1 empties the magazine 96 ms
+                    # after this projectile; the reload script starts then.
+                    self.reload_started = due + self.tuning.round_interval
         if now >= end - 1e-9:
             self.attack_started, self.attack_ended = None, end
             self.rounds_fired = 0
         return shots
+
+    def _finish_reload(self, now):
+        """Refill once a reload has run its course; resume the loop from there."""
+        if self.reload_started is None:
+            return
+        ready = self.reload_started + self.tuning.reload_duration
+        if now < ready:
+            return
+        self.ammo, self.reload_started = self.tuning.magazine, None
+        if self.attack_started is not None:
+            due = self._round_anchor + self._anchor_rounds * self.tuning.round_interval
+            if due < ready:
+                self._round_anchor, self._anchor_rounds = ready, 0
+
+    def reloading(self, now):
+        """True inside the reload's using_reload window."""
+        return (self.reload_started is not None and self.reload_started <= now
+                < self.reload_started + self.tuning.reload_animation)
 
     # -- tick -------------------------------------------------------------
 
@@ -363,6 +441,7 @@ class Bot:
         delta, self._clock = now - self._clock, now
         if (target is None) != (target_position is None):
             raise ValueError('target id and position must be given together')
+        self._finish_reload(now)
 
         origin = tuple(self.position[i] + self.tuning.aggro_origin_offset_local[i]
                        for i in range(3))
@@ -453,11 +532,17 @@ class Bot:
             if (self.attack_started is None
                     and self._may_attack(now, math.dist(current_origin, aim_target), aim)):
                 self.attack_started, self.rounds_fired = now, 0
+                self._round_anchor, self._anchor_rounds = now, 0
                 shots.extend(self._rounds(now, target_position))
 
+        # marine_primary_onfire.cdl clears using_primary1 when its loop exits
+        # for the reload; marine_reload.cdl holds using_reload meanwhile.
+        empty = self.reload_started is not None and self.reload_started <= now
         return Step(self.entity, self.position, self.facing(), self.yaw,
                     moved / delta if delta > 0 else 0., self.state,
-                    self.target, tuple(shots), self.attack_started is not None)
+                    self.target, tuple(shots),
+                    self.attack_started is not None and not empty,
+                    self.reloading(now))
 
     def facing(self):
         return (math.sin(self.yaw), math.cos(self.yaw), 0.)

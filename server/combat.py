@@ -93,6 +93,23 @@ SABOTEUR_PRIMARY = Weapon('saboteur_primary', 40.0, 20.0,
 # Primary projectile per hero key (hero_loadout.ROSTER). Heroes not listed
 # still use Marine numbers until their own asset is read.
 HERO_PRIMARY = {'marine': MARINE_PRIMARY, 'saboteur': SABOTEUR_PRIMARY}
+# The primary's AllowedAssets index in <hero>_projectile_request.projectilereq
+# (tools/inspect_fire_bakednames.py --request, build 5685572): Marine slot 4
+# marine_projectile_primary, Saboteur slot 6 saboteur_primary (slot 7 is its
+# aimed variant). A hit confirmation uses it to pick the projectile's
+# hit-confirm sound (docs/36).
+HERO_PRIMARY_INDEX = {'marine': 4, 'saboteur': 6}
+
+# Death metadata the primary's on-hit script attaches to its DoDamage
+# (docs/27, docs/36): cdl/player/marine/ability/marine_primary_onhit.cdl and
+# cdl/player/saboteur/ability/saboteur_primary_on_hit.cdl (sha256 188ae361...)
+# both tag SourceName "Ability" and their own AbilityName. Wire ids are the
+# executable's static names followed by assets/bakednames/*.names
+# (tools/inspect_fire_bakednames.py, which reads short names since docs/36):
+# HealthChangeSource "Ability" 24 + 4 = 28; AbilityNames marine_primary 51,
+# saboteur_primary 86.
+ABILITY_SOURCE = 28
+HERO_PRIMARY_ABILITY = {'marine': 51, 'saboteur': 86}
 
 
 # --- Authored respawn timings -----------------------------------------------
@@ -290,14 +307,15 @@ class Combat:
     # Explicit probe metadata only. Asset table indices alone do not establish
     # wire enum ids or a neutral default source/ability pair (docs/27).
     death_metadata: tuple = None
+    # Per-killer (source, ability) pairs, consulted before death_metadata.
+    killer_metadata: dict = field(default_factory=dict)
     # Gate that refused the latest apply_reported_hit; None after a hit.
     last_rejection: str = None
 
     def __post_init__(self):
-        if self.death_metadata is not None:
-            if (len(self.death_metadata) != 2 or
-                    any(type(v) is not int or not 0 <= v <= 65535
-                        for v in self.death_metadata)):
+        for pair in (self.death_metadata, *self.killer_metadata.values()):
+            if pair is not None and (len(pair) != 2 or any(
+                    type(v) is not int or not 0 <= v <= 65535 for v in pair)):
                 raise ValueError('death metadata must contain two uint16 ids')
 
     # -- registration
@@ -442,12 +460,11 @@ class Combat:
         messages = []
         for entity in entities:
             builder, metadata = build_health_update, {}
-            if (self.death_metadata is not None and not entity.alive
-                    and entity.killer_id is not None):
+            pair = self.killer_metadata.get(entity.killer_id, self.death_metadata)
+            if pair is not None and not entity.alive and entity.killer_id is not None:
                 from death_events import build_death_update
                 builder = build_death_update
-                metadata = dict(source_name=self.death_metadata[0],
-                                ability_name=self.death_metadata[1],
+                metadata = dict(source_name=pair[0], ability_name=pair[1],
                                 killer_id=entity.killer_id)
             messages.append(builder(
                 entity.entity_id, entity.shared_types, maximum=entity.maximum,

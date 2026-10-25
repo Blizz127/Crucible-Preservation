@@ -66,6 +66,37 @@ class HunterCombatAnimationTests(unittest.TestCase):
         self.assertEqual(released, [expected(0x1000003, 3, is_dead=False,
                                              using_primary1=False, using_aim_ik=False)])
 
+    @patch.dict('os.environ', {'CRUCIBLE_SOLO_COMBAT_ANIMATION': '1',
+                               'CRUCIBLE_SOLO_BOT_RELOAD': '1'}, clear=True)
+    def test_reload_flag_publishes_using_reload_for_live_and_dead_bots(self):
+        arena = arena_with_bots()
+        arena.entities[0x1000004].health = 0.
+        state = {'squad': object(), 'combat': arena}
+        step = hunter_ai.Step(0x1000003, (0., 0., 0.), (0., 1., 0.), 0., 0.,
+                              hunter_ai.ATTACK, reloading=True)
+        location = shard.build_bot_location_message(3, step.position, step.facing)
+        with patch.object(shard, 'log'), patch.object(
+                shard, 'build_hunter_ai_updates', return_value=([location], [step])):
+            messages = shard.solo_simulation_messages(state, 0.)[1:]
+        self.assertEqual(messages, [
+            expected(0x1000003, 3, is_dead=False, using_primary1=False,
+                     using_aim_ik=False, using_reload=True),
+            expected(0x1000004, 3, is_dead=True, using_primary1=False,
+                     using_aim_ik=False, using_reload=False)])
+
+    def test_reload_flag_loads_each_hunter_magazine(self):
+        import hunter_patrol
+        route = ((0., 0., 0.), (1., 0., 0.))
+        for flags, ammo in (({}, None), ({'CRUCIBLE_SOLO_BOT_RELOAD': '1'}, 24)):
+            squad = hunter_ai.Squad([hunter_ai.Bot(e, route, hunter_ai.MARINE)
+                                     for e in BOTS])
+            env = dict(flags, CRUCIBLE_SOLO_AI='1', CRUCIBLE_SOLO_MODE='alpha-hunters')
+            with self.subTest(flags=flags), patch.dict('os.environ', env, clear=True), \
+                    patch.object(hunter_patrol, 'squad', return_value=squad):
+                state = {}
+                shard.start_solo_simulation(state)
+                self.assertEqual([bot.ammo for bot in state['squad'].bots], [ammo] * 3)
+
     @patch.dict('os.environ', {'CRUCIBLE_SOLO_COMBAT_ANIMATION': '1'}, clear=True)
     def test_a_bot_that_is_chasing_while_its_attack_runs_keeps_firing(self):
         state = {'squad': object(), 'combat': arena_with_bots()}

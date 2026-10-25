@@ -995,8 +995,28 @@ def solo_ai_enabled():
     return os.environ.get('CRUCIBLE_SOLO_AI') == '1'
 
 
+def bot_reload_enabled():
+    """docs/36: hunters fire from the authored 24-round magazine and reload."""
+    return os.environ.get('CRUCIBLE_SOLO_BOT_RELOAD') == '1'
+
+
+def authored_death_metadata(hunters):
+    """docs/36: each killer's own on-hit tag, "Ability" plus its primary."""
+    import combat
+    pairs = {entity: (combat.ABILITY_SOURCE, combat.HERO_PRIMARY_ABILITY['marine'])
+             for entity in hunters}
+    ability = combat.HERO_PRIMARY_ABILITY.get(hero_loadout.selected().name)
+    if ability is not None:
+        pairs[PLAYER_CHARACTER_ID] = (combat.ABILITY_SOURCE, ability)
+    return pairs
+
+
 def solo_death_metadata():
-    """Require explicit baked ids for the unverified death-event probe."""
+    """Require explicit baked ids for the unverified death-event probe.
+
+    CRUCIBLE_SOLO_DEATH_EVENTS=authored needs none: start_solo_simulation
+    then gives each killer its authored pair instead.
+    """
     if os.environ.get('CRUCIBLE_SOLO_DEATH_EVENTS') != '1':
         return None
     try:
@@ -1015,13 +1035,16 @@ def start_solo_simulation(state):
     import practice_population
     profile = solo_modes.selected()
     if solo_combat_enabled():
-        arena = combat.Combat(death_metadata=solo_death_metadata())
+        hunters = HUNTER_BOT_IDS[:len(profile.bot_positions)]
+        killers = (authored_death_metadata(hunters)
+                   if os.environ.get('CRUCIBLE_SOLO_DEATH_EVENTS') == 'authored' else {})
+        arena = combat.Combat(death_metadata=solo_death_metadata(),
+                              killer_metadata=killers)
         arena.register(PLAYER_CHARACTER_ID, MARINE_SHARED_TYPES,
                        maximum=MARINE_HEALTH_MAX, team=1, autonomous=True)
-        if profile.bot_positions:
-            for entity in HUNTER_BOT_IDS[:len(profile.bot_positions)]:
-                arena.register(entity, MARINE_SHARED_TYPES,
-                               maximum=MARINE_HEALTH_MAX, team=2)
+        for entity in hunters:
+            arena.register(entity, MARINE_SHARED_TYPES,
+                           maximum=MARINE_HEALTH_MAX, team=2)
         for place in practice_population.population(profile.level):
             respawn = (combat.PRACTICE_SPITTER_RESPAWN_SECONDS if place.profile
                        else combat.PRACTICE_TARGET_RESPAWN_SECONDS)
@@ -1036,6 +1059,9 @@ def start_solo_simulation(state):
             import hunter_patrol
             state['squad'] = hunter_patrol.squad(
                 HUNTER_BOT_IDS[:len(profile.bot_positions)])
+            if bot_reload_enabled():
+                for bot in state['squad'].bots:
+                    bot.ammo = bot.tuning.magazine or None
             import dit_motion_policy
             pause_range, move_range = dit_motion_policy.approved_patrol_motion_ranges(
                 os.environ.get('CRUCIBLE_DIT_TRANSPORT_ROOT'))
@@ -1118,6 +1144,14 @@ def observe_solo_combat(message, state):
     log('      SOLO COMBAT %s hit target=%08x damage=%.0f health=%.0f%s' %
         ('player' if shooter == PLAYER_CHARACTER_ID else 'hunter %08x' % shooter,
          hit.target, hit.damage, hit.health, ' KILLED' if hit.killed else ''))
+    if shooter == PLAYER_CHARACTER_ID:
+        confirm_player_hit(state, hit, weapon)
+        squad = state.get('squad')
+        if (squad is not None and not hit.killed
+                and os.environ.get('CRUCIBLE_SOLO_FORCED_AGGRO') == '1'):
+            for bot in squad.bots:
+                if bot.entity == hit.target:
+                    bot.note_damage(now, PLAYER_CHARACTER_ID)
     director = state.get('creatures')
     if director is not None:
         if hit.killed:
@@ -1126,6 +1160,25 @@ def observe_solo_combat(message, state):
                 creature.kill(now)
         else:
             director.note_damage(now, hit.target, PLAYER_CHARACTER_ID)
+
+
+def confirm_player_hit(state, hit, weapon):
+    """Queue the opt-in hit and kill markers for one accepted player hit."""
+    import shooter_feedback
+    from combat import HERO_PRIMARY_INDEX
+    if shooter_feedback.hit_confirm_enabled():
+        # An unknown hero's index is out of range: the marker still shows,
+        # only the projectile's hit-confirm sound is skipped (0xbc47d1).
+        index = HERO_PRIMARY_INDEX.get(hero_loadout.selected().name, -1)
+        queue_player_rpc(state, shooter_feedback.PROJECTILE_REQUEST_COMPONENT,
+                         shooter_feedback.CONFIRM_HIT_INDICATOR,
+                         shooter_feedback.build_confirm_hit_indicator(
+                             scale=shooter_feedback.hit_scale(hit.damage, weapon),
+                             projectile_type_index=index))
+    if hit.killed and shooter_feedback.kill_confirm_enabled():
+        queue_player_rpc(state, shooter_feedback.PROJECTILE_REQUEST_COMPONENT,
+                         shooter_feedback.CONFIRM_KILL_INDICATOR,
+                         shooter_feedback.build_confirm_kill_indicator())
 
 
 def solo_match_rank(state):
@@ -1218,9 +1271,13 @@ def solo_simulation_messages(state, now, *, previous_id=0):
                     animation.setdefault(step.entity, {}).update(
                         is_dead=False, using_primary1=step.firing,
                         using_aim_ik=step.firing)
+                    if bot_reload_enabled():
+                        animation[step.entity]['using_reload'] = step.reloading
             for entity in dead:
                 animation.setdefault(entity, {}).update(
                     is_dead=True, using_primary1=False, using_aim_ik=False)
+                if bot_reload_enabled():
+                    animation[entity]['using_reload'] = False
         if animation:
             from animation_events import build_animation_update
             for entity, values in animation.items():
@@ -1432,6 +1489,9 @@ def send_game_clocks(sock, states, *, idle_reset, now=None):
         packet = game_clock_reply(state, now=now)
         if packet is not None:
             sock.sendto(packet, addr)
+        packet = rpc_reply(state)
+        if packet is not None:
+            sock.sendto(packet, addr)
 
 
 def ranged_uint32(value):
@@ -1474,6 +1534,41 @@ def parse_entity_rpcs(payload):
     if offset != len(payload):
         raise ValueError('trailing RPC bytes')
     return messages
+
+
+def build_entity_rpcs(messages):
+    """Server packet 11 payload: the same vector body the client sends.
+
+    The server-to-client EntityRpcs serializer 0xe26490 calls 0x4ba0d10,
+    which reads through 0x4ba16f0 exactly as parse_entity_rpcs does.
+    """
+    if len(messages) > ENTITY_MESSAGES_MAX:
+        raise ValueError('RPC count exceeds retail bound')
+    payload = len(messages).to_bytes(2, 'big')
+    for message in messages:
+        if not 0 <= message.delivery <= 4 or len(message.data) > 6144:
+            raise ValueError('invalid RPC delivery or size')
+        payload += struct.pack('>BIBBH', message.delivery, message.entity_id,
+                               message.component, message.rpc, len(message.data))
+        payload += message.data
+    return payload
+
+
+def queue_player_rpc(state, component, rpc, data):
+    """Queue one Authority -> Autonomous RPC on the player's own character."""
+    state.setdefault('pending_rpcs', []).append(
+        EntityRpc(2, PLAYER_CHARACTER_ID, component, rpc, data))
+
+
+def rpc_reply(state):
+    """One EntityRpcs packet carrying every queued RPC, or None."""
+    pending = state.pop('pending_rpcs', None)
+    if not pending or 'received_seq' not in state:
+        return None
+    state['seq'] = (state['seq'] + 1) & 0xffff
+    return build_shard(shard_bpt(), 11, state['seq'], state['received_seq'],
+                       payload=build_entity_rpcs(pending),
+                       seq_window=state['received_window'])
 
 
 def parse_projectile_result(data):

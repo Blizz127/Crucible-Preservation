@@ -367,6 +367,66 @@ class AttackTests(unittest.TestCase):
                  for i in range(20)]
         self.assertEqual({s.state for s in steps}, {hunter_ai.ATTACK})
 
+    def test_a_marine_magazine_empties_reloads_and_resumes(self):
+        marine = hunter_ai.MARINE
+        self.assertEqual((marine.magazine, marine.reload_fill, marine.reload_animation,
+                          marine.reload_duration), (24, 1.216, 1.6, 1.984))
+        bot = hunter_ai.Bot(3, straight(), tuning(
+            attack_duration=2., round_interval=.096, attack_delay=.25, magazine=24,
+            reload_fill=1.216, reload_animation=1.6, reload_duration=1.984), ammo=24)
+        steps = ticks(bot, 140, target=2, position=(0., 8., 0.))
+        times = [s.time for step in steps for s in step.shots]
+        # 21 rounds in the first attack, three more in the second: the 24th
+        # is at 2.3 + 2 * .096. The loop empties the magazine 96 ms later.
+        self.assertAlmostEqual(times[23], 2.492)
+        empty = 2.492 + .096
+        ready = empty + 1.984
+        self.assertAlmostEqual(times[24], ready)
+        self.assertAlmostEqual(times[25] - times[24], .096)
+        self.assertFalse([t for t in times if 2.5 < t < ready - 1e-9])
+        # The second magazine empties the same way.
+        self.assertEqual(len(times), 48)
+        empties = (empty, times[47] + .096)
+        for step, now in zip(steps, (.05 * (i + 1) for i in range(140))):
+            with self.subTest(now=now):
+                self.assertEqual(step.reloading,
+                                 any(e <= now < e + 1.6 for e in empties))
+                if any(e <= now < e + 1.984 for e in empties):
+                    self.assertFalse(step.firing)
+        self.assertEqual(bot.ammo, 0)
+
+    def test_damage_forces_aggro_from_outside_the_cone_and_radius(self):
+        self.assertEqual(hunter_ai.MARINE.forced_aggro_on_damage, 6.)
+        bot = hunter_ai.Bot(3, straight(), tuning(aggro_angle=math.radians(120.),
+                                                  forced_aggro_on_damage=6.))
+        behind = (0., -22., 0.)          # past AggroRadiusFar, behind the bot
+        self.assertIsNone(bot.update(.05, 2, behind).target)
+        bot.note_damage(.06, 2)
+        step = bot.update(.1, 2, behind)
+        self.assertEqual((step.target, step.state), (2, hunter_ai.PURSUE))
+        # Past the deaggro radius the forced window still holds the target...
+        far = lambda: (bot.position[0], bot.position[1] - 30., 0.)
+        self.assertEqual(bot.update(6., 2, far()).target, 2)
+        # ...and once it runs out, the ordinary deaggro test applies again.
+        self.assertIsNone(bot.update(6.1, 2, far()).target)
+
+    def test_damage_changes_nothing_without_an_authored_duration(self):
+        bot = hunter_ai.Bot(3, straight(), tuning())
+        bot.note_damage(.05, 2)
+        self.assertIsNone(bot.update(.1, 2, (0., -22., 0.)).target)
+
+    def test_without_a_magazine_the_rifle_never_reloads(self):
+        bot = hunter_ai.Bot(3, straight(), tuning(
+            attack_duration=2., round_interval=.096, attack_delay=.25, magazine=24,
+            reload_fill=1.216, reload_animation=1.6, reload_duration=1.984))
+        steps = ticks(bot, 140, target=2, position=(0., 8., 0.))
+        times = [s.time for step in steps for s in step.shots]
+        # Two full attacks, then a third that starts one tick late (the
+        # previous attack's end time lands a float hair after its tick).
+        self.assertEqual(len(times), 70)
+        self.assertFalse(any(step.reloading for step in steps))
+        self.assertIsNone(bot.ammo)
+
     def test_targets_closer_than_range_min_are_still_engaged(self):
         bot = hunter_ai.Bot(3, straight(), tuning(range_min=3.))
         steps = ticks(bot, 40, target=2, position=(0., 1., 0.))

@@ -63,5 +63,46 @@ class DeathIntegrationTests(unittest.TestCase):
         self.assertEqual(state['combat'].death_metadata, (7, 49))
 
 
+AUTHORED = {'CRUCIBLE_SOLO_COMBAT': '1', 'CRUCIBLE_SOLO_MODE': 'alpha-hunters',
+            'CRUCIBLE_SOLO_HERO': 'saboteur', 'CRUCIBLE_SOLO_DEATH_EVENTS': 'authored'}
+
+
+@patch.object(shard, 'log')
+class AuthoredDeathMetadataTests(unittest.TestCase):
+    def death_tag(self, state, victim):
+        arena = state['combat']
+        message, = arena.build_messages([arena.entities[victim]])
+        return struct.unpack('>HHI', message.payload[-20:-12])
+
+    @patch.dict('os.environ', AUTHORED, clear=True)
+    def test_each_killer_carries_its_own_on_hit_tag(self, _log):
+        state = {}
+        shard.start_solo_simulation(state)
+        arena = state['combat']
+        self.assertIsNone(arena.death_metadata)
+        for projectile in range(1, 21):
+            shard.observe_solo_combat(shard.EntityRpc(
+                3, shard.PLAYER_CHARACTER_ID, 115, 4,
+                bytes([projectile, 1]) + (0x1000003).to_bytes(4, 'big')), state)
+        # Ajonah kills a Marine: Ability (28), saboteur_primary (86).
+        self.assertEqual(self.death_tag(state, 0x1000003), (28, 86, 0x1000002))
+        while arena.alive(shard.PLAYER_CHARACTER_ID):
+            arena.apply_damage(0x1000004, shard.PLAYER_CHARACTER_ID, 20., now=1.)
+        # A Marine kills the player: Ability (28), marine_primary (51).
+        self.assertEqual(self.death_tag(state, shard.PLAYER_CHARACTER_ID),
+                         (28, 51, 0x1000004))
+
+    @patch.dict('os.environ', dict(AUTHORED, CRUCIBLE_SOLO_HERO='duelist'), clear=True)
+    def test_an_unread_hero_kills_without_metadata(self, _log):
+        state = {}
+        shard.start_solo_simulation(state)
+        arena = state['combat']
+        arena.entities[0x1000003].health = 20.
+        arena.apply_damage(shard.PLAYER_CHARACTER_ID, 0x1000003, 20., now=1.)
+        message, = arena.build_messages([arena.entities[0x1000003]])
+        self.assertEqual(message, combat.build_health_update(
+            0x1000003, shard.MARINE_SHARED_TYPES, maximum=800., value=0.))
+
+
 if __name__ == '__main__':
     unittest.main()
