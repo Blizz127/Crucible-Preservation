@@ -37,11 +37,12 @@ each step can be played on its own.
 
 ### Guide AI core differences
 
-Read from `snapshots/accuracy-20260924/guide-bots-ai-full.json`. Each value
-is the first element whose path ends in the field name, and is
-**unverified**. The same matching mis-hit `Duration` and `Angle`, and
-Saboteur's 1.2 s may come from a second attack element. Re-extract by full
-path before building on any of it.
+Read from `snapshots/accuracy-20260924/guide-bots-ai-full.json` by **full
+element path**, for example `(root)/Attacks/ELEMENT/Duration` (re-extracted
+25 October). Each path occurs once per asset, so every asset has a single
+attack element, and Saboteur's 1.2 s is the root-level
+`MinTimeBetweenAttacks`. Every value in the earlier suffix-matched table
+stood; the attack rows below are new.
 
 | | duelist | hero | inventor | saboteur | (marine) |
 |---|---|---|---|---|---|
@@ -51,10 +52,28 @@ path before building on any of it.
 | ForcedAggroDurationOnDamage, s | 6 | 6 | 6 | 10 | 6 |
 | AttackDelayForNewTargets, s | 0.25 | 0 | 0 | 0.25 | 0.25 |
 | MinTimeBetweenAttacks, s | 0 | 0 | 0 | 1.2 | 0 |
-| SpeedChase, m/s | 7.5 | 6.5 | 5.5 | 6.5 | 8.0 |
+| Attack Duration, s | 2.0 | 3.5 | 2.0 | 2.0 | 2.0 |
+| TargetTypes | Player, Hive | Player, Hive | Player, Hive | Player | Player |
+| SpeedChase = SpeedWander, m/s | 7.5 | 6.5 | 5.5 | 6.5 | 8.0 |
 | Strafe full-influence band, m | ≤20, to 30 | ≤8, to 10 | ≤8, to 15 | ≤20, to 30 | ≤20, to 30 |
-| StopDesiredDistance, m | 1.8 | 1.5 | 1.5 | 1.8 | 1.8 |
+| StopDesiredDistance / Allowed, m | 1.8 / 3.0 | 1.5 / 2.5 | 1.5 / 2.5 | 1.8 / 3.0 | 1.8 / 3.0 |
+| MoverRadius, m | 0.5 | 1.0 | 1.0 | 0.5 | 0.5 |
 | CanPatrol | no | yes | yes | no | yes |
+| Other | | ActiveTurn on | | BackUp on, 3.5 m/s | |
+
+The same in all five:
+- **The attack:** Angle 90°, RangeMax 30 m, RangeVerticalMax 20 m, and
+  TimeWithoutLoSToTargetUntilAbandoningAttack 3 s.
+- **Sight:** TimeWithoutLoSToForgetCurrentTarget 8 s.
+- **Strafe:** Speed 4.5 m/s, for 1–2 s.
+- **Turning:** TurnInPlaceSpeed 90°/s.
+- **Fleeing:** CanFleeForDamagedReasons false, but
+  CanFleeWhenFailingToGetToCombatTarget true.
+
+The hero's flee distances are 50–80 m; the others' are 20–40 m (inventor
+20–30 m). The sixth asset in the snapshot, `ai/dummy_player_guide.ai`,
+differs again (AggroRadiusNear/Far 5/15 m, RangeMin 10 m, Duration
+3.15 s, no strafe). What uses it is not traced.
 
 All four check line of sight, start awake, and never flee from damage.
 Their weapons, health and capsules come from their character slices
