@@ -688,10 +688,21 @@ Inferred or left out:
 - **No destination.** No flight starts when no destination is found.
 - **Medpacks.** No medpack is ever used: `MedPackCount` is not one of the
   Marine's resources.
-- **The attack selector's sprint.** Its sprint (Ability3 for 3 s, when the
-  target is over 20 m away or a random draw is above 0.5) is decoded but
-  not modelled. The selector holds fire straight after, which cancels the
-  sprint, and attack-time approach movement is not modelled.
+- **The attack selector's sprint.** On an attack (index 0, not healing, not
+  fleeing), `marine_guide_attack_selector.cdl` holds Ability3 for 3 s when
+  the target is over 20 m away or its random draw is above 0.5. In the same
+  instant it chains the attack itself. Each branch but one stops sprint
+  under `marine_sprint.cdl`'s rules:
+  - a bunker placed while backing away (draw above 0.3, Bunker resource
+    full) leaves no forward input;
+  - melee within 3 m cancels it, and so does the fire that follows;
+  - otherwise it fires for 2 s, sometimes after pulsing Ability4;
+  - a grenade (Ability2, Grenade resource full, target within 12 m) is not
+    a cancel condition, so there the sprint may run on.
+
+  The hunters model none of the bunker, melee, grenade or Ability4
+  branches, only the fire, so this sprint is not modelled either. Whether a
+  held Ability3 restarts sprint once the fire ends is not traced.
 
 ## The chase speed
 
@@ -706,12 +717,14 @@ excess back down. So 8.0 is out under either reading of the ramp.
 With `CRUCIBLE_SOLO_BOT_CHASE_CAP=1`, a chasing Marine moves at 5.5 m/s, the
 Default config's forward speed. The guide scripts press Ability3 themselves:
 - `marine_guide_on_hit.cdl`: on being hit, Flee and Ability3 for 4 s;
-- `marine_guide_attack_selector.cdl`: Ability3 and MoveBackward for 3 s.
+- `marine_guide_attack_selector.cdl`: Ability3 for 3 s on about half its
+  attacks, chained at once with the attack itself (see the flight's notes).
 
 The on-hit flight is modelled, at an assumed 8.5 m/s, behind
 `CRUCIBLE_SOLO_BOT_FLEE` (above). The selector's burst is decoded but not
-modelled. With the cap, Ajonah's Default config (6.5 m/s forward) outruns a
-Marine that isn't fleeing.
+modelled: the attack it is chained with cancels it in every branch the
+hunters model. With the cap, Ajonah's Default config (6.5 m/s forward)
+outruns a Marine that isn't fleeing.
 
 ## Turning while moving
 
