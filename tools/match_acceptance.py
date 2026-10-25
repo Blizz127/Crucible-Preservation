@@ -26,6 +26,7 @@ Rows that appear only when their docs/36 switch is used:
   S1 refused    entity updates the client refused as old (a wrap fails)
   F1-F3         hit and kill markers, Marine reloads, damage-number rings
   F4 flinch     the Marines' networked flinch; on without the split fails
+  B0 switches   the bot switches and sight mode the shard ran with
   B1 sight      which line of sight loaded; a static request that fell back
                 to the terrain fails
   B2 blocked    hunter rounds stopped by line of sight
@@ -81,6 +82,8 @@ TIMER = re.compile(r'MATCH TIMER: ([\d.]+) s of play; ending the match with Game
 # terrain, rounds the line of sight stopped, and the Marines' idle rests
 # (the last two logged at counts 1, 2, 4, ...).
 SIGHT = re.compile(r'prewarmed line of sight \((terrain|static)\)')
+# Logged at each match start when any bot switch or sight mode is on.
+SWITCHES = re.compile(r'HUNTER AI switches: (.*)$')
 SIGHT_FALLBACK = 'LINE OF SIGHT: no static geometry cache'
 # Logged at prewarm and at every match start when the sight test is lost.
 SIGHT_BROKEN = re.compile(r'LINE OF SIGHT (unavailable on|static geometry unreadable on) (\S+)')
@@ -121,12 +124,14 @@ def shard_facts(lines):
              'population_after_over': 0, 'feedback': {}, 'reloads': 0, 'rings': {},
              'valves': [], 'timer': [], 'sight': None, 'sight_fallback': 0,
              'sight_broken': [], 'blocked': 0, 'rests': {}, 'flinches': {},
-             'flinch_split_off': 0, 'flinch_on': 0}
+             'flinch_split_off': 0, 'flinch_on': 0, 'switches': None}
     for line in lines:
         if VALVE.search(line):
             facts['valves'].append(VALVE.search(line).group(1))
         elif SIGHT.search(line):
             facts['sight'] = SIGHT.search(line).group(1)
+        elif SWITCHES.search(line):
+            facts['switches'] = SWITCHES.search(line).group(1).strip()
         elif SIGHT_FALLBACK in line:
             facts['sight_fallback'] += 1
         elif SIGHT_BROKEN.search(line):
@@ -381,6 +386,8 @@ def score(shard, client):
             rows.append(('F4 flinch', 'FAIL', 'hit reactions on and %d player hits on hunters '
                          'accepted, but no flinch was sent (no decoded player position?)'
                          % len(hunter_hits)))
+    if shard['switches']:
+        rows.append(('B0 switches', 'INFO', shard['switches']))
     if shard['sight_broken']:
         rows.append(('B1 sight', 'FAIL', 'line of sight requested but lost: %s'
                      % shard['sight_broken'][0]))

@@ -20,6 +20,7 @@ Alienware install by SHA-256.
 | `CRUCIBLE_SOLO_LOS=static` | As `terrain`, and walls, rocks and buildings also block (needs the offline cache) |
 | `CRUCIBLE_SOLO_BOT_IDLE=1` | Patrolling Marines rest one authored idle animation, plus 1 s, between hops |
 | `CRUCIBLE_SOLO_BOT_ACCEL=1` | Marines speed up and slow down at 10 m/s², stopping where their path ends |
+| `CRUCIBLE_SOLO_BOT_ANCHORED=1` | Patrolling Marines pick destinations 5–15 m from their anchor, as the editor tooltips say |
 | `CRUCIBLE_SOLO_HIT_REACTION=1` | A Marine the player hits flinches away from the shot (needs the split) |
 | `CRUCIBLE_SOLO_DAMAGE_NUMBERS=1` | Damage numbers over Marines the player hits |
 | `CRUCIBLE_SOLO_HIT_DIRECTION=1` | Incoming-hit arcs pointing at the Marine that hit the player |
@@ -549,6 +550,36 @@ At the Marine's 5.5 m/s patrol speed, a 10 m hop takes about 2 s, and a
 rest 3.7–12.7 s. So with the switch on, a patrolling Marine stands far more
 than it walks, as the authored values imply. Without it, Marines never stop.
 The DIT patrol pauses, when approved, replace this rest.
+
+## Patrol destinations around the anchor
+
+`PatrolParams` has two distance pairs, and its editor tooltips
+(`bot-authored-params.md`) say which is which:
+- `MinDistance`/`MaxDistance`, 5–15 m (0x2c2/0x2dc), are "from anchor pos";
+- `MinDistanceFromCurrent`/`MaxDistanceFromCurrent`, 0–50 m (0x2f6/0x310),
+  are "from current pos".
+
+The wander so far read them the other way round: hops 5–15 m long from the
+current position, anywhere within 50 m of the anchor. So retail Marines
+patrol a ring 5–15 m around their anchor, while ours roam up to 50 m from
+it.
+
+With `CRUCIBLE_SOLO_BOT_ANCHORED=1`, a patrolling Marine draws each
+destination from the 5–15 m ring around its anchor, within 50 m of where it
+stands, in up to five attempts (`MaxAttemptsForFindingPatrolDestination`).
+It walks there along the navmesh from where it is. On open ground it never
+strays more than 15 m from the anchor. After a chase, a returning Marine
+walks to its anchor, the ring's centre. The earlier reading stays the
+default, so the deployed baseline is unchanged.
+
+`TargetPosGenerationAttemptsUntilIgnoringDistanceToCurrentRule` is 50. A
+Marine more than 65 m from its anchor finds no ring point within 50 m of
+itself. After 50 failed attempts (ten searches), it drops the from-current
+limit and walks back to its ring.
+
+Each match start logs `HUNTER AI switches: …; sight …` when any bot
+switch or sight mode is on. `match_acceptance` shows it as row B0, so one
+row confirms which drop-ins took effect.
 
 ## Speeding up and slowing down
 

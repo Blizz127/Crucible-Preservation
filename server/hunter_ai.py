@@ -48,6 +48,7 @@ class Tuning:
     patrol_far: float = 15.
     patrol_anchor_limit: float = 50.
     patrol_attempts: int = 5
+    patrol_ignore_current_after: int = 0   # failed attempts; 0 keeps the limit
     idle_durations: tuple = ()             # rest after a patrol hop: one of these
     idle_extra: float = 0.                 # ...plus this, seconds
     start_stop_acceleration: float = 0.    # m/s^2; 0 changes speed at once
@@ -146,10 +147,12 @@ MARINE = Tuning(
     # WaitUntilTimePoint(GetTimePoint +0x60 ms): one round every 96 ms while
     # the input is held, i.e. 21 rounds in a 2.0 s attack.
     round_interval=0.096,
-    patrol_near=5.0,                       # PatrolParams/MinDistance, 0x2c2
-    patrol_far=15.0,                       # PatrolParams/MaxDistance, 0x2dc
-    patrol_anchor_limit=50.0,              # PatrolParams/MaxDistanceFromCurrent, 0x310
+    patrol_near=5.0,                       # PatrolParams/MinDistance, 0x2c2 (from the anchor)
+    patrol_far=15.0,                       # PatrolParams/MaxDistance, 0x2dc (from the anchor)
+    patrol_anchor_limit=50.0,              # MaxDistanceFromCurrent, 0x310 (from current pos)
     patrol_attempts=5,                     # MaxAttemptsForFindingPatrolDestination, 0x2ab
+    # TargetPosGenerationAttemptsUntilIgnoringDistanceToCurrentRule, 0x32a
+    patrol_ignore_current_after=50,
     # IdleParams: IdleAnimationDurations (0x1c6..0x248), the lengths of the
     # six idle animations, and ExtraIdleTimeAtEndOfAnim 1.0 (0x263). Read as
     # a rest between patrol hops: one idle animation, then 1 s more. That
@@ -275,6 +278,7 @@ class Bot:
     move_turn: bool = False       # opt-in: steer at tuning.move_turn_rate when moving
     idle: bool = False            # opt-in: rest between wander hops (IdleParams)
     accelerate: bool = False      # opt-in: ramp speed at StartStopAcceleration
+    anchored: bool = False        # opt-in: wander 5-15 m around the anchor (tooltips)
     rests: int = 0                # idle rests started, for the shard's log
     # Opt-in sight test visible(eye, target) -> bool. None: everything is seen.
     visible: object = None
@@ -300,6 +304,7 @@ class Bot:
     _dit_patrol_pause_until: float = None
     _idle_until: float = None
     _speed: float = 0.
+    _patrol_failed_attempts: int = 0
     _dit_patrol_move_until: float = None
 
     def __post_init__(self):
@@ -347,11 +352,36 @@ class Bot:
     def _patrol_plan(self):
         """Next patrol leg: an authored wander hop, or the fixed route.
 
-        PatrolParams in marine_guide_dummy.ai describe a wander -- up to five
-        attempts at a destination 5..15 m away and no more than 50 m from the
-        anchor -- not a fixed path. The route remains the fallback for the
+        PatrolParams in marine_guide_dummy.ai describe a wander, not a fixed
+        path: up to five attempts at a destination. The editor tooltips
+        (bot-authored-params.md) put MinDistance/MaxDistance (5..15 m) "from
+        anchor pos" and MinDistanceFromCurrent/MaxDistanceFromCurrent
+        (0..50 m) "from current pos". The `anchored` switch follows them.
+        Without it a hop is 5..15 m from the current position, within 50 m
+        of the anchor: the earlier, inverted reading, kept as the default
+        for the deployed baseline. The route remains the fallback for the
         stateless patrol probe and whenever no mesh is injected.
         """
+        if self.wander and self.anchored:
+            # After that many failed attempts the from-current limit is
+            # dropped, so a Marine stranded far from its ring walks back.
+            limit = self.tuning.patrol_ignore_current_after
+            ignore = bool(limit) and self._patrol_failed_attempts >= limit
+            found = self.mesh.wander_point(
+                self.anchor, self.tuning.patrol_near, self.tuning.patrol_far,
+                self.rng, self.tuning.patrol_attempts,
+                anchor=None if ignore else self.position,
+                anchor_limit=None if ignore else self.tuning.patrol_anchor_limit)
+            plan = self._navigate(found[0]) if found is not None else None
+            if plan is not None and len(plan) >= 2:
+                self._plan, self._index = list(plan), 1
+                self._patrol_failed_attempts = 0
+            else:
+                # Every attempt failed: stand still this leg and retry next tick.
+                self._patrol_failed_attempts += self.tuning.patrol_attempts
+                self._plan, self._index = [self.position, self.position], 1
+            self._planned_at = self._planned_for = None
+            return
         if self.wander:
             found = self.mesh.wander_point(
                 self.position, self.tuning.patrol_near, self.tuning.patrol_far,

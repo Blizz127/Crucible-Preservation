@@ -1195,11 +1195,28 @@ def start_solo_simulation(state):
             if os.environ.get('CRUCIBLE_SOLO_BOT_ACCEL') == '1':
                 for bot in state['squad'].bots:
                     bot.accelerate = True
+            if os.environ.get('CRUCIBLE_SOLO_BOT_ANCHORED') == '1':
+                for bot in state['squad'].bots:
+                    bot.anchored = True
             sight = level_sight()
             if sight is not None:
                 state['sight'] = sight
                 for bot in state['squad'].bots:
                     bot.visible = sight
+            # One line confirms which drop-ins took effect (match_acceptance B0).
+            switches = [name for name, on in (
+                ('reload', bot_reload_enabled()),
+                ('strafe', os.environ.get('CRUCIBLE_SOLO_BOT_STRAFE') == '1'),
+                ('turn', os.environ.get('CRUCIBLE_SOLO_BOT_TURN') == '1'),
+                ('idle', os.environ.get('CRUCIBLE_SOLO_BOT_IDLE') == '1'),
+                ('accel', os.environ.get('CRUCIBLE_SOLO_BOT_ACCEL') == '1'),
+                ('anchored', os.environ.get('CRUCIBLE_SOLO_BOT_ANCHORED') == '1'),
+                ('forced-aggro', os.environ.get('CRUCIBLE_SOLO_FORCED_AGGRO') == '1'),
+                ('flinch', hit_reaction_enabled())) if on]
+            if switches or os.environ.get('CRUCIBLE_SOLO_LOS'):
+                log('      HUNTER AI switches: %s; sight %s'
+                    % (' '.join(switches) or 'none',
+                       os.environ.get('CRUCIBLE_SOLO_LOS') or 'off'))
             import dit_motion_policy
             pause_range, move_range = dit_motion_policy.approved_patrol_motion_ranges(
                 os.environ.get('CRUCIBLE_DIT_TRANSPORT_ROOT'))

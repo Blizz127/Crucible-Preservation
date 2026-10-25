@@ -325,6 +325,44 @@ class WanderTests(unittest.TestCase):
         self.assertEqual(step.target, 2)
         self.assertIsNone(bot._idle_until)
 
+    def test_an_anchored_marine_patrols_5_to_15_m_around_its_anchor(self):
+        # The editor tooltips: MinDistance/MaxDistance "from anchor pos",
+        # MaxDistanceFromCurrent 50 m "from current pos".
+        bot = self.bot()
+        bot.anchored = True
+        destinations, farthest = set(), 0.
+        for index in range(4000):
+            step = bot.update(.05 * (index + 1))
+            destinations.add(tuple(bot._plan[-1]))
+            farthest = max(farthest, math.dist(step.position, bot.anchor))
+        destinations.discard(tuple(bot.anchor))
+        self.assertGreater(len(destinations), 10)
+        for point in destinations:
+            self.assertGreaterEqual(math.dist(point, bot.anchor), 5. - 1e-6)
+            self.assertLessEqual(math.dist(point, bot.anchor), 15. + 1e-6)
+        self.assertLessEqual(farthest, 15. + 1e-6)     # a disc holds its chords
+
+    def test_a_marine_stranded_far_from_its_ring_walks_back_after_50_attempts(self):
+        # 70 m out, every ring point is beyond the 50 m from-current limit.
+        bot = hunter_ai.Bot(3, straight(), tuning(patrol_near=5., patrol_far=15.,
+                                                  patrol_ignore_current_after=50),
+                            mesh=self.Flat(), wander=True, rng=random.Random(1),
+                            position=(70., 0., 0.), anchor=(0., 0., 0.))
+        bot.anchored = True
+        for index in range(9):                     # nine searches, 45 attempts
+            bot.update(.05 * (index + 1))
+        self.assertEqual(bot.position, (70., 0., 0.))
+        for index in range(9, 1400):                # 63 m back at 2 m/s, then patrol
+            step = bot.update(.05 * (index + 1))
+        self.assertLessEqual(math.dist(step.position, bot.anchor), 15. + 1e-6)
+
+    def test_the_default_wander_still_roams_beyond_15_m(self):
+        # The earlier, inverted reading stays the default (deployed baseline).
+        bot = self.bot()
+        farthest = max(math.dist(bot.update(.05 * (i + 1)).position, bot.anchor)
+                       for i in range(4000))
+        self.assertGreater(farthest, 15.)
+
     def test_the_same_seed_replays_the_same_patrol(self):
         def run(seed):
             bot = self.bot(seed)

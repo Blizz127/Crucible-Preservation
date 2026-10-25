@@ -43,7 +43,7 @@
 > | 10 | Tick rate | Done: the 32 ms option |
 > | 11 | Creature presentation and alerting | Partly: `creature_ai` models the wind-up and alert timing. Not re-audited |
 > | 12 | Navigation only on April2018 | Done: each map's own mesh (480c4b1) |
-> | 13 | Patrol feel | Partly. Opt-in: idle rests (an inferred reading) and start/stop acceleration (`CRUCIBLE_SOLO_BOT_ACCEL`). Open: the wander's distance rule is inverted. The editor tooltips put the 5–15 m band around the anchor and the 50 m limit on the current position; ours does the reverse. Cruise and steering accelerations are not modelled |
+> | 13 | Patrol feel | Mostly. Opt-in: idle rests, start/stop acceleration (`CRUCIBLE_SOLO_BOT_ACCEL`), and destinations 5–15 m from the anchor per the editor tooltips (`CRUCIBLE_SOLO_BOT_ANCHORED`); the default wander keeps the earlier, inverted reading. Open: the patrol and chase speeds (5.5 / 8.0) against `SpoofedPlayerInputs` are untraced; the idle rests are an inferred reading; cruise and steering accelerations are not modelled |
 > | 14 | Teams and targeting | Open. HOTH_GUIDE's allies and Saboteur are now read (docs/37) |
 > | 15 | HUD ammo and ability icons | Open: needs a live capture of component 46's schema |
 >
