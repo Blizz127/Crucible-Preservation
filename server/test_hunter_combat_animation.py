@@ -111,6 +111,22 @@ class HunterCombatAnimationTests(unittest.TestCase):
                 self.assertEqual([bot.anchored for bot in state['squad'].bots],
                                  [anchored] * 3)
 
+    def test_the_acceleration_model_and_the_chase_cap_reach_every_hunter(self):
+        import hunter_patrol
+        route = ((0., 0., 0.), (1., 0., 0.))
+        for flags, model, cap in (({'CRUCIBLE_SOLO_BOT_ACCEL': '1'}, 'ai', None),
+                                  ({'CRUCIBLE_SOLO_BOT_ACCEL': 'ai'}, 'ai', None),
+                                  ({'CRUCIBLE_SOLO_BOT_ACCEL': 'config'}, 'config', None),
+                                  ({'CRUCIBLE_SOLO_BOT_CHASE_CAP': '1'}, 'ai', 5.5)):
+            squad = hunter_ai.Squad([hunter_ai.Bot(e, route, hunter_ai.MARINE) for e in BOTS])
+            env = dict(flags, CRUCIBLE_SOLO_AI='1', CRUCIBLE_SOLO_MODE='alpha-hunters')
+            with self.subTest(flags=flags), patch.dict('os.environ', env, clear=True), \
+                    patch.object(hunter_patrol, 'squad', return_value=squad):
+                state = {}
+                shard.start_solo_simulation(state)
+                self.assertEqual({bot.accel_model for bot in state['squad'].bots}, {model})
+                self.assertEqual({bot.pursue_cap for bot in state['squad'].bots}, {cap})
+
     def test_the_active_bot_switches_are_logged_once_per_match(self):
         import hunter_patrol
         route = ((0., 0., 0.), (1., 0., 0.))
@@ -118,7 +134,9 @@ class HunterCombatAnimationTests(unittest.TestCase):
                 ({}, None),
                 ({'CRUCIBLE_SOLO_BOT_STRAFE': '1', 'CRUCIBLE_SOLO_BOT_ACCEL': '1',
                   'CRUCIBLE_SOLO_LOS': 'terrain'},
-                 'HUNTER AI switches: strafe accel; sight terrain')):
+                 'HUNTER AI switches: strafe accel-ai; sight terrain'),
+                ({'CRUCIBLE_SOLO_BOT_ACCEL': 'config', 'CRUCIBLE_SOLO_BOT_CHASE_CAP': '1'},
+                 'HUNTER AI switches: accel-config chase-cap; sight off')):
             squad = hunter_ai.Squad([hunter_ai.Bot(e, route, hunter_ai.MARINE) for e in BOTS])
             env = dict(flags, CRUCIBLE_SOLO_AI='1', CRUCIBLE_SOLO_MODE='alpha-hunters')
             with self.subTest(flags=flags), patch.dict('os.environ', env, clear=True), \

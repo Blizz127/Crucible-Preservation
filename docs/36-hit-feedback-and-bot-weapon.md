@@ -19,7 +19,8 @@ Alienware install by SHA-256.
 | `CRUCIBLE_SOLO_LOS=terrain` | Marines need sight over the terrain to acquire and attack; terrain stops their rounds |
 | `CRUCIBLE_SOLO_LOS=static` | As `terrain`, and walls, rocks and buildings also block (needs the offline cache) |
 | `CRUCIBLE_SOLO_BOT_IDLE=1` | Patrolling Marines rest one authored idle animation, plus 1 s, between hops |
-| `CRUCIBLE_SOLO_BOT_ACCEL=1` | Marines speed up and slow down at 10 m/s², stopping where their path ends |
+| `CRUCIBLE_SOLO_BOT_ACCEL=ai` or `=config` | Marines ramp their speed: the AI's 10 m/s² (`ai`, also `1`), or the movement config's 0.15 s with a stop at once (`config`) |
+| `CRUCIBLE_SOLO_BOT_CHASE_CAP=1` | A chasing Marine holds the Default config's 5.5 m/s, not the AI's unrealisable 8.0 |
 | `CRUCIBLE_SOLO_BOT_ANCHORED=1` | Patrolling Marines pick destinations 5–15 m from their anchor, as the editor tooltips say |
 | `CRUCIBLE_SOLO_HIT_REACTION=1` | A Marine the player hits flinches away from the shot (needs the split); `=all` also flinches the player when a Marine's round lands |
 | `CRUCIBLE_SOLO_DAMAGE_NUMBERS=1` | Damage numbers over Marines the player hits |
@@ -597,22 +598,56 @@ row confirms which drop-ins took effect.
 
 ## Speeding up and slowing down
 
-`MovementPararams/StartStopAcceleration` is 10 m/s² (0x7f6). The editor
-tooltip calls it "the acceleration parameter used to accelerate up to and
-decelerate down from the desired speed". With `CRUCIBLE_SOLO_BOT_ACCEL=1`, a
-Marine's speed moves toward the speed its state wants by at most 10 m/s² ×
-the tick. It also brakes so that it stops where its current plan ends: each
-tick it takes the fastest speed that, after the tick's step, can still stop
-by then.
-- **Times and distances.** A patrolling Marine reaches 5.5 m/s in 0.55 s. A
-  chasing one reaches 8 m/s in 0.8 s, and needs 3.2 m to stop from it.
-- **Attacks.** A Marine that starts attacking slides to a stop, facing its
-  target the whole way. `Attacks[0].TranslationDisallowedPeriod` is 0, so
-  firing never locks movement.
-- **Not modelled.** `CruiseAcceleration` (also 10 m/s²) only holds a cruise
-  speed, and the speeds here are constant, so it is not modelled. Nor are
-  `MaxSpeedMultiplier` 1.1, `PathAcceleration` 20 (steering) and strafing's
-  own 10 m/s².
+Two parameters could set the ramp, and which one a retail Marine obeys is
+not traced:
+- **The AI's.** `MovementPararams/StartStopAcceleration`, 10 m/s² (0x7f6):
+  "used to accelerate up to and decelerate down from the desired speed".
+- **The player movement config's.** The Marine's guide AI is a
+  `SpoofedPlayerInputs` bot, driven through the player movement pipeline
+  (snapshots/speed-20261025). `marine_default` gives `Acceleration` 0.15 s
+  "from Min Speed to Max Speed", and `Brake Friction` 100. `0x33f2900` has
+  the shape of friction damping: speed × (1 − min(a × b, c)). That its
+  coefficient is Brake Friction 100, which would stop the character at once,
+  is inferred.
+
+The client reads only the direction of a spoofed move, and asserts its
+magnitude is at most 1. If its speed also ignores that magnitude, the AI
+cannot shape it, and the config's ramp is what shows. The multiply site is
+not found.
+
+`CRUCIBLE_SOLO_BOT_ACCEL` takes the model:
+- **`ai`** (or `1`): speed moves toward the desired one by at most
+  10 m/s² × the tick. The bot brakes so that it stops where its plan ends:
+  each tick it takes the fastest speed that, after the tick's step, can still
+  stop by then. A Marine reaches 5.5 m/s in 0.55 s, and an attacking one
+  slides to a stop facing its target.
+- **`config`**: 0 to the desired speed in 0.15 s, and a stop at once.
+
+A live check with a gamepad decides it one way only. About half speed at
+half tilt shows that magnitude scales speed, which favours `ai`. Full speed
+fits `config`, but so does an input layer that snaps the stick to unit
+length. Not modelled:
+`CruiseAcceleration` (10), `MaxSpeedMultiplier` 1.1 (flocking catch-up),
+`PathAcceleration` 20 (steering), and strafing's own 10 m/s².
+
+## The chase speed
+
+The guide AI asks for 8.0 m/s when chasing (`SpeedChase`), but the player
+pipeline offers no sustained 8.0. The Marine's configs hold 5.5 m/s forward
+(`marine_default`) or 8.5 (`marine_sprint`). Sprint is the Ability3 ability,
+held: `marine_sprint.cdl` sets `ActiveConfig = Sprint` while the button is
+down and drains a Sprint resource. The input's magnitude is asserted to be
+at most 1, and `Overspeed Deceleration Rate` (12 m/s per second) pulls any
+excess back down. So 8.0 is out under either reading of the ramp.
+
+With `CRUCIBLE_SOLO_BOT_CHASE_CAP=1`, a chasing Marine moves at 5.5 m/s, the
+Default config's forward speed. The guide scripts press Ability3 themselves:
+- `marine_guide_on_hit.cdl`: on being hit, Flee and Ability3 for 4 s;
+- `marine_guide_attack_selector.cdl`: Ability3 and MoveBackward for 3 s.
+
+Those 8.5 m/s sprint bursts are not modelled: neither the scripts' gating
+nor the Sprint resource's capacity is decoded. With the cap, Ajonah's
+Default config (6.5 m/s forward) outruns a Marine that isn't sprinting.
 
 ## Turning while moving
 
@@ -691,8 +726,8 @@ None of these has run in the retail client yet. The live checks are:
     one "client asks for damage floaters" line per change, and nothing
     fails to deserialize.
 12. With idle rests on, a patrolling Marine stands and plays an idle
-    animation between hops, rather than sliding in a still pose. With
-    acceleration on, it eases into and out of each hop.
+    animation between hops, rather than sliding in a still pose. With the
+    chase cap, a chasing Marine runs at the player's own walking speed.
 13. A Marine the player shoots flinches away from the shot. First, with the
     switch off: whether it already flinches shows whether the client's own
     prediction runs.

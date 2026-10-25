@@ -218,6 +218,35 @@ class AccelerationTests(unittest.TestCase):
         for speed in speeds:
             self.assertAlmostEqual(speed, 5.5, places=9)
 
+    def test_the_config_model_ramps_in_0_15_s_and_stops_at_once(self):
+        # marine_default: Acceleration 0.15 s to full speed; Brake Friction 100.
+        bot = hunter_ai.Bot(3, straight(), tuning(patrol_speed=5.5, config_ramp_seconds=.15))
+        bot.accelerate, bot.accel_model = True, 'config'
+        bot.update(.05)
+        speeds = [bot.update(.05 * i).speed for i in range(2, 6)]
+        for got, want in zip(speeds, (5.5 / 3, 2 * 5.5 / 3, 5.5, 5.5)):
+            self.assertAlmostEqual(got, want, places=9)
+
+    def test_under_the_config_model_an_attacker_stops_without_sliding(self):
+        # The mirror of the ai model's slide: friction stops it on the spot.
+        bot = hunter_ai.Bot(3, straight(), tuning(config_ramp_seconds=.15,
+                                                  aggro_far=30., deaggro=40.))
+        bot.accelerate, bot.accel_model = True, 'config'
+        steps = [bot.update(.05 * (i + 1), 2, (0., 16., 0.)) for i in range(80)]
+        attack = next(i for i, s in enumerate(steps) if s.state == hunter_ai.ATTACK)
+        self.assertGreater(steps[attack - 1].speed, 0.)
+        self.assertEqual(steps[attack].speed, 0.)
+
+    def test_the_chase_cap_holds_a_pursuit_to_the_default_config(self):
+        for cap, want in ((None, 8.), (5.5, 5.5)):
+            bot = hunter_ai.Bot(3, straight(), tuning(pursue_speed=8., aggro_far=30.,
+                                                      deaggro=40.))
+            bot.pursue_cap = cap
+            steps = [bot.update(.05 * (i + 1), 2, (0., 25., 0.)) for i in range(4)]
+            with self.subTest(cap=cap):
+                self.assertEqual(steps[-1].state, hunter_ai.PURSUE)
+                self.assertAlmostEqual(steps[-1].speed, want, places=9)
+
     def test_an_attacker_slides_to_a_stop_still_facing_its_target(self):
         bot = hunter_ai.Bot(3, straight(), tuning(start_stop_acceleration=10.,
                                                   aggro_far=30., deaggro=40.))

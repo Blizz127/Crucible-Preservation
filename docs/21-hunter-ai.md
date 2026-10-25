@@ -139,6 +139,23 @@ fixed path; the three hardcoded routes in `19` were an invention. And
 through the player movement pipeline rather than by direct transform writes —
 which is why the movement config's caps are treated as authoritative below.
 
+## How SpoofedPlayerInputs turns speed into inputs
+
+A static trace (25 October; full evidence in `snapshots/speed-20261025/`)
+found that the conversion from `SpeedWander`/`SpeedChase` to spoofed inputs
+is server code and not in the client.
+- **The client's consumer** (`PlayerMovementComponent::Predictable::UpdateInputs`,
+  `0x31c98b5`) asserts each move's magnitude is at most 1, and reads only
+  "any non-zero" and the normalised direction.
+- **The speed** comes from the active movement config: 5.5 m/s forward on
+  `marine_default`, 8.5 on `marine_sprint` while the Ability3 sprint is held.
+- **So** a patrolling Marine moves at about 5.5, and an AI-requested 8.0
+  cannot be held. The chase is about 5.5, rising to 8.5 only in sprint
+  bursts, which the guide scripts trigger themselves.
+- **The ramp** may be the config's 0.15 s rather than the AI's 10 m/s². That
+  turns on where the speed triple is multiplied, which was not found. docs/36
+  has the switches for both models and for the 5.5 chase cap.
+
 ## What is implemented
 
 `server/hunter_ai.py` is a deterministic state machine. No wall clock, no

@@ -52,6 +52,7 @@ class Tuning:
     idle_durations: tuple = ()             # rest after a patrol hop: one of these
     idle_extra: float = 0.                 # ...plus this, seconds
     start_stop_acceleration: float = 0.    # m/s^2; 0 changes speed at once
+    config_ramp_seconds: float = 0.        # movement config: 0 to full speed
     repath_interval: float = 0.5
     repath_distance: float = 1.0
     turn_rate: float = math.tau            # radians/second
@@ -102,8 +103,12 @@ MARINE = Tuning(
     source='ai/guide_dummies/marine_guide_dummy.ai + '
            'assets/player/marine/marine_default.movementconfig',
     # Movement Speeds[0] of marine_default.movementconfig (0x54): a Marine that
-    # is not sprinting cannot exceed 5.5 m/s, so the guide AI's SpeedWander of
-    # 8.0 is used for the chase only, where marine_sprint allows 8.5.
+    # is not sprinting cannot exceed 5.5 m/s. The guide AI asks for 8.0
+    # (SpeedWander and SpeedChase), but its SpoofedPlayerInputs move through
+    # the player pipeline, which holds 5.5 (Default) or 8.5 (Sprint, a held
+    # Ability3): a sustained 8.0 is not realisable (snapshots/speed-20261025).
+    # The chase keeps 8.0 by default for the deployed baseline; pursue_cap
+    # (CRUCIBLE_SOLO_BOT_CHASE_CAP) holds it to 5.5.
     patrol_speed=5.5,
     pursue_speed=8.0,                      # MovementPararams/SpeedChase, 0x7c2
     aggro_near=5.0,                        # AggroRadiusNear, 0x1092
@@ -159,9 +164,14 @@ MARINE = Tuning(
     # reading, and the uniform pick, are inferred from the names.
     idle_durations=(10.8, 5.8, 4.67, 11.73, 9.67, 2.67),
     idle_extra=1.0,
-    # MovementPararams/StartStopAcceleration 10 m/s^2 (0x7f6): "used to
-    # accelerate up to and decelerate down from the desired speed".
+    # Two candidate ramps (docs/36): the AI's MovementPararams/
+    # StartStopAcceleration 10 m/s^2 (0x7f6), "used to accelerate up to and
+    # decelerate down from the desired speed", and marine_default's
+    # Acceleration, 0.15 s "from Min Speed to Max Speed", with Brake
+    # Friction 100 stopping at once. Which one a spoofed Marine obeys depends
+    # on whether the pipeline scales speed by input magnitude (not traced).
     start_stop_acceleration=10.0,
+    config_ramp_seconds=0.15,
     # PassiveTurnParams/TurnInPlaceSpeed (0xc93) turns a standing bot. A
     # moving one steers through its spoofed player inputs, so its body turns
     # at marine_default.movementconfig's Max Turn Speed (0x143), 1440 deg/s.
@@ -277,7 +287,9 @@ class Bot:
     strafe: bool = False          # opt-in: move while attacking (StrafeParams)
     move_turn: bool = False       # opt-in: steer at tuning.move_turn_rate when moving
     idle: bool = False            # opt-in: rest between wander hops (IdleParams)
-    accelerate: bool = False      # opt-in: ramp speed at StartStopAcceleration
+    accelerate: bool = False      # opt-in: ramp speed (accel_model picks how)
+    accel_model: str = 'ai'       # 'ai': StartStopAcceleration; 'config': 0.15 s ramp
+    pursue_cap: float = None      # opt-in: the chase's top speed (5.5, the Default config)
     anchored: bool = False        # opt-in: wander 5-15 m around the anchor (tooltips)
     rests: int = 0                # idle rests started, for the shard's log
     # Opt-in sight test visible(eye, target) -> bool. None: everything is seen.
@@ -625,6 +637,18 @@ class Bot:
             self._speed = max(target, self._speed - rate * delta)
         return self._speed
 
+    def _config_ramp(self, desired, delta):
+        """The movement config's ramp: 0 to the desired speed in
+        config_ramp_seconds, and a stop at once. 0x33f2900 has the shape of
+        friction damping, speed * (1 - min(a * b, c)); that its coefficient is
+        Brake Friction 100, stopping the character at once, is inferred."""
+        ramp = self.tuning.config_ramp_seconds
+        if desired > self._speed and ramp > 0:
+            self._speed = min(desired, self._speed + desired / ramp * delta)
+        else:
+            self._speed = desired
+        return self._speed
+
     def reloading(self, now):
         """True inside the reload's using_reload window."""
         return (self.reload_started is not None and self.reload_started <= now
@@ -713,12 +737,15 @@ class Bot:
             # it between PURSUE and ATTACK every tick.
             self.state, heading = ATTACK, aim
         else:
-            self.state, speed = PURSUE, self.tuning.pursue_speed
+            self.state, speed = PURSUE, (min(self.tuning.pursue_speed, self.pursue_cap)
+                                         if self.pursue_cap else self.tuning.pursue_speed)
             if not self._repath(now, target_position):
                 self.state, speed, heading = ATTACK, 0., aim  # unreachable
 
-        if self.accelerate and self.tuning.start_stop_acceleration > 0 and delta > 0:
-            speed = self._ramp(speed, delta)
+        if self.accelerate and delta > 0:
+            speed = (self._config_ramp(speed, delta) if self.accel_model == 'config'
+                     else self._ramp(speed, delta)
+                     if self.tuning.start_stop_acceleration > 0 else speed)
         moved = 0.
         if speed > 0 and delta > 0:
             before = self.position

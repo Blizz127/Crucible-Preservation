@@ -43,7 +43,7 @@
 > | 10 | Tick rate | Done: the 32 ms option |
 > | 11 | Creature presentation and alerting | Partly: `creature_ai` models the wind-up and alert timing. Not re-audited |
 > | 12 | Navigation only on April2018 | Done: each map's own mesh (480c4b1) |
-> | 13 | Patrol feel | Mostly. Opt-in: idle rests, start/stop acceleration (`CRUCIBLE_SOLO_BOT_ACCEL`), and destinations 5–15 m from the anchor per the editor tooltips (`CRUCIBLE_SOLO_BOT_ANCHORED`); the default wander keeps the earlier, inverted reading. Open: the patrol and chase speeds (5.5 / 8.0) against `SpoofedPlayerInputs` are untraced; the idle rests are an inferred reading; cruise and steering accelerations are not modelled |
+> | 13 | Patrol feel | Mostly. Opt-in: idle rests (an inferred reading); destinations 5–15 m from the anchor per the editor tooltips (`CRUCIBLE_SOLO_BOT_ANCHORED`; the default wander keeps the earlier, inverted reading); a chase cap of 5.5 m/s (`CRUCIBLE_SOLO_BOT_CHASE_CAP`). Patrol at 5.5 is supported, and the AI's 8.0 chase cannot be realised through the spoofed player pipeline (snapshots/speed-20261025). Open: which ramp a spoofed Marine obeys (`CRUCIBLE_SOLO_BOT_ACCEL=ai` or `config`) depends on whether input magnitude scales speed; the server-side mapping is not in the install. Sprint bursts are not modelled |
 > | 14 | Teams and targeting | Open. HOTH_GUIDE's allies and Saboteur are now read (docs/37) |
 > | 15 | HUD ammo and ability icons | Open: needs a live capture of component 46's schema |
 >

@@ -1195,9 +1195,16 @@ def start_solo_simulation(state):
             if os.environ.get('CRUCIBLE_SOLO_BOT_IDLE') == '1':
                 for bot in state['squad'].bots:
                     bot.idle = True
-            if os.environ.get('CRUCIBLE_SOLO_BOT_ACCEL') == '1':
+            accel = os.environ.get('CRUCIBLE_SOLO_BOT_ACCEL')
+            if accel in ('1', 'ai', 'config'):
+                # 'ai' (or '1'): StartStopAcceleration; 'config': the movement
+                # config's 0.15 s ramp and friction stop (docs/36).
                 for bot in state['squad'].bots:
                     bot.accelerate = True
+                    bot.accel_model = 'config' if accel == 'config' else 'ai'
+            if os.environ.get('CRUCIBLE_SOLO_BOT_CHASE_CAP') == '1':
+                for bot in state['squad'].bots:
+                    bot.pursue_cap = MARINE_DEFAULT_FORWARD_SPEED
             if os.environ.get('CRUCIBLE_SOLO_BOT_ANCHORED') == '1':
                 for bot in state['squad'].bots:
                     bot.anchored = True
@@ -1212,7 +1219,9 @@ def start_solo_simulation(state):
                 ('strafe', os.environ.get('CRUCIBLE_SOLO_BOT_STRAFE') == '1'),
                 ('turn', os.environ.get('CRUCIBLE_SOLO_BOT_TURN') == '1'),
                 ('idle', os.environ.get('CRUCIBLE_SOLO_BOT_IDLE') == '1'),
-                ('accel', os.environ.get('CRUCIBLE_SOLO_BOT_ACCEL') == '1'),
+                ('accel-ai', os.environ.get('CRUCIBLE_SOLO_BOT_ACCEL') in ('1', 'ai')),
+                ('accel-config', os.environ.get('CRUCIBLE_SOLO_BOT_ACCEL') == 'config'),
+                ('chase-cap', os.environ.get('CRUCIBLE_SOLO_BOT_CHASE_CAP') == '1'),
                 ('anchored', os.environ.get('CRUCIBLE_SOLO_BOT_ANCHORED') == '1'),
                 ('forced-aggro', os.environ.get('CRUCIBLE_SOLO_FORCED_AGGRO') == '1'),
                 ('flinch', hit_reaction_enabled() and not player_flinch_enabled()),
@@ -1372,6 +1381,10 @@ def confirm_player_hit(state, hit, weapon):
                          shooter_feedback.CONFIRM_KILL_INDICATOR,
                          shooter_feedback.build_confirm_kill_indicator())
 
+
+# marine_default.movementconfig Movement Speeds[0]: the chase cap a spoofed
+# Marine can hold without sprinting (snapshots/speed-20261025, docs/36).
+MARINE_DEFAULT_FORWARD_SPEED = 5.5
 
 # docs/36: component 80's networked flinch (snapshots/hit-reactions-20260923).
 HIT_REACTION_RESEND_TICKS = 3
