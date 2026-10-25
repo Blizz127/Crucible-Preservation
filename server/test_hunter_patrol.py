@@ -262,7 +262,7 @@ class LevelRouteTests(unittest.TestCase):
                 continue
             with self.subTest(selection=name):
                 if profile.level in squadless:
-                    with self.assertRaises(ValueError):
+                    with self.assertRaises(hunter_patrol.Unroutable):
                         hunter_patrol.circuits(profile.level)
                 else:
                     self.assertEqual(len(hunter_patrol.circuits(profile.level)), 3)

@@ -770,12 +770,12 @@ def build_solo_hunter_probes():
     previous = 0
     positions = solo_modes.selected().bot_positions
     if positions and os.environ.get('CRUCIBLE_SOLO_PATROL') == '1':
-        from hunter_patrol import routes
+        from hunter_patrol import Unroutable, routes
         try:
             positions = tuple(route[0] for route in routes(solo_modes.selected().level))
-        except Exception as error:      # noqa: BLE001 - keep the authored points
-            log('      HUNTER PATROL unavailable on %s: %r'
-                % (solo_modes.selected().level, error))
+        except Unroutable:
+            log('      HUNTER PATROL: no routes on %s; the hunters stand'
+                % solo_modes.selected().level)
     # The three hunters stay Marine whatever CRUCIBLE_SOLO_HERO says: they are
     # the screenshot-accepted Alpha Hunters baseline (docs/18).
     marine = hero_loadout.get('marine')
@@ -838,9 +838,13 @@ def build_bot_location_message(counter, position, direction, *, previous_id=0):
 
 def build_hunter_patrol_updates(seconds, *, previous_id=0):
     """Native Location deltas for the three simulation hunters only."""
-    from hunter_patrol import routes, sample
+    from hunter_patrol import Unroutable, routes, sample
+    try:
+        legs = routes(solo_modes.selected().level)
+    except Unroutable:
+        return []           # build_solo_hunter_probes logged it once
     messages = []
-    for counter, route in enumerate(routes(solo_modes.selected().level), 3):
+    for counter, route in enumerate(legs, 3):
         position, direction = sample(route, seconds)
         messages.append(build_bot_location_message(counter, position, direction,
                                                    previous_id=previous_id))
@@ -1107,6 +1111,22 @@ def solo_death_metadata():
     return values
 
 
+def build_solo_squad(profile):
+    """The hunter squad on the selected map's own mesh, or None.
+
+    A map whose bot points do not route (the tutorials') keeps its hunters
+    standing where they spawned: an expected condition, logged in one line.
+    Anything else raises, for the caller's guard.
+    """
+    import hunter_patrol
+    try:
+        return hunter_patrol.squad(HUNTER_BOT_IDS[:len(profile.bot_positions)],
+                                   level=profile.level)
+    except hunter_patrol.Unroutable:
+        log('      HUNTER AI: no routes on %s; the hunters stand' % profile.level)
+        return None
+
+
 def start_solo_simulation(state):
     """Build per-connection combat/AI state for the population just sent."""
     import combat
@@ -1135,13 +1155,7 @@ def start_solo_simulation(state):
     if solo_ai_enabled():
         squad = None
         if profile.bot_positions:
-            import hunter_patrol
-            # On the selected map's own mesh. A map whose bot points do not
-            # route (the tutorials') keeps its hunters standing where they
-            # spawned, rather than failing this population reply.
-            squad = guarded(state, 'hunter squad', hunter_patrol.squad,
-                            HUNTER_BOT_IDS[:len(profile.bot_positions)],
-                            level=profile.level)
+            squad = guarded(state, 'hunter squad', build_solo_squad, profile)
         if squad is not None:
             state['squad'] = squad
             if bot_reload_enabled():

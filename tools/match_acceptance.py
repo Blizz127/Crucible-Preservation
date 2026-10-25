@@ -18,7 +18,8 @@ screen, so those criteria stop at LOGS-OK.
   A3 bots fire  hunter AI fires (shot animation and projectile: eyes)
   A4 damaged    a hunter hit on the player is accepted (HUD drop: eyes)
   A5 kills      a player hit kills a hunter (visible death: eyes)
-  A6 match end  team elimination reaches GameOver; next READY re-enters
+  A6 match end  team elimination (or the opt-in match timer) reaches
+                GameOver; next READY re-enters
   A7 stable     >= 10 min connected, no shard restart, no traceback
 
 The script only reads files and uses only the standard library, so it can
@@ -65,6 +66,8 @@ RELOAD = re.compile(r'HUNTER AI ([0-9a-f]{8}) reloading')
 # docs/36 valves that end a match with a no-winner GameOver.
 VALVE = re.compile(r'(SIMULATION FAILED on \d+ of \d+ ticks|SEQUENCE LIMIT: LocalSequence \d+ reached \d+)')
 RINGS = re.compile(r'SOLO FEEDBACK (damage numbers|hit arcs) index \d+ \(count (\d+)\)')
+# docs/37: CRUCIBLE_SOLO_MATCH_MAX_SECONDS, an intended ending (a draw).
+TIMER = re.compile(r'MATCH TIMER: ([\d.]+) s of play; ending the match with GameOver')
 JOURNAL_TIME = re.compile(r'^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)([+-]\d\d):?(\d\d)')
 
 CLIENT_TIME = re.compile(r'^\[(\d\d)-(\d\d)-(\d{4}):(\d\d):(\d\d):(\d\d)\.(\d+)-GMT\]')
@@ -93,10 +96,12 @@ def shard_facts(lines):
     facts = {'population': [], 'input': 0, 'states': {}, 'fire': 0, 'hits': [],
              'refused': {}, 'over': [], 'rank': None, 'starts': [], 'tracebacks': 0,
              'population_after_over': 0, 'feedback': {}, 'reloads': 0, 'rings': {},
-             'valves': []}
+             'valves': [], 'timer': []}
     for line in lines:
         if VALVE.search(line):
             facts['valves'].append(VALVE.search(line).group(1))
+        elif TIMER.search(line):
+            facts['timer'].append(float(TIMER.search(line).group(1)))
         elif RINGS.search(line):
             kind, count = RINGS.search(line).groups()
             facts['rings'][kind] = max(facts['rings'].get(kind, 0), int(count))
@@ -108,7 +113,7 @@ def shard_facts(lines):
             facts['reloads'] += 1
         elif POPULATION.search(line):
             facts['population'].append(POPULATION.search(line).group(1))
-            if facts['over']:
+            if facts['over'] or facts['timer']:
                 facts['population_after_over'] += 1
         elif INPUT.search(line):
             facts['input'] += 1
@@ -248,8 +253,9 @@ def score(shard, client):
         rows.append(('A5 kills', 'FAIL', '%d player hits, no kill; refused player reports: %s'
                      % (len(player_hits), refused_summary(shard['refused'], {PLAYER}))))
 
-    if shard['over']:
-        evidence = 'winner team %s' % shard['over'][0]
+    if shard['over'] or shard['timer']:
+        evidence = ('winner team %s' % shard['over'][0] if shard['over']
+                    else 'match timer after %.0f s of play (a draw)' % shard['timer'][0])
         if shard['rank'] is not None:
             evidence += ', rank %d sent' % shard['rank']
         if client is not None:

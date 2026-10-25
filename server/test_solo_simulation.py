@@ -89,8 +89,19 @@ class SoloSimulationStartTests(unittest.TestCase):
 
     @patch.dict('os.environ', dict(AI_ON, CRUCIBLE_SOLO_MODE='tutorial'))
     def test_a_map_whose_points_do_not_route_keeps_standing_hunters(self):
+        import hunter_patrol
         state = {}
-        with patch('hunter_patrol.squad', side_effect=ValueError('not connected')), \
+        with patch('hunter_patrol.squad', side_effect=hunter_patrol.Unroutable('no')), \
+                patch.object(shard, 'log') as log:
+            shard.start_solo_simulation(state)
+        self.assertNotIn('squad', state)
+        self.assertNotIn('simulation_errors', state)    # expected: one plain line
+        self.assertIn('no routes on tutorial_02', log.call_args_list[0].args[0])
+
+    @patch.dict('os.environ', dict(AI_ON, CRUCIBLE_SOLO_MODE='tutorial'))
+    def test_an_unexpected_squad_failure_is_a_simulation_error(self):
+        state = {}
+        with patch('hunter_patrol.squad', side_effect=TypeError('bug')), \
                 patch.object(shard, 'log'):
             shard.start_solo_simulation(state)
         self.assertNotIn('squad', state)
@@ -99,13 +110,16 @@ class SoloSimulationStartTests(unittest.TestCase):
     @patch.dict('os.environ', dict(AI_ON, CRUCIBLE_SOLO_MODE='tutorial',
                                    CRUCIBLE_SOLO_PATROL='1'))
     def test_unroutable_patrol_probes_keep_the_authored_points(self):
-        with patch('hunter_patrol.routes', side_effect=ValueError('not connected')), \
+        import hunter_patrol
+        with patch('hunter_patrol.routes', side_effect=hunter_patrol.Unroutable('no')), \
                 patch.object(shard, 'log'), \
                 patch.object(shard, 'build_practice_character_probe',
                              side_effect=lambda **kw: kw['position']) as probe:
             positions = shard.build_solo_hunter_probes()
         self.assertEqual(tuple(positions), solo_modes.TUTORIAL_02.bot_positions)
         self.assertEqual(probe.call_count, 3)
+        with patch('hunter_patrol.routes', side_effect=hunter_patrol.Unroutable('no')):
+            self.assertEqual(shard.build_hunter_patrol_updates(1.), [])
 
 
 class SoloCombatTests(unittest.TestCase):

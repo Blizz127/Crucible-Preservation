@@ -123,6 +123,15 @@ class ValveRowTests(unittest.TestCase):
         self.assertIn('forced by a valve', rows['A6'][2])
         self.assertIn('SIMULATION FAILED on 9 of 40 ticks', rows['A6'][2])
 
+    def test_the_match_timer_is_an_accepted_ending(self):
+        shard = [line for line in SHARD if 'match over' not in line and 'rank 1' not in line]
+        shard.insert(-1, J % (12, 12) + 'MATCH TIMER: 180.0 s of play; ending the match '
+                     'with GameOver')
+        rows = {row[0].split()[0]: row for row in score(shard_facts(shard), client_facts(CLIENT))}
+        self.assertEqual(rows['A6'][1], 'LOGS-OK')
+        self.assertIn('match timer after 180 s of play', rows['A6'][2])
+        self.assertIn('re-entered 1x after GameOver', rows['A6'][2])
+
 
 if __name__ == '__main__':
     unittest.main()

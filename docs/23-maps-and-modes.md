@@ -349,7 +349,10 @@ correct. The HotH_02 cluster is one of six four-point drop groups; it sits
 next to `SpawnNode_Player_RespawnPoint_06a` (533, at 1335.358, 926.614,
 20.500), so it is an authored playable area. Its maximum spread is 16 m,
 comparable to the april2018 cluster's 23 m, which is the spread the user
-photographed three visible hunters across.
+photographed three visible hunters across. Since 25 October the HotH_02
+profile no longer starts its hunters on 09b–09d: those pods are off the
+navigation mesh, so the hunters could not patrol from them. They start on
+guide nodes 44, 36 and 39 instead, 150–230 m from the drop (docs/37).
 
 **The tutorials have no authored bot cluster near the player drop.** The
 nearest authored spawn nodes are 45 m (tutorial_03's training dummy point)
@@ -383,7 +386,8 @@ The twelve `SpawnNode_Guide_EnemyBot` nodes, entries 33..44:
 These are the HOTH_GUIDE bot spawns. `docs/18` recorded a
 `Guide_EnemyBotSpawns` container at 11940 and the nodes at 33..44; the
 coordinates are new. They are all 100 m or more from the 09a drop cluster,
-so they are match-scale spawns, not presence-test positions.
+so they are match-scale spawns, not presence-test positions. Since 25
+October the HotH_02 hunters start on three of them (docs/37).
 
 ## Restructured `server/solo_modes.py`
 

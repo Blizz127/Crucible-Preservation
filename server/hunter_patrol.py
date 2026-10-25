@@ -17,6 +17,10 @@ import solo_modes
 ROUTE_STEP = 1.0
 
 
+class Unroutable(ValueError):
+    """A level's bot points are not all connected by its navigation mesh."""
+
+
 def level_key(level=None):
     """A level as the routes are cached under: None for April2018 (also the
     default), else the map profile's own name. Every spelling of one level
@@ -41,7 +45,7 @@ def _routes(level):
     for index, start in enumerate(points):
         leg = mesh.path(start, points[(index + 1) % len(points)], step=ROUTE_STEP)
         if leg is None:
-            raise ValueError('hunter patrol endpoints are not connected by navigation')
+            raise Unroutable('hunter patrol endpoints are not connected by navigation')
         result.append(tuple(leg))
     return tuple(result)
 

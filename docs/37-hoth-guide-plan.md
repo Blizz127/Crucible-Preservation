@@ -72,7 +72,9 @@ GameOver, never by leaving mid-match: leaving arms the rejoin trap
    `CRUCIBLE_SOLO_MATCH_MAX_SECONDS=<s>` ends the match with GameOver after
    that many seconds of play. The count starts at the connection's first
    simulation tick, as in the match-flow track's `match_director.py`, which
-   reads the same variable. A timeout is a draw: no team wins, so a
+   reads the same variable. The shard drives no pre-game phases:
+   `solo_phase_reply` sends GamePlay straight after the client's activation,
+   so the count is play time. A timeout is a draw: no team wins, so a
    published rank is 2.
    - **The timer only helps if GameOver reaches the client.** GameOver goes
      to `phase_entry + baked_counter_bias`. With a wrong bias the client
