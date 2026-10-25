@@ -14,12 +14,26 @@
 > Each switch is sourced from the retail assets or executable, and the
 > evidence and switches are in [36-hit-feedback-and-bot-weapon.md](36-hit-feedback-and-bot-weapon.md).
 > [37-hoth-guide-plan.md](37-hoth-guide-plan.md) scopes HOTH_GUIDE, the
-> only bot mode retail shipped. Commit b2384d2 is staged on the Alienware,
-> where all 450 server tests pass. The services still run 3a09282, because
-> the server-resolved hit fix has not yet been played. A run plan is
-> prepared: baseline A1–A7, then markers, rings, bot behaviour and the
-> tick rate, one run each. It waits for the Alienware screen, which other
-> projects and the owner were using.
+> only bot mode retail shipped.
+>
+> **Deployed on the Alienware:** commit 38db54f (465 tests pass there), at
+> 00:03 CDT, with no new switches. That build behaves like 3a09282 but
+> fixes three things:
+> - a pre-existing DIT crash: a walking player would have killed the shard
+>   mid-match;
+> - simulation errors no longer end the shard, and a failing match ends in
+>   GameOver;
+> - a match ends before the packet sequence can wrap.
+>
+> The pass also found why bot fire, death and animation never showed live.
+> The client applies only one message per entity per packet, and refused
+> 25,682 on 5 October. `CRUCIBLE_SHARD_SPLIT_UPDATES=1` fixes it, for the
+> next run.
+>
+> A run plan is prepared: a baseline for A1–A7, then the split with
+> markers, rings, bot behaviour and the tick rate, one run each. It waits
+> for the owner's go: other projects and the owner were using the
+> Alienware screen.
 >
 > **2026-10-05 live run:** current source entered Alpha Hunters with Ajonah,
 > and the player's hits applied the authored damage. The retail client sends
