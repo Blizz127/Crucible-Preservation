@@ -113,6 +113,7 @@ class Mesh:
             for cell in self._cells(triangle):
                 self.index.setdefault(cell, []).append(key)
         self._components = None
+        self._component_index = None
 
     @staticmethod
     def _cells(triangle):
@@ -163,6 +164,13 @@ class Mesh:
         groups.sort(key=len, reverse=True)
         self._components = groups
         return groups
+
+    def component_index(self):
+        if self._component_index is None:
+            self._component_index = {key: number
+                                     for number, group in enumerate(self.components())
+                                     for key in group}
+        return self._component_index
 
     def corridor(self, first, last, limit=200000):
         if first == last:
