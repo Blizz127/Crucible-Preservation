@@ -268,6 +268,14 @@ roster, the spawn, the arena, the squad and the gunnery, so they agree.
   - Magazine 8. `saboteur_reload.cdl` reloads by itself at 0: it refills
     at 1.44 s and frees the trigger at 2.208 s. That the reload starts with
     the last round, and that using_reload clears at 2.208 s, are inferred.
+  - When it fires within each 2 s attack comes from its attack selector
+    (`hunter_ai.fire_window`):
+    - On a draw above 0.7 it jumps, waits 0.5 s and pulses fire for 0.8 s:
+      3 rounds. The draw also needs its Jammer resource full, which it
+      always is, since nothing spends it.
+    - Within 3 m it melees and waits 1 s together, then holds fire, which
+      its single-shot primary turns into one round 1 s in.
+    - Otherwise it pulses fire for the whole attack: 6 rounds.
 - **Its flight**, with `CRUCIBLE_SOLO_BOT_FLEE=1`:
   `saboteur_guide_on_hit.cdl`'s 3.0 s request against IgnoreTargetsTime
   4.0 s. The flight lasts 4.0 s, at 6.5 m/s.
@@ -278,17 +286,13 @@ roster, the spawn, the arena, the squad and the gunnery, so they agree.
     dealt);
   - its ADS pulses, melee and BackUp (3.5 m/s);
   - the mine and jammer, which its selector leaves unconnected anyway;
-  - the selector's other fire windows. On a draw above 0.7 with its Jammer
-    resource full, which is always (nothing spends it), it jumps, waits
-    0.5 s and pulses fire for 0.8 s: about 3 rounds where the model fires
-    6. Within 3 m it melees, then fires one held round 1.5 s in. So the
-    model overstates its rounds by roughly a sixth.
+  - the jump and the melee themselves (only their delay to the fire is).
 
   Its hit probability keeps the Marines' declared 0.25 scale, which stands
   in for that undecoded aim. So its lethality is not anchored to retail.
   Two presentation details wait on a live look: the shard holds
-  `using_primary1` for the whole attack, where its own script sets it per
-  press for about 96 ms; and its flinch reuses the Marine's 0.2 s
+  `using_primary1` through the fire window, where its own script sets it
+  per press for about 96 ms; and its flinch reuses the Marine's 0.2 s
   `flinchDelay`, which is unread for the Saboteur.
 - **How a match ends.** HOTH_GUIDE ends on score, which is not modelled, so
   only `CRUCIBLE_SOLO_MATCH_MAX_SECONDS` ends it. Killing the Saboteur does

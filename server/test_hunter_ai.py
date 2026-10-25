@@ -1044,3 +1044,65 @@ class SaboteurTests(unittest.TestCase):
                 break
         self.assertEqual(len(rounds), 2)
         self.assertAlmostEqual(bot.reload_started, rounds[-1].time)
+
+
+class SaboteurFireTests(unittest.TestCase):
+    """saboteur_guide_attack_selector.cdl's fire windows (docs/37)."""
+
+    class Draw(random.Random):
+        def __init__(self, value):
+            super().__init__(0)
+            self.value = value
+
+        def random(self):
+            return self.value
+
+    def attack(self, draw, player):
+        bot = hunter_ai.Bot(3, straight(), hunter_ai.SABOTEUR, mesh=WanderTests.Flat(),
+                            wander=True, rng=self.Draw(draw), position=(0., 0., 0.))
+        rounds, started = [], None
+        for i in range(1, 200):
+            step = bot.update(.025 * i, 2, player)
+            if started is None and bot.attack_started is not None:
+                started = bot.attack_started
+            rounds.extend(step.shots)
+            if started is not None and .025 * i > started + 2.:
+                break
+        return started, [r.time - started for r in rounds if r.time < started + 2.]
+
+    def test_the_windows(self):
+        self.assertEqual(hunter_ai.fire_window('saboteur', .8, 10.), (.5, 1.3, None))
+        self.assertEqual(hunter_ai.fire_window('saboteur', .5, 2.), (1., 1.8, 1))
+        self.assertEqual(hunter_ai.fire_window('saboteur', .5, 10.), (0., math.inf, None))
+        self.assertEqual(hunter_ai.fire_window(None, .9, 1.), (0., math.inf, None))
+
+    def test_a_high_draw_fires_three_rounds_from_half_a_second(self):
+        started, times = self.attack(.8, (0., 10., 0.))
+        self.assertIsNotNone(started)
+        self.assertEqual(len(times), 3)
+        self.assertAlmostEqual(times[0], .5, places=6)
+        self.assertAlmostEqual(times[1] - times[0], 1. / 2.841, places=6)
+
+    def test_otherwise_it_fires_through_the_attack(self):
+        started, times = self.attack(.2, (0., 10., 0.))
+        self.assertEqual(len(times), 6)                    # 0, 0.352 ... 1.76
+        self.assertAlmostEqual(times[0], 0., places=6)
+
+    def test_within_three_metres_one_round_after_the_melee(self):
+        started, times = self.attack(.2, (0., 2., 0.))
+        self.assertEqual(len(times), 1)
+        self.assertAlmostEqual(times[0], 1., places=6)
+
+    def test_it_is_firing_only_inside_its_window(self):
+        bot = hunter_ai.Bot(3, straight(), hunter_ai.SABOTEUR, mesh=WanderTests.Flat(),
+                            wander=True, rng=self.Draw(.8), position=(0., 0., 0.))
+        steps = []
+        for i in range(1, 200):
+            now = .025 * i
+            steps.append((now, bot.update(now, 2, (0., 10., 0.))))
+            if bot.attack_started is not None and now > bot.attack_started + 1.9:
+                break
+        firing = [t - bot.attack_started for t, s in steps if s.firing]
+        self.assertTrue(firing)
+        self.assertGreaterEqual(min(firing), .5 - 1e-9)
+        self.assertLess(max(firing), 1.3)

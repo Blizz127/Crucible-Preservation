@@ -81,6 +81,7 @@ class Tuning:
     ammo_delay: float = None               # shot to its Ammunition -1, s; None: round_interval
     chase_cap: float = 0.                  # the realisable forward speed, m/s; 0: none
     patrols: bool = True                   # PatrolParams/CanPatrol: false stands
+    selector: str = None                   # attack selector whose fire windows apply
 
     def __post_init__(self):
         ordered = (self.aggro_near <= self.aggro_far <= self.deaggro
@@ -259,7 +260,7 @@ SABOTEUR = Tuning(
     # the reload starts with the last round (inferred), and using_reload
     # is taken to clear with the script's exit at 2.208 s (inferred).
     magazine=8, reload_fill=1.44, reload_animation=2.208, reload_duration=2.208,
-    ammo_delay=0.0)
+    ammo_delay=0.0, selector='saboteur')
 
 # Per hero_loadout key.
 TUNINGS = {'marine': MARINE, 'saboteur': SABOTEUR}
@@ -289,6 +290,27 @@ class Step:
     shots: tuple = ()
     firing: bool = False     # the primary is held: an attack is in progress
     reloading: bool = False  # inside marine_reload.cdl's using_reload window
+
+
+def fire_window(selector, draw, distance):
+    """When one attack's fire runs, per its attack selector (docs/37).
+
+    Returns (start, end, rounds): seconds into the attack, and a round cap
+    or None. Without a selector the primary is held for the whole attack.
+    """
+    if selector == 'saboteur':
+        # saboteur_guide_attack_selector.cdl. A StartInputOverride continues
+        # at once and a Delay waits (docs/36). [107]: a draw above 0.7 with
+        # its Jammer resource full (always: nothing spends it) jumps, waits
+        # 0.5 s and pulses fire for 0.8 s. [87]: within 3 m (Distance2D) it
+        # melees and waits 1 s together, then holds fire 0.8 s, which its
+        # single-shot primary turns into one round. Otherwise it pulses fire
+        # for 2 s. The jump and the melee are not modelled.
+        if draw > 0.7:
+            return 0.5, 1.3, None
+        if distance < 3.0:
+            return 1.0, 1.8, 1
+    return 0., math.inf, None
 
 
 def plan_distance(points):
@@ -385,6 +407,9 @@ class Bot:
     _strafe_until: float = None
     _round_anchor: float = None
     _anchor_rounds: int = 0
+    _fire_start: float = 0.        # this attack's fire window opens
+    _fire_end: float = math.inf    # ...and closes
+    _fire_cap: int = None          # ...or after this many rounds
     _clock: float = None
     _plan: list = field(default_factory=list)
     _index: int = 1
@@ -676,16 +701,19 @@ class Bot:
         """
         shots = []
         end = self.attack_started + self.tuning.attack_duration
+        stop = min(end, self._fire_end)
         while True:
+            if self._fire_cap is not None and self.rounds_fired >= self._fire_cap:
+                break
             due = self._round_anchor + self._anchor_rounds * self.tuning.round_interval
             if self.reload_started is not None:
                 # The held trigger fires again only once Reload_Active clears.
                 ready = self.reload_started + self.tuning.reload_duration
-                if ready > now or ready >= end - 1e-9:
+                if ready > now or ready >= stop - 1e-9:
                     break
                 self._finish_reload(ready)
                 due = self._round_anchor + self._anchor_rounds * self.tuning.round_interval
-            if due > now or due >= end - 1e-9:
+            if due > now or due >= stop - 1e-9:
                 break
             origin = tuple(self.position[i] + self.tuning.aggro_origin_offset_local[i]
                            for i in range(3))
@@ -994,7 +1022,15 @@ class Bot:
             if (self.attack_started is None and in_sight_window and self._flee_wanted is None
                     and self._may_attack(now, math.dist(current_origin, aim_target), aim)):
                 self.attack_started, self.rounds_fired = now, 0
-                self._round_anchor, self._anchor_rounds = now, 0
+                start, window, self._fire_cap = 0., math.inf, None
+                if self.tuning.selector is not None:
+                    draw = self.rng.random() if self.rng is not None else 0.
+                    start, window, self._fire_cap = fire_window(
+                        self.tuning.selector, draw,
+                        math.hypot(target_position[0] - self.position[0],
+                                   target_position[1] - self.position[1]))
+                self._fire_start, self._fire_end = now + start, now + window
+                self._round_anchor, self._anchor_rounds = now + start, 0
                 shots.extend(self._rounds(now, target_position))
 
         if self._flee_wanted is not None and not self._flee_blocked(now):
@@ -1012,7 +1048,8 @@ class Bot:
         return Step(self.entity, self.position, self.facing(), self.yaw,
                     moved / delta if delta > 0 else 0., self.state,
                     self.target, tuple(shots),
-                    self.attack_started is not None and not empty,
+                    self.attack_started is not None and not empty
+                    and self._fire_start <= now < self._fire_end,
                     self.reloading(now))
 
     def facing(self):
