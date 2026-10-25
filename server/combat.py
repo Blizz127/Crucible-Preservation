@@ -87,6 +87,18 @@ class Combat:
             self._die(entity, now)
         return HitResult(entity.entity_id, float(damage), entity.health, killed)
 
+    def heal(self, target, amount):
+        entity = self.entities.get(target)
+        if entity is None or not entity.alive:
+            return 0.0
+        if type(amount) not in (int, float) or not 0 < amount < float('inf'):
+            raise ValueError('healing must be a positive finite number')
+        gained = min(float(amount), entity.maximum - entity.health)
+        if gained > 0:
+            entity.health += gained
+            entity.dirty = True
+        return gained
+
     def _die(self, entity, now):
         if entity.respawn_seconds is not None:
             entity.respawn_at = (now + entity.respawn_seconds
