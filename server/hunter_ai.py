@@ -32,6 +32,13 @@ def plan_distance(points):
     return sum(math.dist(a, b) for a, b in zip(points, points[1:]))
 
 
+def plan_remaining(points, index, position):
+
+    if index >= len(points):
+        return 0.
+    return math.dist(position, points[index]) + plan_distance(points[index:])
+
+
 def advance(points, index, position, distance):
 
     if index >= len(points) or distance < 0:
