@@ -1,4 +1,4 @@
-# Objective slices against the live Marine component table (25 October)
+# Objective slices: their network component sets, derived offline (25 October)
 
 Can a HotH objective entity's shared component set be derived offline? Read
 docs/37, stage 5, first. Nothing here is game data: only UUIDs, network type
@@ -12,39 +12,55 @@ numbers and slice names.
 - `coverage.py`, `coverage.txt`: every slice in misc.pak whose path names a
   hive, heart, harvester or objective, entity by entity. There are 45,
   including test mocks, wasps and tutorial waypoints. Each entity lists its
-  covered network types, the shared ones among them, and every component UUID
-  the table does not cover. Run it read-only with
+  network component count and its shared types, from `uuid-type-table.json`,
+  and any component it cannot classify (none). Run it read-only with
   `.venv/bin/python -I snapshots/guide-objectives-20261025/coverage.py`.
+- `uuid-type-table.json`, `uuid-route/`: the exe-derived UUID-to-type table
+  and the scripts that build it (below).
+- `objective-shared-sets.json`: the main objective entities' shared,
+  autonomous and network type lists.
 - `stage5-rules.md`: HOTH_GUIDE's objective and score rules, decoded script by
   script with node citations, and marked read, inferred or unknown. docs/37's
   "Stage 5 findings" summarises it.
-- `uncovered-uuids.json`: the 28 distinct uncovered UUIDs. Each has the
-  number of entities using it and any exe `{UUID}\0\0Name` label. Such a label
-  is a lead, not proof; on the Marine, 4 of 30 were wrong.
+- `uncovered-uuids.json`: the 28 UUIDs the Marine table did not cover. Each
+  has the number of entities using it, any exe `{UUID}\0\0Name` label (a
+  lead, not proof: on the Marine, 4 of 30 were wrong) and its resolved class
+  and type from the exe route (18 network, 10 not).
 
-Result: no objective entity is fully covered. Components of unknown type per
-entity (some are probably not network components at all, such as
-AudioEnvironmentComponent, MeshComponent and SimpleMotionComponent):
+Result, first pass (the Marine table alone): no objective entity was fully
+covered, and 28 distinct UUIDs were missing.
 
-| Entity | Uncovered |
+Result, second pass: the exe route resolves them all. `uuid-route/` holds it:
+- the braced UUID literal in `.rdata`;
+- the `Uuid()` function that builds it (the referencing `lea` lands a byte or
+  two past the literal, inside an inlined hex-parse loop);
+- the class vtable whose slot 0 thunks to that function. Slot 1 returns the
+  class name, and slot 14 is the network type getter (`mov al,N; ret`).
+
+`uuid-type-table.json` maps 211 UUIDs to their type: every one of the 180
+schema types, through `::Client` and `::ClientBase` classes. Validation:
+- the Marine's 81 components, type and live vtable, all exact;
+- MatchPhaseController, GameMode and MatchDataStore, 23 of 23;
+- three live sets the route never used, all exact: the spitter's 18 shared
+  types, the RoboDummy's 15 and the connection entity's 8, from the type
+  getters in `snapshots/gamemode-20260919/live-upright-npcs.json` and
+  `live-npc-placement.json`.
+
+The four contradicting name labels were label errors, not pairing errors.
+Every component of the 45 slices is now classified (`coverage.txt`), and
+`objective-shared-sets.json` gives the main entities' shared sets:
+
+| Entity | Shared types |
 |---|---|
-| Hive_Standard, CruciHeart, VictoryObjective | 9 each |
-| Harvester_A to _E | 13 each |
-| Telegraphs | 2 to 4 |
+| Hive_Standard | 22 |
+| CruciHeart | 9 |
+| Harvester_A (entry 1 of 4) | 11 |
+| VictoryObjective | 10 |
+| HiveTelegraph | 8 |
+| Wasp | 14 |
 
-Eleven of the 28 have no exe label, and three more carry junk ones (two EBus
-signatures and "Effect Scale"). The most common unlabelled UUIDs:
-- `65a2dd2b` in 46 entities;
-- `6e413692` in 22, also on every MatchDataStore and MatchPhaseController;
-- `f970cf86` in 19;
-- `c8ad3419` in 17.
-
-The slices are addressable: april2018's (and every other shipped level's)
-`commondata/stringhashlibrary.xml` in levels.pak names the hive, cruciheart,
-harvester, victory-objective and telegraph slices. (It names no technomancer
-character slice, as `hero_loadout` says.) So a hive could be spawned in
-`hoth-guide-april2018` once its component set is known.
-
-Resolving these 28 network types would make the objective sets derivable,
-still subject to the position caveat. The name-free route is untested: from
-the UUID literal, find the code using it, then its vtable's type getter.
+Regenerate the table read-only from `uuid-route/` with the project venv,
+which has pefile and capstone:
+`../../../.venv/bin/python forward.py && ../../../.venv/bin/python full_table2.py`.
+It writes `forward_map.json` and `uuid_type_table.json` in the working
+directory.

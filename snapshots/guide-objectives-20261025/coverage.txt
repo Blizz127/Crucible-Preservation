@@ -1,171 +1,110 @@
 # slices/creatures/hive/hive.dynamicslice entities 1 prefabs 0
-   [0] Hive_Standard                          comps 55 covered 46 (net [13, 14, 18, 22, 24, 25, 27, 34, 35, 44, 46, 47, 51, 70, 79, 80, 98, 101, 107, 112, 113, 115, 129, 132, 135, 140, 142, 145, 146, 154, 155, 156, 158, 163, 164, 165, 166]; shared [13, 18, 24, 27, 44, 46, 79, 80, 98, 101, 107, 115, 132, 145, 146, 156, 158, 163, 165, 166]) uncovered 9
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 22590f95-2910-7435-71d5-4e95d6b13801 6e413692-e4c1-d0cd-17a3-2624329a0854 1067d2d0-9150-99bc-6a71-cf1c4c9109c8 aa19d11c-f559-47b3-b528-342930f1e114 aa19d11c-f559-47b3-b528-342930f1e114 abc28a9a-02b3-29b7-c368-820222f8a415 eccda2b7-4992-d8a1-d412-9581383a8e58 f660e955-4d97-587f-451b-bac1dab4600b
+   [0] Hive_Standard                          comps 55 network 44 shared [5, 8, 13, 18, 24, 27, 44, 46, 79, 80, 98, 101, 107, 115, 132, 145, 146, 156, 158, 163, 165, 166]
 # slices/creatures/hive/hive_aoe_damagefield.dynamicslice entities 1 prefabs 0
-   [0] hive_aoe_damagefield                   comps 15 covered 13 (net [18, 25, 44, 51, 69, 101, 145, 165, 166]; shared [18, 44, 69, 101, 145, 165, 166]) uncovered 2
-        uncovered: 108cd341-e5c3-4ae1-b712-21e81ed6c277 65a2dd2b-faa5-94db-beb3-ec73d0983dd4
+   [0] hive_aoe_damagefield                   comps 15 network 10 shared [18, 44, 69, 101, 145, 165, 166]
 # slices/creatures/hive/hivespikefield.dynamicslice entities 1 prefabs 0
-   [0] HiveSpikeField                         comps 18 covered 17 (net [13, 18, 25, 44, 46, 51, 135, 145, 146, 163, 164, 165]; shared [13, 18, 44, 46, 145, 146, 163, 165]) uncovered 1
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4
+   [0] HiveSpikeField                         comps 18 network 13 shared [13, 18, 44, 46, 145, 146, 163, 165]
 # slices/creatures/hive/wasp.dynamicslice entities 1 prefabs 0
-   [0] Wasp                                   comps 34 covered 29 (net [18, 22, 25, 35, 44, 46, 51, 69, 79, 101, 107, 112, 113, 132, 135, 145, 154, 156, 158, 165, 166]; shared [18, 44, 46, 69, 79, 101, 107, 132, 145, 156, 158, 165, 166]) uncovered 5
-        uncovered: 515957e3-8354-4048-8d6c-98628ef21804 29b4d4ae-0954-f2c5-8e90-74e806f5d479 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 77e7dd42-448f-5b9c-d5d1-24b4a3f120d2 8cbbb54b-7435-4d33-844d-e7f201bd581a
+   [0] Wasp                                   comps 34 network 24 shared [18, 44, 46, 59, 69, 79, 101, 107, 132, 145, 156, 158, 165, 166]
 # slices/creatures/hive/wasp_evolved.dynamicslice entities 1 prefabs 0
-   [0] Wasp_evolved                           comps 32 covered 28 (net [13, 22, 25, 44, 46, 51, 69, 79, 101, 107, 112, 113, 132, 135, 145, 154, 156, 158, 165, 166]; shared [13, 44, 46, 69, 79, 101, 107, 132, 145, 156, 158, 165, 166]) uncovered 4
-        uncovered: 515957e3-8354-4048-8d6c-98628ef21804 29b4d4ae-0954-f2c5-8e90-74e806f5d479 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 8cbbb54b-7435-4d33-844d-e7f201bd581a
+   [0] Wasp_evolved                           comps 32 network 22 shared [13, 44, 46, 59, 69, 79, 101, 107, 132, 145, 156, 158, 165, 166]
 # slices/crucible/match/tests/gm_spawned_objective_mock.dynamicslice entities 1 prefabs 0
-   [0] GM Spawned Child Mock                  comps  9 covered  7 (net [25, 44, 51, 145, 165]; shared [44, 145, 165]) uncovered 2
-        uncovered: 0b0310d6-195f-9f83-15f5-280e768604f5 65a2dd2b-faa5-94db-beb3-ec73d0983dd4
+   [0] GM Spawned Child Mock                  comps  9 network  7 shared [44, 64, 145, 165]
 # slices/interactive/controller4harvesters.dynamicslice entities 1 prefabs 0
-   [0] Controller4Harvesters                  comps 34 covered 24 (net [13, 18, 22, 25, 44, 51, 69, 98, 101, 113, 129, 135, 142, 145, 146, 165]; shared [13, 18, 44, 69, 98, 101, 145, 146, 165]) uncovered 10
-        uncovered: 0b0310d6-195f-9f83-15f5-280e768604f5 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 77e7dd42-448f-5b9c-d5d1-24b4a3f120d2 8cbbb54b-7435-4d33-844d-e7f201bd581a 9ba710a7-fd34-959a-5b7b-4b762211b753 c8ad3419-77b1-4dd6-8657-2dfcefc21d67 cc49570c-9190-d50d-915f-c75aac3c3837 f3c7996a-f9b8-4afd-b2a1-6de971efda11 f970cf86-7c45-a438-6cc0-58163ca377fd
+   [0] Controller4Harvesters                  comps 34 network 23 shared [13, 18, 44, 64, 69, 83, 98, 101, 105, 145, 146, 165]
 # slices/interactive/cruciheart.dynamicslice entities 1 prefabs 0
-   [0] CruciHeart                             comps 28 covered 19 (net [18, 22, 25, 44, 46, 51, 69, 98, 101, 113, 142, 144, 145, 165]; shared [18, 44, 46, 69, 98, 101, 145, 165]) uncovered 9
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 77e7dd42-448f-5b9c-d5d1-24b4a3f120d2 9ba710a7-fd34-959a-5b7b-4b762211b753 c8ad3419-77b1-4dd6-8657-2dfcefc21d67 dbe3c105-6fc1-418f-a8b1-d0f29fe8d5bd f3c7996a-f9b8-4afd-b2a1-6de971efda11 f660e955-4d97-587f-451b-bac1dab4600b f970cf86-7c45-a438-6cc0-58163ca377fd
+   [0] CruciHeart                             comps 28 network 20 shared [18, 44, 46, 69, 83, 98, 101, 145, 165]
 # slices/interactive/harvester_a.dynamicslice entities 4 prefabs 0
-   [0] MedicalStation Spawner                 comps  8 covered  7 (net [25, 44, 51, 145, 165]; shared [44, 145, 165]) uncovered 1
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4
-   [1] Harvester_A                            comps 41 covered 28 (net [13, 18, 22, 25, 35, 44, 46, 51, 65, 69, 98, 101, 113, 129, 135, 142, 145, 146, 165]; shared [13, 18, 44, 46, 69, 98, 101, 145, 146, 165]) uncovered 13
-        uncovered: 108cd341-e5c3-4ae1-b712-21e81ed6c277 2aa86eeb-4b0c-9b17-15d1-f41791b3f79c 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 77e7dd42-448f-5b9c-d5d1-24b4a3f120d2 8cbbb54b-7435-4d33-844d-e7f201bd581a 58aabf8e-6954-4634-acbd-05fe011478e1 9ba710a7-fd34-959a-5b7b-4b762211b753 c8ad3419-77b1-4dd6-8657-2dfcefc21d67 d277db6f-43ab-19fb-255d-5d0cb74eff98 f3c7996a-f9b8-4afd-b2a1-6de971efda11 f660e955-4d97-587f-451b-bac1dab4600b f970cf86-7c45-a438-6cc0-58163ca377fd
-   [2] Beam_Idle                              comps  2 covered  1 (net []; shared []) uncovered 1
-        uncovered: 515957e3-8354-4048-8d6c-98628ef21804
-   [3] harvester_fx_mesh                      comps  2 covered  1 (net []; shared []) uncovered 1
-        uncovered: 2f4bad46-c857-4dcb-a454-c412de67852a
+   [0] MedicalStation Spawner                 comps  8 network  6 shared [44, 145, 165]
+   [1] Harvester_A                            comps 41 network 27 shared [13, 18, 44, 46, 69, 83, 98, 101, 145, 146, 165]
+   [2] Beam_Idle                              comps  2 network  0 shared []
+   [3] harvester_fx_mesh                      comps  2 network  0 shared []
 # slices/interactive/harvester_b.dynamicslice entities 4 prefabs 0
-   [0] MedicalStation Spawner                 comps  8 covered  7 (net [25, 44, 51, 145, 165]; shared [44, 145, 165]) uncovered 1
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4
-   [1] Harvester_B                            comps 41 covered 28 (net [13, 18, 22, 25, 35, 44, 46, 51, 65, 69, 98, 101, 113, 129, 135, 142, 145, 146, 165]; shared [13, 18, 44, 46, 69, 98, 101, 145, 146, 165]) uncovered 13
-        uncovered: 108cd341-e5c3-4ae1-b712-21e81ed6c277 2aa86eeb-4b0c-9b17-15d1-f41791b3f79c 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 77e7dd42-448f-5b9c-d5d1-24b4a3f120d2 8cbbb54b-7435-4d33-844d-e7f201bd581a 58aabf8e-6954-4634-acbd-05fe011478e1 9ba710a7-fd34-959a-5b7b-4b762211b753 c8ad3419-77b1-4dd6-8657-2dfcefc21d67 d277db6f-43ab-19fb-255d-5d0cb74eff98 f3c7996a-f9b8-4afd-b2a1-6de971efda11 f660e955-4d97-587f-451b-bac1dab4600b f970cf86-7c45-a438-6cc0-58163ca377fd
-   [2] Beam_Idle                              comps  2 covered  1 (net []; shared []) uncovered 1
-        uncovered: 515957e3-8354-4048-8d6c-98628ef21804
-   [3] harvester_fx_mesh                      comps  2 covered  1 (net []; shared []) uncovered 1
-        uncovered: 2f4bad46-c857-4dcb-a454-c412de67852a
+   [0] MedicalStation Spawner                 comps  8 network  6 shared [44, 145, 165]
+   [1] Harvester_B                            comps 41 network 27 shared [13, 18, 44, 46, 69, 83, 98, 101, 145, 146, 165]
+   [2] Beam_Idle                              comps  2 network  0 shared []
+   [3] harvester_fx_mesh                      comps  2 network  0 shared []
 # slices/interactive/harvester_c.dynamicslice entities 4 prefabs 0
-   [0] MedicalStation Spawner                 comps  8 covered  7 (net [25, 44, 51, 145, 165]; shared [44, 145, 165]) uncovered 1
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4
-   [1] Harvester_C                            comps 41 covered 28 (net [13, 18, 22, 25, 35, 44, 46, 51, 65, 69, 98, 101, 113, 129, 135, 142, 145, 146, 165]; shared [13, 18, 44, 46, 69, 98, 101, 145, 146, 165]) uncovered 13
-        uncovered: 108cd341-e5c3-4ae1-b712-21e81ed6c277 2aa86eeb-4b0c-9b17-15d1-f41791b3f79c 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 77e7dd42-448f-5b9c-d5d1-24b4a3f120d2 8cbbb54b-7435-4d33-844d-e7f201bd581a 58aabf8e-6954-4634-acbd-05fe011478e1 9ba710a7-fd34-959a-5b7b-4b762211b753 c8ad3419-77b1-4dd6-8657-2dfcefc21d67 d277db6f-43ab-19fb-255d-5d0cb74eff98 f3c7996a-f9b8-4afd-b2a1-6de971efda11 f660e955-4d97-587f-451b-bac1dab4600b f970cf86-7c45-a438-6cc0-58163ca377fd
-   [2] Beam_Idle                              comps  2 covered  1 (net []; shared []) uncovered 1
-        uncovered: 515957e3-8354-4048-8d6c-98628ef21804
-   [3] harvester_fx_mesh                      comps  2 covered  1 (net []; shared []) uncovered 1
-        uncovered: 2f4bad46-c857-4dcb-a454-c412de67852a
+   [0] MedicalStation Spawner                 comps  8 network  6 shared [44, 145, 165]
+   [1] Harvester_C                            comps 41 network 27 shared [13, 18, 44, 46, 69, 83, 98, 101, 145, 146, 165]
+   [2] Beam_Idle                              comps  2 network  0 shared []
+   [3] harvester_fx_mesh                      comps  2 network  0 shared []
 # slices/interactive/harvester_d.dynamicslice entities 4 prefabs 0
-   [0] MedicalStation Spawner                 comps  8 covered  7 (net [25, 44, 51, 145, 165]; shared [44, 145, 165]) uncovered 1
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4
-   [1] Harvester_D                            comps 41 covered 28 (net [13, 18, 22, 25, 35, 44, 46, 51, 65, 69, 98, 101, 113, 129, 135, 142, 145, 146, 165]; shared [13, 18, 44, 46, 69, 98, 101, 145, 146, 165]) uncovered 13
-        uncovered: 108cd341-e5c3-4ae1-b712-21e81ed6c277 2aa86eeb-4b0c-9b17-15d1-f41791b3f79c 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 77e7dd42-448f-5b9c-d5d1-24b4a3f120d2 8cbbb54b-7435-4d33-844d-e7f201bd581a 58aabf8e-6954-4634-acbd-05fe011478e1 9ba710a7-fd34-959a-5b7b-4b762211b753 c8ad3419-77b1-4dd6-8657-2dfcefc21d67 d277db6f-43ab-19fb-255d-5d0cb74eff98 f3c7996a-f9b8-4afd-b2a1-6de971efda11 f660e955-4d97-587f-451b-bac1dab4600b f970cf86-7c45-a438-6cc0-58163ca377fd
-   [2] Beam_Idle                              comps  2 covered  1 (net []; shared []) uncovered 1
-        uncovered: 515957e3-8354-4048-8d6c-98628ef21804
-   [3] harvester_fx_mesh                      comps  2 covered  1 (net []; shared []) uncovered 1
-        uncovered: 2f4bad46-c857-4dcb-a454-c412de67852a
+   [0] MedicalStation Spawner                 comps  8 network  6 shared [44, 145, 165]
+   [1] Harvester_D                            comps 41 network 27 shared [13, 18, 44, 46, 69, 83, 98, 101, 145, 146, 165]
+   [2] Beam_Idle                              comps  2 network  0 shared []
+   [3] harvester_fx_mesh                      comps  2 network  0 shared []
 # slices/interactive/harvester_e.dynamicslice entities 4 prefabs 0
-   [0] MedicalStation Spawner                 comps  8 covered  7 (net [25, 44, 51, 145, 165]; shared [44, 145, 165]) uncovered 1
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4
-   [1] Harvester_E                            comps 41 covered 28 (net [13, 18, 22, 25, 35, 44, 46, 51, 65, 69, 98, 101, 113, 129, 135, 142, 145, 146, 165]; shared [13, 18, 44, 46, 69, 98, 101, 145, 146, 165]) uncovered 13
-        uncovered: 108cd341-e5c3-4ae1-b712-21e81ed6c277 2aa86eeb-4b0c-9b17-15d1-f41791b3f79c 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 77e7dd42-448f-5b9c-d5d1-24b4a3f120d2 8cbbb54b-7435-4d33-844d-e7f201bd581a 58aabf8e-6954-4634-acbd-05fe011478e1 9ba710a7-fd34-959a-5b7b-4b762211b753 c8ad3419-77b1-4dd6-8657-2dfcefc21d67 d277db6f-43ab-19fb-255d-5d0cb74eff98 f3c7996a-f9b8-4afd-b2a1-6de971efda11 f660e955-4d97-587f-451b-bac1dab4600b f970cf86-7c45-a438-6cc0-58163ca377fd
-   [2] Beam_Idle                              comps  2 covered  1 (net []; shared []) uncovered 1
-        uncovered: 515957e3-8354-4048-8d6c-98628ef21804
-   [3] harvester_fx_mesh                      comps  2 covered  1 (net []; shared []) uncovered 1
-        uncovered: 2f4bad46-c857-4dcb-a454-c412de67852a
+   [0] MedicalStation Spawner                 comps  8 network  6 shared [44, 145, 165]
+   [1] Harvester_E                            comps 41 network 27 shared [13, 18, 44, 46, 69, 83, 98, 101, 145, 146, 165]
+   [2] Beam_Idle                              comps  2 network  0 shared []
+   [3] harvester_fx_mesh                      comps  2 network  0 shared []
 # slices/interactive/harvester_interactable.dynamicslice entities 2 prefabs 0
-   [0] Harvester_A                            comps 41 covered 28 (net [13, 18, 22, 25, 35, 44, 46, 51, 65, 69, 98, 101, 113, 129, 135, 142, 145, 146, 165]; shared [13, 18, 44, 46, 69, 98, 101, 145, 146, 165]) uncovered 13
-        uncovered: 108cd341-e5c3-4ae1-b712-21e81ed6c277 2aa86eeb-4b0c-9b17-15d1-f41791b3f79c 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 77e7dd42-448f-5b9c-d5d1-24b4a3f120d2 8cbbb54b-7435-4d33-844d-e7f201bd581a 58aabf8e-6954-4634-acbd-05fe011478e1 9ba710a7-fd34-959a-5b7b-4b762211b753 c8ad3419-77b1-4dd6-8657-2dfcefc21d67 d277db6f-43ab-19fb-255d-5d0cb74eff98 f3c7996a-f9b8-4afd-b2a1-6de971efda11 f660e955-4d97-587f-451b-bac1dab4600b f970cf86-7c45-a438-6cc0-58163ca377fd
-   [1] Beam_Idle                              comps  2 covered  1 (net []; shared []) uncovered 1
-        uncovered: 515957e3-8354-4048-8d6c-98628ef21804
+   [0] Harvester_A                            comps 41 network 27 shared [13, 18, 44, 46, 69, 83, 98, 101, 145, 146, 165]
+   [1] Beam_Idle                              comps  2 network  0 shared []
 # slices/interactive/miniharvester.dynamicslice entities 1 prefabs 0
-   [0] MiniHarvester                          comps 33 covered 25 (net [13, 18, 22, 25, 44, 51, 65, 69, 98, 101, 113, 129, 135, 142, 145, 146, 165]; shared [13, 18, 44, 69, 98, 101, 145, 146, 165]) uncovered 8
-        uncovered: 0b0310d6-195f-9f83-15f5-280e768604f5 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 77e7dd42-448f-5b9c-d5d1-24b4a3f120d2 8cbbb54b-7435-4d33-844d-e7f201bd581a 9ba710a7-fd34-959a-5b7b-4b762211b753 c8ad3419-77b1-4dd6-8657-2dfcefc21d67 f3c7996a-f9b8-4afd-b2a1-6de971efda11 f970cf86-7c45-a438-6cc0-58163ca377fd
+   [0] MiniHarvester                          comps 33 network 22 shared [13, 18, 44, 64, 69, 83, 98, 101, 145, 146, 165]
 # slices/interactive/victoryobjective.dynamicslice entities 1 prefabs 0
-   [0] VictoryObjective                       comps 32 covered 23 (net [13, 18, 22, 25, 44, 51, 69, 98, 101, 113, 135, 142, 145, 146, 165]; shared [13, 18, 44, 69, 98, 101, 145, 146, 165]) uncovered 9
-        uncovered: 515957e3-8354-4048-8d6c-98628ef21804 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 77e7dd42-448f-5b9c-d5d1-24b4a3f120d2 8cbbb54b-7435-4d33-844d-e7f201bd581a 9ba710a7-fd34-959a-5b7b-4b762211b753 c8ad3419-77b1-4dd6-8657-2dfcefc21d67 f3c7996a-f9b8-4afd-b2a1-6de971efda11 f970cf86-7c45-a438-6cc0-58163ca377fd
+   [0] VictoryObjective                       comps 32 network 20 shared [13, 18, 44, 69, 83, 98, 101, 145, 146, 165]
 # slices/planetaryevents/critical_miniharvesters.dynamicslice entities 1 prefabs 0
-   [0] MiniHarvestersEvent                    comps 14 covered 11 (net [18, 25, 44, 51, 65, 144, 145, 165]; shared [18, 44, 145, 165]) uncovered 3
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 8efe2ecf-6952-6e28-ed80-c71af08983f0
+   [0] MiniHarvestersEvent                    comps 14 network 11 shared [18, 44, 63, 145, 165]
 # slices/planetaryevents/major_harvestercontrol.dynamicslice entities 1 prefabs 0
-   [0] Major_HarvesterControl                 comps 13 covered 10 (net [18, 25, 44, 51, 144, 145, 165]; shared [18, 44, 145, 165]) uncovered 3
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 8efe2ecf-6952-6e28-ed80-c71af08983f0
+   [0] Major_HarvesterControl                 comps 13 network 10 shared [18, 44, 63, 145, 165]
 # slices/planetaryevents/static_victoryobjective.dynamicslice entities 1 prefabs 0
-   [0] VictoryObjectiveEvent                  comps 11 covered  8 (net [25, 44, 51, 144, 145, 165]; shared [44, 145, 165]) uncovered 3
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 8efe2ecf-6952-6e28-ed80-c71af08983f0
+   [0] VictoryObjectiveEvent                  comps 11 network  9 shared [44, 63, 145, 165]
 # slices/spawn_nodes/spawnnode_hive_aioverlord.dynamicslice entities 1 prefabs 0
-   [0] SpawnNode_Hive_AIOverlord_SWAMP        comps  6 covered  5 (net [44, 145, 165]; shared [44, 145, 165]) uncovered 1
-        uncovered: 5dff4a3f-6ceb-7270-d047-ece54500db26
+   [0] SpawnNode_Hive_AIOverlord_SWAMP        comps  6 network  4 shared [44, 145, 165]
 # slices/spawntelegraphobjects/controller4harvesterstelegraph.dynamicslice entities 1 prefabs 0
-   [0] Controller4HarvestersTelegraph         comps 17 covered 13 (net [18, 25, 44, 51, 98, 101, 142, 145, 165]; shared [18, 44, 98, 101, 145, 165]) uncovered 4
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 8cbbb54b-7435-4d33-844d-e7f201bd581a ffaea963-fc76-20a7-62f2-0cf9ddccc880
+   [0] Controller4HarvestersTelegraph         comps 17 network 12 shared [18, 44, 72, 98, 101, 145, 165]
 # slices/spawntelegraphobjects/hiveaoefieldtelegraph.dynamicslice entities 1 prefabs 0
-   [0] HiveAoETelegraph                       comps 13 covered 11 (net [18, 25, 44, 51, 98, 101, 145, 165]; shared [18, 44, 98, 101, 145, 165]) uncovered 2
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 ffaea963-fc76-20a7-62f2-0cf9ddccc880
+   [0] HiveAoETelegraph                       comps 13 network 10 shared [18, 44, 72, 98, 101, 145, 165]
 # slices/spawntelegraphobjects/hivetelegraph.dynamicslice entities 1 prefabs 0
-   [0] HiveTelegraph                          comps 17 covered 14 (net [18, 25, 44, 46, 51, 98, 101, 142, 144, 145, 165]; shared [18, 44, 46, 98, 101, 145, 165]) uncovered 3
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 ffaea963-fc76-20a7-62f2-0cf9ddccc880
+   [0] HiveTelegraph                          comps 17 network 14 shared [18, 44, 46, 72, 98, 101, 145, 165]
 # slices/spawntelegraphobjects/hivetelegraph_blackoutonly.dynamicslice entities 1 prefabs 0
-   [0] HiveTelegraphBlackoutOnly              comps 12 covered  9 (net [25, 44, 46, 51, 145, 165]; shared [44, 46, 145, 165]) uncovered 3
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 f660e955-4d97-587f-451b-bac1dab4600b
+   [0] HiveTelegraphBlackoutOnly              comps 12 network  9 shared [44, 46, 145, 165]
 # slices/spawntelegraphobjects/miniharvestertelegraph.dynamicslice entities 1 prefabs 0
-   [0] MiniHarvesterTelegraph                 comps 13 covered 10 (net [18, 25, 51, 101, 145, 165]; shared [18, 101, 145, 165]) uncovered 3
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 8cbbb54b-7435-4d33-844d-e7f201bd581a ffaea963-fc76-20a7-62f2-0cf9ddccc880
+   [0] MiniHarvesterTelegraph                 comps 13 network  8 shared [18, 72, 101, 145, 165]
 # slices/spawntelegraphobjects/victoryobjectivetelegraph.dynamicslice entities 1 prefabs 0
-   [0] VictoryObjectiveTelegraph              comps 15 covered 12 (net [18, 25, 44, 51, 98, 101, 142, 145, 165]; shared [18, 44, 98, 101, 145, 165]) uncovered 3
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 ffaea963-fc76-20a7-62f2-0cf9ddccc880
+   [0] VictoryObjectiveTelegraph              comps 15 network 12 shared [18, 44, 72, 98, 101, 145, 165]
 # slices/tests/ai/testhive.dynamicslice entities 1 prefabs 0
-   [0] TestHive                               comps  7 covered  7 (net [51, 101, 115, 145, 165]; shared [101, 115, 145, 165]) uncovered 0
+   [0] TestHive                               comps  7 network  5 shared [101, 115, 145, 165]
 # slices/tests/interaction/mockinteractableobjective.dynamicslice entities 1 prefabs 0
-   [0] MockInteractableObjective              comps  9 covered  7 (net [25, 44, 51, 145, 165]; shared [44, 145, 165]) uncovered 2
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 f970cf86-7c45-a438-6cc0-58163ca377fd
+   [0] MockInteractableObjective              comps  9 network  7 shared [44, 83, 145, 165]
 # slices/tests/interaction/mockinteractableobjective_failingvalidation.dynamicslice entities 1 prefabs 0
-   [0] MockInteractableObjective_FailingValid comps  9 covered  7 (net [25, 44, 51, 145, 165]; shared [44, 145, 165]) uncovered 2
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 f970cf86-7c45-a438-6cc0-58163ca377fd
+   [0] MockInteractableObjective_FailingValid comps  9 network  7 shared [44, 83, 145, 165]
 # slices/tests/interaction/mockinteractableobjective_looping.dynamicslice entities 1 prefabs 0
-   [0] MockLoopingInteractableObjective       comps  9 covered  7 (net [25, 44, 51, 145, 165]; shared [44, 145, 165]) uncovered 2
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 f970cf86-7c45-a438-6cc0-58163ca377fd
+   [0] MockLoopingInteractableObjective       comps  9 network  7 shared [44, 83, 145, 165]
 # slices/tests/interaction/mockinteractableobjective_loopingfailingvalidation.dynamicslice entities 1 prefabs 0
-   [0] MockLoopingInteractableObjectiveFailin comps  9 covered  7 (net [25, 44, 51, 145, 165]; shared [44, 145, 165]) uncovered 2
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 f970cf86-7c45-a438-6cc0-58163ca377fd
+   [0] MockLoopingInteractableObjectiveFailin comps  9 network  7 shared [44, 83, 145, 165]
 # slices/tests/interaction/mockinteractableobjective_multipleinteractionsallowed.dynamicslice entities 1 prefabs 0
-   [0] MockInteractableObjective_MultipleInte comps  9 covered  7 (net [25, 44, 51, 145, 165]; shared [44, 145, 165]) uncovered 2
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 f970cf86-7c45-a438-6cc0-58163ca377fd
+   [0] MockInteractableObjective_MultipleInte comps  9 network  7 shared [44, 83, 145, 165]
 # slices/tests/interaction/mockinteractableobjective_nodata.dynamicslice entities 1 prefabs 0
-   [0] MockInteractableObjective_NoData       comps  9 covered  7 (net [25, 44, 51, 145, 165]; shared [44, 145, 165]) uncovered 2
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 f970cf86-7c45-a438-6cc0-58163ca377fd
+   [0] MockInteractableObjective_NoData       comps  9 network  7 shared [44, 83, 145, 165]
 # slices/tests/interaction/mockinteractableobjectiveforendtimepayloadtest.dynamicslice entities 1 prefabs 0
-   [0] MockInteractableObjectiveForEndTimePay comps  9 covered  7 (net [25, 44, 51, 145, 165]; shared [44, 145, 165]) uncovered 2
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 f970cf86-7c45-a438-6cc0-58163ca377fd
+   [0] MockInteractableObjectiveForEndTimePay comps  9 network  7 shared [44, 83, 145, 165]
 # slices/tests/objectives/testslicewithobjective.dynamicslice entities 1 prefabs 0
-   [0] Entity1                                comps  5 covered  5 (net [44, 51, 98]; shared [44, 98]) uncovered 0
+   [0] Entity1                                comps  5 network  3 shared [44, 98]
 # slices/tests/objectives/testslicewithobjectiveandspawntelegraph.dynamicslice entities 1 prefabs 0
-   [0] Entity1                                comps 12 covered 10 (net [18, 44, 51, 98, 101, 145, 165]; shared [18, 44, 98, 101, 145, 165]) uncovered 2
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 ffaea963-fc76-20a7-62f2-0cf9ddccc880
+   [0] Entity1                                comps 12 network  9 shared [18, 44, 72, 98, 101, 145, 165]
 # slices/tests/objectives/testslicewithobjectivecollector.dynamicslice entities 1 prefabs 0
-   [0] Entity1                                comps  4 covered  4 (net [51, 97]; shared []) uncovered 0
+   [0] Entity1                                comps  4 network  2 shared []
 # slices/tests/quickcomms/quick_comms_harvester_interactable_test.dynamicslice entities 2 prefabs 0
-   [0] Harvester_Interactable                 comps 41 covered 28 (net [13, 18, 22, 25, 35, 44, 46, 51, 65, 69, 98, 101, 113, 129, 135, 142, 145, 146, 165]; shared [13, 18, 44, 46, 69, 98, 101, 145, 146, 165]) uncovered 13
-        uncovered: 108cd341-e5c3-4ae1-b712-21e81ed6c277 2aa86eeb-4b0c-9b17-15d1-f41791b3f79c 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 77e7dd42-448f-5b9c-d5d1-24b4a3f120d2 8cbbb54b-7435-4d33-844d-e7f201bd581a 58aabf8e-6954-4634-acbd-05fe011478e1 9ba710a7-fd34-959a-5b7b-4b762211b753 c8ad3419-77b1-4dd6-8657-2dfcefc21d67 d277db6f-43ab-19fb-255d-5d0cb74eff98 f3c7996a-f9b8-4afd-b2a1-6de971efda11 f660e955-4d97-587f-451b-bac1dab4600b f970cf86-7c45-a438-6cc0-58163ca377fd
-   [1] Beam_Idle                              comps  2 covered  1 (net []; shared []) uncovered 1
-        uncovered: 515957e3-8354-4048-8d6c-98628ef21804
+   [0] Harvester_Interactable                 comps 41 network 27 shared [13, 18, 44, 46, 69, 83, 98, 101, 145, 146, 165]
+   [1] Beam_Idle                              comps  2 network  0 shared []
 # slices/tests/tutorialobjectives/testobjectivesmatchcomponents.dynamicslice entities 1 prefabs 0
-   [0] TestObjectivesMatchComponents          comps  3 covered  3 (net [140]; shared []) uncovered 0
+   [0] TestObjectivesMatchComponents          comps  3 network  1 shared []
 # slices/tutorial/tutorial_essenceobjectivestart.dynamicslice entities 1 prefabs 0
-   [0] Tutorial_EssenceObjectiveStart         comps 17 covered 13 (net [18, 25, 44, 47, 51, 142, 144, 145, 165]; shared [18, 44, 145, 165]) uncovered 4
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 881d85fc-7d85-4e4f-b58c-80bd4c94a51a c8ad3419-77b1-4dd6-8657-2dfcefc21d67
+   [0] Tutorial_EssenceObjectiveStart         comps 17 network 11 shared [18, 44, 145, 165]
 # slices/tutorial/tutorial_harvester_a.dynamicslice entities 4 prefabs 0
-   [0] MedicalStation Spawner                 comps  8 covered  7 (net [25, 44, 51, 145, 165]; shared [44, 145, 165]) uncovered 1
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4
-   [1] Harvester_A                            comps 41 covered 28 (net [13, 18, 22, 25, 35, 44, 46, 51, 65, 69, 98, 101, 113, 129, 135, 142, 145, 146, 165]; shared [13, 18, 44, 46, 69, 98, 101, 145, 146, 165]) uncovered 13
-        uncovered: 108cd341-e5c3-4ae1-b712-21e81ed6c277 2aa86eeb-4b0c-9b17-15d1-f41791b3f79c 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 77e7dd42-448f-5b9c-d5d1-24b4a3f120d2 8cbbb54b-7435-4d33-844d-e7f201bd581a 58aabf8e-6954-4634-acbd-05fe011478e1 9ba710a7-fd34-959a-5b7b-4b762211b753 c8ad3419-77b1-4dd6-8657-2dfcefc21d67 d277db6f-43ab-19fb-255d-5d0cb74eff98 f3c7996a-f9b8-4afd-b2a1-6de971efda11 f660e955-4d97-587f-451b-bac1dab4600b f970cf86-7c45-a438-6cc0-58163ca377fd
-   [2] Beam_Idle                              comps  2 covered  1 (net []; shared []) uncovered 1
-        uncovered: 515957e3-8354-4048-8d6c-98628ef21804
-   [3] harvester_fx_mesh                      comps  2 covered  1 (net []; shared []) uncovered 1
-        uncovered: 2f4bad46-c857-4dcb-a454-c412de67852a
+   [0] MedicalStation Spawner                 comps  8 network  6 shared [44, 145, 165]
+   [1] Harvester_A                            comps 41 network 27 shared [13, 18, 44, 46, 69, 83, 98, 101, 145, 146, 165]
+   [2] Beam_Idle                              comps  2 network  0 shared []
+   [3] harvester_fx_mesh                      comps  2 network  0 shared []
 # slices/tutorial/tutorial_harvestervo.dynamicslice entities 1 prefabs 0
-   [0] Tutorial_HarvesterVO                   comps 14 covered 11 (net [18, 25, 51, 101, 144, 145, 165]; shared [18, 101, 145, 165]) uncovered 3
-        uncovered: 108cd341-e5c3-4ae1-b712-21e81ed6c277 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 c8ad3419-77b1-4dd6-8657-2dfcefc21d67
+   [0] Tutorial_HarvesterVO                   comps 14 network  8 shared [18, 101, 145, 165]
 # slices/tutorial/tutorial_hivewatcher.dynamicslice entities 1 prefabs 0
-   [0] Tutorial_HiveWatcher                   comps 11 covered  8 (net [18, 25, 51, 144]; shared [18]) uncovered 3
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 881d85fc-7d85-4e4f-b58c-80bd4c94a51a c8ad3419-77b1-4dd6-8657-2dfcefc21d67
+   [0] Tutorial_HiveWatcher                   comps 11 network  5 shared [18]
 # slices/tutorial/tutorial_waypoint_harvesterroom.dynamicslice entities 1 prefabs 0
-   [0] Tutorial_waypoint                      comps 17 covered 13 (net [18, 25, 44, 51, 98, 142, 144, 145, 165]; shared [18, 44, 98, 145, 165]) uncovered 4
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 881d85fc-7d85-4e4f-b58c-80bd4c94a51a c8ad3419-77b1-4dd6-8657-2dfcefc21d67
+   [0] Tutorial_waypoint                      comps 17 network 11 shared [18, 44, 98, 145, 165]
 # slices/tutorial/tutorial_waypoint_hiveroom.dynamicslice entities 1 prefabs 0
-   [0] Tutorial_waypoint                      comps 17 covered 13 (net [18, 25, 44, 51, 98, 142, 144, 145, 165]; shared [18, 44, 98, 145, 165]) uncovered 4
-        uncovered: 65a2dd2b-faa5-94db-beb3-ec73d0983dd4 6e413692-e4c1-d0cd-17a3-2624329a0854 881d85fc-7d85-4e4f-b58c-80bd4c94a51a c8ad3419-77b1-4dd6-8657-2dfcefc21d67
+   [0] Tutorial_waypoint                      comps 17 network 11 shared [18, 44, 98, 145, 165]

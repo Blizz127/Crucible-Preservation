@@ -3,168 +3,252 @@
   "uuid": "65a2dd2b-faa5-94db-beb3-ec73d0983dd4",
   "exe_name": null,
   "schema_type": null,
-  "entities": 46
+  "entities": 46,
+  "resolved_class": "GameplayUpdateComponent::Client",
+  "resolved_type": 68,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "6e413692-e4c1-d0cd-17a3-2624329a0854",
   "exe_name": null,
   "schema_type": null,
-  "entities": 22
+  "entities": 22,
+  "resolved_class": "GlobalAccessComponent::Client",
+  "resolved_type": 160,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "f970cf86-7c45-a438-6cc0-58163ca377fd",
   "exe_name": null,
   "schema_type": null,
-  "entities": 19
+  "entities": 19,
+  "resolved_class": "InteractableComponent::Client",
+  "resolved_type": 83,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "c8ad3419-77b1-4dd6-8657-2dfcefc21d67",
   "exe_name": null,
   "schema_type": null,
-  "entities": 17
+  "entities": 17,
+  "resolved_class": "StaticRigidComponent",
+  "resolved_type": null,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "8cbbb54b-7435-4d33-844d-e7f201bd581a",
   "exe_name": "AudioEnvironmentComponent",
   "schema_type": null,
-  "entities": 15
+  "entities": 15,
+  "resolved_class": "AudioTriggerComponent",
+  "resolved_type": null,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "77e7dd42-448f-5b9c-d5d1-24b4a3f120d2",
   "exe_name": null,
   "schema_type": null,
-  "entities": 13
+  "entities": 13,
+  "resolved_class": "DisableServerAnimsComponent::Client",
+  "resolved_type": 41,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "9ba710a7-fd34-959a-5b7b-4b762211b753",
   "exe_name": null,
   "schema_type": null,
-  "entities": 12
+  "entities": 12,
+  "resolved_class": "NpcBlockerComponent::Client",
+  "resolved_type": 4,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "f3c7996a-f9b8-4afd-b2a1-6de971efda11",
   "exe_name": null,
   "schema_type": null,
-  "entities": 12
+  "entities": 12,
+  "resolved_class": "MeshColliderComponent",
+  "resolved_type": null,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "f660e955-4d97-587f-451b-bac1dab4600b",
   "exe_name": "SpawnBlacklistComponent::Client",
   "schema_type": 122,
-  "entities": 11
+  "entities": 11,
+  "resolved_class": "SpawnBlacklistComponent::Client",
+  "resolved_type": 122,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "515957e3-8354-4048-8d6c-98628ef21804",
   "exe_name": null,
   "schema_type": null,
-  "entities": 11
+  "entities": 11,
+  "resolved_class": "PopcornFXEmitterGameComponent",
+  "resolved_type": null,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "108cd341-e5c3-4ae1-b712-21e81ed6c277",
   "exe_name": "unsigned int __cdecl AZ::EBusEnvironmentStoragePolicy<class AZ::EBus<class Physics::RigidBodyRequests,class Physics::RigidBodyRequests>::Context>::GetVariableId(void)",
   "schema_type": null,
-  "entities": 10
+  "entities": 10,
+  "resolved_class": "SphereColliderComponent",
+  "resolved_type": null,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "2aa86eeb-4b0c-9b17-15d1-f41791b3f79c",
   "exe_name": "AudioJointComponent::Client",
   "schema_type": 16,
-  "entities": 8
+  "entities": 8,
+  "resolved_class": "AudioJointComponent::Client",
+  "resolved_type": 16,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "58aabf8e-6954-4634-acbd-05fe011478e1",
   "exe_name": "unsigned int __cdecl AZ::EBusEnvironmentStoragePolicy<class AZ::EBus<class LmbrCentral::AudioEnvironmentMapComponentRequests,class LmbrCentral::AudioEnvironmentMapComponentRequests>::Context>::GetVariableId(void)",
   "schema_type": null,
-  "entities": 8
+  "entities": 8,
+  "resolved_class": "AudioShapeComponent",
+  "resolved_type": null,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "d277db6f-43ab-19fb-255d-5d0cb74eff98",
   "exe_name": "HarvesterIdComponent::Client",
   "schema_type": 78,
-  "entities": 8
+  "entities": 8,
+  "resolved_class": "HarvesterIdComponent::Client",
+  "resolved_type": 78,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "2f4bad46-c857-4dcb-a454-c412de67852a",
   "exe_name": "MeshComponent",
   "schema_type": null,
-  "entities": 6
+  "entities": 6,
+  "resolved_class": "MeshComponent",
+  "resolved_type": null,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "ffaea963-fc76-20a7-62f2-0cf9ddccc880",
   "exe_name": "SpawnTelegraphComponent::Client",
   "schema_type": 72,
-  "entities": 6
+  "entities": 6,
+  "resolved_class": "SpawnTelegraphComponent::Client",
+  "resolved_type": 72,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "881d85fc-7d85-4e4f-b58c-80bd4c94a51a",
   "exe_name": null,
   "schema_type": null,
-  "entities": 4
+  "entities": 4,
+  "resolved_class": "BoxColliderComponent",
+  "resolved_type": null,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "0b0310d6-195f-9f83-15f5-280e768604f5",
   "exe_name": "GMEventSpawnedObjectiveComponent::Client",
   "schema_type": 64,
-  "entities": 3
+  "entities": 3,
+  "resolved_class": "GMEventSpawnedObjectiveComponent::Client",
+  "resolved_type": 64,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "8efe2ecf-6952-6e28-ed80-c71af08983f0",
   "exe_name": "GMEventComponent::Client",
   "schema_type": 63,
-  "entities": 3
+  "entities": 3,
+  "resolved_class": "GMEventComponent::Client",
+  "resolved_type": 63,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "aa19d11c-f559-47b3-b528-342930f1e114",
   "exe_name": "Effect Scale",
   "schema_type": null,
-  "entities": 2
+  "entities": 2,
+  "resolved_class": "AudioObstructorComponent",
+  "resolved_type": null,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "29b4d4ae-0954-f2c5-8e90-74e806f5d479",
   "exe_name": null,
   "schema_type": null,
-  "entities": 2
+  "entities": 2,
+  "resolved_class": "GameplayProjectileComponent::Client",
+  "resolved_type": 59,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "22590f95-2910-7435-71d5-4e95d6b13801",
   "exe_name": "AITargetOffsetComponent::Client",
   "schema_type": 3,
-  "entities": 1
+  "entities": 1,
+  "resolved_class": "AITargetOffsetComponent::Client",
+  "resolved_type": 3,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "1067d2d0-9150-99bc-6a71-cf1c4c9109c8",
   "exe_name": null,
   "schema_type": null,
-  "entities": 1
+  "entities": 1,
+  "resolved_class": "NpcMovementComponent::Client",
+  "resolved_type": 5,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "abc28a9a-02b3-29b7-c368-820222f8a415",
   "exe_name": "ActorPropertySyncComponent::Client",
   "schema_type": 8,
-  "entities": 1
+  "entities": 1,
+  "resolved_class": "ActorPropertySyncComponent::Client",
+  "resolved_type": 8,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "eccda2b7-4992-d8a1-d412-9581383a8e58",
   "exe_name": "PhaseServerAnimsComponent::Client",
   "schema_type": 103,
-  "entities": 1
+  "entities": 1,
+  "resolved_class": "PhaseServerAnimsComponent::Client",
+  "resolved_type": 103,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "cc49570c-9190-d50d-915f-c75aac3c3837",
   "exe_name": "PhysicsColliderStateComponent::Client",
   "schema_type": 105,
-  "entities": 1
+  "entities": 1,
+  "resolved_class": "PhysicsColliderStateComponent::Client",
+  "resolved_type": 105,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "dbe3c105-6fc1-418f-a8b1-d0f29fe8d5bd",
   "exe_name": "SimpleMotionComponent",
   "schema_type": null,
-  "entities": 1
+  "entities": 1,
+  "resolved_class": "SimpleMotionComponent",
+  "resolved_type": null,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  },
  {
   "uuid": "5dff4a3f-6ceb-7270-d047-ece54500db26",
   "exe_name": "SpawnNodeComponent::Client",
   "schema_type": 130,
-  "entities": 1
+  "entities": 1,
+  "resolved_class": "SpawnNodeComponent::Client",
+  "resolved_type": 130,
+  "resolved_by": "exe route (uuid-route/): UUID literal -> Uuid() -> vtable slot 1 name, slot 14 type getter"
  }
 ]

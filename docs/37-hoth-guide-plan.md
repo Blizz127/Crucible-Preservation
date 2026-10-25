@@ -4,8 +4,9 @@ Status (25 October), all tested offline and none of it played:
 - Stage 1's match timer and stage 2 are implemented.
 - Of stages 3 and 4, the one hostile bot is in, behind a switch: a Saboteur
   guide bot with its own AI, primary and flight. The three allies are not.
-- Stage 5's rules are decoded. Its objective entities still need their
-  component sets.
+- Stage 5's rules are decoded, and its objective entities' component sets
+  are derived offline and validated. No objective entity has been spawned
+  live.
 - Stage 6 is plan only.
 
 The Alpha Hunters bot match (docs/30, docs/35, docs/36) is local: retail
@@ -179,30 +180,32 @@ GameOver, never by leaving mid-match: leaving arms the rejoin trap
    TeamScores records. Until they are, score server-side only. GameOver
    with the rank already works (docs/30). Retail's guide ends 12 s after
    the first heart is captured (stage 5 findings below).
-   - **Capture-blocked.** An objective entity's shared component set
-     cannot be derived from its slice offline. Tested against the known
-     answer: docs/24's route (slice UUIDs, then the exe's `{UUID}\0\0Name`
-     pairs, then the network schema) recovers 9 of the Marine's 33 shared
-     types. Most of its UUIDs have no name pair, and four labels contradict
-     the live capture. Like the Marine's, these entities need a live
-     capture.
-   - **Coverage measured.** The 71 network components attributed from the
-     live Marine capture give an exact UUID-to-type table
-     (`snapshots/guide-objectives-20261025/`). It covers no objective
-     entity fully. The hive, the heart and the victory objective each have
-     9 components of unknown type, a harvester 13, the telegraphs 2–4; some
-     are probably not network components at all. Across the 45 slices whose
-     paths name a hive, heart, harvester or objective (test mocks, wasps and
-     tutorial waypoints included), only 28 distinct UUIDs are missing.
-     Eleven have no exe label, and three more carry junk ones.
+   - **Derivable offline.** Exe name labels failed the known-answer test,
+     recovering 9 of the Marine's 33 shared types. A route through the exe
+     works:
+     - from the UUID literal, to its `Uuid()` function;
+     - then to the class vtable, whose slot 1 names the class and whose
+       slot 14 is the network type getter.
+
+     It reproduces all 81 Marine components, type and live vtable, and the
+     23 match-controller components. It also reproduces three live sets it
+     never used: the spitter's 18 shared types, the RoboDummy's 15 and the
+     connection entity's 8. Evidence is in
+     `snapshots/guide-objectives-20261025/` (`uuid-route/`,
+     `uuid-type-table.json`).
+   - **The objective entities' shared sets**, every component classified:
+     - the hive, 22 types;
+     - the heart, 9;
+     - a harvester, 11 (entry 1 of its 4-entity slice);
+     - the victory objective, 10;
+     - the hive telegraph, 8;
+     - a wasp, 14.
    - **Addressable.** Every shipped level's hash library, april2018's
-     included, names the hive, heart, harvester, victory-objective and
-     telegraph slices. So a hive could be spawned in `hoth-guide-april2018`
-     once its component set is known.
-   - **Untested route.** Resolving those 28 offline would make the sets
-     derivable, still subject to the capture-order caveat. The route would
-     go through the exe: the UUID literal, the code using it, then its
-     vtable's type getter.
+     included, names these slices.
+   - **Still a live experiment.** The client has never been sent a
+     non-character objective slice. The shard would send what worked for
+     the spitters: every shared root false except Location. Whether that is
+     enough for a hive or a heart is untested.
 6. **Guide presentation.** CrucibleVoiceScript (144) PlayDialogueLine and
    TutorialObjectives (140) RPCs (docs/26) carry the guide's voice and
    prompts.

@@ -1,0 +1,1268 @@
+{
+ "009f4241-8593-8ba6-e3d7-ab2d5e14f31a": {
+  "class": "PlayerComponent::Client",
+  "schema_name": "PlayerComponent",
+  "type": 169,
+  "vtable_rva": "0x675dc38"
+ },
+ "0131fa55-d4da-e200-22a2-b5fc0864b0ea": {
+  "class": "QuickCommsMatchComponent::Client",
+  "schema_name": "QuickCommsMatchComponent",
+  "type": 118,
+  "vtable_rva": "0x674cff0"
+ },
+ "01f2f878-1da9-0ecd-9afb-885c17fc2c8f": {
+  "class": "IncomingHitIndicatorComponent::Client",
+  "schema_name": "IncomingHitIndicatorComponent",
+  "type": 81,
+  "vtable_rva": "0x66fa8e8"
+ },
+ "0553c4dd-dd7a-173f-9ca6-52dcbc26427e": {
+  "class": "LinkExampleComponent::ClientBase",
+  "schema_name": "LinkExampleComponent",
+  "type": 148,
+  "vtable_rva": "0x6721220"
+ },
+ "0730dabf-9b30-30f2-385b-d82872367c19": {
+  "class": "AwarenessInfoComponent::Client",
+  "schema_name": "AwarenessInfoComponent",
+  "type": 22,
+  "vtable_rva": "0x66d36a8"
+ },
+ "0b0310d6-195f-9f83-15f5-280e768604f5": {
+  "class": "GMEventSpawnedObjectiveComponent::Client",
+  "schema_name": "GMEventSpawnedObjectiveComponent",
+  "type": 64,
+  "vtable_rva": "0x66f1f00"
+ },
+ "0d1bc758-2cb2-f854-5a27-2587ee6050a7": {
+  "class": "EventComponent::Client",
+  "schema_name": "EventComponent",
+  "type": 51,
+  "vtable_rva": "0x66eb970"
+ },
+ "0ddfa8fc-fc5e-ddcf-7607-84e70cd8a2fb": {
+  "class": "SocketComponent::Client",
+  "schema_name": "SocketComponent",
+  "type": 129,
+  "vtable_rva": "0x67142b8"
+ },
+ "0dedb6e2-bddc-3b30-649b-9636bbfb96c0": {
+  "class": "DebugVisualizationsComponent::Client",
+  "schema_name": "DebugVisualizationsComponent",
+  "type": 39,
+  "vtable_rva": "0x66b1e60"
+ },
+ "0efe06bf-8127-479d-37a2-d202a09504c5": {
+  "class": "PlayerInputSpoofComponent::Client",
+  "schema_name": "PlayerInputSpoofComponent",
+  "type": 109,
+  "vtable_rva": "0x670a3f0"
+ },
+ "0f5cd501-c8b2-bd04-37d7-e4dc563986ee": {
+  "class": "CharacterComponent::Client",
+  "schema_name": "CharacterComponent",
+  "type": 156,
+  "vtable_rva": "0x675b718"
+ },
+ "1067d2d0-9150-99bc-6a71-cf1c4c9109c8": {
+  "class": "NpcMovementComponent::Client",
+  "schema_name": "NpcMovementComponent",
+  "type": 5,
+  "vtable_rva": "0x6739828"
+ },
+ "10b0aef4-92f4-387b-6b53-562abe0ba6ef": {
+  "class": "MatchPhaseComponent::Client",
+  "schema_name": "MatchPhaseComponent",
+  "type": 89,
+  "vtable_rva": "0x674a508"
+ },
+ "1302ae1b-cf8c-5f2a-1f95-24aed7f359de": {
+  "class": "PlayerNetworkInputComponent::Client",
+  "schema_name": "PlayerNetworkInputComponent",
+  "type": 172,
+  "vtable_rva": "0x672f840"
+ },
+ "181e676c-0bd0-2e19-5abc-5207dc06ecf7": {
+  "class": "EntityFlagsComponent::Client",
+  "schema_name": "EntityFlagsComponent",
+  "type": 44,
+  "vtable_rva": "0x66e61a0"
+ },
+ "18ec9ec1-712e-e3ba-7138-54f91ad262e9": {
+  "class": "PlayerNameTagComponent::ClientBase",
+  "schema_name": "PlayerNameTagComponent",
+  "type": 171,
+  "vtable_rva": "0x672efd8"
+ },
+ "1974d5a1-9690-4e9e-4788-8243726bff73": {
+  "class": "LocationComponent::ClientBase",
+  "schema_name": "LocationComponent",
+  "type": 145,
+  "vtable_rva": "0x672a870"
+ },
+ "1986b475-9e12-adcf-9c45-e9df021e47ef": {
+  "class": "PlayerTelemetryComponent::Client",
+  "schema_name": "PlayerTelemetryComponent",
+  "type": 174,
+  "vtable_rva": "0x6730578"
+ },
+ "19ec9187-fbae-1c66-43e7-3a0656c2b520": {
+  "class": "ScriptableMoverComponent::Client",
+  "schema_name": "ScriptableMoverComponent",
+  "type": 95,
+  "vtable_rva": "0x6703880"
+ },
+ "1d792715-1e45-ce81-2d63-4b5b3172449b": {
+  "class": "ClientHouseKeepingMatchComponent::Client",
+  "schema_name": "ClientHouseKeepingMatchComponent",
+  "type": 90,
+  "vtable_rva": "0x66ff9b0"
+ },
+ "200bf467-7bf4-ecf6-6970-57b062005241": {
+  "class": "MatchPhaseComponent::ClientBase",
+  "schema_name": "MatchPhaseComponent",
+  "type": 89,
+  "vtable_rva": "0x66ff6b8"
+ },
+ "209b69d0-da34-c1ff-e4ac-d6fdddb34746": {
+  "class": "PlayerSpawnPointComponent::Client",
+  "schema_name": "PlayerSpawnPointComponent",
+  "type": 173,
+  "vtable_rva": "0x672fe88"
+ },
+ "21532fe4-8f7e-c260-7c38-686a05c3875c": {
+  "class": "RespawnMatchComponent::Client",
+  "schema_name": "RespawnMatchComponent",
+  "type": 121,
+  "vtable_rva": "0x6711148"
+ },
+ "21a4e605-b496-3f6f-ef81-da3d1d8c292d": {
+  "class": "SilhouetteComponent::Client",
+  "schema_name": "SilhouetteComponent",
+  "type": 113,
+  "vtable_rva": "0x670c508"
+ },
+ "22590f95-2910-7435-71d5-4e95d6b13801": {
+  "class": "AITargetOffsetComponent::Client",
+  "schema_name": "AITargetOffsetComponent",
+  "type": 3,
+  "vtable_rva": "0x66be0d0"
+ },
+ "254f37ee-23ba-2e1e-425e-279dc8979f53": {
+  "class": "ChallengesDebugMatchComponent::ClientBase",
+  "schema_name": "ChallengesDebugMatchComponent",
+  "type": 28,
+  "vtable_rva": "0x66da180"
+ },
+ "2778b0ce-0dcd-adfc-ebca-788fe63a11a1": {
+  "class": "DamageFloaterComponent::Client",
+  "schema_name": "DamageFloaterComponent",
+  "type": 36,
+  "vtable_rva": "0x66ddcb8"
+ },
+ "29b4d4ae-0954-f2c5-8e90-74e806f5d479": {
+  "class": "GameplayProjectileComponent::Client",
+  "schema_name": "GameplayProjectileComponent",
+  "type": 59,
+  "vtable_rva": "0x66ee728"
+ },
+ "2aa86eeb-4b0c-9b17-15d1-f41791b3f79c": {
+  "class": "AudioJointComponent::Client",
+  "schema_name": "AudioJointComponent",
+  "type": 16,
+  "vtable_rva": "0x66cf7c8"
+ },
+ "2b0abbb9-e784-ddff-5cce-f61d53bcadf3": {
+  "class": "ParticlesCoordinatorMatchComponent::Client",
+  "schema_name": "ParticlesCoordinatorMatchComponent",
+  "type": 100,
+  "vtable_rva": "0x674a6d8"
+ },
+ "2d56b754-0920-031f-5164-03886cefbad3": {
+  "class": "QuickCommsComponent::Client",
+  "schema_name": "QuickCommsComponent",
+  "type": 117,
+  "vtable_rva": "0x670f6a0"
+ },
+ "30425d20-cd46-e217-6b7a-b24438e1916e": {
+  "class": "SpectatorPlayerInfoMatchComponent::Client",
+  "schema_name": "SpectatorPlayerInfoMatchComponent",
+  "type": 93,
+  "vtable_rva": "0x6701fb8"
+ },
+ "309c1d7f-160b-8f0b-faf8-07831b99a6ea": {
+  "class": "ExampleMatchComponent::Client",
+  "schema_name": "ExampleMatchComponent",
+  "type": 53,
+  "vtable_rva": "0x66ec0d8"
+ },
+ "30aad89e-59f9-8174-acdb-f26f371293de": {
+  "class": "AudioInfoMatchComponent::Client",
+  "schema_name": "AudioInfoMatchComponent",
+  "type": 15,
+  "vtable_rva": "0x66cf0e0"
+ },
+ "31a8e9f7-e6ef-7878-fb7d-dedc36aeed01": {
+  "class": "DesignerEventComponent::Client",
+  "schema_name": "DesignerEventComponent",
+  "type": 61,
+  "vtable_rva": "0x66efe58"
+ },
+ "31b5fb02-b797-edab-f41e-e4576e15c5b9": {
+  "class": "GameModeComponent::Client",
+  "schema_name": "GameModeComponent",
+  "type": 58,
+  "vtable_rva": "0x66edb40"
+ },
+ "32c40cbd-eeb5-1b36-ba96-b62f3c87b605": {
+  "class": "SkinnedActorComponent::Client",
+  "schema_name": "SkinnedActorComponent",
+  "type": 128,
+  "vtable_rva": "0x67135b8"
+ },
+ "3643ae0e-bbd8-55d6-8fc2-ade4566bc16d": {
+  "class": "ParticlesRequestComponent::ClientBase",
+  "schema_name": "ParticlesRequestComponent",
+  "type": 101,
+  "vtable_rva": "0x67079d8"
+ },
+ "36ea5522-fff4-5739-de1a-8f4f7d8b6303": {
+  "class": "NpcMovementComponent::ClientBase",
+  "schema_name": "NpcMovementComponent",
+  "type": 5,
+  "vtable_rva": "0x66bf808"
+ },
+ "3a1b3982-28e5-a3d7-c2df-383edab29da5": {
+  "class": "ServerOnlyPlayerComponent::Client",
+  "schema_name": "ServerOnlyPlayerComponent",
+  "type": 124,
+  "vtable_rva": "0x67121d8"
+ },
+ "3a1de91a-28a5-59a1-532d-d96e7b7c60e1": {
+  "class": "TargetPointComponent::Client",
+  "schema_name": "TargetPointComponent",
+  "type": 135,
+  "vtable_rva": "0x6717758"
+ },
+ "3a796639-f73b-738b-6db3-14ee70717a3e": {
+  "class": "AfkCharacterComponent::Client",
+  "schema_name": "AfkCharacterComponent",
+  "type": 0,
+  "vtable_rva": "0x66bd030"
+ },
+ "3b06102c-2164-3a65-1c41-a1b3fa01eaed": {
+  "class": "FreeCamMovementComponent::Client",
+  "schema_name": "FreeCamMovementComponent",
+  "type": 56,
+  "vtable_rva": "0x66ed470"
+ },
+ "3c1b4973-dc02-fe66-917d-2165a0a34e11": {
+  "class": "DeathFogVisualsComponent::Client",
+  "schema_name": "DeathFogVisualsComponent",
+  "type": 38,
+  "vtable_rva": "0x66e1d20"
+ },
+ "3d4f6d85-f278-a784-221d-404bd5adecf8": {
+  "class": "SpectatorComponent::Client",
+  "schema_name": "SpectatorComponent",
+  "type": 92,
+  "vtable_rva": "0x6701b20"
+ },
+ "3dbcf56e-da48-2b62-c1dc-d2bab8d4f174": {
+  "class": "LoadoutSetupComponent::Client",
+  "schema_name": "LoadoutSetupComponent",
+  "type": 85,
+  "vtable_rva": "0x66fdca0"
+ },
+ "3e2fa765-c872-54b3-63c5-b453d86b3842": {
+  "class": "PlayerMovementComponent::Client",
+  "schema_name": "PlayerMovementComponent",
+  "type": 110,
+  "vtable_rva": "0x670b2c0"
+ },
+ "3e387695-aaa8-9fe6-ba00-a373050cb01e": {
+  "class": "SpawnTrackingComponent::Client",
+  "schema_name": "SpawnTrackingComponent",
+  "type": 73,
+  "vtable_rva": "0x66f59b8"
+ },
+ "3e6bfc6c-95ad-9aa6-4f71-77b13b964058": {
+  "class": "TeleportComponent::Client",
+  "schema_name": "TeleportComponent",
+  "type": 86,
+  "vtable_rva": "0x66fe2e8"
+ },
+ "3f20b1fa-0086-3ce9-0b0b-a833ae913517": {
+  "class": "EssenceComponent::Client",
+  "schema_name": "EssenceComponent",
+  "type": 48,
+  "vtable_rva": "0x66ea3c0"
+ },
+ "40977bc0-173b-145e-bf4c-00a954620121": {
+  "class": "GMComponent::Client",
+  "schema_name": "GMComponent",
+  "type": 62,
+  "vtable_rva": "0x66f04a0"
+ },
+ "43136b31-2715-a0f4-1ac0-2be16a2fdb50": {
+  "class": "CrucibleHealthComponent::Client",
+  "schema_name": "CrucibleHealthComponent",
+  "type": 79,
+  "vtable_rva": "0x66f7f90"
+ },
+ "43bfd264-0eed-6789-9e1d-ec4650c4e23a": {
+  "class": "AnimatedHitVolumesComponent::Client",
+  "schema_name": "AnimatedHitVolumesComponent",
+  "type": 154,
+  "vtable_rva": "0x6724940"
+ },
+ "465b5cf8-896b-24ed-b3fc-b4a64f725c07": {
+  "class": "GameplayStatsBlackboardComponent::Client",
+  "schema_name": "GameplayStatsBlackboardComponent",
+  "type": 66,
+  "vtable_rva": "0x66f27d8"
+ },
+ "470a75ec-bc95-c169-8a33-0b9168c770aa": {
+  "class": "AudioCharacterThreatComponent::Client",
+  "schema_name": "AudioCharacterThreatComponent",
+  "type": 14,
+  "vtable_rva": "0x66cea00"
+ },
+ "478cb384-f9ee-0b59-72e5-c90ed22c49f2": {
+  "class": "SpawningSystemMatchComponent::Client",
+  "schema_name": "SpawningSystemMatchComponent",
+  "type": 131,
+  "vtable_rva": "0x6714f18"
+ },
+ "49eae28d-235c-8413-eb9e-3e0202b61e04": {
+  "class": "LinkExampleComponent::Client",
+  "schema_name": "LinkExampleComponent",
+  "type": 148,
+  "vtable_rva": "0x66b2d38"
+ },
+ "4a2656a2-9006-827c-385e-eeea88a87696": {
+  "class": "UISettingsOverrideComponent::Client",
+  "schema_name": "UISettingsOverrideComponent",
+  "type": 142,
+  "vtable_rva": "0x671f098"
+ },
+ "4bd602b7-6bb6-5a77-28e0-369896974c86": {
+  "class": "ParticlesCoordinatorMatchComponent::ClientBase",
+  "schema_name": "ParticlesCoordinatorMatchComponent",
+  "type": 100,
+  "vtable_rva": "0x6706dc0"
+ },
+ "4db4f012-0b0c-cf07-8013-3339873ace41": {
+  "class": "GameplayHeartbeatComponent::Client",
+  "schema_name": "GameplayHeartbeatComponent",
+  "type": 65,
+  "vtable_rva": "0x66f23e8"
+ },
+ "4e6a41b9-f127-5d1f-557e-3594733c797e": {
+  "class": "AudioComponent::ClientBase",
+  "schema_name": "AudioComponent",
+  "type": 155,
+  "vtable_rva": "0x6724e78"
+ },
+ "4f62fde9-a41e-d72c-bd7b-6461857d3dd0": {
+  "class": "TestFooComponent::Client",
+  "schema_name": "TestFooComponent",
+  "type": 136,
+  "vtable_rva": "0x66b2bf0"
+ },
+ "4f80779f-9085-fc7a-d978-bf32338e0c35": {
+  "class": "CrucibleLODComponent::Client",
+  "schema_name": "CrucibleLODComponent",
+  "type": 35,
+  "vtable_rva": "0x66b2098"
+ },
+ "5137fbeb-6038-a130-0f90-1569e2bb9227": {
+  "class": "TestComponentWithBlackboardIntegers::Client",
+  "schema_name": "TestComponentWithBlackboardIntegers",
+  "type": 139,
+  "vtable_rva": "0x671dc58"
+ },
+ "51c222a9-cc80-3e87-053f-b8fcb635d166": {
+  "class": "CharacterComponent::ClientBase",
+  "schema_name": "CharacterComponent",
+  "type": 156,
+  "vtable_rva": "0x6725930"
+ },
+ "521a14db-b9b7-eb45-a668-1df4e93bdc83": {
+  "class": "OverShieldComponent::Client",
+  "schema_name": "OverShieldComponent",
+  "type": 99,
+  "vtable_rva": "0x6706890"
+ },
+ "526bf302-d454-0da5-7a0b-fda8ffb515e0": {
+  "class": "TutorialObjectivesComponent::Client",
+  "schema_name": "TutorialObjectivesComponent",
+  "type": 140,
+  "vtable_rva": "0x671e518"
+ },
+ "52751147-2eca-422f-8393-499409d686de": {
+  "class": "GuideEntityDetectionComponent::Client",
+  "schema_name": "GuideEntityDetectionComponent",
+  "type": 77,
+  "vtable_rva": "0x66f6b70"
+ },
+ "56cdca0a-43f2-dd5f-93b5-fb5734e6e011": {
+  "class": "RespawnComponent::Client",
+  "schema_name": "RespawnComponent",
+  "type": 120,
+  "vtable_rva": "0x67109b0"
+ },
+ "581817bd-1267-39ba-cdd1-aad67a81594a": {
+  "class": "TargetDummyComponent::Client",
+  "schema_name": "TargetDummyComponent",
+  "type": 134,
+  "vtable_rva": "0x67172c0"
+ },
+ "58be6322-5db9-402f-f58c-0e0afdfc96e7": {
+  "class": "CrucibleAnimatedHitVolumesComponent::ClientBase",
+  "schema_name": "CrucibleAnimatedHitVolumesComponent",
+  "type": 107,
+  "vtable_rva": "0x6709de8"
+ },
+ "5a5bed3e-daeb-e1bc-aeb4-4c7f2ab63fd3": {
+  "class": "GameAccelerationMatchComponent::Client",
+  "schema_name": "GameAccelerationMatchComponent",
+  "type": 57,
+  "vtable_rva": "0x66ed878"
+ },
+ "5af68aab-0bd7-bd57-b44a-64cc66cf6c3c": {
+  "class": "ServicesQueryComponent::Client",
+  "schema_name": "ServicesQueryComponent",
+  "type": 127,
+  "vtable_rva": "0x6712f90"
+ },
+ "5b529da9-2502-c58e-c05e-ba7385b0af42": {
+  "class": "DebugComponent::ClientBase",
+  "schema_name": "DebugComponent",
+  "type": 157,
+  "vtable_rva": "0x6726d78"
+ },
+ "5bda0160-b804-ca82-4da5-d64181901332": {
+  "class": "CrucibleLODComponent::ClientBase",
+  "schema_name": "CrucibleLODComponent",
+  "type": 35,
+  "vtable_rva": "0x66dd3d8"
+ },
+ "5ca983b3-48a6-ffe5-7b8f-69d87f524b61": {
+  "class": "PlayerNameTagComponent::Client",
+  "schema_name": "PlayerNameTagComponent",
+  "type": 171,
+  "vtable_rva": "0x675e118"
+ },
+ "5cefb2a9-bc53-e4b7-62ac-7ff65c5d06e5": {
+  "class": "PuppetInputRecorderComponent::Client",
+  "schema_name": "PuppetInputRecorderComponent",
+  "type": 119,
+  "vtable_rva": "0x670ffb0"
+ },
+ "5da579ea-d58a-54d5-5f82-56f6dc5d0195": {
+  "class": "AllianceComponent::Client",
+  "schema_name": "AllianceComponent",
+  "type": 10,
+  "vtable_rva": "0x66c9128"
+ },
+ "5dff4a3f-6ceb-7270-d047-ece54500db26": {
+  "class": "SpawnNodeComponent::Client",
+  "schema_name": "SpawnNodeComponent",
+  "type": 130,
+  "vtable_rva": "0x6714658"
+ },
+ "611c9742-0e85-54ab-b7c0-09b1a2fabbbb": {
+  "class": "GameplayStatsProcessorComponent::Client",
+  "schema_name": "GameplayStatsProcessorComponent",
+  "type": 67,
+  "vtable_rva": "0x66f2ba8"
+ },
+ "63208ddc-7cd3-bc9d-42eb-26cefcee6504": {
+  "class": "SurrenderComponent::Client",
+  "schema_name": "SurrenderComponent",
+  "type": 133,
+  "vtable_rva": "0x6716db0"
+ },
+ "634e3dd4-5c87-1cab-7637-23460a6e864b": {
+  "class": "OctreeNodeComponent::Client",
+  "schema_name": "OctreeNodeComponent",
+  "type": 165,
+  "vtable_rva": "0x66b2958"
+ },
+ "65a2dd2b-faa5-94db-beb3-ec73d0983dd4": {
+  "class": "GameplayUpdateComponent::Client",
+  "schema_name": "GameplayUpdateComponent",
+  "type": 68,
+  "vtable_rva": "0x66f2fb8"
+ },
+ "6792803b-2f45-6d9f-25c1-5f8c953539be": {
+  "class": "DebugVisualizationsComponent::ClientBase",
+  "schema_name": "DebugVisualizationsComponent",
+  "type": 39,
+  "vtable_rva": "0x66e1fa0"
+ },
+ "681256e5-b1be-d695-f64b-84b527f58d2c": {
+  "class": "TeamComponent::Client",
+  "schema_name": "TeamComponent",
+  "type": 178,
+  "vtable_rva": "0x6732090"
+ },
+ "68cdf07b-0f2f-1fb7-866b-f5b06cf6b61e": {
+  "class": "PhysicsMatchComponent::Client",
+  "schema_name": "PhysicsMatchComponent",
+  "type": 106,
+  "vtable_rva": "0x67094b0"
+ },
+ "6a8adc57-2d01-ff29-69ed-5bb4bd5f75d5": {
+  "class": "LocationComponent::Client",
+  "schema_name": "LocationComponent",
+  "type": 145,
+  "vtable_rva": "0x675ceb8"
+ },
+ "6a96c42f-4a09-46ae-1651-8147b4e3be69": {
+  "class": "AnimationParameterComponent::Client",
+  "schema_name": "AnimationParameterComponent",
+  "type": 13,
+  "vtable_rva": "0x66caf20"
+ },
+ "6ab94d8c-65b1-1122-acae-1bf4f554871b": {
+  "class": "PlacementHelperComponent::ClientBase",
+  "schema_name": "PlacementHelperComponent",
+  "type": 108,
+  "vtable_rva": "0x670a1f0"
+ },
+ "6b845e29-29fd-dee3-3d2f-9fdabee5d158": {
+  "class": "EntityQueryMatchComponent::Client",
+  "schema_name": "EntityQueryMatchComponent",
+  "type": 45,
+  "vtable_rva": "0x66e6820"
+ },
+ "6d1f271a-fa78-546e-e2a4-0a23aba839f4": {
+  "class": "LevelComponent::Client",
+  "schema_name": "LevelComponent",
+  "type": 50,
+  "vtable_rva": "0x66eb1c0"
+ },
+ "6d4bfc69-3343-e1e1-230a-46ad5778ff85": {
+  "class": "AfkPlayerComponent::Client",
+  "schema_name": "AfkPlayerComponent",
+  "type": 1,
+  "vtable_rva": "0x66bd5d8"
+ },
+ "6dc62de2-e7c7-73a2-883a-23428bd80ebe": {
+  "class": "ExplosionComponent::Client",
+  "schema_name": "ExplosionComponent",
+  "type": 54,
+  "vtable_rva": "0x66ec550"
+ },
+ "6e413692-e4c1-d0cd-17a3-2624329a0854": {
+  "class": "GlobalAccessComponent::Client",
+  "schema_name": "GlobalAccessComponent",
+  "type": 160,
+  "vtable_rva": "0x66b2588"
+ },
+ "6e5dfcbe-508d-0f17-da08-39bb97bf79b2": {
+  "class": "AnalyticsListenerComponent::Client",
+  "schema_name": "AnalyticsListenerComponent",
+  "type": 11,
+  "vtable_rva": "0x66c9800"
+ },
+ "6f4d50ea-11b7-cbb9-cf64-9d7913fb706a": {
+  "class": "NetworkAnimationComponent::Client",
+  "schema_name": "NetworkAnimationComponent",
+  "type": 163,
+  "vtable_rva": "0x672b8c0"
+ },
+ "71d3ae41-deae-210a-4a12-d40e65d8cfe5": {
+  "class": "HitReactionComponent::Client",
+  "schema_name": "HitReactionComponent",
+  "type": 80,
+  "vtable_rva": "0x66fa0c8"
+ },
+ "71efeccf-6e8f-8c33-a02b-fd05bbf25d5b": {
+  "class": "MatchAIOverlordComponent::Client",
+  "schema_name": "MatchAIOverlordComponent",
+  "type": 87,
+  "vtable_rva": "0x66fe760"
+ },
+ "73ccaccd-d4ce-6bb7-0ef3-9550b6f08482": {
+  "class": "SpawnedEntityComponent::Client",
+  "schema_name": "SpawnedEntityComponent",
+  "type": 74,
+  "vtable_rva": "0x66f5d58"
+ },
+ "756ccdf0-d796-c3b7-53b2-cbdd85f54bea": {
+  "class": "OwnableComponent::Client",
+  "schema_name": "OwnableComponent",
+  "type": 69,
+  "vtable_rva": "0x66f3830"
+ },
+ "764c4ab2-a5ad-e737-11e0-bb7f5871b618": {
+  "class": "TestFooComponent::ClientBase",
+  "schema_name": "TestFooComponent",
+  "type": 136,
+  "vtable_rva": "0x6717dd8"
+ },
+ "77e7dd42-448f-5b9c-d5d1-24b4a3f120d2": {
+  "class": "DisableServerAnimsComponent::Client",
+  "schema_name": "DisableServerAnimsComponent",
+  "type": 41,
+  "vtable_rva": "0x66e34e0"
+ },
+ "789d0629-e50b-ba63-4712-9297fdce564c": {
+  "class": "AIWanderComponent::Client",
+  "schema_name": "AIWanderComponent",
+  "type": 153,
+  "vtable_rva": "0x67242b8"
+ },
+ "7a804b17-9be9-eb21-c31d-386bcb43b48d": {
+  "class": "CruciCommsMatchComponent::ClientBase",
+  "schema_name": "CruciCommsMatchComponent",
+  "type": 33,
+  "vtable_rva": "0x66dca08"
+ },
+ "7aea054c-91e5-aa17-4221-4c71115a49b1": {
+  "class": "GlobalAccessComponent::ClientBase",
+  "schema_name": "GlobalAccessComponent",
+  "type": 160,
+  "vtable_rva": "0x6728010"
+ },
+ "7b0c7ad7-e2bf-904e-b3e8-57f8dcd51007": {
+  "class": "ProjectileRequestComponent::Client",
+  "schema_name": "ProjectileRequestComponent",
+  "type": 115,
+  "vtable_rva": "0x674c7f0"
+ },
+ "7b80a5de-7d7f-d9f6-4779-1b9027ef7f6f": {
+  "class": "ProximityTriggerComponent::Client",
+  "schema_name": "ProximityTriggerComponent",
+  "type": 177,
+  "vtable_rva": "0x6731608"
+ },
+ "7bd22d45-2197-0e01-dd4c-65f530bd8c51": {
+  "class": "OwnerComponent::Client",
+  "schema_name": "OwnerComponent",
+  "type": 70,
+  "vtable_rva": "0x66f4968"
+ },
+ "7be11e78-a7ce-f73e-7cca-12bc7de98284": {
+  "class": "OctreeNodeComponent::ClientBase",
+  "schema_name": "OctreeNodeComponent",
+  "type": 165,
+  "vtable_rva": "0x672c770"
+ },
+ "7c482eea-372a-f5ee-ca20-af894a450340": {
+  "class": "SimpleSurfaceFollowerComponent::Client",
+  "schema_name": "SimpleSurfaceFollowerComponent",
+  "type": 96,
+  "vtable_rva": "0x6703b10"
+ },
+ "80cc66fe-5246-e6aa-f61d-834c6ea03dda": {
+  "class": "PositionInterpolationComponent::Client",
+  "schema_name": "PositionInterpolationComponent",
+  "type": 112,
+  "vtable_rva": "0x674bc80"
+ },
+ "85469643-6581-9514-3427-c74f8a30c149": {
+  "class": "PlacementHelperComponent::Client",
+  "schema_name": "PlacementHelperComponent",
+  "type": 108,
+  "vtable_rva": "0x66b2ff0"
+ },
+ "871ac4f9-e268-9192-75ad-2453d2271d1b": {
+  "class": "TestComponent::Client",
+  "schema_name": "TestComponent",
+  "type": 151,
+  "vtable_rva": "0x66b26b0"
+ },
+ "87be17d1-1183-c932-f36c-4038127f44fc": {
+  "class": "AudioScriptComponent::ClientBase",
+  "schema_name": "AudioScriptComponent",
+  "type": 18,
+  "vtable_rva": "0x66d0910"
+ },
+ "888d6ee6-69c7-db5d-8d00-50a6f4771444": {
+  "class": "PlayerEACComponent::Client",
+  "schema_name": "PlayerEACComponent",
+  "type": 170,
+  "vtable_rva": "0x672ec30"
+ },
+ "89acd365-fa2d-91d0-6824-dde3bf6e2600": {
+  "class": "PreloadMatchComponent::Client",
+  "schema_name": "PreloadMatchComponent",
+  "type": 114,
+  "vtable_rva": "0x674c360"
+ },
+ "8c9f7485-b97b-6572-7557-1a7dda6dfb5a": {
+  "class": "ForceVolumeComponent::Client",
+  "schema_name": "ForceVolumeComponent",
+  "type": 55,
+  "vtable_rva": "0x66ecc98"
+ },
+ "8d77b286-3c58-d404-100f-d6d794eb5c12": {
+  "class": "AwarenessComponent::Client",
+  "schema_name": "AwarenessComponent",
+  "type": 21,
+  "vtable_rva": "0x66d1fb8"
+ },
+ "8e0335af-b09b-b202-90e0-0e49b7c8dc09": {
+  "class": "MeleeComponent::Client",
+  "schema_name": "MeleeComponent",
+  "type": 94,
+  "vtable_rva": "0x6702410"
+ },
+ "8efe2ecf-6952-6e28-ed80-c71af08983f0": {
+  "class": "GMEventComponent::Client",
+  "schema_name": "GMEventComponent",
+  "type": 63,
+  "vtable_rva": "0x66f0a28"
+ },
+ "9113a3b5-9d39-9ffd-2e5d-380b04001834": {
+  "class": "EntityResourceCollectionComponent::Client",
+  "schema_name": "EntityResourceCollectionComponent",
+  "type": 46,
+  "vtable_rva": "0x66e9320"
+ },
+ "936cc870-98d3-7057-4e1f-dbea745aef32": {
+  "class": "NotifyTestComponent::Client",
+  "schema_name": "NotifyTestComponent",
+  "type": 150,
+  "vtable_rva": "0x6721d40"
+ },
+ "95317710-60da-eb8b-c98a-40b4f8dbf215": {
+  "class": "CrucibleAnimatedHitVolumesComponent::Client",
+  "schema_name": "CrucibleAnimatedHitVolumesComponent",
+  "type": 107,
+  "vtable_rva": "0x674b490"
+ },
+ "9ad9061f-4cc1-e5eb-a39e-d5b7581d7b53": {
+  "class": "BuffComponent::Client",
+  "schema_name": "BuffComponent",
+  "type": 24,
+  "vtable_rva": "0x66d4008"
+ },
+ "9afc3f3b-454d-cc92-cecc-cf1d2a81ed28": {
+  "class": "ObjectiveCollectorComponent::Client",
+  "schema_name": "ObjectiveCollectorComponent",
+  "type": 97,
+  "vtable_rva": "0x67046c8"
+ },
+ "9ba710a7-fd34-959a-5b7b-4b762211b753": {
+  "class": "NpcBlockerComponent::Client",
+  "schema_name": "NpcBlockerComponent",
+  "type": 4,
+  "vtable_rva": "0x66be4a0"
+ },
+ "9d953bc6-1653-9dba-7bb5-58d27af07932": {
+  "class": "SequentialGMMatchComponent::Client",
+  "schema_name": "SequentialGMMatchComponent",
+  "type": 123,
+  "vtable_rva": "0x6711e10"
+ },
+ "9ddc7118-7e3f-10fd-ed97-f9b077153eda": {
+  "class": "QueuedLoSTestMatchComponent::Client",
+  "schema_name": "QueuedLoSTestMatchComponent",
+  "type": 116,
+  "vtable_rva": "0x670e740"
+ },
+ "9eb83419-ae4e-5687-e1d3-8d1ac304e6f8": {
+  "class": "AudioUnattachedReceiverComponent::Client",
+  "schema_name": "AudioUnattachedReceiverComponent",
+  "type": 19,
+  "vtable_rva": "0x66d0e58"
+ },
+ "a2c2c30e-f0c1-6d81-bfe9-f584f548bab5": {
+  "class": "DialogueMatchComponent::Client",
+  "schema_name": "DialogueMatchComponent",
+  "type": 40,
+  "vtable_rva": "0x66e3118"
+ },
+ "a606e7b1-fb66-e597-585c-9cc6f762753e": {
+  "class": "DropPodStateComponent::Client",
+  "schema_name": "DropPodStateComponent",
+  "type": 43,
+  "vtable_rva": "0x66e4ec0"
+ },
+ "a660cb4f-3364-3cc8-ecf8-99d3a2fd05b7": {
+  "class": "AudioComponent::Client",
+  "schema_name": "AudioComponent",
+  "type": 155,
+  "vtable_rva": "0x675b0e0"
+ },
+ "a99a4c79-3eb2-8316-0615-9ae7d1952a34": {
+  "class": "TestTargetEntityComponent::Client",
+  "schema_name": "TestTargetEntityComponent",
+  "type": 137,
+  "vtable_rva": "0x6718010"
+ },
+ "abc28a9a-02b3-29b7-c368-820222f8a415": {
+  "class": "ActorPropertySyncComponent::Client",
+  "schema_name": "ActorPropertySyncComponent",
+  "type": 8,
+  "vtable_rva": "0x66c2f48"
+ },
+ "ac14b566-a04e-7832-3425-e39371627950": {
+  "class": "AIComponent::Client",
+  "schema_name": "AIComponent",
+  "type": 2,
+  "vtable_rva": "0x66bdc48"
+ },
+ "ac3577fc-e75c-47a7-b37f-7b8acb6459e1": {
+  "class": "PuppetComponent::Client",
+  "schema_name": "PuppetComponent",
+  "type": 71,
+  "vtable_rva": "0x66f4e98"
+ },
+ "ae3cd989-55e3-3d04-a187-061531a54346": {
+  "class": "PlayerComponent::ClientBase",
+  "schema_name": "PlayerComponent",
+  "type": 169,
+  "vtable_rva": "0x672e620"
+ },
+ "ae4a6831-6fa0-14d1-cfdc-99898e84d0ad": {
+  "class": "StatsComponent::Client",
+  "schema_name": "StatsComponent",
+  "type": 132,
+  "vtable_rva": "0x6716340"
+ },
+ "b198c815-09ed-24ce-2b92-b2390799e7f7": {
+  "class": "ParticlesRequestComponent::Client",
+  "schema_name": "ParticlesRequestComponent",
+  "type": 101,
+  "vtable_rva": "0x66b3148"
+ },
+ "b1f0c214-1ec8-ee84-4284-73d29ae15f0f": {
+  "class": "PositionInterpolationComponent::ClientBase",
+  "schema_name": "PositionInterpolationComponent",
+  "type": 112,
+  "vtable_rva": "0x670c120"
+ },
+ "b3b88944-20c4-7532-a5e6-2ff525ed8f32": {
+  "class": "CruciCommsComponent::Client",
+  "schema_name": "CruciCommsComponent",
+  "type": 32,
+  "vtable_rva": "0x66dc248"
+ },
+ "b81d2b98-3d52-9368-2adb-7419d68d023c": {
+  "class": "VelocityOverrideRequestComponent::Client",
+  "schema_name": "VelocityOverrideRequestComponent",
+  "type": 143,
+  "vtable_rva": "0x671f750"
+ },
+ "b9671f65-0c02-22af-b3fd-67bd087e449d": {
+  "class": "DataStoreMatchComponent::Client",
+  "schema_name": "DataStoreMatchComponent",
+  "type": 37,
+  "vtable_rva": "0x66e10b0"
+ },
+ "ba6050a0-3bfb-3727-80c7-e4c1e6b73f12": {
+  "class": "CrucibleVoiceScriptComponent::Client",
+  "schema_name": "CrucibleVoiceScriptComponent",
+  "type": 144,
+  "vtable_rva": "0x66b2ab8"
+ },
+ "bc0827ef-69c0-5466-7434-00de634d9a66": {
+  "class": "DeathFogComponent::Client",
+  "schema_name": "DeathFogComponent",
+  "type": 91,
+  "vtable_rva": "0x67010b0"
+ },
+ "bdd040f6-dcf7-4cf0-56ad-06e6467c7b6d": {
+  "class": "DropPodLifetimeMatchComponent::ClientBase",
+  "schema_name": "DropPodLifetimeMatchComponent",
+  "type": 42,
+  "vtable_rva": "0x66e3d18"
+ },
+ "be9890ef-06bc-e802-e153-388652ac52dc": {
+  "class": "CrucibleVoiceScriptComponent::ClientBase",
+  "schema_name": "CrucibleVoiceScriptComponent",
+  "type": 144,
+  "vtable_rva": "0x671fa28"
+ },
+ "bf223813-c50b-0dce-0890-1f260e5ef45e": {
+  "class": "BroadcastComponent::Client",
+  "schema_name": "BroadcastComponent",
+  "type": 52,
+  "vtable_rva": "0x66ebb88"
+ },
+ "c02c5a48-0819-fe29-09ae-85eebfff9248": {
+  "class": "InputComponent::Client",
+  "schema_name": "InputComponent",
+  "type": 82,
+  "vtable_rva": "0x66fb018"
+ },
+ "c430f4c4-82bd-450e-1960-b0346428563a": {
+  "class": "AudioPhysicsComponent::Client",
+  "schema_name": "AudioPhysicsComponent",
+  "type": 17,
+  "vtable_rva": "0x66cfbb8"
+ },
+ "c4807e06-f55a-cc7d-4208-661f8d0085ab": {
+  "class": "QuickCommsMatchComponent::ClientBase",
+  "schema_name": "QuickCommsMatchComponent",
+  "type": 118,
+  "vtable_rva": "0x670fbc8"
+ },
+ "c4fb8866-e208-bf0f-d08e-b0a7d6ecd04b": {
+  "class": "ProjectileRequestComponent::ClientBase",
+  "schema_name": "ProjectileRequestComponent",
+  "type": 115,
+  "vtable_rva": "0x670d3b0"
+ },
+ "c55919b0-2d98-4525-dab0-68265cf9ea5a": {
+  "class": "CruciCommsMatchComponent::Client",
+  "schema_name": "CruciCommsMatchComponent",
+  "type": 33,
+  "vtable_rva": "0x673f7c8"
+ },
+ "c59a2fb5-650d-260d-3973-3f14179ac8fc": {
+  "class": "WeaponsComponent::Client",
+  "schema_name": "WeaponsComponent",
+  "type": 179,
+  "vtable_rva": "0x67602b8"
+ },
+ "c5b45d84-264c-0a72-53ca-a5b5c55216aa": {
+  "class": "TestComponentWithBlackboardFloats::Client",
+  "schema_name": "TestComponentWithBlackboardFloats",
+  "type": 138,
+  "vtable_rva": "0x671c298"
+ },
+ "c7425579-ea4b-1f7f-fba7-a612f394b201": {
+  "class": "NetworkRandomNumberGeneratorComponent::Client",
+  "schema_name": "NetworkRandomNumberGeneratorComponent",
+  "type": 164,
+  "vtable_rva": "0x672c050"
+ },
+ "c7833b1a-d749-a283-0cc0-5e1ba200a934": {
+  "class": "PlayerWasdMovementComponent::Client",
+  "schema_name": "PlayerWasdMovementComponent",
+  "type": 175,
+  "vtable_rva": "0x6730c20"
+ },
+ "c82a09ff-7690-8f8a-0490-63818ffd1f7b": {
+  "class": "AnimGraphParameterComponent::Client",
+  "schema_name": "AnimGraphParameterComponent",
+  "type": 146,
+  "vtable_rva": "0x67205c8"
+ },
+ "c87f4628-cc0d-1536-9d94-d35be06a1d0a": {
+  "class": "EssencePoolComponent::Client",
+  "schema_name": "EssencePoolComponent",
+  "type": 49,
+  "vtable_rva": "0x66eaa88"
+ },
+ "c8d574e8-53c1-a3c1-8167-5a6043672feb": {
+  "class": "AnimGraphSnapshotComponent::Client",
+  "schema_name": "AnimGraphSnapshotComponent",
+  "type": 147,
+  "vtable_rva": "0x6720c40"
+ },
+ "c90146f9-a029-3c5e-d633-0e0e8fcc68da": {
+  "class": "PhysicsComponent::Client",
+  "schema_name": "PhysicsComponent",
+  "type": 166,
+  "vtable_rva": "0x675d428"
+ },
+ "c97612aa-52b7-d39f-a83f-c2b646239be4": {
+  "class": "ProjectileComponent::Client",
+  "schema_name": "ProjectileComponent",
+  "type": 176,
+  "vtable_rva": "0x6731328"
+ },
+ "caaebaf3-c5dd-dc4a-8d37-e7640ddc3a07": {
+  "class": "MatchComponentMarker::Client",
+  "schema_name": "MatchComponentMarker",
+  "type": 126,
+  "vtable_rva": "0x6712be8"
+ },
+ "cb092ccd-586d-fade-5dae-0ae5ef879edf": {
+  "class": "DropPodLifetimeMatchComponent::Client",
+  "schema_name": "DropPodLifetimeMatchComponent",
+  "type": 42,
+  "vtable_rva": "0x66b2e88"
+ },
+ "cbb75eec-40e8-88f0-fcb3-ccfd18d3e194": {
+  "class": "EssencePoolRequestComponent::Client",
+  "schema_name": "EssencePoolRequestComponent",
+  "type": 47,
+  "vtable_rva": "0x66e9af8"
+ },
+ "cbcfe06a-0849-cbca-1c36-0542ff786ec3": {
+  "class": "TestComponentNested::Client",
+  "schema_name": "TestComponentNested",
+  "type": 149,
+  "vtable_rva": "0x67215e0"
+ },
+ "cc49570c-9190-d50d-915f-c75aac3c3837": {
+  "class": "PhysicsColliderStateComponent::Client",
+  "schema_name": "PhysicsColliderStateComponent",
+  "type": 105,
+  "vtable_rva": "0x67090f8"
+ },
+ "ccee4eb3-3f02-ad27-35f1-6db46d91d1a6": {
+  "class": "TargetTypeComponent::Client",
+  "schema_name": "TargetTypeComponent",
+  "type": 75,
+  "vtable_rva": "0x66f6178"
+ },
+ "ccf1c747-f655-eb09-738c-6a407500b1d5": {
+  "class": "PreloadMatchComponent::ClientBase",
+  "schema_name": "PreloadMatchComponent",
+  "type": 114,
+  "vtable_rva": "0x670ccd8"
+ },
+ "ce58aeca-453b-3f7b-39dc-b78225c25e15": {
+  "class": "HighFrequencyEventAggregatorComponent::Client",
+  "schema_name": "HighFrequencyEventAggregatorComponent",
+  "type": 29,
+  "vtable_rva": "0x66da590"
+ },
+ "d04640d6-1237-f243-e824-b18435569091": {
+  "class": "CrucibleDebugComponent::Client",
+  "schema_name": "CrucibleDebugComponent",
+  "type": 34,
+  "vtable_rva": "0x66dcdc0"
+ },
+ "d1738d04-fd69-8241-108a-c6f71061be98": {
+  "class": "BakedNameTestComponent::Client",
+  "schema_name": "BakedNameTestComponent",
+  "type": 23,
+  "vtable_rva": "0x66d3b10"
+ },
+ "d185e981-631f-1b70-9c74-e311cb6be4d3": {
+  "class": "EntityHierarchyComponent::Client",
+  "schema_name": "EntityHierarchyComponent",
+  "type": 158,
+  "vtable_rva": "0x6727830"
+ },
+ "d277db6f-43ab-19fb-255d-5d0cb74eff98": {
+  "class": "HarvesterIdComponent::Client",
+  "schema_name": "HarvesterIdComponent",
+  "type": 78,
+  "vtable_rva": "0x66f7878"
+ },
+ "d4d1cf01-7349-6a09-3781-b0e0d774da2d": {
+  "class": "GuideBotSpawnerComponent::Client",
+  "schema_name": "GuideBotSpawnerComponent",
+  "type": 76,
+  "vtable_rva": "0x66f6760"
+ },
+ "d8735154-0158-a215-b1c4-12454ca63657": {
+  "class": "PerkComponent::Client",
+  "schema_name": "PerkComponent",
+  "type": 102,
+  "vtable_rva": "0x6707dc0"
+ },
+ "d96e88c4-4356-97ca-3d5e-e480f4714e22": {
+  "class": "PhysXTriggerEventComponent::Client",
+  "schema_name": "PhysXTriggerEventComponent",
+  "type": 104,
+  "vtable_rva": "0x6708938"
+ },
+ "d981b1de-2043-7fbb-0223-f05d92522e24": {
+  "class": "AimBotComponent::Client",
+  "schema_name": "AimBotComponent",
+  "type": 9,
+  "vtable_rva": "0x66c3310"
+ },
+ "dbfc7b20-8e0c-5f12-e6c0-460d54a7d97a": {
+  "class": "AmortizedSpawningMatchComponent::Client",
+  "schema_name": "AmortizedSpawningMatchComponent",
+  "type": 60,
+  "vtable_rva": "0x66eebb8"
+ },
+ "dc42047c-45bd-0ce5-6afa-e423f24e3c1e": {
+  "class": "FilteredEntityComponent::Client",
+  "schema_name": "FilteredEntityComponent",
+  "type": 159,
+  "vtable_rva": "0x6727c80"
+ },
+ "dcfd057a-0ef9-5ac2-bf94-ebf81a67cca9": {
+  "class": "WeaponsComponent::ClientBase",
+  "schema_name": "WeaponsComponent",
+  "type": 179,
+  "vtable_rva": "0x67329f8"
+ },
+ "de0ae4db-ebc5-470a-c3c7-ce938cf41d5a": {
+  "class": "CameraDataComponent::ClientBase",
+  "schema_name": "CameraDataComponent",
+  "type": 26,
+  "vtable_rva": "0x66d64d0"
+ },
+ "de816014-e67d-4b5e-1384-08f538178e49": {
+  "class": "CameraDataComponent::Client",
+  "schema_name": "CameraDataComponent",
+  "type": 26,
+  "vtable_rva": "0x66abd60"
+ },
+ "df70423a-b218-9251-afa5-3d6caa1e0059": {
+  "class": "MatchDataReceiverComponent::Client",
+  "schema_name": "MatchDataReceiverComponent",
+  "type": 88,
+  "vtable_rva": "0x66ff060"
+ },
+ "e0344d12-32bf-6f99-9b84-bac841c3232d": {
+  "class": "AITestSpawnComponent::Client",
+  "schema_name": "AITestSpawnComponent",
+  "type": 152,
+  "vtable_rva": "0x6724038"
+ },
+ "e09acc56-9e9c-a372-f066-bd6737065db2": {
+  "class": "AudioScriptComponent::Client",
+  "schema_name": "AudioScriptComponent",
+  "type": 18,
+  "vtable_rva": "0x66b2380"
+ },
+ "e4da43b3-3169-c457-c743-338f565e7b63": {
+  "class": "CameraGameplayDataComponent::Client",
+  "schema_name": "CameraGameplayDataComponent",
+  "type": 27,
+  "vtable_rva": "0x66d9628"
+ },
+ "e4e42441-e3b2-49d3-c04f-43c37cdf642e": {
+  "class": "DebugComponent::Client",
+  "schema_name": "DebugComponent",
+  "type": 157,
+  "vtable_rva": "0x675beb0"
+ },
+ "e534305a-8d0a-6dd9-e66f-a076eb075f90": {
+  "class": "PickupComponent::Client",
+  "schema_name": "PickupComponent",
+  "type": 167,
+  "vtable_rva": "0x672d5a8"
+ },
+ "e57f5ee7-82f8-aaef-ee1b-8a9db69631bc": {
+  "class": "ScriptComponent::Client",
+  "schema_name": "ScriptComponent",
+  "type": 25,
+  "vtable_rva": "0x66d5f30"
+ },
+ "e60714df-273a-521b-3b4c-82bf0d4d7539": {
+  "class": "AutomatedTestingComponent::Client",
+  "schema_name": "AutomatedTestingComponent",
+  "type": 20,
+  "vtable_rva": "0x66d1828"
+ },
+ "e728daa6-6e6e-554d-fc10-84b552d80cdb": {
+  "class": "InteractorComponent::Client",
+  "schema_name": "InteractorComponent",
+  "type": 84,
+  "vtable_rva": "0x66fcc58"
+ },
+ "ea152444-c561-1de1-3fc3-add83cfccee3": {
+  "class": "AccountProgressionMatchComponent::Client",
+  "schema_name": "AccountProgressionMatchComponent",
+  "type": 7,
+  "vtable_rva": "0x66c22c8"
+ },
+ "eb475e04-77d7-5c98-4cef-746f9e16d80d": {
+  "class": "AbilityComponent::Client",
+  "schema_name": "AbilityComponent",
+  "type": 6,
+  "vtable_rva": "0x66c1f38"
+ },
+ "ec8f8f33-bb9c-92d2-9877-40b88cdfba3e": {
+  "class": "TestComponent::ClientBase",
+  "schema_name": "TestComponent",
+  "type": 151,
+  "vtable_rva": "0x6723648"
+ },
+ "eccda2b7-4992-d8a1-d412-9581383a8e58": {
+  "class": "PhaseServerAnimsComponent::Client",
+  "schema_name": "PhaseServerAnimsComponent",
+  "type": 103,
+  "vtable_rva": "0x6708568"
+ },
+ "edd1b97c-8903-1876-5ff5-060062f13c50": {
+  "class": "PlayerStatsComponent::Client",
+  "schema_name": "PlayerStatsComponent",
+  "type": 111,
+  "vtable_rva": "0x670bd18"
+ },
+ "f0831529-0856-e2f5-b875-285b137751de": {
+  "class": "GameAlertComponent::Client",
+  "schema_name": "GameAlertComponent",
+  "type": 141,
+  "vtable_rva": "0x671eb90"
+ },
+ "f0bb400d-663d-ab51-b2da-9e76b8f6adc6": {
+  "class": "PhysicsComponent::ClientBase",
+  "schema_name": "PhysicsComponent",
+  "type": 166,
+  "vtable_rva": "0x672cf38"
+ },
+ "f391e5fd-e3c4-62e9-92d4-5da7b3f2b569": {
+  "class": "ObjectiveComponent::Client",
+  "schema_name": "ObjectiveComponent",
+  "type": 98,
+  "vtable_rva": "0x6704ea0"
+ },
+ "f398dedb-e831-bb57-839a-1729e936774e": {
+  "class": "ChallengesDebugMatchComponent::Client",
+  "schema_name": "ChallengesDebugMatchComponent",
+  "type": 28,
+  "vtable_rva": "0x66b2240"
+ },
+ "f41af508-19ef-0653-31fe-75038fa5fc1f": {
+  "class": "ClientConnectionComponent::Client",
+  "schema_name": "ClientConnectionComponent",
+  "type": 31,
+  "vtable_rva": "0x66db2b8"
+ },
+ "f61652ac-e088-5972-eada-4a4305051168": {
+  "class": "ModelVisibilityComponent::ClientBase",
+  "schema_name": "ModelVisibilityComponent",
+  "type": 162,
+  "vtable_rva": "0x672b110"
+ },
+ "f660e955-4d97-587f-451b-bac1dab4600b": {
+  "class": "SpawnBlacklistComponent::Client",
+  "schema_name": "SpawnBlacklistComponent",
+  "type": 122,
+  "vtable_rva": "0x67115a8"
+ },
+ "f842f6f4-bf0b-e4f9-79d1-827b0246213d": {
+  "class": "PlayerClickToMoveComponent::Client",
+  "schema_name": "PlayerClickToMoveComponent",
+  "type": 168,
+  "vtable_rva": "0x672d920"
+ },
+ "f92104b4-9beb-9a9c-2575-978de3989d2b": {
+  "class": "ServerPlayerStateComponent::Client",
+  "schema_name": "ServerPlayerStateComponent",
+  "type": 125,
+  "vtable_rva": "0x6712838"
+ },
+ "f9336bc6-00c9-ee59-d3d7-f703ad0343b5": {
+  "class": "AnalyticsMatchComponent::Client",
+  "schema_name": "AnalyticsMatchComponent",
+  "type": 12,
+  "vtable_rva": "0x66c9bb8"
+ },
+ "f94687dc-dc0d-8cb5-573b-45c84d13461f": {
+  "class": "HealthComponent::Client",
+  "schema_name": "HealthComponent",
+  "type": 161,
+  "vtable_rva": "0x67285a8"
+ },
+ "f970cf86-7c45-a438-6cc0-58163ca377fd": {
+  "class": "InteractableComponent::Client",
+  "schema_name": "InteractableComponent",
+  "type": 83,
+  "vtable_rva": "0x66fc3c0"
+ },
+ "fc9c94a1-a6a9-f81b-8b55-a94ba9292a8f": {
+  "class": "CharacterDropPointComponent::Client",
+  "schema_name": "CharacterDropPointComponent",
+  "type": 30,
+  "vtable_rva": "0x66dade0"
+ },
+ "ffaea963-fc76-20a7-62f2-0cf9ddccc880": {
+  "class": "SpawnTelegraphComponent::Client",
+  "schema_name": "SpawnTelegraphComponent",
+  "type": 72,
+  "vtable_rva": "0x66f5128"
+ }
+}
