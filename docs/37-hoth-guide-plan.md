@@ -21,11 +21,12 @@ each step can be played on its own.
   (UseRespawnPointsAsDropPoints). Phases are PerkPreview 1, TeamInfo 5,
   PerkSelect 20, DropPreview 12, DropSelect 8, then GamePlay.
 - **Win:** `cdl/gamemodes/guide_hoth/hoth_guide_win_condition.cdl`. On each
-  MatchScoreEvent it compares team scores with the target, then raises
-  MatchOverEvent(WinningTeamId) (match-flow track finding 04). Thirty more
-  `guide_hoth/*.cdl` scripts handle hearts, harvesters, hives, respawn,
-  level-up and match-over voice lines. The main script is
-  `guide_criticalpath.cdl` (1.8 MB).
+  MatchScoreEvent it tests team 0's and then team 1's score against 1 (not
+  the config's 3), then raises MatchOverEvent(WinningTeamId) 12 s later
+  (stage 5 findings below). Of the 40 `guide_hoth/*.cdl` files, seven load:
+  six from `guide_hoth_scripts.cdlscriptslist` and the win script, and one
+  of those six is inert. The hive, heart and harvester rules run in
+  generic scripts. The main script is `guide_criticalpath.cdl` (1.8 MB).
 - **Bots:** `slices/planetaryevents/guide_hoth.dynamicslice` BotData maps
   DuelistDummy, HeroDummy, InventorDummy and SaboteurDummy to
   `<hero>_character_dummy.dynamicslice`. Each names its
@@ -171,7 +172,8 @@ GameOver, never by leaving mid-match: leaving arms the rejoin trap
    spawned objective entities. Their replication is NOT traced: the
    DataStoreMatch ReplicatedHiveData, ReplicatedHarvesterData and
    TeamScores records. Until they are, score server-side only. GameOver
-   with the rank already works (docs/30) and ends the match at 3 hearts.
+   with the rank already works (docs/30). Retail's guide ends 12 s after
+   the first heart is captured (stage 5 findings below).
    - **Capture-blocked.** An objective entity's shared component set
      cannot be derived from its slice offline. Tested against the known
      answer: docs/24's route (slice UUIDs, then the exe's `{UUID}\0\0Name`
@@ -227,7 +229,8 @@ Read directly from the script:
   the script ends after the first heart.
 - **Timing.** The first spawn comes minutes in. It needs detect mode, a
   creature camp, a harvester capture and level 2. Only then does
-  `SpawnNodes_AIOverlord` (`[64]`) raise the hive's 45 s telegraph. The
+  `SpawnNodes_AIOverlord` (`[64]`) raise the hive's 45 s telegraph (the
+  telegraph data's 30 s override may apply instead; see stage 5). The
   GoToHive poll accepts the telegraph as well as the hive within 40 m (any
   distance if the hive was just damaged). So the allies can arrive during
   the telegraph: at the earliest 7.5 s after the overlord's call.
@@ -242,6 +245,58 @@ Open questions:
 - How the server's blue-noise sampler picks a point within the ring (the
   client only has a stub that aborts).
 - Whether the mode's own code adds or limits bots beyond the scripts.
+
+## Stage 5 findings: objectives and score
+
+Decoded on 25 October; the full rules, with node citations and what is read,
+inferred or unknown, are in `snapshots/guide-objectives-20261025/stage5-rules.md`.
+Nothing here has been seen live.
+
+- **The match ends at the first heart.** Capturing a heart adds 1 to the
+  capturer's team score (`cruciheart_interaction.cdl`). The guide's win
+  script tests a score of at least 1 for team 0, then team 1, and raises
+  MatchOverEvent 12.0 s later. `matchover_set_teamranks_and_endmatch_flag`
+  then gives rank 1 to the winners and rank 2 to the rest. No running script
+  reads the config's TargetScore 3 or MatchPointThreshold 2. No script
+  raises MatchScoreEvent either; it is presumably raised natively by the
+  score change (inferred).
+- **Other ends.** `MaxGameDuration` 60 minutes gives everyone rank 2 with no
+  MatchOverEvent, which agrees with "a timeout is a draw" above. The generic
+  surrender script would also end it.
+- **One scripted hive.** The critical path raises hive 1 through the AI
+  overlord with a 45 s telegraph. It does so once the player has used detect
+  mode, a camp is clear, a harvester has been captured and the player is
+  level 2; 36.5 s of fixed delays come first. The telegraph data also
+  carries a 30 s override, so which duration applies is open, and so is
+  which of the six hive nodes the overlord picks. A capture asks for the
+  next hive with a 240 s telegraph while the score is below 3, but the guide
+  ends 12 s after the capture, so that hive never spawns.
+- **The hive.** 5,000 health, typed Hive, Monster and Objective. It has no
+  team, and no script restricts who damages it (the damage rule itself is
+  native); the allies' AI targets hives.
+  Hit by a player, it fires 7, 10 or 14 wasps by its health and drops a
+  damage field. About 20 s after the last attack it heals 100 health a
+  second. On death a heart spawns on its exact position, and the critical
+  path despawns the allies and spawns the Saboteur by the heart.
+- **The heart.** An interactable with no health: a 10.0 s capture within
+  2.9 m, one interactor at a time, with no team check. A capture interrupted
+  re-enables it. That a melee hit interrupts is inferred: every hero's quick
+  melee applies a Knockback override, the type the interrupt achievements
+  count. The interrupt rule itself is native.
+- **Harvesters.** Five on HotH_02 (A to E). A 10.0 s capture within 5.0 m
+  makes the capturer the owner; it then gets 150 essence every 10 s. They
+  give no score in the guide, but the critical path needs one captured.
+- **When the guide starts is open.** `hoth_guide.sequentialgmdata` gives
+  the entity carrying the guide scripts a 90 s first-event delay. If that
+  applies, the player's first drop-pod exit, which starts the tutorial, may
+  already be past, and only a later one (a respawn) would start it. The
+  stage 4 reading, that the entity is live from the start of play, is not
+  settled either.
+- **Which team the player is on is unknown**, and it matters. The win
+  script reads only team ids 0 and 1, and the heart scores for the
+  capturer's team. The shard puts the player on team 1, which is its own
+  convention; a player on team 2 or above would never end the match this
+  way.
 
 ## The hostile Saboteur guide bot (switch)
 
@@ -307,9 +362,12 @@ roster, the spawn, the arena, the squad and the gunnery, so they agree.
   `flinchDelay`, which is unread for the Saboteur.
 - **How a match ends.** HOTH_GUIDE ends on score, which is not modelled, so
   only `CRUCIBLE_SOLO_MATCH_MAX_SECONDS` ends it. Killing the Saboteur does
-  not, and neither does the player's death: a dead player lies dead, with
-  no respawn, until the timer's GameOver (rank 2). The same holds for the
-  three Marine placeholders in hoth-guide. The death event of a Saboteur
+  not, and neither does the player's death. The shard does not respawn the
+  player, so a dead player lies dead until the timer's GameOver (rank 2);
+  the same holds for the three Marine placeholders in hoth-guide. Retail
+  does respawn: the mode enables respawn with `guide_respawnparams`, and the
+  loaded `guide_ondeath_playerrespawn.cdl` adds only a voice line. That is
+  not modelled, since RespawnComponent 120's encoding is untraced. The death event of a Saboteur
   kill carries its own tag, "Ability" (28) and `saboteur_primary` (86).
 - **Offline check.** With every run drop-in on and a 60 s timer, the
   harness's win, lose and deaggro scripts reach GameOver on the timer with

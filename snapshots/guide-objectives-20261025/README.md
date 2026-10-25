@@ -15,6 +15,9 @@ numbers and slice names.
   covered network types, the shared ones among them, and every component UUID
   the table does not cover. Run it read-only with
   `.venv/bin/python -I snapshots/guide-objectives-20261025/coverage.py`.
+- `stage5-rules.md`: HOTH_GUIDE's objective and score rules, decoded script by
+  script with node citations, and marked read, inferred or unknown. docs/37's
+  "Stage 5 findings" summarises it.
 - `uncovered-uuids.json`: the 28 distinct uncovered UUIDs. Each has the
   number of entities using it and any exe `{UUID}\0\0Name` label. Such a label
   is a lead, not proof; on the Marine, 4 of 30 were wrong.
