@@ -54,6 +54,11 @@ Two shipped hunters are deliberately **not** selectable:
   drops `{4f80779f-9085-fc7a-d978-bf32338e0c35}` = `DamageFloaterComponent::Client`,
   network type 36 with 36 autonomous bits. Its autonomous record would have 24
   roots, not 25, so it cannot reuse the accepted Marine layout.
+  - **That label is suspect.** Paired by position with the live Marine
+    capture's type getters (`snapshots/guide-objectives-20261025/`),
+    `4f80779f` is CrucibleLOD (type 35, no record bits), and the
+    DamageFloater label belongs to `2778b0ce`. If so, rocketeer keeps 25
+    roots. The exclusion stands regardless: rocketeer is not in the roster.
 - `technomancer` has a character slice in misc.pak but **no entry in any
   shipped level hash library**, so the shard has no name hash to send.
 

@@ -78,7 +78,9 @@ CHARACTER_CLASS = {
 # `rocketeer` is deliberately excluded: its slice drops
 # {4f80779f-9085-fc7a-d978-bf32338e0c35} = DamageFloaterComponent::Client,
 # network type 36 with 36 autonomous bits, so its autonomous record would have
-# 24 roots, not 25. It is also absent from the shipped character roster.
+# 24 roots, not 25. That label is suspect: the live Marine capture puts
+# CrucibleLOD (no record bits) at 4f80779f (docs/24). It is also absent from
+# the shipped character roster, which alone excludes it.
 # `technomancer` is excluded because no shipped level hash library names its
 # character slice.
 SHARED_TYPES = (0, 10, 13, 18, 21, 24, 27, 44, 46, 48, 69, 79, 80,
