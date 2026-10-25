@@ -391,6 +391,9 @@ class Combat:
         self.last_rejection = None
         self.last_projectile[shooter] = projectile_id
         entity = self.entities[targets.pop()]
+        if callable(distance):
+            # The caller knows positions, not which target the report names.
+            distance = distance(entity.entity_id)
         damage = immediate_damage(weapon, distance=distance, critical=critical)
         entity.health = max(0.0, entity.health - damage)
         entity.dirty = True

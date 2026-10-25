@@ -126,6 +126,27 @@ class ShardWiringTests(unittest.TestCase):
                                  else shard.PLAYER_CHARACTER_ID)
                 self.assertIsNone(other.forced_until)
 
+    def test_range_switch_feeds_the_falloff_and_the_marker_scale(self, _log):
+        import hunter_ai
+        from combat import immediate_damage
+        route = ((0., 0., 0.), (1., 0., 0.))
+        for flag, damage in (('0', 40.), ('1', immediate_damage(SABOTEUR_PRIMARY, distance=100.))):
+            squad = hunter_ai.Squad([hunter_ai.Bot(e, route, hunter_ai.MARINE,
+                                                   position=(0., 100. * k, 0.))
+                                     for k, e in enumerate((0x1000003, 0x1000004, 0x1000005))])
+            env = dict(ALPHA, CRUCIBLE_SOLO_HIT_RANGE=flag, CRUCIBLE_SOLO_HIT_CONFIRM='1')
+            with self.subTest(flag=flag), patch.dict('os.environ', env, clear=True):
+                state = self.start()
+                state['squad'], state['player_position'] = squad, (0., 0., 0.)
+                shard.observe_solo_combat(player_hit(1, 0x1000004), state)
+                self.assertAlmostEqual(state['combat'].health(0x1000004), 800. - damage)
+                scale = feedback.hit_scale(damage, SABOTEUR_PRIMARY)
+                self.assertEqual(state['pending_rpcs'][0].data,
+                                 feedback.build_confirm_hit_indicator(
+                                     scale=scale, projectile_type_index=6))
+        # 100 m is inside Ajonah's 60..119 m falloff: about 26.5 damage.
+        self.assertAlmostEqual(damage, 26.5, places=1)
+
     @patch.dict('os.environ', dict(ALPHA, CRUCIBLE_SOLO_HIT_CONFIRM='1'), clear=True)
     def test_refused_reports_and_kills_without_the_kill_flag(self, _log):
         state = self.start()

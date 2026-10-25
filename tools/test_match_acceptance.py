@@ -64,5 +64,27 @@ class MatchAcceptanceTests(unittest.TestCase):
         self.assertIn('shard started mid-match at 23:05:00Z', rows[6][2])
 
 
+class FeedbackRowTests(unittest.TestCase):
+    def test_feedback_and_reload_rows_appear_only_when_used(self):
+        self.assertNotIn('F1', statuses(SHARD, CLIENT))
+        shard = SHARD + [
+            J % (9, 9) + 'SOLO FEEDBACK sent rpc 115/2 to 01000002 (count 1)',
+            J % (9, 9) + 'SOLO FEEDBACK sent rpc 115/2 to 01000002 (count 16)',
+            J % (9, 9) + 'SOLO FEEDBACK sent rpc 115/3 to 01000002 (count 1)',
+            J % (5, 5) + 'HUNTER AI 01000003 reloading',
+            J % (6, 6) + 'HUNTER AI 01000004 reloading']
+        rows = {row[0].split()[0]: row for row in score(shard_facts(shard), client_facts(CLIENT))}
+        self.assertEqual(rows['F1'][1], 'LOGS-OK')
+        self.assertIn('115/2 >=16, 115/3 >=1', rows['F1'][2])
+        self.assertIn('client dropped RPCs: 0', rows['F1'][2])
+        self.assertEqual(rows['F2'][1:], ('LOGS-OK', rows['F2'][2]))
+        self.assertIn('2 Marine reloads', rows['F2'][2])
+
+    def test_a_client_dropped_rpc_fails_the_markers(self):
+        client = CLIENT + [C % 9 + '[NET_Rpc] Dropping RPC EntityId=16777218 LocalRole=1']
+        shard = SHARD + [J % (9, 9) + 'SOLO FEEDBACK sent rpc 115/2 to 01000002 (count 1)']
+        self.assertEqual(statuses(shard, client)['F1'], 'FAIL')
+
+
 if __name__ == '__main__':
     unittest.main()

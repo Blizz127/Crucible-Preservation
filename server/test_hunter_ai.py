@@ -514,6 +514,57 @@ class AttackTests(unittest.TestCase):
         self.assertEqual(bot.position, start)
         self.assertTrue(all(s.speed == 0. for s in steps))
 
+    def sighted(self, seen):
+        """A Marine whose sight test answers `seen[0]` and counts its calls."""
+        calls = []
+
+        def visible(eye, target):
+            calls.append((eye, target))
+            return seen[0]
+        bot = hunter_ai.Bot(3, straight(), hunter_ai.MARINE, visible=visible)
+        return bot, calls
+
+    def test_an_unseen_target_is_not_acquired(self):
+        self.assertEqual((hunter_ai.MARINE.forget_without_sight,
+                          hunter_ai.MARINE.abandon_attack_without_sight), (8., 3.))
+        bot, calls = self.sighted([False])
+        self.assertIsNone(bot.update(.05, 2, (0., 4., 0.)).target)
+        # The eye is AggroOriginOffsetLocal above the feet; the aim point is
+        # AggroTargetOffsetVertical above the target's.
+        self.assertEqual(calls[0], ((0., 0., 1.), (0., 4., 1.)))
+
+    def test_an_attack_needs_sight_to_start_and_is_abandoned_after_3_s(self):
+        seen = [True]
+        bot, _ = self.sighted(seen)
+        steps = [bot.update(.05 * i, 2, (0., 8., 0.)) for i in range(1, 11)]
+        self.assertTrue(steps[-1].firing)
+        seen[0] = False
+        blind = [bot.update(.5 + .05 * i, 2, (0., 8., 0.)) for i in range(1, 81)]
+        # Last seen at .5 s (the throttled test re-runs every .2 s), so the
+        # attack runs on, then stops once 3 s pass unseen. No new one starts.
+        late = [s for s in blind if s.shots and s.shots[0].time > 3.75]
+        self.assertFalse(late)
+        self.assertTrue(any(s.shots for s in blind[:20]))
+        self.assertFalse(blind[-1].firing)
+        self.assertEqual(blind[-1].target, 2)
+
+    def test_a_target_unseen_for_8_s_is_forgotten_unless_forced(self):
+        for forced, kept in ((False, False), (True, True)):
+            seen = [True]
+            bot, _ = self.sighted(seen)
+            bot.update(.05, 2, (0., 4., 0.))
+            seen[0] = False
+            if forced:
+                bot.note_damage(8., 2)
+            step = bot.update(8.35, 2, (0., 4., 0.))
+            self.assertEqual(step.target is not None, kept)
+
+    def test_the_sight_line_is_retested_at_most_every_0_2_s(self):
+        bot, calls = self.sighted([True])
+        for i in range(1, 21):
+            bot.update(.05 * i, 2, (0., 4., 0.))
+        self.assertEqual(len(calls), 5)
+
     def test_without_a_magazine_the_rifle_never_reloads(self):
         bot = hunter_ai.Bot(3, straight(), tuning(
             attack_duration=2., round_interval=.096, attack_delay=.25, magazine=24,

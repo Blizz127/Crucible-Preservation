@@ -982,6 +982,7 @@ def land_hunter_hits(state, arena, now):
     if not landings or arena is None:
         return
     state['hunter_landings'] = [l for l in landings if l.time > now]
+    import feedback_rings
     for landing in sorted((l for l in landings if l.time <= now), key=lambda l: l.time):
         hit = arena.apply_damage(landing.shooter, landing.target, landing.damage,
                                  now=landing.time)
@@ -989,6 +990,13 @@ def land_hunter_hits(state, arena, now):
             log('      SOLO COMBAT hunter %08x hit target=%08x damage=%.0f health=%.0f%s'
                 % (landing.shooter, hit.target, hit.damage, hit.health,
                    ' KILLED' if hit.killed else ''))
+            squad = state.get('squad')
+            shooter = next((bot for bot in getattr(squad, 'bots', ())
+                            if bot.entity == landing.shooter), None)
+            if (hit.target == PLAYER_CHARACTER_ID and shooter is not None
+                    and feedback_rings.hit_direction_enabled()):
+                state.setdefault('indicator_ring', feedback_rings.IndicatorRing()).hit(
+                    hit.damage, shooter.position)
 
 
 def solo_ai_enabled():
@@ -998,6 +1006,26 @@ def solo_ai_enabled():
 def bot_reload_enabled():
     """docs/36: hunters fire from the authored 24-round magazine and reload."""
     return os.environ.get('CRUCIBLE_SOLO_BOT_RELOAD') == '1'
+
+
+def terrain_sight():
+    """docs/36: a decoded-terrain sight test for CRUCIBLE_SOLO_LOS=terrain, or None.
+
+    The terrain is the level's compiled heightfield (level_geometry), which
+    matches the shipped PhysX heightfield within 0.06 m. Walls, rocks and
+    buildings are not modelled, so a clear line may still be blocked in
+    retail. A level whose terrain does not decode gets no sight test.
+    """
+    if os.environ.get('CRUCIBLE_SOLO_LOS') != 'terrain':
+        return None
+    import level_geometry
+    level = solo_modes.selected().level
+    try:
+        terrain = level_geometry.installed_terrain(level)
+    except (OSError, ValueError) as error:
+        log('      LINE OF SIGHT unavailable on %s: %s' % (level, error))
+        return None
+    return lambda eye, target: level_geometry.terrain_clear(terrain, eye, target)
 
 
 def authored_death_metadata(hunters):
@@ -1068,6 +1096,11 @@ def start_solo_simulation(state):
             if os.environ.get('CRUCIBLE_SOLO_BOT_TURN') == '1':
                 for bot in state['squad'].bots:
                     bot.move_turn = True
+            sight = terrain_sight()
+            if sight is not None:
+                state['sight'] = sight
+                for bot in state['squad'].bots:
+                    bot.visible = sight
             import dit_motion_policy
             pause_range, move_range = dit_motion_policy.approved_patrol_motion_ranges(
                 os.environ.get('CRUCIBLE_DIT_TRANSPORT_ROOT'))
@@ -1140,7 +1173,8 @@ def observe_solo_combat(message, state):
     from combat import HERO_PRIMARY, MARINE_PRIMARY
     weapon = (HERO_PRIMARY.get(hero_loadout.selected().name, MARINE_PRIMARY)
               if shooter == PLAYER_CHARACTER_ID else MARINE_PRIMARY)
-    hit = arena.apply_reported_hit(shooter, projectile, reported, weapon=weapon, now=now)
+    hit = arena.apply_reported_hit(shooter, projectile, reported, weapon=weapon, now=now,
+                                   distance=reported_hit_range(state, shooter))
     if hit is None:
         log_refused_report(state, shooter, arena.last_rejection,
                            'projectile %d after %s, reported %s' % (
@@ -1152,6 +1186,10 @@ def observe_solo_combat(message, state):
          hit.target, hit.damage, hit.health, ' KILLED' if hit.killed else ''))
     if shooter == PLAYER_CHARACTER_ID:
         confirm_player_hit(state, hit, weapon)
+        import feedback_rings
+        if feedback_rings.damage_numbers_enabled():
+            state.setdefault('floater_ring', feedback_rings.FloaterRing()).hit(
+                hit.target, hit.damage, now)
         squad = state.get('squad')
         if (squad is not None and not hit.killed
                 and os.environ.get('CRUCIBLE_SOLO_FORCED_AGGRO') == '1'):
@@ -1166,6 +1204,31 @@ def observe_solo_combat(message, state):
                 creature.kill(now)
         else:
             director.note_damage(now, hit.target, PLAYER_CHARACTER_ID)
+
+
+def reported_hit_range(state, shooter):
+    """Opt-in shooter-to-target range for a reported player hit, or None.
+
+    A ClientProjectileResult carries no range, so damage used the weapon's
+    close-range maximum. With CRUCIBLE_SOLO_HIT_RANGE=1 the falloff gets the
+    distance from the player's decoded input position to the target's
+    server position (a hunter's, or a Practice placement's).
+    """
+    origin = state.get('player_position')
+    if (shooter != PLAYER_CHARACTER_ID or origin is None
+            or os.environ.get('CRUCIBLE_SOLO_HIT_RANGE') != '1'):
+        return None
+    import practice_population
+    positions = {place.entity_id: place.position for place in
+                 practice_population.population(solo_modes.selected().level)}
+    squad = state.get('squad')
+    if squad is not None:
+        positions.update((bot.entity, bot.position) for bot in squad.bots)
+
+    def distance(target):
+        position = positions.get(target)
+        return None if position is None else math.dist(origin, position)
+    return distance
 
 
 def confirm_player_hit(state, hit, weapon):
@@ -1185,6 +1248,23 @@ def confirm_player_hit(state, hit, weapon):
         queue_player_rpc(state, shooter_feedback.PROJECTILE_REQUEST_COMPONENT,
                          shooter_feedback.CONFIRM_KILL_INDICATOR,
                          shooter_feedback.build_confirm_kill_indicator())
+
+
+def feedback_ring_message(state):
+    """docs/36: a builder for this tick's damage-number/hit-arc update, or None."""
+    import feedback_rings
+    floaters = state['floater_ring'].take() if 'floater_ring' in state else None
+    indicators = state['indicator_ring'].take() if 'indicator_ring' in state else None
+    if floaters is None and indicators is None:
+        return None
+    counts = state.setdefault('ring_updates', {})
+    for name, taken in (('damage numbers', floaters), ('hit arcs', indicators)):
+        if taken is not None:
+            count = counts[name] = counts.get(name, 0) + len(taken[0])
+            if count & (count - 1) == 0 or len(taken[0]) > 1:
+                log('      SOLO FEEDBACK %s index %d (count %d)' % (name, taken[1], count))
+    return lambda previous_id: feedback_rings.build_ring_update(
+        floaters=floaters, indicators=indicators, previous_id=previous_id)
 
 
 def solo_match_rank(state):
@@ -1222,6 +1302,13 @@ def solo_simulation_messages(state, now, *, previous_id=0):
     player = state.get('player_position')
     arena = state.get('combat')
     land_hunter_hits(state, arena, now)
+    # docs/36: the player's damage numbers and hit arcs lead the tick, so the
+    # hunters' Location messages separate them from the player's own health
+    # update at the end; one entity never gets two messages in a row.
+    rings = feedback_ring_message(state)
+    if rings is not None:
+        messages.append(rings(previous_id))
+        previous_id = PLAYER_CHARACTER_ID & 0xffffff
     health_entities = arena.tick(now) if arena is not None else []
     active_entities = ({entity for entity in arena.entities if arena.alive(entity)}
                        if arena is not None else None)
@@ -1301,6 +1388,15 @@ def solo_simulation_messages(state, now, *, previous_id=0):
                 # only; with it, docs/35 resolves the round here.
                 if arena is not None and server_bot_damage_enabled():
                     landing = hunter_gunnery(state).resolve(shot)
+                    sight = state.get('sight')
+                    if landing is not None and sight is not None:
+                        aim = tuple(shot.origin[i] + shot.direction[i] * shot.range
+                                    for i in range(3))
+                        if not sight(shot.origin, aim):
+                            # The terrain stops the round (docs/36).
+                            state['hunter_rounds_blocked'] = (
+                                state.get('hunter_rounds_blocked', 0) + 1)
+                            landing = None
                     if landing is not None:
                         state.setdefault('hunter_landings', []).append(landing)
                 log('      HUNTER AI %08x fired at %08x (range %.1f m)' %
@@ -1310,6 +1406,11 @@ def solo_simulation_messages(state, now, *, previous_id=0):
             if last.get(step.entity) != step.state:
                 last[step.entity] = step.state
                 log('      HUNTER AI %08x -> %s' % (step.entity, step.state))
+            reloading = state.setdefault('hunter_reloading', {})
+            now_reloading = getattr(step, 'reloading', False)
+            if now_reloading and not reloading.get(step.entity):
+                log('      HUNTER AI %08x reloading' % step.entity)
+            reloading[step.entity] = now_reloading
         if os.environ.get('CRUCIBLE_SOLO_FIRE') == '1':
             from combat import MARINE_PRIMARY
             from projectile_events import build_hybrid_activation_update
@@ -1588,6 +1689,13 @@ def rpc_reply(state):
     pending = state.pop('pending_rpcs', None)
     if not pending or 'received_seq' not in state:
         return None
+    counts = state.setdefault('sent_rpcs', {})
+    for message in pending:
+        key = (message.component, message.rpc)
+        count = counts[key] = counts.get(key, 0) + 1
+        if count & (count - 1) == 0:
+            log('      SOLO FEEDBACK sent rpc %d/%d to %08x (count %d)'
+                % (message.component, message.rpc, message.entity_id, count))
     state['seq'] = (state['seq'] + 1) & 0xffff
     return build_shard(shard_bpt(), 11, state['seq'], state['received_seq'],
                        payload=build_entity_rpcs(pending),
@@ -2224,6 +2332,11 @@ def main():
             log("prewarmed hunter navigation in %.2fs" % (time.monotonic() - start))
         except Exception as error:      # noqa: BLE001 - diagnostic only
             log("hunter navigation prewarm FAILED: %r" % (error,))
+    # The same for the line-of-sight terrain (about 0.3 s for April2018).
+    if solo_ai_enabled() and os.environ.get('CRUCIBLE_SOLO_LOS') == 'terrain':
+        start = time.monotonic()
+        if terrain_sight() is not None:
+            log("prewarmed line-of-sight terrain in %.2fs" % (time.monotonic() - start))
 
     reply = os.environ.get("CRUCIBLE_SHARD_REPLY", "").strip() or None
     if reply:

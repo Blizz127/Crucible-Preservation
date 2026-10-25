@@ -53,6 +53,8 @@ class Tuning:
     turn_rate: float = math.tau            # radians/second
     move_turn_rate: float = 0.             # radians/second while moving; 0: turn_rate
     forced_aggro_on_damage: float = 0.     # seconds; 0: damage changes nothing
+    forget_without_sight: float = math.inf  # seconds unseen before dropping a target
+    abandon_attack_without_sight: float = math.inf  # seconds unseen ending an attack
     strafe_speed: float = 0.               # metres/second; 0: no strafing
     strafe_near: tuple = (0., 0.)          # influence 0 at [0], 1 at [1]
     strafe_far: tuple = (0., 0.)           # influence 1 at [0], 0 at [1]
@@ -71,6 +73,8 @@ class Tuning:
                    and 0 <= self.reload_animation <= self.reload_duration
                    and self.magazine >= 0 and self.forced_aggro_on_damage >= 0
                    and self.move_turn_rate >= 0
+                   and self.forget_without_sight > 0
+                   and self.abandon_attack_without_sight > 0
                    and self.strafe_speed >= 0 and self.approach_stop >= 0
                    and 0 <= self.strafe_near[0] <= self.strafe_near[1]
                    and self.strafe_far[0] <= self.strafe_far[1]
@@ -106,6 +110,11 @@ MARINE = Tuning(
     # consider it as a possible target for this many seconds, even if it is
     # outside our aggro range."
     forced_aggro_on_damage=6.0,
+    # AggroCheckLineOfSight True (0x107b): no acquisition without sight.
+    # TimeWithoutLoSToForgetCurrentTarget 8.0 (0x12da) and Attacks[0]
+    # TimeWithoutLoSToTargetUntilAbandoningAttack 3.0 (0x1420). These act
+    # only when the shard injects a sight test (Bot.visible).
+    forget_without_sight=8.0, abandon_attack_without_sight=3.0,
     # MovementPararams/StrafeParams (0xaba..0xbcc) and TargetApproachParams,
     # with the retail editor tooltips (bot-authored-params.md): strafing has
     # 0% influence at 1 m (DistanceNearMin), 100% from 2 m (DistanceNearMax)
@@ -245,6 +254,12 @@ class Bot:
     forced_until: float = None
     strafe: bool = False          # opt-in: move while attacking (StrafeParams)
     move_turn: bool = False       # opt-in: steer at tuning.move_turn_rate when moving
+    # Opt-in sight test visible(eye, target) -> bool. None: everything is seen.
+    visible: object = None
+    sight_interval: float = 0.2   # not authored: how often the sight line is re-tested
+    _seen_at: float = None
+    _sight_checked: float = None
+    _sight: bool = True
     _strafe_sign: float = 0.
     _strafe_until: float = None
     _round_anchor: float = None
@@ -329,13 +344,14 @@ class Bot:
 
     # -- detection --------------------------------------------------------
 
-    def _sense(self, now, target, distance, aim):
+    def _sense(self, now, target, distance, aim, seen=True):
         """Acquire or drop a target on the authored radii and aggro cone.
 
         AggroRadiusNear acquires in any direction; out to AggroRadiusFar the
         target must also be inside AggroAngleFar of the bot's facing.
-        `AggroCheckLineOfSight` is true in the asset but no collision geometry
-        has been decoded, so no occlusion test is applied.
+        `AggroCheckLineOfSight` needs a sight test: with `visible` injected, an
+        unseen target is not acquired, and a held one is forgotten after
+        TimeWithoutLoSToForgetCurrentTarget unless forced aggro holds it.
         """
         if target is None or distance is None:
             self._disengage()
@@ -343,17 +359,25 @@ class Bot:
         forced = (self.forced_until is not None and now < self.forced_until
                   and self.target == target)
         if self.target is not None:
+            if seen:
+                self._seen_at = now
+            elif (not forced and self._seen_at is not None
+                  and now - self._seen_at > self.tuning.forget_without_sight):
+                self._disengage()
+                return False
             if distance > self.tuning.deaggro and not forced:
                 self._disengage()
                 return False
             return True
+        if not seen:
+            return False
         if distance > self.tuning.aggro_far:
             return False
         if distance > self.tuning.aggro_near:
             offset = (yaw_of(aim) - self.yaw + math.pi) % math.tau - math.pi
             if abs(offset) > self.tuning.aggro_angle / 2:
                 return False
-        self.target, self.acquired_at = target, now
+        self.target, self.acquired_at, self._seen_at = target, now, now
         self.attack_started = self.attack_ended = None
         return True
 
@@ -362,6 +386,7 @@ class Bot:
         self.attack_started = self.attack_ended = None
         self.rounds_fired = 0
         self.forced_until = None
+        self._seen_at = None
 
     def note_damage(self, now, attacker):
         """ForcedAggroDurationOnDamage: whoever hit the bot becomes its target.
@@ -376,6 +401,7 @@ class Bot:
             self.target, self.acquired_at = attacker, now
             self.attack_started = self.attack_ended = None
             self.rounds_fired = 0
+        self._seen_at = now
         self.forced_until = now + self.tuning.forced_aggro_on_damage
 
     def _may_attack(self, now, distance, aim):
@@ -507,6 +533,18 @@ class Bot:
             return moved
         return 0.
 
+    def _can_see(self, now, aim_target):
+        """The injected sight test from the eye to the aim point, re-run at most
+        every sight_interval seconds. Without one, everything is visible."""
+        if self.visible is None:
+            return True
+        if self._sight_checked is None or now - self._sight_checked >= self.sight_interval:
+            eye = tuple(self.position[i] + self.tuning.aggro_origin_offset_local[i]
+                        for i in range(3))
+            self._sight = bool(self.visible(eye, aim_target))
+            self._sight_checked = now
+        return self._sight
+
     def reloading(self, now):
         """True inside the reload's using_reload window."""
         return (self.reload_started is not None and self.reload_started <= now
@@ -540,7 +578,8 @@ class Bot:
         distance = None if aim_target is None else math.dist(origin, aim_target)
         aim = (None if aim_target is None
                else tuple(aim_target[i] - origin[i] for i in range(3)))
-        engaged = self._sense(now, target, distance, aim)
+        seen = aim_target is not None and self._can_see(now, aim_target)
+        engaged = self._sense(now, target, distance, aim, seen)
 
         shots, speed, heading = (), 0., None
         if not engaged:
@@ -620,13 +659,18 @@ class Bot:
 
         shots = []
         if engaged:
+            if (self.attack_started is not None and self._seen_at is not None
+                    and now - self._seen_at > self.tuning.abandon_attack_without_sight):
+                # TimeWithoutLoSToTargetUntilAbandoningAttack
+                self.attack_started, self.attack_ended = None, now
+                self.rounds_fired = 0
             if self.attack_started is not None:
                 shots.extend(self._rounds(now, target_position))
             current_origin = tuple(
                 self.position[i] + self.tuning.aggro_origin_offset_local[i]
                 for i in range(3))
             aim = tuple(aim_target[i] - current_origin[i] for i in range(3))
-            if (self.attack_started is None
+            if (self.attack_started is None and seen
                     and self._may_attack(now, math.dist(current_origin, aim_target), aim)):
                 self.attack_started, self.rounds_fired = now, 0
                 self._round_anchor, self._anchor_rounds = now, 0

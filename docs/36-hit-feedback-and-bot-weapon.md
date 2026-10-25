@@ -10,10 +10,14 @@ Alienware install by SHA-256.
 | `CRUCIBLE_SOLO_HIT_CONFIRM=1` | Hit marker on the player's reticle for every accepted hit |
 | `CRUCIBLE_SOLO_KILL_CONFIRM=1` | Kill marker when the player's hit kills |
 | `CRUCIBLE_SOLO_DEATH_EVENTS=authored` | Each kill carries its killer's own on-hit tag |
+| `CRUCIBLE_SOLO_HIT_RANGE=1` | The player's hits take the authored falloff from the real shooter-to-target range |
 | `CRUCIBLE_SOLO_BOT_RELOAD=1` | Marines fire from a 24-round magazine and reload |
 | `CRUCIBLE_SOLO_FORCED_AGGRO=1` | A Marine the player shoots targets the player for 6 s |
 | `CRUCIBLE_SOLO_BOT_STRAFE=1` | Marines strafe while attacking instead of standing still |
 | `CRUCIBLE_SOLO_BOT_TURN=1` | Moving Marines turn at the movement turn speed, 1440°/s |
+| `CRUCIBLE_SOLO_LOS=terrain` | Marines need sight over the terrain to acquire and attack; terrain stops their rounds |
+| `CRUCIBLE_SOLO_DAMAGE_NUMBERS=1` | Damage numbers over Marines the player hits |
+| `CRUCIBLE_SOLO_HIT_DIRECTION=1` | Incoming-hit arcs pointing at the Marine that hit the player |
 | `CRUCIBLE_SHARD_TICK_MS=32` | Clock and simulation at the client's default 32 ms server tick, not 50 ms |
 
 ## Hit and kill markers
@@ -74,8 +78,12 @@ log for `Dropping RPC` in the first live run.
 
 What the shard sends for each accepted player hit:
 - **scale:** the hit's damage over the weapon's close-range maximum. This
-  is DERIVED; the retail server's formula is not traced. Reported hits carry
-  no range, so it is 1.0 today.
+  is DERIVED; the retail server's formula is not traced. Reported hits
+  carry no range. With `CRUCIBLE_SOLO_HIT_RANGE=1`, the range is the
+  distance from the player's decoded input position to the target's server
+  position, and the falloff applies. Ajonah's damage falls from 40 at 60 m
+  to 20 at 119 m (26.5 at 100 m), so the marker shrinks to match.
+  Without the switch every hit is full damage and scale 1.0.
 - **damageType:** 1.
 - **directDamage:** true.
 - **projectileTypeIndex:** the hero's primary slot. Ajonah's
@@ -184,6 +192,92 @@ stationary player 15–20 m away, over three seeds of 30 s each:
 - The largest height change in one tick was 0.07–0.16 m.
 - They fired 485–504 rounds with the magazine on.
 
+## Line of sight over the terrain
+
+`marine_guide_dummy.ai` checks line of sight (`AggroCheckLineOfSight`,
+0x107b). It forgets an unseen target after 8 s
+(`TimeWithoutLoSToForgetCurrentTarget`, 0x12da) and abandons an attack after
+3 s unseen (`TimeWithoutLoSToTargetUntilAbandoningAttack`, 0x1420). Until
+now nothing could block sight, so Marines saw and shot through hills.
+
+`server/level_geometry.py` decodes the level's compiled terrain
+(`terrain/terrain.dat`, CryEngine version 0x1d): 4,096 leaves of 32 m, each
+33 × 33 samples. It matches the shipped PhysX collision heightfield
+(`levels.pak` `terrain.pxheightfield`) within 0.06 m over all 4.46 million
+samples. Decoding April2018 takes 0.26 s, and one 39 m sight test about
+170 µs. HotH_02 and the tutorials decode the same way; Practice's grid
+(unit 2) is refused, so it gets no sight test.
+
+With `CRUCIBLE_SOLO_LOS=terrain`, each Marine gets a sight test from its eye
+(1 m above its feet) to the target's aim point (1 m above theirs). The test
+is re-run at most every 0.2 s; that interval is not authored. With the test:
+- an unseen target is not acquired;
+- a held target is forgotten after 8 s unseen, unless forced aggro holds it;
+- an attack does not start unseen and is abandoned after 3 s unseen;
+- a server-resolved round whose line is blocked does no damage.
+
+Retail ray-cast against all PhysX colliders in the AwarenessLoS group
+(`snapshots/accuracy-20260924/line-of-sight-geometry.md`). Walls, rocks
+and buildings are static meshes in `objects.pak` and are not modelled, so
+a line clear of the terrain can still be blocked in retail. The shard
+decodes the terrain once at startup, alongside the navmesh.
+
+## Damage numbers and incoming-hit arcs
+
+Both are autonomous ring buffers on the player's character (components 36
+and 81; layouts in docs/27 §9). The client consumers are
+`DamageFloaterAutonomousSystem` (`0xdab820`) and
+`HitIndicatorAutonomousSystem` (`0xdade60`). Neither predicts anything
+locally, so without the server nothing is drawn. Each keeps a read cursor
+that starts at 0. Every tick it walks slots `cursor+1 .. LastServerIndex`,
+wrapping at the ring size (32 and 16), and stops only on equality. So the
+server:
+- writes each new entry into slot `(LastServerIndex + 1) % size`, then
+  publishes that slot as LastServerIndex; the first entry is slot 1;
+- **never publishes a LastServerIndex of the ring size or more**. Cursors
+  are masked with `& 0x1f` (`0xdabb56`) and `& 0xf` (`0xdae01d`), so
+  equality would never come and the client would loop forever.
+
+Damage numbers (36) work as follows:
+- Entries are keyed by target, and a new entry *replaces* the shown amount.
+- A target's number lives for 224 ms after its last entry
+  (`common_damagefloaters.floatersettings` DirectAccumulationWindow) and
+  re-shows at most every 156 ms.
+- So the shard sends a running total per target that resets after 224 ms
+  without a hit.
+- `m_TargetEntity` is the victim's network id. The client places the number
+  over that entity itself.
+- `m_Flags` bit 0 is crit and bit 1 is damage over time.
+
+Hit arcs (81) work as follows:
+- `m_IndicatorPosition` and `m_ScreenEdgePosition` are world positions; the
+  shard sends the shooting Marine's.
+- The HUD arc's bearing is `atan2` of that point against the camera, and its
+  size is `damage / (maxHealth + maxShield)`.
+- HitIndicatorType 2 is Projectile and HealthChangeType 1 is Direct (enum
+  tables `0x65c4b70` and `0x65c4340`). Type 8 or higher would index past the
+  name table.
+- The client recomputes the scale from damage, so the shard sends 1.0.
+
+Record layout:
+- The 25 autonomous roots are, in type order: 6, 10, 20, 21, 24, 25, 27, 36,
+  46, 48, 50, 61, 70, 81, 82, 84, 101, 110, 115, 117, 120, 145, 156, 158,
+  164. These are the character's components (type getters in
+  `live-character-spawn.json`) that have server-to-autonomous bits in the
+  schema.
+- Component 36's subtree is root, array, 32 entries, FloatersEnabled and
+  index: 36 bits. Component 81's is root, index, array and 16 entries:
+  19 bits. Both match the schema's expanded counts.
+- Values go in component order. 36 sends each entry (u32, f32, u8), then its
+  u8 index. 81 sends its u32 index, then each 36-byte entry.
+- Both rings share one player message per tick, at the head of the tick, so
+  the player never gets two messages in a row.
+
+One risk is recorded but not resolved. If the client's screen-edge effects
+asset failed to load, `PlayEdgeOfScreenEffect` (`0xdacd30`) logs "Edge
+effects asset is null" and then dereferences it anyway. The first incoming
+arc would then crash the client. Check the client log on the first run.
+
 ## The client's default server tick is 32 ms
 
 The shard's 50 ms clock was an invented stall fix (docs/16; accuracy audit
@@ -227,3 +321,9 @@ None of these has run in the retail client yet. The live checks are:
 6. Strafing Marines play a sideways run, not a forward run sliding
    sideways. The client derives blend velocity from Location motion
    (docs/28).
+7. Damage numbers rise over a Marine as it is hit, and the client does not
+   hang.
+8. An incoming-hit arc points at the Marine that hit, and the client does
+   not crash on the first arc.
+9. With terrain sight on, a Marine behind a hill neither acquires nor hits
+   the player.

@@ -58,12 +58,19 @@ OVER = re.compile(r'ALPHA HUNTERS match over: winner team (\w+)')
 RANK = re.compile(r'ALPHA HUNTERS rank (\d+) published')
 SHARD_START = re.compile(r'Started crucible-revival-shard|listening on \S+:18878')
 TRACEBACK = re.compile(r'Traceback \(most recent call last\)')
+# docs/36: feedback RPCs the shard sent (logged at counts 1, 2, 4, ...) and
+# Marine reloads.
+FEEDBACK = re.compile(r'SOLO FEEDBACK sent rpc (\d+)/(\d+) to [0-9a-f]{8} \(count (\d+)\)')
+RELOAD = re.compile(r'HUNTER AI ([0-9a-f]{8}) reloading')
 JOURNAL_TIME = re.compile(r'^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)([+-]\d\d):?(\d\d)')
 
 CLIENT_TIME = re.compile(r'^\[(\d\d)-(\d\d)-(\d{4}):(\d\d):(\d\d):(\d\d)\.(\d+)-GMT\]')
 UI_PHASES = re.compile(r'"match":\{"phases":(\{[^}]*\})')
 ASSERT = re.compile(r'NV_\w*ASSERT')
 MULTI_HIT = "There wasn't only one fixup hit"
+# ValidateRpcMessage 0x4bfcee0: a refused server RPC, and the variant that
+# also drops the connection (docs/36).
+DROPPED_RPC = 'Dropping RPC'
 # HybridProjectileSystemClient drops a bad activation with a log line, e.g.
 # ValidateNetData "Network data validation failure" (docs/29 5b).
 ACTIVATION_REFUSED = re.compile(r'HybridProjectileSystemClient::\w+: .*'
@@ -73,9 +80,15 @@ ACTIVATION_REFUSED = re.compile(r'HybridProjectileSystemClient::\w+: .*'
 def shard_facts(lines):
     facts = {'population': [], 'input': 0, 'states': {}, 'fire': 0, 'hits': [],
              'refused': {}, 'over': [], 'rank': None, 'starts': [], 'tracebacks': 0,
-             'population_after_over': 0}
+             'population_after_over': 0, 'feedback': {}, 'reloads': 0}
     for line in lines:
-        if POPULATION.search(line):
+        if FEEDBACK.search(line):
+            component, rpc, count = FEEDBACK.search(line).groups()
+            key = '%s/%s' % (component, rpc)
+            facts['feedback'][key] = max(facts['feedback'].get(key, 0), int(count))
+        elif RELOAD.search(line):
+            facts['reloads'] += 1
+        elif POPULATION.search(line):
             facts['population'].append(POPULATION.search(line).group(1))
             if facts['over']:
                 facts['population_after_over'] += 1
@@ -128,7 +141,7 @@ def client_time(line):
 def client_facts(lines):
     facts = {'connected': None, 'disconnecting': None, 'match_exit': False,
              'phases': [], 'asserts': 0, 'multi_hit': 0, 'refused_activations': 0,
-             'last': None}
+             'dropped_rpcs': 0, 'last': None}
     for line in lines:
         when = client_time(line)
         if when is not None:
@@ -148,6 +161,8 @@ def client_facts(lines):
             facts['multi_hit'] += 1
         if ACTIVATION_REFUSED.search(line):
             facts['refused_activations'] += 1
+        if DROPPED_RPC in line:
+            facts['dropped_rpcs'] += 1
     return facts
 
 
@@ -243,6 +258,17 @@ def score(shard, client):
         rows.append(('A7 stable', 'NO-DATA', 'needs the client log'))
     else:
         rows.append(('A7 stable', 'FAIL' if problems else 'PASS', evidence))
+
+    # Opt-in docs/36 features: reported only when the shard used them.
+    if shard['feedback'] or (client is not None and client['dropped_rpcs']):
+        dropped = client['dropped_rpcs'] if client is not None else None
+        sent = ', '.join('%s >=%d' % item for item in sorted(shard['feedback'].items()))
+        rows.append(('F1 markers', 'FAIL' if dropped else 'LOGS-OK',
+                     'sent %s; client dropped RPCs: %s; eyes: hit and kill markers'
+                     % (sent or 'none', 'unknown' if dropped is None else dropped)))
+    if shard['reloads']:
+        rows.append(('F2 reloads', 'LOGS-OK', '%d Marine reloads; eyes: reload animation, '
+                     'about 2 s without fire' % shard['reloads']))
     return rows
 
 
