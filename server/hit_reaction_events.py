@@ -57,7 +57,7 @@ def hit_reaction_traversal_bits(shared_types):
 
 
 def build_hit_reaction_update(entity_id, shared_types, *, index, yaw,
-                              previous_id=0, local=False):
+                              previous_id=0, local=False, autonomous=False):
     """Build one standalone update with a caller-supplied uint8 and float32.
 
     Index's descriptor 0x6e02810 declares the full 0..255 wire range; fitting
@@ -83,10 +83,16 @@ def build_hit_reaction_update(entity_id, shared_types, *, index, yaw,
     except (OverflowError, struct.error) as error:
         raise ValueError('yaw must fit a finite float32 number') from error
 
-    # Defer the import so shard_stub can consume the helper without a cycle.
+    # Defer the imports so shard_stub can consume the helper without a cycle.
+    # The player's own character is ClientAutonomous: like its Health update
+    # (combat.build_health_update) it keeps role 2 and carries an all-false
+    # autonomous record after the shared one. Role 1 there crashed the
+    # retail client (combat.autonomous_record).
+    import combat
     import shard_stub
     return shard_stub.build_entity_message(
         entity_id & 0xffffff,
-        shard_stub.pack_type_and_flags(shard_stub.ENTITY_ROLE_CLIENT_SIMULATION),
-        payload=shard_stub.build_replication_record(bits) + values,
+        shard_stub.pack_type_and_flags(combat.entity_role(autonomous)),
+        payload=(shard_stub.build_replication_record(bits)
+                 + combat.autonomous_record(autonomous) + values),
         previous_id=previous_id, local=local)

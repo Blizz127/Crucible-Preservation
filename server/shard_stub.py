@@ -1051,6 +1051,9 @@ def land_hunter_hits(state, arena, now):
                     and feedback_rings.hit_direction_enabled()):
                 state.setdefault('indicator_ring', feedback_rings.IndicatorRing()).hit(
                     hit.damage, shooter.position, landing.time)
+            if (hit.target == PLAYER_CHARACTER_ID and shooter is not None
+                    and player_flinch_enabled()):
+                note_player_flinch(state, shooter.position)
 
 
 def solo_ai_enabled():
@@ -1212,7 +1215,8 @@ def start_solo_simulation(state):
                 ('accel', os.environ.get('CRUCIBLE_SOLO_BOT_ACCEL') == '1'),
                 ('anchored', os.environ.get('CRUCIBLE_SOLO_BOT_ANCHORED') == '1'),
                 ('forced-aggro', os.environ.get('CRUCIBLE_SOLO_FORCED_AGGRO') == '1'),
-                ('flinch', hit_reaction_enabled())) if on]
+                ('flinch', hit_reaction_enabled() and not player_flinch_enabled()),
+                ('flinch-all', player_flinch_enabled())) if on]
             if switches or os.environ.get('CRUCIBLE_SOLO_LOS'):
                 log('      HUNTER AI switches: %s; sight %s'
                     % (' '.join(switches) or 'none',
@@ -1374,7 +1378,12 @@ HIT_REACTION_RESEND_TICKS = 3
 
 
 def hit_reaction_enabled():
-    return os.environ.get('CRUCIBLE_SOLO_HIT_REACTION') == '1'
+    """'1': hunters the player hits flinch. 'all': the player flinches too."""
+    return os.environ.get('CRUCIBLE_SOLO_HIT_REACTION') in ('1', 'all')
+
+
+def player_flinch_enabled():
+    return os.environ.get('CRUCIBLE_SOLO_HIT_REACTION') == 'all'
 
 
 def note_hit_reaction(state, target):
@@ -1396,9 +1405,31 @@ def note_hit_reaction(state, target):
         return
     facing = state.get('hunter_facing', {}).get(target) or bot.facing()
     yaw = hit_reaction_events.flinch_yaw(facing, player, bot.position)
-    if yaw is None:
+    if yaw is not None:
+        count_flinch(state, target, yaw)
+
+
+def note_player_flinch(state, shooter_position):
+    """Count one hunter round landing on the player, for the player's flinch.
+
+    The yaw is taken in the frame of the player's newest input rotation
+    (docs/25), so the character flinches away from the Marine that hit it.
+    Hunter rounds are server-resolved: the client reports none of them, so
+    this count is what drives the player's flinch.
+    """
+    import hit_reaction_events
+    facing, player = state.get('player_facing'), state.get('player_position')
+    if facing is None or player is None:
         return
-    entry = state.setdefault('hit_reactions', {}).setdefault(target, {'index': 0})
+    yaw = hit_reaction_events.flinch_yaw(facing, shooter_position, player)
+    if yaw is not None:
+        count_flinch(state, PLAYER_CHARACTER_ID, yaw)
+
+
+def count_flinch(state, entity, yaw):
+    """One more hit on `entity`: its index rises (never past 255) and the
+    update repeats for HIT_REACTION_RESEND_TICKS ticks."""
+    entry = state.setdefault('hit_reactions', {}).setdefault(entity, {'index': 0})
     entry['index'] = min(255, entry['index'] + 1)
     entry['yaw'] = yaw
     entry['resend'] = HIT_REACTION_RESEND_TICKS
@@ -1431,7 +1462,7 @@ def hit_reaction_messages(state, previous_id):
         entry['resend'] -= 1
         messages.append(hit_reaction_events.build_hit_reaction_update(
             entity, MARINE_SHARED_TYPES, index=entry['index'], yaw=entry['yaw'],
-            previous_id=previous_id))
+            previous_id=previous_id, autonomous=entity == PLAYER_CHARACTER_ID))
         previous_id = entity & 0xffffff
         # Logged at indexes 1, 2, 4, ...
         if entry['index'].bit_length() != logged.get(entity, 0):

@@ -21,7 +21,7 @@ Alienware install by SHA-256.
 | `CRUCIBLE_SOLO_BOT_IDLE=1` | Patrolling Marines rest one authored idle animation, plus 1 s, between hops |
 | `CRUCIBLE_SOLO_BOT_ACCEL=1` | Marines speed up and slow down at 10 m/s², stopping where their path ends |
 | `CRUCIBLE_SOLO_BOT_ANCHORED=1` | Patrolling Marines pick destinations 5–15 m from their anchor, as the editor tooltips say |
-| `CRUCIBLE_SOLO_HIT_REACTION=1` | A Marine the player hits flinches away from the shot (needs the split) |
+| `CRUCIBLE_SOLO_HIT_REACTION=1` | A Marine the player hits flinches away from the shot (needs the split); `=all` also flinches the player when a Marine's round lands |
 | `CRUCIBLE_SOLO_DAMAGE_NUMBERS=1` | Damage numbers over Marines the player hits |
 | `CRUCIBLE_SOLO_HIT_DIRECTION=1` | Incoming-hit arcs pointing at the Marine that hit the player |
 | `CRUCIBLE_SHARD_TICK_MS=32` | Clock and simulation at the client's default 32 ms server tick, not 50 ms |
@@ -525,11 +525,25 @@ sends nothing.
   So the count starts at 0 for that match's newly spawned hunters, as the
   client's own component does.
 
-Not established:
-- **The retail server's increment policy.** No server symbols are in the
-  client. "One per accepted hit" is inferred.
-- **The player's own flinch.** It is not sent: the shard decodes no facing
-  for the player, so it cannot compute that yaw.
+**The player flinches too, with `=all`.** A hunter round that lands on the
+player raises the player's own index the same way.
+- **The yaw** is taken in the frame of the player's newest input rotation,
+  which the client sends in every input frame (docs/25). If no facing has
+  been decoded yet, the round is skipped.
+- **The framing.** The player's own character is ClientAutonomous, so its
+  update is framed like its Health update: role 2, then the shared record,
+  then an all-false autonomous record. A role-1 update to that character
+  crashed the retail client (`combat.autonomous_record`).
+- **The shared list.** Every hero shares the list that carries component 80.
+- **What drives it.** The client reports no hunter hits, so this count
+  drives the player's flinch, unless the client also predicts flinches from
+  hunter projectiles. That isn't traced; if it does, its count runs ahead
+  and some networked flinches are swallowed (fewer, never doubled).
+- **Why a separate value.** Its framing has not been seen live, so `=1`
+  keeps the Marines' flinch alone.
+
+Not established: the retail server's increment policy. No server symbols
+are in the client, so "one per accepted hit" is inferred.
 
 ## Resting between patrol hops
 

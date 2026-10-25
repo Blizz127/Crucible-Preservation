@@ -388,6 +388,57 @@ class HitReactionTests(unittest.TestCase):
         lines = [c.args[0] for c in log.call_args_list if 'HIT REACTION disabled' in c.args[0]]
         self.assertEqual(len(lines), 1)
 
+    def test_a_marine_round_on_the_player_flinches_the_player_only_with_all(self, _log):
+        # The player faces +Y at the origin; the Marine 10 m north fired, so
+        # the round travels -Y: a hit from the front, the backward flinch.
+        landing = hunter_hits.Landing(0x1000003, shard.PLAYER_CHARACTER_ID, 1., 25.)
+        import hit_reaction_events
+        for value, sent_count in (('1', 0), ('all', 1)):
+            env = dict(self.ENV, CRUCIBLE_SOLO_HIT_REACTION=value)
+            state = self.start(env)
+            state['player_facing'] = (0., 1., 0.)
+            state['hunter_landings'] = [landing]
+            with self.subTest(value=value), patch.dict('os.environ', env, clear=True):
+                shard.land_hunter_hits(state, state['combat'], 2.)
+                sent, _ = shard.hit_reaction_messages(state, 0)
+                self.assertEqual(len(sent), sent_count)
+        self.assertEqual(sent, [hit_reaction_events.build_hit_reaction_update(
+            shard.PLAYER_CHARACTER_ID, shard.MARINE_SHARED_TYPES, index=1, yaw=180.,
+            autonomous=True)])
+
+    def test_the_players_flinch_is_framed_like_its_health(self, _log):
+        # ClientAutonomous: role 2 in the header, the shared record, then the
+        # all-false autonomous record. Role 1 crashed the retail client.
+        import combat
+        import hit_reaction_events
+        import struct
+        health = combat.build_health_update(
+            shard.PLAYER_CHARACTER_ID, shard.MARINE_SHARED_TYPES, maximum=800.,
+            value=700., autonomous=True)
+        flinch = hit_reaction_events.build_hit_reaction_update(
+            shard.PLAYER_CHARACTER_ID, shard.MARINE_SHARED_TYPES, index=1, yaw=180.,
+            autonomous=True)
+        # Same RelativeId and TypeAndFlags; only the trailing payload length differs.
+        self.assertEqual(flinch.header[:-2], health.header[:-2])
+        self.assertEqual(shard.unpack_type_and_flags(flinch.header[-3])['type'],
+                         shard.ENTITY_ROLE_CLIENT_AUTONOMOUS)
+        shared = shard.build_replication_record(
+            hit_reaction_events.hit_reaction_traversal_bits(shard.MARINE_SHARED_TYPES))
+        self.assertEqual(flinch.payload, shared + combat.autonomous_record(True)
+                         + struct.pack('>Bf', 1, 180.))
+        self.assertTrue(health.payload[len(shard.build_replication_record(
+            combat.health_traversal_bits(shard.MARINE_SHARED_TYPES))):].startswith(
+                combat.autonomous_record(True)))
+
+    def test_no_player_flinch_without_a_decoded_facing(self, _log):
+        env = dict(self.ENV, CRUCIBLE_SOLO_HIT_REACTION='all')
+        state = self.start(env)
+        state['hunter_landings'] = [
+            hunter_hits.Landing(0x1000003, shard.PLAYER_CHARACTER_ID, 1., 25.)]
+        with patch.dict('os.environ', env, clear=True):
+            shard.land_hunter_hits(state, state['combat'], 2.)
+        self.assertNotIn('hit_reactions', state)
+
     def test_the_flinch_reaches_its_marine_once_per_packet(self, _log):
         # The whole tick through the split: decode every packet's RelativeId
         # chain and check the component-80 message lands on 01000003.
