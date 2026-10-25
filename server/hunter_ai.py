@@ -25,6 +25,7 @@ class Step:
     target: int = None
     shots: tuple = ()
     firing: bool = False
+    reloading: bool = False
 
 
 def plan_distance(points):
