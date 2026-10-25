@@ -690,17 +690,21 @@ Inferred or left out:
   Marine's resources.
 - **The attack selector's sprint.** On an attack (index 0, not healing, not
   fleeing), `marine_guide_attack_selector.cdl` holds Ability3 for 3 s when
-  the target is over 20 m away or its random draw is above 0.5. In the same
+  the target is over 20 m away or its random draw is above 0.5. Just
+  before, on draws between 0.4 and 0.65 (about a quarter of attacks), it
+  presses Jump for 0.1 s. Sprint starts only on the ground, so on draws of
+  0.5–0.65, or 0.4–0.65 with the target over 20 m, the jump may keep it
+  from starting. In the same
   instant it chains the attack itself. Each branch but one stops sprint
   under `marine_sprint.cdl`'s rules:
   - a bunker placed while backing away (draw above 0.3, Bunker resource
     full) leaves no forward input;
   - melee within 3 m cancels it, and so does the fire that follows;
-  - otherwise it fires for 2 s, sometimes after pulsing Ability4;
+  - otherwise it fires for 2 s, sometimes while pulsing Ability4;
   - a grenade (Ability2, Grenade resource full, target within 12 m) is not
     a cancel condition, so there the sprint may run on.
 
-  The hunters model none of the bunker, melee, grenade or Ability4
+  The hunters model none of the jump, bunker, melee, grenade or Ability4
   branches, only the fire, so this sprint is not modelled either. Whether a
   held Ability3 restarts sprint once the fire ends is not traced.
 
