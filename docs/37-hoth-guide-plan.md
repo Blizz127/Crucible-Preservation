@@ -76,10 +76,47 @@ The hero's flee distances are 50–80 m; the others' are 20–40 m (inventor
 differs again (AggroRadiusNear/Far 5/15 m, RangeMin 10 m, Duration
 3.15 s, no strafe). What uses it is not traced.
 
-All four check line of sight, start awake, and never flee from damage.
-Their weapons, health and capsules come from their character slices
-(player-damage track table: duelist 800, hero 1200, inventor 600,
-saboteur 800).
+All four check line of sight and start awake. Their weapons, health and
+capsules come from their character slices (player-damage track table:
+duelist 800, hero 1200, inventor 600, saboteur 800).
+
+**Fleeing from damage is scripted.** `CanFleeForDamagedReasons` is false
+in all five, but each dummy slice lists its own scripts. Two of the four
+guide heroes request the Flee state from an on-hit script, as the Marine
+does (docs/36). The user-variable defaults were read from each script's
+blackboard.
+- **Saboteur:** `saboteur_guide_on_hit.cdl`, the Marine's test (attacker
+  healthier, and √distance × own health ratio < 1.5), with `User_flee_time`
+  3.0 s. 0.25 s after the request it holds Ability3, the grapple, for 3 s.
+  Its heal branch is connected to nothing.
+- **Duelist:** `duelist_guide_on_hit.cdl`. With its Deflect resource full
+  it deflects (Ability2) and stops there. Otherwise it runs the same test,
+  with `User_flee_time` 3.0 s. 0.25 s after the request it holds Ability3,
+  the weapon swap, for 3 s; the sword config runs 8.25 m/s. Then it uses a
+  medpack if it has one. Without a flight, it uses a medpack at or below a
+  heal threshold.
+- **Inventor:** `inventor_guide_on_hit.cdl` requests no Flee. Below a
+  health threshold drawn at 30–60% of its maximum, it backs away for 5 s,
+  blinks (Ability3), smokescreens (Ability1) 0.2 s later, then uses a
+  medpack for 4 s.
+- **Hero:** no guide on-hit script. Its dummy lists `hero_incoming_damage.cdl`,
+  which is not read.
+
+Each of the five assets' attack blocks fleeing for its first 2 s
+(`FleeingBlockedWindows`; the hero's attack lasts 3.5 s) and remembers the
+decision 2.5 s. `IgnoreTargetsTime`, the "min flee time", is 4 s (the
+hero's 8 s), and `FleeingSpeed` equals each one's SpeedChase.
+
+**A lead, not modelled: aim wobble from damage dealt.** Every dummy slice,
+the Marine's included, lists `cdl/player/_common/dummy/guide_on_damage_dealt.cdl`.
+On each hit the bot deals, it adds damage × `Shared_damage_to_wobble_conversion`
+degrees of aim deflection, pitch and yaw, through `PlayerInputSpoofComponent`.
+The script sets the conversion to 5.0 for a Saboteur. No asset in misc.pak
+authors it for the others, so it is probably 0 for them, the Marine
+included. Whether `Shared_` variables are per entity or shared between
+entities is not known. The
+Saboteur's attack selector caps its wobble at 20° pitch and 11° yaw,
+decaying 8° per second.
 
 ## Stages
 
