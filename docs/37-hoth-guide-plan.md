@@ -465,13 +465,41 @@ heart ending counts for A6.
   41.0 s with team 1 the winner and rank 1 published, with and without the
   Saboteur.
 
-## Respawn: scoped, not built
+## Respawn (switch)
 
-In HOTH_GUIDE retail respawns the player; the shard leaves a dead player
-down until the timer. Read from the client on 25 October; the full verdict,
-with addresses, is in `snapshots/respawn-scope-20261025/findings.md`.
-Nothing is built, because it acts on the player's own entity, the one with the crash
-history. It goes after H1 to H1d in LIVE-PLAN, once they have run.
+In HOTH_GUIDE retail respawns the player. Read from the client on 25
+October; the full verdict, with addresses, is in
+`snapshots/respawn-scope-20261025/findings.md`.
+
+`CRUCIBLE_SOLO_GUIDE_RESPAWN=1` (hoth-guide profiles only, B0
+`guide-respawn`, `match_acceptance` B8) builds the smallest candidate, by the
+client's own two RPCs:
+- **The delay.** 10.0 s after the death (`guide_respawntimings`
+  TimeToRespawn; the 5.0 s TimeToSelectDropPoint and the respawn map are
+  not modelled), RPC 120/0 starts the client's drop.
+- **The revival.** 1.0 s later (declared), RPC 120/1 revives it. It is sent
+  three times, 0.5 s apart, because RPCs are one-shot and re-sending is
+  safe. The arena restores the player's health on the same tick, framed as
+  its own autonomous character, and the bots take it as a target again.
+- **Deviation:** the player rises where it fell; retail drops it at a
+  respawn point.
+- **Not touched:** the roster's CharacterStatus, RespawnComponent's
+  replicated state, CharacterComponent.
+- **Diagnostics.** The evidence that control came back is the player
+  acting after a revival: an accepted player hit after it, or the distance
+  moved in the 10 s after it, which the shard logs. `match_acceptance` B8
+  passes only on those. While a respawn is armed, changes of the client's
+  respawn ack (input frame +93) are logged too, but only as an extra
+  signal: the client copies it from the replicated ack id, which this
+  candidate never sends. Odd input sizes are logged then as well.
+- **If it fails** without crashing, the player stays down until the timer,
+  which is the state without the switch. It acts on the player's own
+  entity, so it runs last in LIVE-PLAN.
+- **Offline check.** In a 90 s hoth-guide "lose" run at full bot accuracy,
+  the player died at 19.8 s, rose at 30.8 s and fought on, four times,
+  until the timer's GameOver, with no errors.
+
+What the client does with each piece:
 
 - **The client's two RPCs** on RespawnComponent (120), both server to
   client:
@@ -502,6 +530,10 @@ history. It goes after H1 to H1d in LIVE-PLAN, once they have run.
 - **The alternative,** replicating RespawnComponent's six shared properties
   (state, ack id, the tutorial flag and position), is in the role-1/role-2
   crash class.
+- **Despawns, recorded rather than built.** The delete path (TypeAndFlags
+  bit 7, docs/13) is the mechanism for the hive's dissolve, the heart's
+  despawn and the allies' exit. No delete has ever been sent; its first use
+  comes after H1c shows a hive live.
 - **Unknown:**
   - whether CharacterComponent (156), with its autonomous IsAlive and
     timers, is the real alive gate;

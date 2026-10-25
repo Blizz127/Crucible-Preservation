@@ -36,6 +36,8 @@ Rows that appear only when their docs/36 switch is used:
   B6 heart      its heart: spawned, capture started, captured, match over
   B7 interact   what started the captured heart: the Interact key passes, the
                 15 s proximity fallback fails (the key was not recognised)
+  B8 respawn    HOTH_GUIDE respawns: died, RPCs sent, health restored, and
+                whether the client's respawn ack moved
 
 The script only reads files and uses only the standard library, so it can
 run on the game host over SSH, reading that host's journal and newest
@@ -104,6 +106,9 @@ HEART = re.compile(r'GUIDE HEART (spawned|capture started|captured|match over|'
                    r'capture interrupted)\b(.*)')
 INTERACT = re.compile(r'CLIENT INPUT interact pressed \(count (\d+)\)')
 RISE = re.compile(r'CLIENT INPUT action (\w+) rose \(count (\d+)\)')
+RESPAWN = re.compile(r'GUIDE RESPAWN (player died|wave expired sent|pod landed sent)')
+RESPAWN_MOVED = re.compile(r'GUIDE RESPAWN moved ([\d.]+) m in the')
+RESPAWN_ACK = re.compile(r'CLIENT INPUT respawn ack (\d+) -> (\d+)')
 # docs/36: the Marines' networked flinch (component 80), logged at indexes
 # 1, 2, 4, ..., and the switch left without the split it needs.
 FLINCH = re.compile(r'HIT REACTION ([0-9a-f]{8}) index (\d+)')
@@ -141,7 +146,8 @@ def shard_facts(lines):
              'sight_broken': [], 'blocked': 0, 'rests': {}, 'flinches': {},
              'flinch_split_off': 0, 'flinch_on': 0, 'switches': None, 'flees': {},
              'hive': None, 'hive_destroyed': None, 'hive_regens': 0, 'heart': {},
-             'interacts': 0, 'rises': {}}
+             'interacts': 0, 'rises': {}, 'respawn': {}, 'respawn_acks': [],
+             'hits_after_revival': 0, 'moved_after_revival': []}
     for line in lines:
         if VALVE.search(line):
             facts['valves'].append(VALVE.search(line).group(1))
@@ -167,6 +173,13 @@ def shard_facts(lines):
             facts['hive_destroyed'] = HIVE_DESTROYED.search(line).group(1)
         elif INTERACT.search(line):
             facts['interacts'] = max(facts['interacts'], int(INTERACT.search(line).group(1)))
+        elif RESPAWN_MOVED.search(line):
+            facts['moved_after_revival'].append(float(RESPAWN_MOVED.search(line).group(1)))
+        elif RESPAWN.search(line):
+            event = RESPAWN.search(line).group(1)
+            facts['respawn'][event] = facts['respawn'].get(event, 0) + 1
+        elif RESPAWN_ACK.search(line):
+            facts['respawn_acks'].append(RESPAWN_ACK.search(line).group(2))
         elif RISE.search(line):
             name, count = RISE.search(line).groups()
             facts['rises'][name] = max(facts['rises'].get(name, 0), int(count))
@@ -206,6 +219,8 @@ def shard_facts(lines):
             facts['states'].setdefault(entity, set()).add(state)
         elif HIT.search(line):
             m = HIT.search(line)
+            if m.group(1) == 'player' and facts['respawn'].get('pod landed sent'):
+                facts['hits_after_revival'] += 1
             facts['hits'].append({'shooter': m.group(2) or PLAYER, 'target': m.group(3),
                                   'health': int(m.group(5)), 'killed': bool(m.group(6))})
         elif REFUSED.search(line):
@@ -466,6 +481,20 @@ def score(shard, client):
                          % (shard['interacts'], rose)))
         else:
             rows.append(('B7 interact', 'INFO', 'proximity mode: the key was not used'))
+    if shard['respawn']:
+        counts = shard['respawn']
+        acks = ' '.join(shard['respawn_acks']) or 'none'
+        revived = counts.get('pod landed sent', 0)
+        moved = [m for m in shard['moved_after_revival'] if m >= 1.0]
+        control = shard['hits_after_revival'] or moved
+        rows.append(('B8 respawn', 'LOGS-OK' if revived and control else 'INFO',
+                     'deaths %d, waves sent %d, revivals sent %d; after a revival: %d player '
+                     'hits, moved %s m; client respawn ack values: %s (an extra signal only); '
+                     'eyes: control and health return where you fell'
+                     % (counts.get('player died', 0), counts.get('wave expired sent', 0), revived,
+                        shard['hits_after_revival'],
+                        ', '.join('%.1f' % m for m in shard['moved_after_revival']) or 'not logged',
+                        acks)))
     if shard['flees']:
         rows.append(('B4 flee', 'LOGS-OK', 'flights %s; eyes: a losing Marine finishes its '
                      'burst (up to 2 s), runs about 4 s, then comes back' % ', '.join(

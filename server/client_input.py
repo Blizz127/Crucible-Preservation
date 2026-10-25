@@ -56,6 +56,9 @@ ROTATION_OFFSET = 8          # the packed rotation follows each 8-byte position
 # byte 0x54 follows 20 bytes after the 0x52, which sits at +57 in frames 0
 # and 1 and at +56 in frame 2.
 INPUT_BLOCK, INTERACTOR_BLOCK = 0x52, 0x54
+# The Respawn block's type byte, then the client's respawn ack (docs/37), at
+# +92 and +93 of each frame in the 326-byte shape.
+RESPAWN_BLOCK, RESPAWN_BLOCK_OFFSET = 0x78, 92
 INPUT_BLOCK_OFFSETS = (57, 56)
 MOMENTARY_MASK = 0x7ffff
 # Bit indices as ActionsLibrary's populate routine (0x36fe370) passes them,

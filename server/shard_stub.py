@@ -216,6 +216,77 @@ HEART_FALLBACK_SECONDS = 15.0
 HEART_MATCH_OVER_DELAY = 12.0
 
 
+# docs/37: respawn in HOTH_GUIDE, behind CRUCIBLE_SOLO_GUIDE_RESPAWN=1, by the
+# client's own two RespawnComponent RPCs (snapshots/respawn-scope-20261025).
+RESPAWN_COMPONENT = 120
+RESPAWN_WAVE_EXPIRED = 0        # RespawnWaveExpiredRPC(transformToRespawnAt)
+RESPAWN_POD_LANDED = 1          # RespawnDropPodLanded, no fields
+# assets/respawntimings/guide_respawntimings.respawntimings: TimeToRespawn.
+GUIDE_RESPAWN_SECONDS = 10.0
+# Declared: the pod's fall between the two RPCs, and how often the reviving
+# RPC is sent, since RPCs are one-shot and re-sending it is safe.
+GUIDE_POD_FALL_SECONDS = 1.0
+GUIDE_POD_LANDED_SENDS = 3
+GUIDE_POD_RESEND_SECONDS = 0.5
+
+
+def guide_respawn_enabled(profile=None):
+    """CRUCIBLE_SOLO_GUIDE_RESPAWN=1 in a HOTH_GUIDE profile (docs/37)."""
+    profile = solo_modes.selected() if profile is None else profile
+    return (os.environ.get('CRUCIBLE_SOLO_GUIDE_RESPAWN') == '1'
+            and profile.mode_profile is solo_modes.MODES['hoth-guide'])
+
+
+def guide_respawn_tick(state, arena, now):
+    """Respawn the player by the client's two RPCs (docs/37, Candidate A).
+
+    GUIDE_RESPAWN_SECONDS after the player dies, RespawnWaveExpiredRPC
+    (120/0) starts the client's drop. GUIDE_POD_FALL_SECONDS later
+    RespawnDropPodLanded (120/1) revives it, sent GUIDE_POD_LANDED_SENDS
+    times, and the arena restores the player's health on the same tick,
+    framed as its own autonomous character. The player stays where it fell:
+    there is no teleport, where retail drops it at a respawn point. The
+    roster's CharacterStatus and RespawnComponent's replicated state are
+    not touched.
+    """
+    respawn = state.setdefault('guide_respawn', {'stage': None, 'count': 0})
+    watch = respawn.get('watch')
+    if watch is not None and now >= watch[0] + GUIDE_RESPAWN_SECONDS:
+        # Control's return shows in the player's own input: how far it moved.
+        start, here = watch[1], state.get('player_position')
+        moved = (math.dist(start[:2], here[:2]) if start is not None and here is not None
+                 else 0.)
+        log('      GUIDE RESPAWN moved %.1f m in the %.0f s after revival %d'
+            % (moved, GUIDE_RESPAWN_SECONDS, respawn['count']))
+        respawn['watch'] = None
+    stage = respawn['stage']
+    if stage is None:
+        if not arena.alive(PLAYER_CHARACTER_ID):
+            respawn.update(stage='dead', died_at=now)
+            log('      GUIDE RESPAWN player died at %.1f s; respawn in %.0f s'
+                % (now, GUIDE_RESPAWN_SECONDS))
+    elif stage == 'dead' and now >= respawn['died_at'] + GUIDE_RESPAWN_SECONDS:
+        spot = solo_modes.selected().player_position   # stored by the client only
+        queue_player_rpc(state, RESPAWN_COMPONENT, RESPAWN_WAVE_EXPIRED,
+                         pack_practice_spawn_transform(spot))
+        respawn.update(stage='dropping', sent_at=now)
+        log('      GUIDE RESPAWN wave expired sent at %.1f s' % now)
+    elif stage == 'dropping' and now >= respawn['sent_at'] + GUIDE_POD_FALL_SECONDS:
+        queue_player_rpc(state, RESPAWN_COMPONENT, RESPAWN_POD_LANDED, b'')
+        arena.entities[PLAYER_CHARACTER_ID].respawn_at = now
+        respawn['count'] += 1
+        respawn.update(stage='landed', landed_at=now, sends=1,
+                       watch=(now, state.get('player_position')))
+        log('      GUIDE RESPAWN pod landed sent and health restored at %.1f s (count %d)'
+            % (now, respawn['count']))
+    elif stage == 'landed':
+        if respawn['sends'] >= GUIDE_POD_LANDED_SENDS:
+            respawn['stage'] = None
+        elif now >= respawn['landed_at'] + respawn['sends'] * GUIDE_POD_RESEND_SECONDS:
+            queue_player_rpc(state, RESPAWN_COMPONENT, RESPAWN_POD_LANDED, b'')
+            respawn['sends'] += 1
+
+
 def guide_hive_enabled(profile=None):
     """CRUCIBLE_SOLO_GUIDE_HIVE=1 in a HOTH_GUIDE profile (docs/37)."""
     profile = solo_modes.selected() if profile is None else profile
@@ -1457,6 +1528,7 @@ def start_solo_simulation(state):
                  and os.environ.get('CRUCIBLE_SOLO_GUIDE_HEART') == '1'),
                 ('guide-heart-proximity', 'guide_hive' in state and guide_heart_enabled(profile)
                  and os.environ.get('CRUCIBLE_SOLO_GUIDE_HEART') == 'proximity'),
+                ('guide-respawn', guide_respawn_enabled(profile)),
                 ('reload', bot_reload_enabled()),
                 ('strafe', os.environ.get('CRUCIBLE_SOLO_BOT_STRAFE') == '1'),
                 ('turn', os.environ.get('CRUCIBLE_SOLO_BOT_TURN') == '1'),
@@ -1851,6 +1923,9 @@ def solo_simulation_messages(state, now, *, previous_id=0):
     if 'guide_heart' in state:
         heart, previous_id = guide_heart_messages(state, arena, now, previous_id)
         messages.extend(heart)
+    if (arena is not None and PLAYER_CHARACTER_ID in arena.entities
+            and guide_respawn_enabled()):
+        guide_respawn_tick(state, arena, now)
     health_entities = arena.tick(now) if arena is not None else []
     active_entities = ({entity for entity in arena.entities if arena.alive(entity)}
                        if arena is not None else None)
@@ -2398,6 +2473,15 @@ def parse_projectile_result(data):
                           for i in range(2, len(data), 4))
 
 
+def log_input_size(data, state):
+    """Count and log, at 1, 2, 4, ..., an input payload size other than 326."""
+    if len(data) != client_input.INPUT_SIZE:
+        sizes = state.setdefault('input_sizes', {})
+        count = sizes[len(data)] = sizes.get(len(data), 0) + 1
+        if count & (count - 1) == 0:
+            log('      CLIENT INPUT shape %d bytes (count %d)' % (len(data), count))
+
+
 def observe_client_actions(data, state):
     """The newest frame's held actions, while HOTH_GUIDE's hive is in play.
 
@@ -2406,11 +2490,7 @@ def observe_client_actions(data, state):
     than the decoded 326 bytes, so a live run shows which bit a key sets and
     whether pressing it changes the shape.
     """
-    if len(data) != client_input.INPUT_SIZE:
-        sizes = state.setdefault('input_sizes', {})
-        count = sizes[len(data)] = sizes.get(len(data), 0) + 1
-        if count & (count - 1) == 0:
-            log('      CLIENT INPUT shape %d bytes (count %d)' % (len(data), count))
+    log_input_size(data, state)
     bits = client_input.parse_newest_actions(data)
     if bits is None:
         return
@@ -2448,6 +2528,19 @@ def observe_client_input(message, state):
         return
     if 'guide_hive' in state:
         observe_client_actions(message.data, state)
+    respawn = state.get('guide_respawn')
+    armed = respawn is not None and respawn['stage'] is not None
+    if armed and 'guide_hive' not in state:
+        log_input_size(message.data, state)
+    if (armed and len(message.data) == client_input.INPUT_SIZE
+            and message.data[client_input.RESPAWN_BLOCK_OFFSET] == client_input.RESPAWN_BLOCK):
+        # While a respawn is armed, every change of the client's respawn ack
+        # is logged: an extra signal only, since the client copies it from a
+        # replicated ack this candidate never sends (docs/37).
+        ack = message.data[client_input.RESPAWN_BLOCK_OFFSET + 1]
+        if ack != state.get('respawn_ack', 0):
+            log('      CLIENT INPUT respawn ack %d -> %d' % (state.get('respawn_ack', 0), ack))
+            state['respawn_ack'] = ack
     try:
         position = client_input.latest_position(message.data)
     except ValueError:

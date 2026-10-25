@@ -140,7 +140,7 @@ class BotSightRowTests(unittest.TestCase):
 
     def test_the_rows_appear_only_when_used(self):
         rows = self.rows([])
-        self.assertFalse({'B0', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'F4'} & set(rows))
+        self.assertFalse({'B0', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'F4'} & set(rows))
 
     def test_the_hive_row(self):
         rows = self.rows([
@@ -186,6 +186,33 @@ class BotSightRowTests(unittest.TestCase):
                     self.assertIn('Jump >=2', rows['B7'][2])
         rows = self.rows(base + ['GUIDE HEART capture started at 60.0 s (interact)'])
         self.assertNotIn('B7', rows)                       # not captured: no verdict
+
+    def respawn_rows(self, extra):
+        # Only the listening line before them: the shared fixture's later
+        # player hit would otherwise count as a hit after the revival.
+        shard = [SHARD[0]] + [J % (1, 1) + line for line in extra]
+        return {row[0].split()[0]: row for row in score(shard_facts(shard), client_facts(CLIENT))}
+
+    def test_the_respawn_row(self):
+        died = ['GUIDE RESPAWN player died at 30.0 s; respawn in 10 s',
+                'GUIDE RESPAWN wave expired sent at 40.0 s',
+                'GUIDE RESPAWN pod landed sent and health restored at 41.0 s (count 1)']
+        # Revived, and nothing shows control came back: INFO.
+        rows = self.respawn_rows(died + ['GUIDE RESPAWN moved 0.0 m in the 10 s after revival 1'])
+        self.assertEqual(rows['B8'][1], 'INFO')
+        # The player moved after it: LOGS-OK.
+        rows = self.respawn_rows(died + ['GUIDE RESPAWN moved 12.5 m in the 10 s after revival 1'])
+        self.assertEqual(rows['B8'][1], 'LOGS-OK')
+        self.assertIn('deaths 1, waves sent 1, revivals sent 1', rows['B8'][2])
+        # A hit before the revival does not count; one after it does.
+        rows = self.respawn_rows(['SOLO COMBAT player hit target=01000004 damage=40 health=760']
+                                 + died)
+        self.assertEqual(rows['B8'][1], 'INFO')
+        rows = self.respawn_rows(['SOLO COMBAT player hit target=01000004 damage=40 health=760']
+                                 + died
+                                 + ['SOLO COMBAT player hit target=01000004 damage=40 health=720'])
+        self.assertEqual(rows['B8'][1], 'LOGS-OK')
+        self.assertIn('after a revival: 1 player hits', rows['B8'][2])
 
     def test_hive_hits_do_not_fail_the_flinch_row(self):
         rows = self.rows(['HIT REACTION on: hunters the player hits flinch (component 80)',
