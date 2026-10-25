@@ -179,12 +179,23 @@ GameOver, never by leaving mid-match: leaving arms the rejoin trap
      types. Most of its UUIDs have no name pair, and four labels contradict
      the live capture. Like the Marine's, these entities need a live
      capture.
-   - **Untested routes.** A name-free route through the exe (UUID literal,
-     the function using it, its vtable's type getter) could replace the
-     capture. Separately, the 71 network components attributed from the
-     live Marine capture give an exact UUID-to-type table for any slice
-     that reuses those UUIDs; its coverage of the objective slices is not
-     measured.
+   - **Coverage measured.** The 71 network components attributed from the
+     live Marine capture give an exact UUID-to-type table
+     (`snapshots/guide-objectives-20261025/`). It covers no objective
+     entity fully. The hive, the heart and the victory objective each have
+     9 components of unknown type, a harvester 13, the telegraphs 2–4; some
+     are probably not network components at all. Across the 45 slices whose
+     paths name a hive, heart, harvester or objective (test mocks, wasps and
+     tutorial waypoints included), only 28 distinct UUIDs are missing.
+     Eleven have no exe label, and three more carry junk ones.
+   - **Addressable.** Every shipped level's hash library, april2018's
+     included, names the hive, heart, harvester, victory-objective and
+     telegraph slices. So a hive could be spawned in `hoth-guide-april2018`
+     once its component set is known.
+   - **Untested route.** Resolving those 28 offline would make the sets
+     derivable, still subject to the capture-order caveat. The route would
+     go through the exe: the UUID literal, the code using it, then its
+     vtable's type getter.
 6. **Guide presentation.** CrucibleVoiceScript (144) PlayDialogueLine and
    TutorialObjectives (140) RPCs (docs/26) carry the guide's voice and
    prompts.

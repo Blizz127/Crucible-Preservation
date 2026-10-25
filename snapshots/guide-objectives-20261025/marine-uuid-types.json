@@ -1,0 +1,492 @@
+{
+ "source": "snapshots/gamemode-20260919/hives-first-live.json entity 0x1000004 (slice 9256072, Marine player character): each component's type getter decoded in bin/Crucible.exe (mov al,N; ret = type N; xor al,al; ret = 0; anything else = not a network component), paired with slices/player/marine/marine_character.dynamicslice components by position",
+ "caveat": "position pairing assumes the live list is in slice order; four exe name labels contradict it (docs/37)",
+ "components": [
+  {
+   "pos": 0,
+   "uuid": "1076c172-2a14-45ae-97e0-b0bb0dad98f6",
+   "network_type": null,
+   "getter": "other"
+  },
+  {
+   "pos": 1,
+   "uuid": "22b10178-39b6-4c12-bb37-77db45fdd3b6",
+   "network_type": null,
+   "getter": "other"
+  },
+  {
+   "pos": 2,
+   "uuid": "0ee6ee0f-7939-4ab8-b0e3-f9b3925d61ee",
+   "network_type": null,
+   "getter": "other"
+  },
+  {
+   "pos": 3,
+   "uuid": "84f98f4a-3c99-4ff4-a61c-3aecb9ecf10e",
+   "network_type": null,
+   "getter": "other"
+  },
+  {
+   "pos": 4,
+   "uuid": "0d1bc758-2cb2-f854-5a27-2587ee6050a7",
+   "network_type": 51,
+   "getter": "type"
+  },
+  {
+   "pos": 5,
+   "uuid": "181e676c-0bd0-2e19-5abc-5207dc06ecf7",
+   "network_type": 44,
+   "getter": "type"
+  },
+  {
+   "pos": 6,
+   "uuid": "21a4e605-b496-3f6f-ef81-da3d1d8c292d",
+   "network_type": 113,
+   "getter": "type"
+  },
+  {
+   "pos": 7,
+   "uuid": "2778b0ce-0dcd-adfc-ebca-788fe63a11a1",
+   "network_type": 36,
+   "getter": "type"
+  },
+  {
+   "pos": 8,
+   "uuid": "2d56b754-0920-031f-5164-03886cefbad3",
+   "network_type": 117,
+   "getter": "type"
+  },
+  {
+   "pos": 9,
+   "uuid": "31a8e9f7-e6ef-7878-fb7d-dedc36aeed01",
+   "network_type": 61,
+   "getter": "type"
+  },
+  {
+   "pos": 10,
+   "uuid": "32c40cbd-eeb5-1b36-ba96-b62f3c87b605",
+   "network_type": 128,
+   "getter": "type"
+  },
+  {
+   "pos": 11,
+   "uuid": "3a1de91a-28a5-59a1-532d-d96e7b7c60e1",
+   "network_type": 135,
+   "getter": "type"
+  },
+  {
+   "pos": 12,
+   "uuid": "3a796639-f73b-738b-6db3-14ee70717a3e",
+   "network_type": 0,
+   "getter": "zero"
+  },
+  {
+   "pos": 13,
+   "uuid": "3f20b1fa-0086-3ce9-0b0b-a833ae913517",
+   "network_type": 48,
+   "getter": "type"
+  },
+  {
+   "pos": 14,
+   "uuid": "465b5cf8-896b-24ed-b3fc-b4a64f725c07",
+   "network_type": 66,
+   "getter": "type"
+  },
+  {
+   "pos": 15,
+   "uuid": "470a75ec-bc95-c169-8a33-0b9168c770aa",
+   "network_type": 14,
+   "getter": "type"
+  },
+  {
+   "pos": 16,
+   "uuid": "4db4f012-0b0c-cf07-8013-3339873ace41",
+   "network_type": 65,
+   "getter": "type"
+  },
+  {
+   "pos": 17,
+   "uuid": "4f80779f-9085-fc7a-d978-bf32338e0c35",
+   "network_type": 35,
+   "getter": "type"
+  },
+  {
+   "pos": 18,
+   "uuid": "526bf302-d454-0da5-7a0b-fda8ffb515e0",
+   "network_type": 140,
+   "getter": "type"
+  },
+  {
+   "pos": 19,
+   "uuid": "611c9742-0e85-54ab-b7c0-09b1a2fabbbb",
+   "network_type": 67,
+   "getter": "type"
+  },
+  {
+   "pos": 20,
+   "uuid": "63208ddc-7cd3-bc9d-42eb-26cefcee6504",
+   "network_type": 133,
+   "getter": "type"
+  },
+  {
+   "pos": 21,
+   "uuid": "634e3dd4-5c87-1cab-7637-23460a6e864b",
+   "network_type": 165,
+   "getter": "type"
+  },
+  {
+   "pos": 22,
+   "uuid": "6a8adc57-2d01-ff29-69ed-5bb4bd5f75d5",
+   "network_type": 145,
+   "getter": "type"
+  },
+  {
+   "pos": 23,
+   "uuid": "0730dabf-9b30-30f2-385b-d82872367c19",
+   "network_type": 22,
+   "getter": "type"
+  },
+  {
+   "pos": 24,
+   "uuid": "3e6bfc6c-95ad-9aa6-4f71-77b13b964058",
+   "network_type": 86,
+   "getter": "type"
+  },
+  {
+   "pos": 25,
+   "uuid": "4a2656a2-9006-827c-385e-eeea88a87696",
+   "network_type": 142,
+   "getter": "type"
+  },
+  {
+   "pos": 26,
+   "uuid": "5da579ea-d58a-54d5-5f82-56f6dc5d0195",
+   "network_type": 10,
+   "getter": "type"
+  },
+  {
+   "pos": 27,
+   "uuid": "6a96c42f-4a09-46ae-1651-8147b4e3be69",
+   "network_type": 13,
+   "getter": "type"
+  },
+  {
+   "pos": 28,
+   "uuid": "6d1f271a-fa78-546e-e2a4-0a23aba839f4",
+   "network_type": 50,
+   "getter": "type"
+  },
+  {
+   "pos": 29,
+   "uuid": "6dc62de2-e7c7-73a2-883a-23428bd80ebe",
+   "network_type": 54,
+   "getter": "type"
+  },
+  {
+   "pos": 30,
+   "uuid": "71d3ae41-deae-210a-4a12-d40e65d8cfe5",
+   "network_type": 80,
+   "getter": "type"
+  },
+  {
+   "pos": 31,
+   "uuid": "756ccdf0-d796-c3b7-53b2-cbdd85f54bea",
+   "network_type": 69,
+   "getter": "type"
+  },
+  {
+   "pos": 32,
+   "uuid": "7bd22d45-2197-0e01-dd4c-65f530bd8c51",
+   "network_type": 70,
+   "getter": "type"
+  },
+  {
+   "pos": 33,
+   "uuid": "80cc66fe-5246-e6aa-f61d-834c6ea03dda",
+   "network_type": 112,
+   "getter": "type"
+  },
+  {
+   "pos": 34,
+   "uuid": "85469643-6581-9514-3427-c74f8a30c149",
+   "network_type": 108,
+   "getter": "type"
+  },
+  {
+   "pos": 35,
+   "uuid": "8d77b286-3c58-d404-100f-d6d794eb5c12",
+   "network_type": 21,
+   "getter": "type"
+  },
+  {
+   "pos": 36,
+   "uuid": "8e0335af-b09b-b202-90e0-0e49b7c8dc09",
+   "network_type": 94,
+   "getter": "type"
+  },
+  {
+   "pos": 37,
+   "uuid": "9113a3b5-9d39-9ffd-2e5d-380b04001834",
+   "network_type": 46,
+   "getter": "type"
+  },
+  {
+   "pos": 38,
+   "uuid": "0ddfa8fc-fc5e-ddcf-7607-84e70cd8a2fb",
+   "network_type": 129,
+   "getter": "type"
+  },
+  {
+   "pos": 39,
+   "uuid": "521a14db-b9b7-eb45-a668-1df4e93bdc83",
+   "network_type": 99,
+   "getter": "type"
+  },
+  {
+   "pos": 40,
+   "uuid": "967ec13d-364d-4696-ab5c-c00cc05a2305",
+   "network_type": null,
+   "getter": "other"
+  },
+  {
+   "pos": 41,
+   "uuid": "9afc3f3b-454d-cc92-cecc-cf1d2a81ed28",
+   "network_type": 97,
+   "getter": "type"
+  },
+  {
+   "pos": 42,
+   "uuid": "9f7670ea-6d2d-4410-aaa0-71b453dea8fb",
+   "network_type": null,
+   "getter": "no-getter"
+  },
+  {
+   "pos": 43,
+   "uuid": "a660cb4f-3364-3cc8-ecf8-99d3a2fd05b7",
+   "network_type": 155,
+   "getter": "type"
+  },
+  {
+   "pos": 44,
+   "uuid": "ae4a6831-6fa0-14d1-cfdc-99898e84d0ad",
+   "network_type": 132,
+   "getter": "type"
+  },
+  {
+   "pos": 45,
+   "uuid": "b198c815-09ed-24ce-2b92-b2390799e7f7",
+   "network_type": 101,
+   "getter": "type"
+  },
+  {
+   "pos": 46,
+   "uuid": "01f2f878-1da9-0ecd-9afb-885c17fc2c8f",
+   "network_type": 81,
+   "getter": "type"
+  },
+  {
+   "pos": 47,
+   "uuid": "7b0c7ad7-e2bf-904e-b3e8-57f8dcd51007",
+   "network_type": 115,
+   "getter": "type"
+  },
+  {
+   "pos": 48,
+   "uuid": "b81d2b98-3d52-9368-2adb-7419d68d023c",
+   "network_type": 143,
+   "getter": "type"
+  },
+  {
+   "pos": 49,
+   "uuid": "ba6050a0-3bfb-3727-80c7-e4c1e6b73f12",
+   "network_type": 144,
+   "getter": "type"
+  },
+  {
+   "pos": 50,
+   "uuid": "bdc97e7f-a054-448b-a26f-ea2b5d78e377",
+   "network_type": null,
+   "getter": "other"
+  },
+  {
+   "pos": 51,
+   "uuid": "77624349-d5c4-4902-9f08-665814520999",
+   "network_type": null,
+   "getter": "other"
+  },
+  {
+   "pos": 52,
+   "uuid": "6f4d50ea-11b7-cbb9-cf64-9d7913fb706a",
+   "network_type": 163,
+   "getter": "type"
+  },
+  {
+   "pos": 53,
+   "uuid": "c430f4c4-82bd-450e-1960-b0346428563a",
+   "network_type": 17,
+   "getter": "type"
+  },
+  {
+   "pos": 54,
+   "uuid": "c7425579-ea4b-1f7f-fba7-a612f394b201",
+   "network_type": 164,
+   "getter": "type"
+  },
+  {
+   "pos": 55,
+   "uuid": "c82a09ff-7690-8f8a-0490-63818ffd1f7b",
+   "network_type": 146,
+   "getter": "type"
+  },
+  {
+   "pos": 56,
+   "uuid": "c90146f9-a029-3c5e-d633-0e0e8fcc68da",
+   "network_type": 166,
+   "getter": "type"
+  },
+  {
+   "pos": 57,
+   "uuid": "0f5cd501-c8b2-bd04-37d7-e4dc563986ee",
+   "network_type": 156,
+   "getter": "type"
+  },
+  {
+   "pos": 58,
+   "uuid": "43bfd264-0eed-6789-9e1d-ec4650c4e23a",
+   "network_type": 154,
+   "getter": "type"
+  },
+  {
+   "pos": 59,
+   "uuid": "95317710-60da-eb8b-c98a-40b4f8dbf215",
+   "network_type": 107,
+   "getter": "type"
+  },
+  {
+   "pos": 60,
+   "uuid": "cbb75eec-40e8-88f0-fcb3-ccfd18d3e194",
+   "network_type": 47,
+   "getter": "type"
+  },
+  {
+   "pos": 61,
+   "uuid": "cf993578-960e-421a-a5a6-31bc8204acbc",
+   "network_type": null,
+   "getter": "other"
+  },
+  {
+   "pos": 62,
+   "uuid": "d04640d6-1237-f243-e824-b18435569091",
+   "network_type": 34,
+   "getter": "type"
+  },
+  {
+   "pos": 63,
+   "uuid": "d185e981-631f-1b70-9c74-e311cb6be4d3",
+   "network_type": 158,
+   "getter": "type"
+  },
+  {
+   "pos": 64,
+   "uuid": "dc42047c-45bd-0ce5-6afa-e423f24e3c1e",
+   "network_type": 159,
+   "getter": "type"
+  },
+  {
+   "pos": 65,
+   "uuid": "de816014-e67d-4b5e-1384-08f538178e49",
+   "network_type": 26,
+   "getter": "type"
+  },
+  {
+   "pos": 66,
+   "uuid": "3e2fa765-c872-54b3-63c5-b453d86b3842",
+   "network_type": 110,
+   "getter": "type"
+  },
+  {
+   "pos": 67,
+   "uuid": "c02c5a48-0819-fe29-09ae-85eebfff9248",
+   "network_type": 82,
+   "getter": "type"
+  },
+  {
+   "pos": 68,
+   "uuid": "e09acc56-9e9c-a372-f066-bd6737065db2",
+   "network_type": 18,
+   "getter": "type"
+  },
+  {
+   "pos": 69,
+   "uuid": "e39f772f-fe4c-405e-9008-a5b8f27cb57d",
+   "network_type": null,
+   "getter": "other"
+  },
+  {
+   "pos": 70,
+   "uuid": "e4da43b3-3169-c457-c743-338f565e7b63",
+   "network_type": 27,
+   "getter": "type"
+  },
+  {
+   "pos": 71,
+   "uuid": "e57f5ee7-82f8-aaef-ee1b-8a9db69631bc",
+   "network_type": 25,
+   "getter": "type"
+  },
+  {
+   "pos": 72,
+   "uuid": "43136b31-2715-a0f4-1ac0-2be16a2fdb50",
+   "network_type": 79,
+   "getter": "type"
+  },
+  {
+   "pos": 73,
+   "uuid": "56cdca0a-43f2-dd5f-93b5-fb5734e6e011",
+   "network_type": 120,
+   "getter": "type"
+  },
+  {
+   "pos": 74,
+   "uuid": "9ad9061f-4cc1-e5eb-a39e-d5b7581d7b53",
+   "network_type": 24,
+   "getter": "type"
+  },
+  {
+   "pos": 75,
+   "uuid": "d8735154-0158-a215-b1c4-12454ca63657",
+   "network_type": 102,
+   "getter": "type"
+  },
+  {
+   "pos": 76,
+   "uuid": "e60714df-273a-521b-3b4c-82bf0d4d7539",
+   "network_type": 20,
+   "getter": "type"
+  },
+  {
+   "pos": 77,
+   "uuid": "e728daa6-6e6e-554d-fc10-84b552d80cdb",
+   "network_type": 84,
+   "getter": "type"
+  },
+  {
+   "pos": 78,
+   "uuid": "eb475e04-77d7-5c98-4cef-746f9e16d80d",
+   "network_type": 6,
+   "getter": "type"
+  },
+  {
+   "pos": 79,
+   "uuid": "f391e5fd-e3c4-62e9-92d4-5da7b3f2b569",
+   "network_type": 98,
+   "getter": "type"
+  },
+  {
+   "pos": 80,
+   "uuid": "f92104b4-9beb-9a9c-2575-978de3989d2b",
+   "network_type": 125,
+   "getter": "type"
+  }
+ ]
+}
