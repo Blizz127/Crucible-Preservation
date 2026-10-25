@@ -6,8 +6,8 @@ Status (25 October), all tested offline and none of it played:
   guide bot with its own AI, primary and flight. The three allies are not.
 - Stage 5's rules are decoded, and its objective entities' component sets
   are derived offline and validated. One hive, and its heart with the
-  retail match end, can be spawned behind switches; no objective entity
-  has been seen in the client yet.
+  retail match end, can be spawned behind switches, and deleted again
+  behind another; no objective entity has been seen in the client yet.
 - Stage 6 is plan only.
 
 The Alpha Hunters bot match (docs/30, docs/35, docs/36) is local: retail
@@ -412,7 +412,8 @@ when the hive spawned, and `match_acceptance` row B5 reports it.
   - its HUD marker (the untraced DataStoreMatch hive record);
   - its animation flags (`is_active`, `is_dead`), each another message
     kind to a never-seen entity;
-  - its dissolve and despawn: a dead hive stays.
+  - its dissolve: a dead hive stays, or vanishes behind the despawn
+    switch (below).
 
   The match still ends on the timer.
 - **Offline check.** The scripted player's hits on the hive (a scratch
@@ -458,12 +459,64 @@ heart ending counts for A6.
 - **The end.** The capture scores 1 for the player's team, 1. As the guide's
   win script, the match ends 12.0 s later with that team the winner: GameOver
   and rank 1, before the debug timer, which stays as the safety net.
-- **Not modelled:** the heart's despawn, its objective priority and music,
-  a capture by anyone else, and the melee interrupt.
+- **Not modelled:** its objective priority and music, a capture by anyone
+  else, and the melee interrupt. Its despawn has its own switch (below).
 - **Offline check.** The harness killed the hive at 14.2 s, the heart
   spawned at once, and 10 s on it captured it at 29.0 s. The match ended at
   41.0 s with team 1 the winner and rank 1 published, with and without the
   Saboteur.
+
+## Despawns (switch)
+
+`CRUCIBLE_SOLO_GUIDE_DESPAWN=1` deletes the dead hive and the captured
+heart. It needs the hive's switch, and the heart's for the heart part. B0
+lists `guide-despawn` only when the hive spawned, and rows B5 and B6 report
+each delete.
+
+- **When.** `hive_deathdespawn.cdl` despawns the hive 5.5 s after its death:
+  `is_dead`, 0.5 s, the damage field killed, 0.5 s, the dissolve, 4.5 s.
+  The heart goes about 1 s after its capture, inferred from the capture
+  script's delayed despawn event. The match still ends 12 s after the
+  capture.
+- **The message.** A delete is a header with TypeAndFlags bit 7 and the
+  spawn's type 1, no slice id and a PayloadSize of 0 (docs/13). Read from
+  the client:
+  - `ValidateUpdate` (`0x4bb4f80`) runs first and holds a delete to the
+    newer-sequence rule (docs/36). One that shares a packet with another
+    message for the entity is dropped as an "old DeleteProxy". On the
+    client's path it also asserts, then reads through a null pointer, if
+    the entity's replicator has no property subscriber (`0x4bb5114`).
+  - So the hive leaves the arena before its tick's health messages are
+    built. Its repeated health stops, and nothing else for it shares the
+    delete's packet or follows it. A hit reported on it afterwards is
+    refused.
+  - `HandleEntityDeleteMessage` (`0x4bb41f0`) then deletes the replicator
+    and the entity. It refuses only an entity the client holds authority
+    over (local role 4, or 3 with a client remote role). It logs a
+    duplicate and has no assert of its own.
+  - Bits 5 and 6 stay clear. Bit 6 would delete the replicator but leave
+    the entity to time out; bit 5 would delete the entity even without a
+    replicator.
+  - The patched build logs each of these branches on `NET_RepDeletes`, so
+    a live run shows which one fired.
+- **Deviations.** Without the animation flags the hive vanishes where
+  retail dissolves it, and the heart vanishes without its capture effects.
+- **Offline check.** In the harness's heart scenario the hive died at
+  14.2 s and was deleted at 19.7 s. The heart, captured at 44.0 s (the
+  fallback) or 29.0 s (proximity), was deleted 1.0 s later, and the match
+  ended on the heart 12 s after the capture. Decoding every packet's
+  message headers showed each delete as the only message for its entity in
+  its packet, newer than the entity's last message, with none for it
+  afterwards. The defaults stayed byte-identical.
+- **The live risk.** No delete has been sent to the client before. If it
+  crashes, the suspects are:
+  - for the heart, first `ValidateUpdate`'s property-subscriber assert. The
+    heart has only ever had its spawn, while the hive's applied health
+    updates show it has a subscriber. Then the interaction that captured it;
+  - for the hive, client systems still holding it, such as its objective
+    and targeting records.
+
+  LIVE-PLAN's H1d2 tests the deletes alone, after H1d.
 
 ## Respawn (switch)
 
@@ -530,10 +583,9 @@ What the client does with each piece:
 - **The alternative,** replicating RespawnComponent's six shared properties
   (state, ack id, the tutorial flag and position), is in the role-1/role-2
   crash class.
-- **Despawns, recorded rather than built.** The delete path (TypeAndFlags
-  bit 7, docs/13) is the mechanism for the hive's dissolve, the heart's
-  despawn and the allies' exit. No delete has ever been sent; its first use
-  comes after H1c shows a hive live.
+- **Despawns.** The delete path (TypeAndFlags bit 7, docs/13) is built for
+  the hive and the heart behind their own switch (above); the allies' exit
+  would use it too.
 - **Unknown:**
   - whether CharacterComponent (156), with its autonomous IsAlive and
     timers, is the real alive gate;

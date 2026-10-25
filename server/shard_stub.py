@@ -287,6 +287,43 @@ def guide_respawn_tick(state, arena, now):
             respawn['sends'] += 1
 
 
+# docs/37: deleting the dead hive and the captured heart, behind
+# CRUCIBLE_SOLO_GUIDE_DESPAWN=1 with their switches. hive_deathdespawn.cdl
+# despawns the hive 5.5 s after its death (is_dead, 0.5 s, the damage field
+# killed, 0.5 s, dissolve, 4.5 s); the heart goes about 1 s after its
+# capture (inferred, from the capture script's delayed despawn event).
+HIVE_DESPAWN_SECONDS = 5.5
+HEART_DESPAWN_SECONDS = 1.0
+
+
+def guide_despawn_enabled(profile=None):
+    """CRUCIBLE_SOLO_GUIDE_DESPAWN=1 where the hive can spawn (docs/37)."""
+    return (os.environ.get('CRUCIBLE_SOLO_GUIDE_DESPAWN') == '1'
+            and guide_hive_enabled(profile))
+
+
+def build_entity_delete(entity_id, *, previous_id=0):
+    """Delete a spawned entity: TypeAndFlags bit 7, no slice id, no payload.
+
+    ValidateUpdate (0x4bb4f80) runs first and holds a delete to the property
+    updates' newer-sequence rule (docs/36): one sharing a packet with another
+    message for the entity is dropped as an "old DeleteProxy"; and it
+    asserts, then reads through a null pointer, if the entity's replicator
+    has no property subscriber (0x4bb5114). Then bit 7 goes to
+    HandleEntityDeleteMessage (0x4bb41f0), which deletes the replicator and
+    the entity unless the client holds authority over it (local role 4, or 3
+    with a client remote role). It logs a duplicate and has no assert of its
+    own. Bit 6 would leave the entity to time out and bit 5 would delete it
+    without a replicator, so both stay clear. No path the client takes
+    checks a delete's type nibble (role 0's wants 4, but live type-1 updates
+    apply, so the client is not role 0); it keeps the spawn's 1.
+    """
+    return build_entity_message(
+        entity_id & 0xffffff,
+        pack_type_and_flags(ENTITY_ROLE_CLIENT_SIMULATION, bit7=True),
+        payload=b'', previous_id=previous_id)
+
+
 def guide_hive_enabled(profile=None):
     """CRUCIBLE_SOLO_GUIDE_HIVE=1 in a HOTH_GUIDE profile (docs/37)."""
     profile = solo_modes.selected() if profile is None else profile
@@ -363,13 +400,20 @@ def guide_heart_messages(state, arena, now, previous_id):
         return ([build_guide_heart_probe(heart['position'], previous_id=previous_id)],
                 HEART_ENTITY_ID & 0xffffff)
     if heart['captured_at'] is not None:
+        messages = []
+        if (guide_despawn_enabled() and not heart.get('deleted')
+                and now >= heart['captured_at'] + HEART_DESPAWN_SECONDS):
+            heart['deleted'] = True
+            log('      GUIDE HEART deleted at %.1f s' % now)
+            messages.append(build_entity_delete(HEART_ENTITY_ID, previous_id=previous_id))
+            previous_id = HEART_ENTITY_ID & 0xffffff
         if (now >= heart['captured_at'] + HEART_MATCH_OVER_DELAY
                 and 'match_result' not in state):
             team = solo_modes.selected().local_team
             state['match_result'] = {'winner_team': team, 'at_seconds': now,
                                      'reason': 'heart'}
             log('      GUIDE HEART match over: winner team %d' % team)
-        return [], previous_id
+        return messages, previous_id
     player = state.get('player_position')
     near = (player is not None
             and (arena is None or PLAYER_CHARACTER_ID not in arena.entities
@@ -1529,6 +1573,7 @@ def start_solo_simulation(state):
                 ('guide-heart-proximity', 'guide_hive' in state and guide_heart_enabled(profile)
                  and os.environ.get('CRUCIBLE_SOLO_GUIDE_HEART') == 'proximity'),
                 ('guide-respawn', guide_respawn_enabled(profile)),
+                ('guide-despawn', 'guide_hive' in state and guide_despawn_enabled(profile)),
                 ('reload', bot_reload_enabled()),
                 ('strafe', os.environ.get('CRUCIBLE_SOLO_BOT_STRAFE') == '1'),
                 ('turn', os.environ.get('CRUCIBLE_SOLO_BOT_TURN') == '1'),
@@ -1633,6 +1678,8 @@ def observe_solo_combat(message, state):
         hive['next_heal'] = now + HIVE_REGEN_AFTER
         if hit.killed:
             log('      GUIDE HIVE destroyed at %.1f s' % now)
+            if guide_despawn_enabled():
+                hive['despawn_at'] = now + HIVE_DESPAWN_SECONDS
             if guide_heart_enabled():
                 # hive_ondeathspawnessence.cdl: a heart on the hive's exact
                 # position (ForceCenterSpawn), at once.
@@ -1693,7 +1740,7 @@ def reported_hit_range(state, shooter):
     squad = state.get('squad')
     if squad is not None:
         positions.update((bot.entity, bot.position) for bot in squad.bots)
-    if 'guide_hive' in state:
+    if 'guide_hive' in state and not state['guide_hive'].get('deleted'):
         positions[HIVE_ENTITY_ID] = state['guide_hive']['position']
 
     def distance(target):
@@ -1920,6 +1967,16 @@ def solo_simulation_messages(state, now, *, previous_id=0):
         previous_id = PLAYER_CHARACTER_ID & 0xffffff
     if 'guide_hive' in state and arena is not None:
         regenerate_guide_hive(state, arena, now)
+        hive = state['guide_hive']
+        if (hive.get('despawn_at') is not None and not hive.get('deleted')
+                and now >= hive['despawn_at']):
+            # Out of the arena first, so no health update for it shares the
+            # delete's packet or follows it; hits on it are refused from now.
+            arena.entities.pop(HIVE_ENTITY_ID, None)
+            hive['deleted'] = True
+            log('      GUIDE HIVE deleted at %.1f s' % now)
+            messages.append(build_entity_delete(HIVE_ENTITY_ID, previous_id=previous_id))
+            previous_id = HIVE_ENTITY_ID & 0xffffff
     if 'guide_heart' in state:
         heart, previous_id = guide_heart_messages(state, arena, now, previous_id)
         messages.extend(heart)

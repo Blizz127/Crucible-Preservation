@@ -102,8 +102,9 @@ FLEES = re.compile(r'HUNTER AI ([0-9a-f]{8}) fleeing a losing fight \(count (\d+
 HIVE_SPAWNED = re.compile(r'GUIDE HIVE spawned ([0-9a-f]{8}) at (\([^)]*\))')
 HIVE_DESTROYED = re.compile(r'GUIDE HIVE destroyed at ([\d.]+) s')
 HIVE_REGEN = re.compile(r'GUIDE HIVE regenerating \(count (\d+)')
+HIVE_DELETED = re.compile(r'GUIDE HIVE deleted at ([\d.]+) s')
 HEART = re.compile(r'GUIDE HEART (spawned|capture started|captured|match over|'
-                   r'capture interrupted)\b(.*)')
+                   r'capture interrupted|deleted)\b(.*)')
 INTERACT = re.compile(r'CLIENT INPUT interact pressed \(count (\d+)\)')
 RISE = re.compile(r'CLIENT INPUT action (\w+) rose \(count (\d+)\)')
 RESPAWN = re.compile(r'GUIDE RESPAWN (player died|wave expired sent|pod landed sent)')
@@ -146,6 +147,7 @@ def shard_facts(lines):
              'sight_broken': [], 'blocked': 0, 'rests': {}, 'flinches': {},
              'flinch_split_off': 0, 'flinch_on': 0, 'switches': None, 'flees': {},
              'hive': None, 'hive_destroyed': None, 'hive_regens': 0, 'heart': {},
+             'hive_deleted': None,
              'interacts': 0, 'rises': {}, 'respawn': {}, 'respawn_acks': [],
              'hits_after_revival': 0, 'moved_after_revival': []}
     for line in lines:
@@ -186,6 +188,8 @@ def shard_facts(lines):
         elif HEART.search(line) and not OVER.search(line):
             event, rest = HEART.search(line).groups()
             facts['heart'].setdefault(event, rest.strip())
+        elif HIVE_DELETED.search(line):
+            facts['hive_deleted'] = HIVE_DELETED.search(line).group(1)
         elif HIVE_REGEN.search(line):
             facts['hive_regens'] = max(facts['hive_regens'], int(HIVE_REGEN.search(line).group(1)))
         elif FLINCH.search(line):
@@ -456,20 +460,24 @@ def score(shard, client):
         state = ('destroyed at %s s' % shard['hive_destroyed'] if shard['hive_destroyed']
                  else 'lowest health %d' % min(h['health'] for h in hits) if hits
                  else 'never hit')
-        rows.append(('B5 hive', 'LOGS-OK', 'spawned at %s; %d player hits, %s; %d regenerations; '
+        rows.append(('B5 hive', 'LOGS-OK', 'spawned at %s; %d player hits, %s; %d regenerations%s; '
                      'eyes: a hive about 30 m from the drop, which may look dormant (no '
-                     'marker, wasps, heart or death animation)'
-                     % (where, len(hits), state, shard['hive_regens'])))
+                     'marker, wasps, heart or death animation)%s'
+                     % (where, len(hits), state, shard['hive_regens'],
+                        '; deleted at %s s' % shard['hive_deleted'] if shard['hive_deleted'] else '',
+                        ', and gone about 5.5 s after its death, with no dissolve'
+                        if shard['hive_deleted'] else '')))
     if shard['heart']:
         heart = shard['heart']
         steps = '; '.join('%s %s' % (event, heart[event]) if heart[event] else event
                           for event in ('spawned', 'capture started', 'captured',
-                                        'capture interrupted') if event in heart)
+                                        'capture interrupted', 'deleted') if event in heart)
         rows.append(('B6 heart', 'LOGS-OK' if 'captured' in heart else 'INFO',
                      steps + ('; ended by the heart' if shard['over'] else '')
                      + '; Interact presses seen: >=%d' % shard['interacts']
                      + '; eyes: a heart where the hive stood; no capture bar (press '
-                     'Interact on it, then stay 10 s)'))
+                     'Interact on it, then stay 10 s)'
+                     + ('; gone about 1 s after the capture' if 'deleted' in heart else '')))
     if shard['heart'].get('captured') is not None and 'capture started' in shard['heart']:
         trigger = shard['heart']['capture started']
         rose = ', '.join('%s >=%d' % item for item in sorted(shard['rises'].items())) or 'none'

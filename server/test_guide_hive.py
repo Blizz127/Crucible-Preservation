@@ -167,6 +167,24 @@ class GuideHiveSwitchLineTests(unittest.TestCase):
                      if 'HUNTER AI switches' in c.args[0]]
             self.assertEqual(lines, [line] if line else [])
 
+    def test_b0_names_the_despawns_only_where_the_hive_spawned(self):
+        import hunter_ai
+        import hunter_patrol
+        route = ((0., 0., 0.), (1., 0., 0.))
+        env = dict(ENV, CRUCIBLE_SOLO_AI='1', CRUCIBLE_SOLO_GUIDE_DESPAWN='1')
+        for state, line in (({'guide_hive': {'position': SPOT, 'next_heal': None, 'regens': 0}},
+                             'HUNTER AI switches: guide-hive guide-despawn; sight off'),
+                            ({}, None)):
+            squad = hunter_ai.Squad([hunter_ai.Bot(0x1000003, route, hunter_ai.MARINE)])
+            with self.subTest(state=bool(state)), patch.dict('os.environ', env, clear=True), \
+                    patch.object(hunter_patrol, 'squad', return_value=squad), \
+                    patch.object(shard, 'level_sight', return_value=None), \
+                    patch.object(shard, 'log') as log:
+                shard.start_solo_simulation(state)
+            lines = [c.args[0].strip() for c in log.call_args_list
+                     if 'HUNTER AI switches' in c.args[0]]
+            self.assertEqual(lines, [line] if line else [])
+
 
 def math_dist2(a, b):
     return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** .5
@@ -366,3 +384,127 @@ class GuideHeartPacketTests(unittest.TestCase):
         self.assertTrue(any(shard.encode_entity_id(7, previous, local=False) + create
                             in carrying[0] for previous in range(0, 8)))
         self.assertTrue(state['guide_heart']['sent'])
+
+
+DESPAWN_ENV = dict(HEART_ENV, CRUCIBLE_SOLO_GUIDE_DESPAWN='1')
+
+
+def deletes(messages, previous=0):
+    """The entity counters a tick's chained messages delete (bit 7), in order."""
+    found = []
+    for message in messages:
+        previous, offset = shard.decode_entity_id(message.header, previous_id=previous)
+        if message.header[offset] & 0x80:
+            found.append(previous)
+    return found
+
+
+@patch.object(shard, 'log')
+class GuideDespawnTests(unittest.TestCase):
+    def test_the_delete_message(self, _log):
+        message = shard.build_entity_delete(HIVE, previous_id=3)
+        counter, offset = shard.decode_entity_id(message.header, previous_id=3)
+        self.assertEqual(counter, 6)
+        # Bit 7 with the spawn's type 1, no slice id, and a PayloadSize of 0.
+        self.assertEqual(message.header[offset:], b'\x81\x00\x00')
+        self.assertEqual(message.payload, b'')
+
+    def test_only_with_its_switch_where_the_hive_can_spawn(self, _log):
+        for env, on in ((DESPAWN_ENV, True), (HEART_ENV, False),
+                        (dict(DESPAWN_ENV, CRUCIBLE_SOLO_GUIDE_HIVE='0'), False),
+                        (dict(DESPAWN_ENV, CRUCIBLE_SOLO_MODE='alpha-hunters'), False)):
+            with self.subTest(env=env), patch.dict('os.environ', env, clear=True):
+                self.assertEqual(shard.guide_despawn_enabled(), on)
+
+    def test_without_it_nothing_is_deleted(self, _log):
+        state = GuideHeartTests.killed_hive(None, HEART_ENV)
+        self.assertIsNone(state['guide_hive'].get('despawn_at'))
+        with patch.dict('os.environ', HEART_ENV, clear=True):
+            ticks = [shard.solo_simulation_messages(state, 50. + i * .5) for i in range(40)]
+        self.assertFalse(any(deletes(tick) for tick in ticks))
+        self.assertIn(HIVE, state['combat'].entities)
+
+    def test_the_hive_goes_5_5_s_after_its_death_and_is_never_addressed_again(self, log):
+        state = GuideHeartTests.killed_hive(None, DESPAWN_ENV)
+        due = state['guide_hive']['despawn_at']
+        with patch.dict('os.environ', DESPAWN_ENV, clear=True):
+            before = shard.solo_simulation_messages(state, due - .1)
+            self.assertIn(6, tick_ids(before))                 # its health still repeats
+            self.assertEqual(deletes(before), [])
+            tick = shard.solo_simulation_messages(state, due)
+            self.assertEqual(tick_ids(tick).count(6), 1)       # the delete, alone
+            self.assertEqual(deletes(tick), [6])
+            self.assertNotIn(HIVE, state['combat'].entities)
+            later = [tick_ids(shard.solo_simulation_messages(state, due + i * .05))
+                     for i in range(1, 100)]
+        self.assertFalse(any(6 in ids for ids in later))
+        lines = [c.args[0].strip() for c in log.call_args_list if 'GUIDE HIVE deleted' in c.args[0]]
+        self.assertEqual(lines, ['GUIDE HIVE deleted at %.1f s' % due])
+
+    def test_a_hit_reported_on_the_deleted_hive_is_refused(self, log):
+        state = GuideHeartTests.killed_hive(None, DESPAWN_ENV)
+        with patch.dict('os.environ', DESPAWN_ENV, clear=True):
+            shard.solo_simulation_messages(state, state['guide_hive']['despawn_at'])
+            self.assertIsNone(shard.reported_hit_range(state, shard.PLAYER_CHARACTER_ID)(HIVE))
+            log.reset_mock()
+            shard.observe_solo_combat(hit_on(250, HIVE), state)
+        self.assertEqual(state['combat'].last_rejection, 'no live enemy')
+        self.assertNotIn(HIVE, state['combat'].entities)
+        self.assertFalse([c for c in log.call_args_list if 'hit target=01000006' in c.args[0]])
+
+    def test_the_heart_goes_1_s_after_its_capture_and_the_match_still_ends(self, log):
+        state = GuideHeartTests.killed_hive(None, DESPAWN_ENV)
+        due = state['guide_hive']['despawn_at']
+        with patch.dict('os.environ', DESPAWN_ENV, clear=True):
+            shard.solo_simulation_messages(state, due - 5.)        # the heart's spawn
+            state['player_position'] = (SPOT[0] + 2., SPOT[1], SPOT[2])
+            state['player_interact_at'] = due - 4.
+            shard.solo_simulation_messages(state, due - 4.)        # the capture starts
+            self.assertEqual(deletes(shard.solo_simulation_messages(state, due)), [6])
+            shard.solo_simulation_messages(state, due + 6.)
+            captured = state['guide_heart']['captured_at']
+            self.assertEqual(captured, due + 6.)
+            self.assertEqual(deletes(shard.solo_simulation_messages(state, captured + .9)), [])
+            tick = shard.solo_simulation_messages(state, captured + 1.)
+            self.assertEqual(deletes(tick), [7])
+            self.assertEqual(tick_ids(tick).count(7), 1)
+            later = [tick_ids(shard.solo_simulation_messages(state, captured + 1. + i * .5))
+                     for i in range(1, 22)]
+            self.assertFalse(any(7 in ids for ids in later))
+            self.assertNotIn('match_result', state)
+            shard.solo_simulation_messages(state, captured + 12.)
+        self.assertEqual(state['match_result']['reason'], 'heart')
+        lines = [c.args[0].strip() for c in log.call_args_list if 'deleted at' in c.args[0]]
+        self.assertEqual(lines, ['GUIDE HIVE deleted at %.1f s' % due,
+                                 'GUIDE HEART deleted at %.1f s' % (captured + 1.)])
+
+
+@patch.object(shard, 'log')
+class GuideDespawnPacketTests(unittest.TestCase):
+    def test_the_split_tick_packet_carries_the_delete_intact(self, _log):
+        import lz4.block
+        env = dict(DESPAWN_ENV, CRUCIBLE_SHARD_BOOTSTRAP='practice-character',
+                   CRUCIBLE_SHARD_SPLIT_UPDATES='1')
+        state = GuideHeartTests.killed_hive(None, env)
+        state['guide_hive']['despawn_at'] = .5                 # due before this 1.0 s tick
+        state.update({'character_links_sent': True, 'clock_epoch': 100.0,
+                      'clock_last_sent': 100.0, 'seq': 10, 'received_seq': 1,
+                      'received_window': 1, 'practice_npcs_sent': True})
+        groups, split = [], shard.split_entity_messages
+
+        def record(messages):
+            groups.extend(split(messages))
+            return split(messages)
+        with patch.dict('os.environ', env, clear=True), \
+                patch.object(shard, 'split_entity_messages', record):
+            packets = shard.game_clock_packets(state, now=101.0)
+        self.assertTrue(state['guide_hive']['deleted'])
+        # One message for the hive in the whole tick, and it is the delete.
+        addressed = [counter for group in groups for counter in tick_ids(group)]
+        self.assertEqual(addressed.count(6), 1)
+        self.assertEqual([c for group in groups for c in deletes(group)], [6])
+        raws = [lz4.block.decompress(p[1:], uncompressed_size=8192) for p in packets]
+        carrying = [raw for raw in raws
+                    if any(shard.encode_entity_id(6, previous) + b'\x81\x00\x00' in raw
+                           for previous in range(0, 8))]
+        self.assertEqual(len(carrying), 1)

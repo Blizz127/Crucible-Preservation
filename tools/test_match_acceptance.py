@@ -155,6 +155,12 @@ class BotSightRowTests(unittest.TestCase):
                           'SOLO COMBAT player hit target=01000006 damage=40 health=0 KILLED',
                           'GUIDE HIVE destroyed at 91.5 s'])
         self.assertIn('destroyed at 91.5 s', rows['B5'][2])
+        self.assertNotIn('deleted', rows['B5'][2])
+        rows = self.rows(['GUIDE HIVE spawned 01000006 at (1.0, 2.0, 3.0)',
+                          'SOLO COMBAT player hit target=01000006 damage=40 health=0 KILLED',
+                          'GUIDE HIVE destroyed at 91.5 s', 'GUIDE HIVE deleted at 97.0 s'])
+        self.assertIn('destroyed at 91.5 s; 0 regenerations; deleted at 97.0 s', rows['B5'][2])
+        self.assertIn('gone about 5.5 s after its death, with no dissolve', rows['B5'][2])
         # The hive is not a hunter: its kill is not A5's.
         self.assertIn('killed 01000003 (1 player hits)', rows['A5'][2])
 
@@ -169,8 +175,17 @@ class BotSightRowTests(unittest.TestCase):
         self.assertEqual(rows['B6'][1], 'LOGS-OK')
         self.assertIn('captured at 70.0 s; team 1 score 1', rows['B6'][2])
         self.assertIn('ended by the heart', rows['B6'][2])
+        self.assertNotIn('gone about 1 s', rows['B6'][2])
         self.assertEqual(rows['A6'][1], 'LOGS-OK')
         self.assertIn('winner team 1', rows['A6'][2])
+
+    def test_the_hearts_delete(self):
+        rows = self.rows(['GUIDE HEART spawned 01000007 at (1.0, 2.0, 3.0)',
+                          'GUIDE HEART capture started at 60.0 s (interact)',
+                          'GUIDE HEART captured at 70.0 s; team 1 score 1',
+                          'GUIDE HEART deleted at 71.0 s'])
+        self.assertIn('captured at 70.0 s; team 1 score 1; deleted at 71.0 s', rows['B6'][2])
+        self.assertIn('gone about 1 s after the capture', rows['B6'][2])
 
     def test_what_started_the_capture(self):
         base = ['GUIDE HEART spawned 01000007 at (1.0, 2.0, 3.0)']

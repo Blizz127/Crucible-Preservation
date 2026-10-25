@@ -95,6 +95,14 @@ bytes are still an unverified configuration-only probe, not gameplay proof.
   | 6 | flag at `+0x0d` |
   | 7 | flag at `+0x0c` — checked **first** and routed to `0x4bb41f0`, the delete path, before the update path runs |
 
+  On a delete, bits 5 and 6 are read too (`0x4bb41f0`). Bit 6 makes
+  the client delete the replicator but leave the entity to time out
+  ("Leaving id %u using timeout"). Bit 5 makes it delete the entity even
+  when it holds no replicator for the id; with bit 5 clear, such a delete
+  is ignored. A delete first passes `ValidateUpdate` under the same
+  newer-sequence rule as a property update (docs/36), so it must not share
+  a packet with another message for its entity (docs/37, Despawns).
+
   The dispatch at `0x4bb5424` confirms the two that matter: bit 7 short-
   circuits to delete, and bit 4 is what makes the client read the slice
   reference at `+0x10` instead of treating the message as a plain property
