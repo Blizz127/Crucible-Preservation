@@ -187,6 +187,53 @@ class AggroConeTests(unittest.TestCase):
         self.assertEqual(marine.range_vertical_max, 20.)
 
 
+class AccelerationTests(unittest.TestCase):
+    """MovementPararams/StartStopAcceleration, 10 m/s^2 for the Marine."""
+
+    def bot(self, accelerate=True, **kwargs):
+        bot = hunter_ai.Bot(3, straight(20.), tuning(patrol_speed=5.5,
+                                                    start_stop_acceleration=10., **kwargs))
+        bot.accelerate = accelerate
+        return bot
+
+    def test_speed_ramps_at_the_authored_rate_and_brakes_to_a_stop(self):
+        bot = self.bot()
+        bot.update(.05)                                    # tick 1 has no clock
+        speeds, positions = [], []
+        for i in range(2, 120):
+            positions.append(bot.update(.05 * i).position[0])
+            speeds.append(bot._speed)
+        self.assertAlmostEqual(speeds[0], .5, places=9)    # 10 m/s^2 for 50 ms
+        self.assertTrue(all(abs(b - a) <= .5 + 1e-9 for a, b in zip(speeds, speeds[1:])))
+        self.assertAlmostEqual(max(speeds), 5.5, places=9)
+        self.assertLessEqual(speeds.index(max(speeds)), 11)    # 0.55 s to 5.5 m/s
+        # It comes to a stop at the end of the 20 m leg, then turns back.
+        end = max(range(len(positions)), key=positions.__getitem__)
+        self.assertAlmostEqual(positions[end], 20., places=6)
+        self.assertLess(speeds[end], .01)
+        self.assertLess(positions[-1], positions[end] - 1.)
+
+    def test_without_the_switch_speed_changes_at_once(self):
+        speeds = [step.speed for step in ticks(self.bot(accelerate=False), 5)][1:]
+        for speed in speeds:
+            self.assertAlmostEqual(speed, 5.5, places=9)
+
+    def test_an_attacker_slides_to_a_stop_still_facing_its_target(self):
+        bot = hunter_ai.Bot(3, straight(), tuning(start_stop_acceleration=10.,
+                                                  aggro_far=30., deaggro=40.))
+        bot.accelerate = True
+        target = (0., 16., 0.)
+        steps = [bot.update(.05 * (i + 1), 2, target) for i in range(80)]
+        attack = next(i for i, s in enumerate(steps) if s.state == hunter_ai.ATTACK)
+        sliding = [s.speed for s in steps[attack:attack + 12]]
+        self.assertGreater(sliding[0], 0.)                            # still moving at first
+        self.assertTrue(all(b <= a + 1e-9 for a, b in zip(sliding, sliding[1:])))
+        self.assertEqual(sliding[-1], 0.)
+        for step in steps[attack:attack + 12]:
+            want = math.atan2(target[0] - step.position[0], target[1] - step.position[1])
+            self.assertAlmostEqual(step.yaw, want, places=6)
+
+
 class WanderTests(unittest.TestCase):
     """PatrolParams author a bounded random walk, not a fixed route."""
 

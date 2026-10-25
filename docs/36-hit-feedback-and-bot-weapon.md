@@ -19,6 +19,7 @@ Alienware install by SHA-256.
 | `CRUCIBLE_SOLO_LOS=terrain` | Marines need sight over the terrain to acquire and attack; terrain stops their rounds |
 | `CRUCIBLE_SOLO_LOS=static` | As `terrain`, and walls, rocks and buildings also block (needs the offline cache) |
 | `CRUCIBLE_SOLO_BOT_IDLE=1` | Patrolling Marines rest one authored idle animation, plus 1 s, between hops |
+| `CRUCIBLE_SOLO_BOT_ACCEL=1` | Marines speed up and slow down at 10 m/s², stopping where their path ends |
 | `CRUCIBLE_SOLO_HIT_REACTION=1` | A Marine the player hits flinches away from the shot (needs the split) |
 | `CRUCIBLE_SOLO_DAMAGE_NUMBERS=1` | Damage numbers over Marines the player hits |
 | `CRUCIBLE_SOLO_HIT_DIRECTION=1` | Incoming-hit arcs pointing at the Marine that hit the player |
@@ -549,6 +550,25 @@ rest 3.7–12.7 s. So with the switch on, a patrolling Marine stands far more
 than it walks, as the authored values imply. Without it, Marines never stop.
 The DIT patrol pauses, when approved, replace this rest.
 
+## Speeding up and slowing down
+
+`MovementPararams/StartStopAcceleration` is 10 m/s² (0x7f6). The editor
+tooltip calls it "the acceleration parameter used to accelerate up to and
+decelerate down from the desired speed". With `CRUCIBLE_SOLO_BOT_ACCEL=1`, a
+Marine's speed moves toward the speed its state wants by at most 10 m/s² ×
+the tick. It also brakes so that it stops where its current plan ends: each
+tick it takes the fastest speed that, after the tick's step, can still stop
+by then.
+- **Times and distances.** A patrolling Marine reaches 5.5 m/s in 0.55 s. A
+  chasing one reaches 8 m/s in 0.8 s, and needs 3.2 m to stop from it.
+- **Attacks.** A Marine that starts attacking slides to a stop, facing its
+  target the whole way. `Attacks[0].TranslationDisallowedPeriod` is 0, so
+  firing never locks movement.
+- **Not modelled.** `CruiseAcceleration` (also 10 m/s²) only holds a cruise
+  speed, and the speeds here are constant, so it is not modelled. Nor are
+  `MaxSpeedMultiplier` 1.1, `PathAcceleration` 20 (steering) and strafing's
+  own 10 m/s².
+
 ## Turning while moving
 
 Bots used PassiveTurnParams' 90°/s turn-in-place rate for every turn
@@ -626,7 +646,8 @@ None of these has run in the retail client yet. The live checks are:
     one "client asks for damage floaters" line per change, and nothing
     fails to deserialize.
 12. With idle rests on, a patrolling Marine stands and plays an idle
-    animation between hops, rather than sliding in a still pose.
+    animation between hops, rather than sliding in a still pose. With
+    acceleration on, it eases into and out of each hop.
 13. A Marine the player shoots flinches away from the shot. First, with the
     switch off: whether it already flinches shows whether the client's own
     prediction runs.

@@ -50,6 +50,7 @@ class Tuning:
     patrol_attempts: int = 5
     idle_durations: tuple = ()             # rest after a patrol hop: one of these
     idle_extra: float = 0.                 # ...plus this, seconds
+    start_stop_acceleration: float = 0.    # m/s^2; 0 changes speed at once
     repath_interval: float = 0.5
     repath_distance: float = 1.0
     turn_rate: float = math.tau            # radians/second
@@ -155,6 +156,9 @@ MARINE = Tuning(
     # reading, and the uniform pick, are inferred from the names.
     idle_durations=(10.8, 5.8, 4.67, 11.73, 9.67, 2.67),
     idle_extra=1.0,
+    # MovementPararams/StartStopAcceleration 10 m/s^2 (0x7f6): "used to
+    # accelerate up to and decelerate down from the desired speed".
+    start_stop_acceleration=10.0,
     # PassiveTurnParams/TurnInPlaceSpeed (0xc93) turns a standing bot. A
     # moving one steers through its spoofed player inputs, so its body turns
     # at marine_default.movementconfig's Max Turn Speed (0x143), 1440 deg/s.
@@ -198,6 +202,13 @@ class Step:
 
 def plan_distance(points):
     return sum(math.dist(a, b) for a, b in zip(points, points[1:]))
+
+
+def plan_remaining(points, index, position):
+    """Metres left from `position` to the end of points[index:]."""
+    if index >= len(points):
+        return 0.
+    return math.dist(position, points[index]) + plan_distance(points[index:])
 
 
 def advance(points, index, position, distance):
@@ -263,6 +274,7 @@ class Bot:
     strafe: bool = False          # opt-in: move while attacking (StrafeParams)
     move_turn: bool = False       # opt-in: steer at tuning.move_turn_rate when moving
     idle: bool = False            # opt-in: rest between wander hops (IdleParams)
+    accelerate: bool = False      # opt-in: ramp speed at StartStopAcceleration
     rests: int = 0                # idle rests started, for the shard's log
     # Opt-in sight test visible(eye, target) -> bool. None: everything is seen.
     visible: object = None
@@ -287,6 +299,7 @@ class Bot:
     dit_patrol_move_range: tuple = ()
     _dit_patrol_pause_until: float = None
     _idle_until: float = None
+    _speed: float = 0.
     _dit_patrol_move_until: float = None
 
     def __post_init__(self):
@@ -561,6 +574,27 @@ class Bot:
             self._sight_checked = now
         return self._sight
 
+    def _ramp(self, desired, delta):
+        """StartStopAcceleration: the speed moves toward the desired one at a
+        fixed rate, and falls in time to stop where the plan ends."""
+        rate = self.tuning.start_stop_acceleration
+        remaining = plan_remaining(self._plan, self._index, self.position)
+        if remaining <= 1e-6:
+            # Stopped at the end. One more small step lets the walk report the
+            # leg done (a patrol turns or plans its next hop); without it a
+            # target of exactly 0 would hold the bot there for good.
+            self._speed = 0.
+            return rate * delta if desired > 0 else 0.
+        # The fastest speed that, after this tick's step, can still stop by
+        # the end: v * delta + v^2 / (2 * rate) = remaining.
+        reach = rate * delta
+        target = min(desired, -reach + math.sqrt(reach * reach + 2. * rate * remaining))
+        if self._speed < target:
+            self._speed = min(target, self._speed + rate * delta)
+        else:
+            self._speed = max(target, self._speed - rate * delta)
+        return self._speed
+
     def reloading(self, now):
         """True inside the reload's using_reload window."""
         return (self.reload_started is not None and self.reload_started <= now
@@ -653,13 +687,16 @@ class Bot:
             if not self._repath(now, target_position):
                 self.state, speed, heading = ATTACK, 0., aim  # unreachable
 
+        if self.accelerate and self.tuning.start_stop_acceleration > 0 and delta > 0:
+            speed = self._ramp(speed, delta)
         moved = 0.
         if speed > 0 and delta > 0:
             before = self.position
             self.position, self._index, direction, left = advance(
                 self._plan, self._index, self.position, speed * delta)
             moved = math.dist(before, self.position)
-            if any(direction):
+            # A decelerating attacker slides on, still facing its target.
+            if any(direction) and not (self.accelerate and self.state == ATTACK):
                 heading = direction
             if left > 0:
                 if self.state == PATROL:

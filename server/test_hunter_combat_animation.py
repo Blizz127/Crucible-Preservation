@@ -87,12 +87,13 @@ class HunterCombatAnimationTests(unittest.TestCase):
     def test_reload_flag_loads_each_hunter_magazine(self):
         import hunter_patrol
         route = ((0., 0., 0.), (1., 0., 0.))
-        for flags, ammo, strafe, turn, idle in (
-                ({}, None, False, False, False),
-                ({'CRUCIBLE_SOLO_BOT_RELOAD': '1'}, 24, False, False, False),
-                ({'CRUCIBLE_SOLO_BOT_STRAFE': '1'}, None, True, False, False),
-                ({'CRUCIBLE_SOLO_BOT_TURN': '1'}, None, False, True, False),
-                ({'CRUCIBLE_SOLO_BOT_IDLE': '1'}, None, False, False, True)):
+        for flags, ammo, strafe, turn, idle, accelerate in (
+                ({}, None, False, False, False, False),
+                ({'CRUCIBLE_SOLO_BOT_RELOAD': '1'}, 24, False, False, False, False),
+                ({'CRUCIBLE_SOLO_BOT_STRAFE': '1'}, None, True, False, False, False),
+                ({'CRUCIBLE_SOLO_BOT_TURN': '1'}, None, False, True, False, False),
+                ({'CRUCIBLE_SOLO_BOT_IDLE': '1'}, None, False, False, True, False),
+                ({'CRUCIBLE_SOLO_BOT_ACCEL': '1'}, None, False, False, False, True)):
             squad = hunter_ai.Squad([hunter_ai.Bot(e, route, hunter_ai.MARINE)
                                      for e in BOTS])
             env = dict(flags, CRUCIBLE_SOLO_AI='1', CRUCIBLE_SOLO_MODE='alpha-hunters')
@@ -104,6 +105,8 @@ class HunterCombatAnimationTests(unittest.TestCase):
                 self.assertEqual([bot.strafe for bot in state['squad'].bots], [strafe] * 3)
                 self.assertEqual([bot.move_turn for bot in state['squad'].bots], [turn] * 3)
                 self.assertEqual([bot.idle for bot in state['squad'].bots], [idle] * 3)
+                self.assertEqual([bot.accelerate for bot in state['squad'].bots],
+                                 [accelerate] * 3)
 
     @patch.dict('os.environ', {'CRUCIBLE_SOLO_COMBAT_ANIMATION': '1'}, clear=True)
     def test_a_bot_that_is_chasing_while_its_attack_runs_keeps_firing(self):
