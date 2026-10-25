@@ -166,6 +166,13 @@ What the shipped files say (read on the devbox reference copy):
   34, 41 and 42 sit 6–8 m above it, and 33 is 21 m from any triangle,
   where HotH_02's terrain was lowered by about 8 m. The 09b–09d drop pods
   that the HotH_02 hunters used before are off the mesh too.
+- **Its own colliders.** HotH_02 places 9,161 blocking colliders (static
+  line of sight, docs/36); April2018 places 8,236. 7,743 are identical to the
+  centimetre, 1,418 are HotH_02's own, and 493 of April2018's are gone.
+  Guide nodes 33, 34 and 42 stand beside HotH_02-only colliders: cave-tree
+  roots, corals and tree-core samples. That explains their distance from the
+  copied navmesh. HotH_02 needs its own static-geometry cache
+  (`tools/build_static_geometry.py HotH_02`), which has not been built.
 - **Placeholder spawns.** The HotH_02 hunters start on guide nodes 44, 36
   and 39. Those are the three nearest the player's drop by navigation path
   (147, 180 and 228 m; `HOTH_02_BOT_NODES`). Stage 4 replaces this with

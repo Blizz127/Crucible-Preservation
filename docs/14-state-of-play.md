@@ -7,9 +7,15 @@
 > - authored death tags;
 > - the Marines' 24-round magazine and reload, forced aggro on damage,
 >   strafing, and their movement turn rate;
-> - line of sight over the decoded terrain;
+> - line of sight over the decoded terrain, and through walls, rocks and
+>   buildings (the cooked PhysX colliders, from an offline cache);
 > - range falloff on the player's hits;
-> - an option for the client's 32 ms server tick.
+> - an option for the client's 32 ms server tick;
+> - the answer to the client's EnableDamageFloaters setting.
+>
+> HOTH_GUIDE's per-map navigation (stage 2) and an opt-in match timer
+> (stage 1) are done and tested offline. The guide bots' tunings are
+> re-read by full path.
 >
 > Each switch is sourced from the retail assets or executable, and the
 > evidence and switches are in [36-hit-feedback-and-bot-weapon.md](36-hit-feedback-and-bot-weapon.md).

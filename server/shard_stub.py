@@ -1062,15 +1062,18 @@ def bot_reload_enabled():
     return os.environ.get('CRUCIBLE_SOLO_BOT_RELOAD') == '1'
 
 
-def terrain_sight():
-    """docs/36: a decoded-terrain sight test for CRUCIBLE_SOLO_LOS=terrain, or None.
+def level_sight():
+    """docs/36: the opt-in sight test for CRUCIBLE_SOLO_LOS, or None.
 
-    The terrain is the level's compiled heightfield (level_geometry), which
-    matches the shipped PhysX heightfield within 0.06 m. Walls, rocks and
-    buildings are not modelled, so a clear line may still be blocked in
-    retail. A level whose terrain does not decode gets no sight test.
+    'terrain' tests the level's compiled heightfield (level_geometry), which
+    matches the shipped PhysX heightfield within 0.06 m. 'static' adds the
+    level's walls, rocks and buildings from the offline cache that
+    tools/build_static_geometry.py writes; without a cache it falls back to
+    the terrain alone, with one log line per match. A level whose terrain
+    does not decode gets no sight test.
     """
-    if os.environ.get('CRUCIBLE_SOLO_LOS') != 'terrain':
+    mode = os.environ.get('CRUCIBLE_SOLO_LOS')
+    if mode not in ('terrain', 'static'):
         return None
     import level_geometry
     level = solo_modes.selected().level
@@ -1079,7 +1082,22 @@ def terrain_sight():
     except Exception as error:      # noqa: BLE001 - sight is optional; never crash-loop
         log('      LINE OF SIGHT unavailable on %s: %r' % (level, error))
         return None
-    return lambda eye, target: level_geometry.sight_clear(terrain, eye, target)
+    world = None
+    if mode == 'static':
+        import static_geometry
+        try:
+            world = static_geometry.installed_world(level)
+        except Exception as error:  # noqa: BLE001 - a bad cache must not end the shard
+            log('      LINE OF SIGHT static geometry unreadable on %s: %r' % (level, error))
+        if world is None:
+            log('      LINE OF SIGHT: no static geometry cache for %s (%s); terrain only'
+                % (level, static_geometry.cache_path(level)))
+    if world is None:
+        return lambda eye, target: level_geometry.sight_clear(terrain, eye, target)
+    # On April2018 no collider is on layer 2, the one layer where the
+    # AwarenessLoS and Projectiles groups differ, so rounds share this test.
+    return lambda eye, target: (level_geometry.sight_clear(terrain, eye, target)
+                                and not world.blocked(eye, target))
 
 
 def authored_death_metadata(hunters):
@@ -1167,7 +1185,7 @@ def start_solo_simulation(state):
             if os.environ.get('CRUCIBLE_SOLO_BOT_TURN') == '1':
                 for bot in state['squad'].bots:
                     bot.move_turn = True
-            sight = terrain_sight()
+            sight = level_sight()
             if sight is not None:
                 state['sight'] = sight
                 for bot in state['squad'].bots:
@@ -2567,12 +2585,14 @@ def main():
             log("prewarmed hunter navigation in %.2fs" % (time.monotonic() - start))
         except Exception as error:      # noqa: BLE001 - diagnostic only
             log("hunter navigation prewarm FAILED: %r" % (error,))
-    # The same for the line-of-sight terrain (about 0.3 s for April2018).
-    if solo_ai_enabled() and os.environ.get('CRUCIBLE_SOLO_LOS') == 'terrain':
+    # The same for line of sight: about 0.3 s for April2018's terrain, and
+    # 3 s more for its static geometry.
+    if solo_ai_enabled() and os.environ.get('CRUCIBLE_SOLO_LOS') in ('terrain', 'static'):
         start = time.monotonic()
         try:
-            if terrain_sight() is not None:
-                log("prewarmed line-of-sight terrain in %.2fs" % (time.monotonic() - start))
+            if level_sight() is not None:
+                log("prewarmed line of sight (%s) in %.2fs"
+                    % (os.environ['CRUCIBLE_SOLO_LOS'], time.monotonic() - start))
         except Exception as error:      # noqa: BLE001 - diagnostic only
             log("line-of-sight prewarm FAILED: %r" % (error,))
 

@@ -42,6 +42,61 @@ def load(pak_path):
     return entries
 
 
+def index(pak_path):
+    """{name: (local_header_offset, compressed_size, method)} from the central
+    directory alone, without reading entry data. load() reads the whole pak
+    into memory; this seeks, for paks of gigabytes (objects.pak is 2.5 GB)."""
+    import struct
+    with open(pak_path, 'rb') as handle:
+        handle.seek(0, os.SEEK_END)
+        size = handle.tell()
+        handle.seek(max(0, size - 65558))
+        tail = handle.read()
+        eocd = tail.rfind(b'PK\x05\x06')
+        if eocd < 0:
+            raise ValueError('no end of central directory in %s' % pak_path)
+        _, _, _, total, cd_size, cd_offset, _ = struct.unpack('<HHHHIIH', tail[eocd + 4:eocd + 22])
+        handle.seek(cd_offset)
+        directory = handle.read(cd_size)
+    result, offset = {}, 0
+    for _ in range(total):
+        if directory[offset:offset + 4] != b'PK\x01\x02':
+            raise ValueError('bad central directory record at %d' % offset)
+        (method, compressed, name_length, extra_length, comment_length,
+         local) = (struct.unpack('<H', directory[offset + 10:offset + 12])[0],
+                   struct.unpack('<I', directory[offset + 20:offset + 24])[0],
+                   *struct.unpack('<HHH', directory[offset + 28:offset + 34]),
+                   struct.unpack('<I', directory[offset + 42:offset + 46])[0])
+        name = directory[offset + 46:offset + 46 + name_length]
+        result[name] = (local, compressed, method)
+        offset += 46 + name_length + extra_length + comment_length
+    return result
+
+
+def read(pak_path, names, entries=None):
+    """{name: bytes} for the named entries only, by seeking (see index())."""
+    import struct
+    entries = index(pak_path) if entries is None else entries
+    result = {}
+    with open(pak_path, 'rb') as handle:
+        for name in names:
+            local, compressed, method = entries[name]
+            handle.seek(local)
+            header = handle.read(30)
+            if header[:4] != b'PK\x03\x04':
+                raise ValueError('bad local header for %r' % name)
+            name_length, extra_length = struct.unpack('<HH', header[26:30])
+            handle.seek(local + 30 + name_length + extra_length)
+            raw = handle.read(compressed)
+            if method == 8:
+                result[name] = zlib.decompress(raw, -15)
+            elif method == 0:
+                result[name] = raw
+            else:
+                raise ValueError('unsupported method %d for %r' % (method, name))
+    return result
+
+
 def cmd_list(args):
     entries = load(args.pak)
     rx = re.compile(args.grep) if args.grep else None

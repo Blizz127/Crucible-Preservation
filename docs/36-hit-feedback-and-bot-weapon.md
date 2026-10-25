@@ -293,10 +293,90 @@ the match. With the carve-out, Marines can see through ground there
 instead, which is the milder error.
 
 Retail ray-cast against all PhysX colliders in the AwarenessLoS group
-(`snapshots/accuracy-20260924/line-of-sight-geometry.md`). Walls, rocks
-and buildings are static meshes in `objects.pak` and are not modelled, so
-a line clear of the terrain can still be blocked in retail. The shard
-decodes the terrain once at startup, alongside the navmesh.
+(`snapshots/accuracy-20260924/line-of-sight-geometry.md`). The terrain
+mode does not model walls, rocks and buildings, so a line clear of the
+terrain can still be blocked in retail. The static mode, next, adds them.
+The shard decodes the terrain once at startup, alongside the navmesh.
+
+## Line of sight through walls, rocks and buildings
+
+`CRUCIBLE_SOLO_LOS=static` tests the terrain as above, then the level's
+static PhysX colliders. The same test also decides server-resolved rounds.
+
+**Where the geometry comes from (April2018, read 25 October).** The level
+slice holds 8,529 mesh, 599 box, 65 sphere and 1 capsule collider
+components. Each has a CollisionLayer, a Trigger flag, a local
+Position/Rotation and its entity's world transform.
+- **What blocks.** AwarenessLoS (mask `…E1`) skips layers 1–4, and triggers
+  never block. That leaves 8,236 blocking colliders: 8,187 meshes, 46
+  spheres, 2 boxes and 1 capsule, almost all on WorldStatic (layer 8).
+- **Assets.** The meshes use 600 assets, each named by a hint path in its
+  PhysicsAsset field: 450 are in `objects.pak`, 147 in `architecture.pak`,
+  2 in `animations.pak` and 1, `vfx/props/general/goo.pxmesh`, in
+  `vfx.pak`.
+- **No collider is on layer 2.** That is the only layer where AwarenessLoS
+  and the Projectiles group (`…E5`) differ, so rounds share the sight test.
+
+**The cooked meshes** are PhysX 3.4 `NXS\x01MESH` version 15, little-endian:
+- after the magic: version, midphase id, serial flags, then the vertex and
+  triangle counts;
+- then the float vertices;
+- then the indices: bytes for flag 4, u16 for flag 8, otherwise u32.
+
+All 599 decode with every index in range and every float finite. Each
+stores its bounds as six floats later in the blob, matching its vertices
+exactly.
+
+**Placement.** The transform's three float triples are the entity's
+scaled axes. That is measured: their lengths equal the shape's Scale for
+every collider, 2,365 of them non-uniform. The composition order is
+inferred from the PhysX gem, not traced. It scales the geometry, then
+applies the collider's local pose, then the entity's pose:
+world = R (Q (S A v) + S p) + T.
+Only 70 colliders with an offset p, 37 with a rotation Q and 22 with an
+asset scale A depend on that order. No April2018 transform is mirrored,
+and none is singular. A mirrored one would still work: the query runs in
+each mesh's own space, so it needs no winding flip.
+
+**Two checks hold the decode and the placement together:**
+- **Rows against columns.** For random points on navmesh triangles more
+  than 1 m above the terrain, take the offset to the nearest placed
+  surface. With the triples read as columns, the offsets peak in the
+  0.00–0.05 m bin, and 38% fall within −0.25..+0.5 m. That matches the
+  terrain's own peak at +0.05/+0.10 m, where 50% fall in the band. Read as
+  rows, the peak smears to −0.15 m and 30%.
+- **Left unexplained.** 1,574 of the 11,468 navmesh centres more than 1 m
+  above the terrain have no placed collider under them. The 342
+  InvisibleGeo (layer 1) meshes, which can carry walkable surfaces, were
+  never fetched for this check.
+- **The greenhouse.** At guide node 44 the navmesh lies 0.34 m above
+  `research_greenhouse_001`'s top face.
+
+**Back faces do not block.** PhysX raycasts skip them unless asked
+(`eMESH_BOTH_SIDES`), so a line leaving a rock is clear. All 320 closed,
+consistently wound meshes have positive signed volume: their faces point
+outward.
+
+**Cost.** `tools/build_static_geometry.py` reads the slice and the meshes,
+taking about 20 s for the slice parse alone. It writes a 3.0 MB cache to
+`~/.cache/crucible-revival/` (mode 600). The shard only loads that cache:
+0.1 s to parse and about 3 s to build one bounding-volume hierarchy per
+mesh, at prewarm; a process holding the loaded world peaks at 97 MB. The
+instances sit in an 8 m XY grid. The build itself peaks at 830 MB (the
+slice parse), so it runs as a separate tool, never in the shard.
+- **Query speed.** 1,174 dense 5–40 m segments around the Alpha Hunters
+  area took 0.14 ms median and 0.58 ms p99, in pure Python.
+- **Without a cache.** The static mode logs one line and falls back to
+  the terrain.
+
+**An example.** Of the drop cluster's six eye-to-eye lines (eyes 1 m up,
+`AggroOriginOffsetLocal`), the two to 17b are blocked. The blocker is
+`rock_coquina_ledge_01_top`, a ledge that rises to 24.0 m between them.
+
+**Not modelled, and inferred:**
+- That bots use the AwarenessLoS group is inferred from its name.
+- Colliders spawned at runtime by dynamic slices are not in the level slice.
+- HotH_02's own colliders are not built yet.
 
 ## Damage numbers and incoming-hit arcs
 
@@ -472,3 +552,9 @@ None of these has run in the retail client yet. The live checks are:
    not crash on the first arc.
 9. With terrain sight on, a Marine behind a hill neither acquires nor hits
    the player.
+10. With static sight on, the same holds behind a rock or a building. The
+    rock ledge between the April2018 drop and drop point 17b is a ready
+    example.
+11. Toggling Settings > Gameplay > Visuals > "Enable Damage Floaters" logs
+    one "client asks for damage floaters" line per change, and nothing
+    fails to deserialize.

@@ -31,12 +31,15 @@ rules, client patched only where unavoidable).
 > - hit, kill and damage-number feedback, and incoming-hit arcs;
 > - authored death tags;
 > - the Marines' magazine and reload, forced aggro, strafing and turn rate;
-> - terrain line of sight;
+> - line of sight over the terrain, and through the level's walls, rocks
+>   and buildings, decoded from the cooked PhysX colliders;
 > - range falloff;
-> - the client's 32 ms server tick.
+> - the client's 32 ms server tick;
+> - the answer to the client's damage-floater setting.
 >
 > [docs/37](docs/37-hoth-guide-plan.md) plans HOTH_GUIDE, the only bot mode
-> retail shipped.
+> retail shipped. Its per-map navigation and an opt-in match timer are done
+> offline.
 >
 > The [22 September systems continuation](docs/30-systems-resume.md) fixes
 > bot position consistency and life-state handling, adds opt-in death metadata

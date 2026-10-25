@@ -209,7 +209,7 @@ class ShardRingTests(unittest.TestCase):
         env = dict(ALPHA, CRUCIBLE_SOLO_AI='1', CRUCIBLE_SOLO_LOS='terrain')
         with patch.dict('os.environ', env, clear=True), \
                 patch.object(hunter_patrol, 'squad', return_value=squad), \
-                patch.object(shard, 'terrain_sight', return_value=lambda e, t: True):
+                patch.object(shard, 'level_sight', return_value=lambda e, t: True):
             state = self.start()
         self.assertTrue(all(bot.visible is state['sight'] for bot in squad.bots))
 
