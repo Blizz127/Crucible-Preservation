@@ -1,7 +1,12 @@
 # HOTH_GUIDE: the retail bot match, and how to get there
 
-Status: stage 2 and stage 1's match timer are implemented and tested
-offline (25 October), but not played. The other stages are plan only.
+Status (25 October), all tested offline and none of it played:
+- Stage 1's match timer and stage 2 are implemented.
+- Of stages 3 and 4, the one hostile bot is in, behind a switch: a Saboteur
+  guide bot with its own AI, primary and flight. The three allies are not.
+- Stage 5's rules are decoded. Its objective entities still need their
+  component sets.
+- Stage 6 is plan only.
 
 The Alpha Hunters bot match (docs/30, docs/35, docs/36) is local: retail
 Alpha Hunters had no bots, and its three Marine hunters are our own
