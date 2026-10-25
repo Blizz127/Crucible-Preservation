@@ -1,6 +1,7 @@
 """Standalone scheduling and batching helpers."""
 
 import logging
+import os
 
 
 def encode_varint(value):
@@ -26,6 +27,14 @@ def guarded(state, where, function, *args, **kwargs):
         if (count & (count - 1)) == 0:
             logging.getLogger(__name__).exception('Simulation error in %s (count %d)', where, count)
         return None
+
+
+def match_max_seconds():
+    try:
+        value = float(os.environ.get('CRUCIBLE_SOLO_MATCH_MAX_SECONDS') or 0)
+    except ValueError:
+        return None
+    return value if 0 < value < float('inf') else None
 
 
 def group_unique(items, key):
