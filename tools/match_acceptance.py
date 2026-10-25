@@ -25,6 +25,7 @@ screen, so those criteria stop at LOGS-OK.
 Rows that appear only when their docs/36 switch is used:
   S1 refused    entity updates the client refused as old (a wrap fails)
   F1-F3         hit and kill markers, Marine reloads, damage-number rings
+  F4 flinch     the Marines' networked flinch; on without the split fails
   B1 sight      which line of sight loaded; a static request that fell back
                 to the terrain fails
   B2 blocked    hunter rounds stopped by line of sight
@@ -85,6 +86,11 @@ SIGHT_FALLBACK = 'LINE OF SIGHT: no static geometry cache'
 SIGHT_BROKEN = re.compile(r'LINE OF SIGHT (unavailable on|static geometry unreadable on) (\S+)')
 BLOCKED = re.compile(r'HUNTER AI rounds blocked by line of sight \(count (\d+)\)')
 RESTS = re.compile(r'HUNTER AI ([0-9a-f]{8}) resting between patrol hops \(count (\d+)\)')
+# docs/36: the Marines' networked flinch (component 80), logged at indexes
+# 1, 2, 4, ..., and the switch left without the split it needs.
+FLINCH = re.compile(r'HIT REACTION ([0-9a-f]{8}) index (\d+)')
+FLINCH_SPLIT_OFF = 'HIT REACTION disabled'
+FLINCH_ON = 'HIT REACTION on:'
 JOURNAL_TIME = re.compile(r'^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)([+-]\d\d):?(\d\d)')
 
 CLIENT_TIME = re.compile(r'^\[(\d\d)-(\d\d)-(\d{4}):(\d\d):(\d\d):(\d\d)\.(\d+)-GMT\]')
@@ -114,7 +120,8 @@ def shard_facts(lines):
              'refused': {}, 'over': [], 'rank': None, 'starts': [], 'tracebacks': 0,
              'population_after_over': 0, 'feedback': {}, 'reloads': 0, 'rings': {},
              'valves': [], 'timer': [], 'sight': None, 'sight_fallback': 0,
-             'sight_broken': [], 'blocked': 0, 'rests': {}}
+             'sight_broken': [], 'blocked': 0, 'rests': {}, 'flinches': {},
+             'flinch_split_off': 0, 'flinch_on': 0}
     for line in lines:
         if VALVE.search(line):
             facts['valves'].append(VALVE.search(line).group(1))
@@ -129,6 +136,13 @@ def shard_facts(lines):
         elif RESTS.search(line):
             entity, count = RESTS.search(line).groups()
             facts['rests'][entity] = max(facts['rests'].get(entity, 0), int(count))
+        elif FLINCH.search(line):
+            entity, index = FLINCH.search(line).groups()
+            facts['flinches'][entity] = max(facts['flinches'].get(entity, 0), int(index))
+        elif FLINCH_SPLIT_OFF in line:
+            facts['flinch_split_off'] += 1
+        elif FLINCH_ON in line:
+            facts['flinch_on'] += 1
         elif TIMER.search(line):
             facts['timer'].append(float(TIMER.search(line).group(1)))
         elif RINGS.search(line):
@@ -353,6 +367,20 @@ def score(shard, client):
     if shard['reloads']:
         rows.append(('F2 reloads', 'LOGS-OK', '%d Marine reloads; eyes: reload animation, '
                      'about 2 s without fire' % shard['reloads']))
+    if shard['flinch_split_off']:
+        rows.append(('F4 flinch', 'FAIL', 'hit reactions are on without '
+                     'CRUCIBLE_SHARD_SPLIT_UPDATES=1, so none were sent'))
+    elif shard['flinches']:
+        rows.append(('F4 flinch', 'LOGS-OK', 'flinch index sent %s; eyes: a Marine flinches '
+                     'away from the shot' % ', '.join(
+                         '%s >=%d' % item for item in sorted(shard['flinches'].items()))))
+    elif shard['flinch_on']:
+        hunter_hits = [h for h in shard['hits'] if h['shooter'] == PLAYER
+                       and h['target'].startswith('0100000')]
+        if hunter_hits:
+            rows.append(('F4 flinch', 'FAIL', 'hit reactions on and %d player hits on hunters '
+                         'accepted, but no flinch was sent (no decoded player position?)'
+                         % len(hunter_hits)))
     if shard['sight_broken']:
         rows.append(('B1 sight', 'FAIL', 'line of sight requested but lost: %s'
                      % shard['sight_broken'][0]))

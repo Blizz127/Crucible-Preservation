@@ -115,5 +115,42 @@ class HitReactionEncodingTests(unittest.TestCase):
                     self.build(**changes)
 
 
+class FlinchYawTests(unittest.TestCase):
+    """The client's yaw formula (snapshots/hit-reactions-20260923 section 6)."""
+
+    def sector(self, yaw):
+        # additive_hit_react.animgraph: f [-45, 45], r [45, 135],
+        # l [-135, -45], b otherwise.
+        if -45 <= yaw <= 45:
+            return 'f'
+        if 45 < yaw <= 135:
+            return 'r'
+        if -135 <= yaw < -45:
+            return 'l'
+        return 'b'
+
+    def test_each_shooter_placement_picks_its_flinch(self):
+        victim, facing = (0., 0., 0.), (0., 1., 0.)          # facing +Y; right is +X
+        for shooter, yaw, clip in (((0., -10., 0.), 0., 'f'),    # behind: pushed forward
+                                   ((0., 10., 0.), 180., 'b'),   # in front
+                                   ((-10., 0., 0.), 90., 'r'),   # on its left
+                                   ((10., 0., 0.), -90., 'l')):  # on its right
+            with self.subTest(shooter=shooter):
+                got = hit_reaction_events.flinch_yaw(facing, shooter, victim)
+                self.assertAlmostEqual(got, yaw, places=9)
+                self.assertEqual(self.sector(got), clip)
+
+    def test_the_frame_turns_with_the_victim(self):
+        # Facing +X, a shooter at -X is behind it.
+        self.assertAlmostEqual(hit_reaction_events.flinch_yaw(
+            (1., 0., 0.), (-10., 0., 5.), (0., 0., 0.)), 0., places=9)
+        got = hit_reaction_events.flinch_yaw((1., 1., 0.), (0., -10., 0.), (0., 0., 0.))
+        self.assertAlmostEqual(got, -45., places=9)
+
+    def test_a_shooter_on_top_of_the_victim_gives_no_yaw(self):
+        self.assertIsNone(hit_reaction_events.flinch_yaw(
+            (0., 1., 0.), (3., 4., 0.), (3., 4., 2.)))
+
+
 if __name__ == '__main__':
     unittest.main()

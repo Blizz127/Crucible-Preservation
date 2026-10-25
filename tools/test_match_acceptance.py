@@ -140,7 +140,7 @@ class BotSightRowTests(unittest.TestCase):
 
     def test_the_rows_appear_only_when_used(self):
         rows = self.rows([])
-        self.assertFalse({'B1', 'B2', 'B3'} & set(rows))
+        self.assertFalse({'B1', 'B2', 'B3', 'F4'} & set(rows))
 
     def test_static_sight_blocked_rounds_and_rests(self):
         rows = self.rows([
@@ -152,6 +152,21 @@ class BotSightRowTests(unittest.TestCase):
         self.assertEqual(rows['B1'][1:], ('LOGS-OK', 'static line of sight loaded at prewarm'))
         self.assertIn('>=4 hunter rounds', rows['B2'][2])
         self.assertIn('01000003 >=2, 01000004 >=1', rows['B3'][2])
+
+    def test_flinches_sent_or_switched_on_without_the_split(self):
+        rows = self.rows(['HIT REACTION 01000003 index 1 (yaw 0)',
+                          'HIT REACTION 01000003 index 4 (yaw -90)'])
+        self.assertEqual(rows['F4'][1], 'LOGS-OK')
+        self.assertIn('01000003 >=4', rows['F4'][2])
+        rows = self.rows(['HIT REACTION disabled: it needs CRUCIBLE_SHARD_SPLIT_UPDATES=1'])
+        self.assertEqual(rows['F4'][1], 'FAIL')
+
+    def test_flinches_on_with_hunter_hits_but_none_sent_fails(self):
+        # SHARD's player hit kills 01000003, so a run with the switch on and
+        # no index sent was a silent no-op.
+        rows = self.rows(['HIT REACTION on: hunters the player hits flinch (component 80)'])
+        self.assertEqual(rows['F4'][1], 'FAIL')
+        self.assertIn('1 player hits on hunters', rows['F4'][2])
 
     def test_a_lost_sight_test_fails_rather_than_vanishing(self):
         # No prewarm line follows, so without this the row would just be absent.

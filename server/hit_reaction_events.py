@@ -16,6 +16,29 @@ import struct
 HIT_REACTION_COMPONENT = 80
 
 
+def flinch_yaw(facing, shooter, victim):
+    """NetworkedAdditiveHitYaw for a shot from `shooter` to `victim`, or None.
+
+    The client's worker (0xdae770, snapshots/hit-reactions-20260923) uses
+    yaw = acos(d . f) * sign(d . (f x Z)) in degrees: f is the victim's
+    forward (its rotation applied to +Y, i.e. the facing its Location
+    update carried), d the shot's travel direction. 0 is a shot travelling
+    the way the victim faces (from behind), +90 one travelling toward its
+    right, +-180 one from the front. additive_hit_react.animgraph picks
+    hit_flinch_f, r, l or b from that. Horizontal only: the bots stand
+    upright. None when shooter and victim coincide.
+    """
+    dx, dy = victim[0] - shooter[0], victim[1] - shooter[1]
+    length, forward = math.hypot(dx, dy), math.hypot(facing[0], facing[1])
+    if length < 1e-6 or forward < 1e-6:
+        return None
+    d = (dx / length, dy / length)
+    f = (facing[0] / forward, facing[1] / forward)
+    right = (f[1], -f[0])                       # f x Z
+    angle = math.degrees(math.acos(max(-1., min(1., d[0] * f[0] + d[1] * f[1]))))
+    return angle if d[0] * right[0] + d[1] * right[1] >= 0 else -angle
+
+
 def _integer(value, name, minimum, maximum):
     if type(value) is not int or not minimum <= value <= maximum:
         raise ValueError(f'{name} must be an integer in [{minimum}, {maximum}]')

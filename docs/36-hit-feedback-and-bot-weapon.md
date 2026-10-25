@@ -19,6 +19,7 @@ Alienware install by SHA-256.
 | `CRUCIBLE_SOLO_LOS=terrain` | Marines need sight over the terrain to acquire and attack; terrain stops their rounds |
 | `CRUCIBLE_SOLO_LOS=static` | As `terrain`, and walls, rocks and buildings also block (needs the offline cache) |
 | `CRUCIBLE_SOLO_BOT_IDLE=1` | Patrolling Marines rest one authored idle animation, plus 1 s, between hops |
+| `CRUCIBLE_SOLO_HIT_REACTION=1` | A Marine the player hits flinches away from the shot (needs the split) |
 | `CRUCIBLE_SOLO_DAMAGE_NUMBERS=1` | Damage numbers over Marines the player hits |
 | `CRUCIBLE_SOLO_HIT_DIRECTION=1` | Incoming-hit arcs pointing at the Marine that hit the player |
 | `CRUCIBLE_SHARD_TICK_MS=32` | Clock and simulation at the client's default 32 ms server tick, not 50 ms |
@@ -484,6 +485,50 @@ configuration may have overridden this. Retail servers probably did run at
 replication, at 32 ms. The socket wakes twice per tick. Without the switch,
 both the 50 ms gate and the 50 ms wake are unchanged.
 
+## Marines flinch when hit
+
+Component 80, HitReactionComponent, carries `NetworkedAdditiveHitIndex`
+(u8) and `NetworkedAdditiveHitYaw` (f32) to every client (docs/27). The
+hit-reactions track traced the client's consumer, `HitReactionClientSystem`
+(worker `0xdae770`). Its notes, now in `snapshots/hit-reactions-20260923/`,
+mark these PROVEN:
+- **The trigger.** The client flinches when the networked index rises
+  above the last one it played (an unsigned compare), so the index is a
+  hit counter. A wrap from 255 to 0 never triggers.
+- **The cooldown.** During `flinchDelay` (0.2 s for the Marine,
+  `marine.animconfig`) a new index advances the counter but does not
+  replay.
+- **The yaw.** It is the signed angle, in degrees, of the shot's travel
+  direction in the victim's frame: acos(d · f) × sign(d · (f × Z)), with f
+  the victim's forward. `additive_hit_react.animgraph` turns 0 into
+  `hit_flinch_f`, +90 into `_r`, −90 into `_l`, and ±180 into `_b`.
+- **Prediction.** The client also predicts a flinch for its own projectile
+  hits.
+
+With `CRUCIBLE_SOLO_HIT_REACTION=1`, each hit the shard accepts from the
+player on a hunter adds one to that hunter's index, capped at 255 and never
+reset. The yaw goes in the frame of the facing the hunter's last Location
+update carried, so the flinch matches what the client shows. The update
+repeats for 3 ticks; a repeat cannot replay a flinch. Counting only accepted
+reports keeps the count at or below the client's own, so a predicted flinch
+never plays twice. Where prediction is off, this count drives every flinch.
+The update is another message for the hunter in the tick, so it needs
+`CRUCIBLE_SHARD_SPLIT_UPDATES=1`. Without the split it logs one line and
+sends nothing.
+- **The start line.** With the switch on, each match start logs
+  `HIT REACTION on`. If player hits on hunters are accepted but no flinch
+  goes out, `match_acceptance` F4 fails rather than going missing.
+- **A fresh count per match.** Each match runs on a fresh connection
+  state: a new peer, or one idle for 10 s (`CRUCIBLE_SHARD_PEER_IDLE`).
+  So the count starts at 0 for that match's newly spawned hunters, as the
+  client's own component does.
+
+Not established:
+- **The retail server's increment policy.** No server symbols are in the
+  client. "One per accepted hit" is inferred.
+- **The player's own flinch.** It is not sent: the shard decodes no facing
+  for the player, so it cannot compute that yaw.
+
 ## Resting between patrol hops
 
 `marine_guide_dummy.ai` authors `IdleParams`:
@@ -582,3 +627,6 @@ None of these has run in the retail client yet. The live checks are:
     fails to deserialize.
 12. With idle rests on, a patrolling Marine stands and plays an idle
     animation between hops, rather than sliding in a still pose.
+13. A Marine the player shoots flinches away from the shot. First, with the
+    switch off: whether it already flinches shows whether the client's own
+    prediction runs.

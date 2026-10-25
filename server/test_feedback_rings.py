@@ -336,5 +336,77 @@ class FloaterSettingTests(unittest.TestCase):
         self.assertEqual(state, {})
 
 
+@patch.object(shard, 'log')
+class HitReactionTests(unittest.TestCase):
+    """docs/36: the Marine's networked flinch (component 80)."""
+    ENV = dict(ALPHA, CRUCIBLE_SOLO_HIT_REACTION='1', CRUCIBLE_SHARD_SPLIT_UPDATES='1')
+
+    def start(self, env):
+        with patch.dict('os.environ', env, clear=True):
+            state = {}
+            shard.start_solo_simulation(state)
+        # Marine 01000003 faces +Y from 10 m north of the player: shot from behind.
+        state['squad'] = squad_at((0., 10., 0.), (20., 0., 0.), (30., 0., 0.))
+        state['player_position'] = (0., 0., 0.)
+        return state
+
+    def expected(self, index, yaw, previous_id=0):
+        import hit_reaction_events
+        return hit_reaction_events.build_hit_reaction_update(
+            0x1000003, shard.MARINE_SHARED_TYPES, index=index, yaw=yaw,
+            previous_id=previous_id)
+
+    def test_with_the_switch_off_nothing_is_counted(self, _log):
+        state = self.start(ALPHA)
+        with patch.dict('os.environ', ALPHA, clear=True):
+            shard.observe_solo_combat(player_hit(1, 0x1000003), state)
+        self.assertNotIn('hit_reactions', state)
+
+    def test_an_accepted_hit_counts_once_and_repeats_for_three_ticks(self, _log):
+        state = self.start(self.ENV)
+        with patch.dict('os.environ', self.ENV, clear=True):
+            shard.observe_solo_combat(player_hit(1, 0x1000003), state)
+            shard.observe_solo_combat(player_hit(1, 0x1000003), state)   # a repeat: refused
+            sent = [shard.hit_reaction_messages(state, 0)[0] for _ in range(4)]
+        self.assertEqual(sent[:3], [[self.expected(1, 0.)]] * 3)
+        self.assertEqual(sent[3], [])
+
+    def test_the_index_never_wraps(self, _log):
+        state = self.start(self.ENV)
+        state['hit_reactions'] = {0x1000003: {'index': 255, 'yaw': 0., 'resend': 0}}
+        with patch.dict('os.environ', self.ENV, clear=True):
+            shard.observe_solo_combat(player_hit(1, 0x1000003), state)
+        self.assertEqual(state['hit_reactions'][0x1000003]['index'], 255)
+
+    def test_without_the_split_it_says_so_once_and_sends_nothing(self, log):
+        env = dict(self.ENV, CRUCIBLE_SHARD_SPLIT_UPDATES='0')
+        state = self.start(env)
+        with patch.dict('os.environ', env, clear=True):
+            shard.observe_solo_combat(player_hit(1, 0x1000003), state)
+            self.assertEqual(shard.hit_reaction_messages(state, 0), ([], 0))
+            self.assertEqual(shard.hit_reaction_messages(state, 0), ([], 0))
+        lines = [c.args[0] for c in log.call_args_list if 'HIT REACTION disabled' in c.args[0]]
+        self.assertEqual(len(lines), 1)
+
+    def test_the_flinch_reaches_its_marine_once_per_packet(self, _log):
+        # The whole tick through the split: decode every packet's RelativeId
+        # chain and check the component-80 message lands on 01000003.
+        from test_game_clock import entities
+        state = self.start(self.ENV)
+        with patch.dict('os.environ', self.ENV, clear=True):
+            shard.observe_solo_combat(player_hit(1, 0x1000003), state)
+            groups = shard.split_entity_messages(shard.solo_simulation_messages(state, 1.))
+        flinch = self.expected(1, 0.).payload
+        found = []
+        for group in groups:
+            decoded = entities(group)
+            counters = [(counter, local) for counter, local, _ in decoded]
+            self.assertEqual(len(counters), len(set(counters)))
+            found += [counter for counter, _, payload in decoded if payload == flinch]
+        self.assertEqual(found, [3])
+        # Location, health and flinch for 01000003: one packet each.
+        self.assertEqual(sum(any(c == 3 for c, _, _ in entities(g)) for g in groups), 3)
+
+
 if __name__ == '__main__':
     unittest.main()

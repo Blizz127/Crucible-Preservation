@@ -1170,6 +1170,10 @@ def start_solo_simulation(state):
                            maximum=place.health_max, team=2, local=place.local_id,
                            respawn_seconds=respawn, telegraph_seconds=telegraph)
         state['combat'] = arena
+    if hit_reaction_enabled():
+        # match_acceptance F4 fails a run with this line, accepted player
+        # hits on hunters, and no flinch sent: a silent no-op otherwise.
+        log('      HIT REACTION on: hunters the player hits flinch (component 80)')
     if solo_ai_enabled():
         squad = None
         if profile.bot_positions:
@@ -1283,6 +1287,8 @@ def observe_solo_combat(message, state):
                 and state.get('floaters_enabled', True)):
             state.setdefault('floater_ring', feedback_rings.FloaterRing()).hit(
                 hit.target, hit.damage, now)
+        if hit_reaction_enabled():
+            note_hit_reaction(state, hit.target)
         squad = state.get('squad')
         if (squad is not None and not hit.killed
                 and os.environ.get('CRUCIBLE_SOLO_FORCED_AGGRO') == '1'):
@@ -1341,6 +1347,78 @@ def confirm_player_hit(state, hit, weapon):
         queue_player_rpc(state, shooter_feedback.PROJECTILE_REQUEST_COMPONENT,
                          shooter_feedback.CONFIRM_KILL_INDICATOR,
                          shooter_feedback.build_confirm_kill_indicator())
+
+
+# docs/36: component 80's networked flinch (snapshots/hit-reactions-20260923).
+HIT_REACTION_RESEND_TICKS = 3
+
+
+def hit_reaction_enabled():
+    return os.environ.get('CRUCIBLE_SOLO_HIT_REACTION') == '1'
+
+
+def note_hit_reaction(state, target):
+    """Count one accepted player hit on a hunter, for its networked flinch.
+
+    The client plays a flinch when NetworkedAdditiveHitIndex rises above the
+    last one it played (worker 0xdae770), and predicts one for its own
+    projectile hits. Counting only accepted reports keeps this count at or
+    below the client's, so nothing plays twice. The u8 never wraps: 0 after
+    255 would never trigger again, and it is never reset within a
+    connection. The yaw is taken in the frame of the facing the hunter's
+    last Location update carried.
+    """
+    import hit_reaction_events
+    squad = state.get('squad')
+    player = state.get('player_position')
+    bot = next((b for b in getattr(squad, 'bots', ()) if b.entity == target), None)
+    if target not in HUNTER_BOT_IDS or bot is None or player is None:
+        return
+    facing = state.get('hunter_facing', {}).get(target) or bot.facing()
+    yaw = hit_reaction_events.flinch_yaw(facing, player, bot.position)
+    if yaw is None:
+        return
+    entry = state.setdefault('hit_reactions', {}).setdefault(target, {'index': 0})
+    entry['index'] = min(255, entry['index'] + 1)
+    entry['yaw'] = yaw
+    entry['resend'] = HIT_REACTION_RESEND_TICKS
+
+
+def hit_reaction_messages(state, previous_id):
+    """This tick's component-80 updates, and the RelativeId chain's new tail.
+
+    Each change repeats for HIT_REACTION_RESEND_TICKS ticks; a repeat cannot
+    replay a flinch, as only a larger index triggers one. The client itself
+    limits flinches to one per flinchDelay (0.2 s for the Marine).
+    """
+    reactions = state.get('hit_reactions')
+    if not reactions:
+        return [], previous_id
+    if not split_updates_enabled():
+        # With a hunter's Location in the same packet, the client would
+        # refuse this second message for it as old (docs/36).
+        if not state.get('hit_reaction_needs_split_logged'):
+            state['hit_reaction_needs_split_logged'] = True
+            log('      HIT REACTION disabled: it needs CRUCIBLE_SHARD_SPLIT_UPDATES=1')
+        return [], previous_id
+    import hit_reaction_events
+    messages = []
+    logged = state.setdefault('hit_reaction_logged', {})
+    for entity in sorted(reactions):
+        entry = reactions[entity]
+        if not entry.get('resend'):
+            continue
+        entry['resend'] -= 1
+        messages.append(hit_reaction_events.build_hit_reaction_update(
+            entity, MARINE_SHARED_TYPES, index=entry['index'], yaw=entry['yaw'],
+            previous_id=previous_id))
+        previous_id = entity & 0xffffff
+        # Logged at indexes 1, 2, 4, ...
+        if entry['index'].bit_length() != logged.get(entity, 0):
+            logged[entity] = entry['index'].bit_length()
+            log('      HIT REACTION %08x index %d (yaw %.0f)'
+                % (entity, entry['index'], entry['yaw']))
+    return messages, previous_id
 
 
 def feedback_ring_message(state, now):
@@ -1521,6 +1599,9 @@ def solo_simulation_messages(state, now, *, previous_id=0):
                 log('      HUNTER AI %08x fired at %08x (range %.1f m)' %
                     (shot.shooter, shot.target, shot.range))
         for step in steps:
+            if hit_reaction_enabled():
+                # The frame the client measures a flinch's yaw in.
+                state.setdefault('hunter_facing', {})[step.entity] = step.facing
             last = state.setdefault('hunter_states', {})
             if last.get(step.entity) != step.state:
                 last[step.entity] = step.state
@@ -1605,6 +1686,8 @@ def solo_simulation_messages(state, now, *, previous_id=0):
         messages.extend(health)
         if health_entities:
             previous_id = health_entities[-1].entity_id & 0xffffff
+        reactions, previous_id = hit_reaction_messages(state, previous_id)
+        messages.extend(reactions)
         profile = solo_modes.selected()
         # The alias is 'alpha-hunters'; the profile's own name is the shipped
         # config's DOUBLES_CASUAL, so compare profiles, not that string.

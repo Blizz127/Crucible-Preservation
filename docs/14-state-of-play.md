@@ -39,7 +39,7 @@
 > | 6 | No reaction to hits; sight through walls | Done: forced aggro, plus line of sight over the terrain and through walls, rocks and buildings |
 > | 7 | The player's damage | Partly: range falloff, and the Saboteur's own primary (the owner's hero). Other heroes still use Marine numbers. Crits stay open: the client's hit report carries no hit location |
 > | 8 | Visible death and respawn | Partly: authored death tags. Respawn presentation stays open |
-> | 9 | Hit feedback | Partly: markers, damage numbers and hit arcs are done. Victim flinches (HitReaction) stay open |
+> | 9 | Hit feedback | Partly. Done: hit and kill markers, damage numbers, the player's incoming-hit arcs, and the Marines' flinch (`CRUCIBLE_SOLO_HIT_REACTION`; its increment policy is inferred). Open: the player's own flinch, since no facing is decoded for the player |
 > | 10 | Tick rate | Done: the 32 ms option |
 > | 11 | Creature presentation and alerting | Partly: `creature_ai` models the wind-up and alert timing. Not re-audited |
 > | 12 | Navigation only on April2018 | Done: each map's own mesh (480c4b1) |
