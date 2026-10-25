@@ -51,3 +51,25 @@ def group_unique(items, key):
         group.append(item)
         seen.add(identity)
     return [group for group, _ in groups]
+
+
+def respawn_step(state, alive, now, *, delay, fall_time, resend_interval, sends):
+    """Advance the local timer and return the transition for the caller to dispatch."""
+    stage = state.get("stage")
+    if stage is None and not alive:
+        state.update(stage="dead", died_at=now)
+        return "dead"
+    if stage == "dead" and now >= state["died_at"] + delay:
+        state.update(stage="dropping", sent_at=now)
+        return "dropping"
+    if stage == "dropping" and now >= state["sent_at"] + fall_time:
+        state.update(stage="landed", landed_at=now, sends=1)
+        state["count"] = state.get("count", 0) + 1
+        return "landed"
+    if stage == "landed":
+        if state["sends"] >= sends:
+            state["stage"] = None
+        elif now >= state["landed_at"] + state["sends"] * resend_interval:
+            state["sends"] += 1
+            return "landed"
+    return None
