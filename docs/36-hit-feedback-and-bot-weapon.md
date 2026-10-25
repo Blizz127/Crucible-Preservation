@@ -56,6 +56,19 @@ client sends (`0xe26490` → `0x4ba0d10` → `0x4ba16f0`), so
 `shard_stub.build_entity_rpcs` is the inverse of `parse_entity_rpcs`. Queued
 RPCs go out in one packet after each clock tick.
 
+**These RPCs cannot drop the connection.** `NovaNet::EntityReplicator::ValidateRpcMessage`
+(`0x4bfcee0`) returns 0 (accept) for delivery 2 only when the entity's local
+role ([+0xf8]) is 2 and its remote role ([+0xfc]) is 4. Any other pairing
+with a client-side local role falls through to "Dropping RPC and Connection"
+(`0x4bfd0c0`, result 2). The client's
+`EntityReplicationManager::HandlePropertyChangeMessage` creates every entity
+the server spawns with remote role 4: it passes `r8d = 4` to `0x4bb3c30` at
+`0x4bb496f`, and `0x4bb3d7d` stores that as [+0xfc]. The player's
+character is spawned with local role 2, and since 3a09282 it is kept there.
+So the pair is (2, 4) and the RPC is accepted. If a future change demoted
+the player's role, these RPCs would drop the connection. Check the client
+log for `Dropping RPC` in the first live run.
+
 What the shard sends for each accepted player hit:
 - **scale:** the hit's damage over the weapon's close-range maximum. This
   is DERIVED; the retail server's formula is not traced. Reported hits carry
@@ -109,8 +122,18 @@ With `CRUCIBLE_SOLO_BOT_RELOAD=1`:
   the reload.
 
 A full cycle is 24 rounds in about 4.3 s instead of 2.3 s, so sustained
-hunter fire drops by nearly half. The seeded lethality table in docs/35
-assumed continuous fire.
+hunter fire drops by nearly half. Lethality drops much less, because each
+reload pause resets bloom: the next magazine opens with the tight 1.5° cone.
+The table shows mean seconds to drain 800 health over 20 seeds, with
+server-resolved hits at accuracy 0.25, a stationary target, and Marines
+2 m apart facing it:
+
+| | 3 at 8 m | 3 at 15 m | 3 at 25 m | 1 at 15 m |
+|---|---|---|---|---|
+| continuous fire (docs/35 measured 7/25/72/80) | 8 | 26 | 72 | 79 |
+| with the magazine | 12 | 27 | 78 | 84 |
+
+So the 0.25 accuracy knob does not need re-tuning for the magazine.
 
 ## Forced aggro on damage
 
