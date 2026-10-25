@@ -26,6 +26,18 @@ rules, client patched only where unavoidable).
 > Multiplayer, persistence, objectives and full server simulation remain
 > unimplemented.
 >
+> The [25 October retail-accuracy pass](docs/36-hit-feedback-and-bot-weapon.md)
+> adds, all opt-in and not yet played:
+> - hit, kill and damage-number feedback, and incoming-hit arcs;
+> - authored death tags;
+> - the Marines' magazine and reload, forced aggro, strafing and turn rate;
+> - terrain line of sight;
+> - range falloff;
+> - the client's 32 ms server tick.
+>
+> [docs/37](docs/37-hoth-guide-plan.md) plans HOTH_GUIDE, the only bot mode
+> retail shipped.
+>
 > The [22 September systems continuation](docs/30-systems-resume.md) fixes
 > bot position consistency and life-state handling, adds opt-in death metadata
 > and Marine projectile activation, and records the remaining runtime gates.

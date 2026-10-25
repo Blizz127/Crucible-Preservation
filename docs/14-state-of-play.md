@@ -1,5 +1,26 @@
 # State of play
 
+> **2026-10-25 retail-accuracy pass (unplayed):** this session added, all
+> behind opt-in switches:
+> - hit, kill and damage-number feedback for the player's hits, and
+>   incoming-hit arcs when the bots hit back;
+> - authored death tags;
+> - the Marines' 24-round magazine and reload, forced aggro on damage,
+>   strafing, and their movement turn rate;
+> - line of sight over the decoded terrain;
+> - range falloff on the player's hits;
+> - an option for the client's 32 ms server tick.
+>
+> Each switch is sourced from the retail assets or executable, and the
+> evidence and switches are in [36-hit-feedback-and-bot-weapon.md](36-hit-feedback-and-bot-weapon.md).
+> [37-hoth-guide-plan.md](37-hoth-guide-plan.md) scopes HOTH_GUIDE, the
+> only bot mode retail shipped. Commit b2384d2 is staged on the Alienware,
+> where all 450 server tests pass. The services still run 3a09282, because
+> the server-resolved hit fix has not yet been played. A run plan is
+> prepared: baseline A1–A7, then markers, rings, bot behaviour and the
+> tick rate, one run each. It waits for the Alienware screen, which other
+> projects and the owner were using.
+>
 > **2026-10-05 live run:** current source entered Alpha Hunters with Ajonah,
 > and the player's hits applied the authored damage. The retail client sends
 > no hit reports for hunter projectiles, so the Marines cannot hurt the
