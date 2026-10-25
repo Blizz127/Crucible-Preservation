@@ -5,9 +5,11 @@ NetworkedAdditiveHitIndex (call 0x94418d -> 0x79fcd0), then record 2
 NetworkedAdditiveHitYaw (call 0x9441c3 -> 0x7f32c0). Both saved live graphs
 under snapshots/systems-20260922 contain these two atomic children.
 
-This pure encoder establishes the wire shape only. Index meaning, yaw units,
-change detection, repeated-hit policy and visible flinch acceptance remain
-outside this helper. It performs no integration or packet transmission.
+The client's consumer is traced in snapshots/hit-reactions-20260923: the
+index is a hit counter (a flinch plays when it rises), and the yaw is the
+shot's signed travel angle in the victim's frame, in degrees (flinch_yaw).
+This module encodes; the increment policy lives in shard_stub (docs/36), and
+no visible flinch has been accepted live yet.
 """
 import math
 import struct
