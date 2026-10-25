@@ -5,8 +5,9 @@ Status (25 October), all tested offline and none of it played:
 - Of stages 3 and 4, the one hostile bot is in, behind a switch: a Saboteur
   guide bot with its own AI, primary and flight. The three allies are not.
 - Stage 5's rules are decoded, and its objective entities' component sets
-  are derived offline and validated. One hive can be spawned, behind a
-  switch; no objective entity has been seen in the client yet.
+  are derived offline and validated. One hive, and its heart with the
+  retail match end, can be spawned behind switches; no objective entity
+  has been seen in the client yet.
 - Stage 6 is plan only.
 
 The Alpha Hunters bot match (docs/30, docs/35, docs/36) is local: retail
@@ -418,6 +419,36 @@ when the hive spawned, and `match_acceptance` row B5 reports it.
   harness target) took it to 3,200. It regenerated from 26.5 s, 19.5 s
   after the last hit, and died at 40.5 s. GameOver landed on the timer with
   no errors, with and without the Saboteur.
+
+## The heart and the retail match end (switch)
+
+`CRUCIBLE_SOLO_GUIDE_HEART=1`, with the hive's switch, completes the guide's
+objective chain: kill the hive, capture its heart, win. B0 lists
+`guide-heart` where it applies, and `match_acceptance` row B6 reports it; a
+heart ending counts for A6.
+
+- **The spawn.** As `hive_ondeathspawnessence.cdl`, the heart appears on the
+  hive's exact position the moment the hive dies. It uses
+  `slices/interactive/cruciheart` (hash 3871577199, the level's library key;
+  april2018 preloads it) with its 9 shared types, every root false but
+  Location, as id 0x01000007. It has no health component, so it is not in
+  the arena, and a hit on it is refused. Its spawn is the only message it
+  ever gets, and the first entity the shard creates mid-match.
+- **The capture, a stand-in.** Retail captures with the Interact input,
+  10.0 s within 2.9 m, one interactor at a time. The Interact input's place
+  in the client's input stream is not decoded, so the shard captures by
+  proximity instead: the living player within 2.9 m for 10.0 s without
+  leaving. There is no capture bar, because InteractorComponent's record
+  on the player's own entity is not built.
+- **The end.** The capture scores 1 for the player's team, 1. As the guide's
+  win script, the match ends 12.0 s later with that team the winner: GameOver
+  and rank 1, before the debug timer, which stays as the safety net.
+- **Not modelled:** the heart's despawn, its objective priority and music,
+  a capture by anyone else, and the melee interrupt.
+- **Offline check.** The harness killed the hive at 14.2 s, the heart
+  spawned at once, and 10 s on it captured it at 29.0 s. The match ended at
+  41.0 s with team 1 the winner and rank 1 published, with and without the
+  Saboteur.
 
 ## Per-map navigation (stage 2)
 

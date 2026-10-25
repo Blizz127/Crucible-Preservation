@@ -199,6 +199,18 @@ HIVE_REGEN_INTERVAL = 1.0
 HIVE_DROP_DISTANCE = 30.0       # the placeholder spot's distance from the drop
 
 
+# docs/37: the hive's heart, behind CRUCIBLE_SOLO_GUIDE_HEART=1 with the hive.
+HEART_ENTITY_ID = 0x01000007
+HEART_SLICE_HASH = 3871577199   # stringhashlibrary: slices/interactive/cruciheart
+HEART_SHARED_TYPES = (18, 44, 46, 69, 83, 98, 101, 145, 165)
+# cruciheart's interaction: 10.0 s within 2.9 m, one interactor at a time.
+HEART_CAPTURE_RADIUS = 2.9
+HEART_CAPTURE_SECONDS = 10.0
+# hoth_guide_win_condition.cdl: a team score of 1 raises MatchOverEvent 12.0 s
+# later; matchover_set_teamranks_and_endmatch_flag ranks the winners first.
+HEART_MATCH_OVER_DELAY = 12.0
+
+
 def guide_hive_enabled(profile=None):
     """CRUCIBLE_SOLO_GUIDE_HIVE=1 in a HOTH_GUIDE profile (docs/37)."""
     profile = solo_modes.selected() if profile is None else profile
@@ -233,6 +245,71 @@ def guide_hive_position(profile):
         if located is not None:
             return located[1]
     return None
+
+
+def guide_heart_enabled(profile=None):
+    """CRUCIBLE_SOLO_GUIDE_HEART=1 where the hive can spawn (docs/37)."""
+    return (os.environ.get('CRUCIBLE_SOLO_GUIDE_HEART') == '1'
+            and guide_hive_enabled(profile))
+
+
+def build_guide_heart_probe(position, *, previous_id=0):
+    """Spawn the heart: every shared root false but Location, as the hive."""
+    properties = (build_replication_record(location_bits(HEART_SHARED_TYPES))
+                  + pack_practice_spawn_transform(position))
+    return build_entity_message(
+        HEART_ENTITY_ID & 0xffffff, pack_type_and_flags(ENTITY_ROLE_CLIENT_SIMULATION, bit4=True),
+        slice_hash=HEART_SLICE_HASH, slice_entry_index=0, payload=properties,
+        previous_id=previous_id)
+
+
+def guide_heart_messages(state, arena, now, previous_id):
+    """The heart's spawn, its capture, and the retail match end (docs/37).
+
+    The spawn goes out on the first tick after the hive dies. The capture is
+    by proximity, a stand-in: retail captures with the Interact input, whose
+    place in the input stream is not decoded, so there is no capture bar.
+    The player within HEART_CAPTURE_RADIUS for HEART_CAPTURE_SECONDS, alive
+    and without leaving, captures it; leaving starts the count again. The
+    capture scores 1 for the player's team, and the match ends 12.0 s later
+    with that team the winner. Returns (messages, previous_id).
+    """
+    heart = state['guide_heart']
+    if not heart['sent']:
+        heart['sent'] = True
+        log('      GUIDE HEART spawned %08x at (%.1f, %.1f, %.1f)'
+            % ((HEART_ENTITY_ID,) + tuple(heart['position'])))
+        return ([build_guide_heart_probe(heart['position'], previous_id=previous_id)],
+                HEART_ENTITY_ID & 0xffffff)
+    if heart['captured_at'] is not None:
+        if (now >= heart['captured_at'] + HEART_MATCH_OVER_DELAY
+                and 'match_result' not in state):
+            team = solo_modes.selected().local_team
+            state['match_result'] = {'winner_team': team, 'at_seconds': now,
+                                     'reason': 'heart'}
+            log('      GUIDE HEART match over: winner team %d' % team)
+        return [], previous_id
+    player = state.get('player_position')
+    near = (player is not None
+            and (arena is None or PLAYER_CHARACTER_ID not in arena.entities
+                 or arena.alive(PLAYER_CHARACTER_ID))
+            and math.dist(player, heart['position']) <= HEART_CAPTURE_RADIUS)
+    if near and heart['capture_started'] is None:
+        heart['capture_started'] = now
+        log('      GUIDE HEART capture started at %.1f s' % now)
+    elif near and now - heart['capture_started'] >= HEART_CAPTURE_SECONDS:
+        team = solo_modes.selected().local_team
+        scores = state.setdefault('team_scores', {})
+        scores[team] = scores.get(team, 0) + 1
+        heart['captured_at'] = now
+        log('      GUIDE HEART captured at %.1f s; team %d score %d'
+            % (now, team, scores[team]))
+    elif not near and heart['capture_started'] is not None:
+        heart['capture_started'] = None
+        heart['interrupts'] += 1
+        if heart['interrupts'] & (heart['interrupts'] - 1) == 0:
+            log('      GUIDE HEART capture interrupted (count %d)' % heart['interrupts'])
+    return [], previous_id
 
 
 def build_guide_hive_probe(position, *, previous_id=0):
@@ -1354,6 +1431,7 @@ def start_solo_simulation(state):
             switches = [name for name, on in (
                 ('guide-saboteur', guide_saboteur_enabled(profile)),
                 ('guide-hive', 'guide_hive' in state),
+                ('guide-heart', 'guide_hive' in state and guide_heart_enabled(profile)),
                 ('reload', bot_reload_enabled()),
                 ('strafe', os.environ.get('CRUCIBLE_SOLO_BOT_STRAFE') == '1'),
                 ('turn', os.environ.get('CRUCIBLE_SOLO_BOT_TURN') == '1'),
@@ -1458,6 +1536,12 @@ def observe_solo_combat(message, state):
         hive['next_heal'] = now + HIVE_REGEN_AFTER
         if hit.killed:
             log('      GUIDE HIVE destroyed at %.1f s' % now)
+            if guide_heart_enabled():
+                # hive_ondeathspawnessence.cdl: a heart on the hive's exact
+                # position (ForceCenterSpawn), at once.
+                state['guide_heart'] = {'position': hive['position'], 'sent': False,
+                                        'capture_started': None, 'captured_at': None,
+                                        'interrupts': 0}
     if shooter == PLAYER_CHARACTER_ID:
         confirm_player_hit(state, hit, weapon)
         import feedback_rings
@@ -1739,6 +1823,9 @@ def solo_simulation_messages(state, now, *, previous_id=0):
         previous_id = PLAYER_CHARACTER_ID & 0xffffff
     if 'guide_hive' in state and arena is not None:
         regenerate_guide_hive(state, arena, now)
+    if 'guide_heart' in state:
+        heart, previous_id = guide_heart_messages(state, arena, now, previous_id)
+        messages.extend(heart)
     health_entities = arena.tick(now) if arena is not None else []
     active_entities = ({entity for entity in arena.entities if arena.alive(entity)}
                        if arena is not None else None)

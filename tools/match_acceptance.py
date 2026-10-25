@@ -18,8 +18,8 @@ screen, so those criteria stop at LOGS-OK.
   A3 bots fire  hunter AI fires (shot animation and projectile: eyes)
   A4 damaged    a hunter hit on the player is accepted (HUD drop: eyes)
   A5 kills      a player hit kills a hunter (visible death: eyes)
-  A6 match end  team elimination (or the opt-in match timer) reaches
-                GameOver; next READY re-enters
+  A6 match end  team elimination, a captured heart (HOTH_GUIDE) or the
+                opt-in match timer reaches GameOver; next READY re-enters
   A7 stable     >= 10 min connected, no shard restart, no traceback
 
 Rows that appear only when their docs/36 switch is used:
@@ -33,6 +33,7 @@ Rows that appear only when their docs/36 switch is used:
   B3 rests      the Marines' idle rests between patrol hops
   B4 flee       Marines that fled a losing fight
   B5 hive       HOTH_GUIDE's hive: spawned, damaged, destroyed or regenerating
+  B6 heart      its heart: spawned, capture started, captured, match over
 
 The script only reads files and uses only the standard library, so it can
 run on the game host over SSH, reading that host's journal and newest
@@ -69,7 +70,7 @@ HIT = re.compile(r'SOLO COMBAT (player|hunter ([0-9a-f]{8})) hit target=([0-9a-f
                  r' damage=(\d+) health=(\d+)( KILLED)?')
 REFUSED = re.compile(r'SOLO COMBAT report refused shooter=([0-9a-f]{8})'
                      r' \(([^,]+), count (\d+)\)')
-OVER = re.compile(r'ALPHA HUNTERS match over: winner team (\w+)')
+OVER = re.compile(r'(?:ALPHA HUNTERS|GUIDE HEART) match over: winner team (\w+)')
 RANK = re.compile(r'ALPHA HUNTERS rank (\d+) published')
 SHARD_START = re.compile(r'Started crucible-revival-shard|listening on \S+:18878')
 TRACEBACK = re.compile(r'Traceback \(most recent call last\)')
@@ -97,6 +98,8 @@ FLEES = re.compile(r'HUNTER AI ([0-9a-f]{8}) fleeing a losing fight \(count (\d+
 HIVE_SPAWNED = re.compile(r'GUIDE HIVE spawned ([0-9a-f]{8}) at (\([^)]*\))')
 HIVE_DESTROYED = re.compile(r'GUIDE HIVE destroyed at ([\d.]+) s')
 HIVE_REGEN = re.compile(r'GUIDE HIVE regenerating \(count (\d+)')
+HEART = re.compile(r'GUIDE HEART (spawned|capture started|captured|match over|'
+                   r'capture interrupted)\b(.*)')
 # docs/36: the Marines' networked flinch (component 80), logged at indexes
 # 1, 2, 4, ..., and the switch left without the split it needs.
 FLINCH = re.compile(r'HIT REACTION ([0-9a-f]{8}) index (\d+)')
@@ -133,7 +136,7 @@ def shard_facts(lines):
              'valves': [], 'timer': [], 'sight': None, 'sight_fallback': 0,
              'sight_broken': [], 'blocked': 0, 'rests': {}, 'flinches': {},
              'flinch_split_off': 0, 'flinch_on': 0, 'switches': None, 'flees': {},
-             'hive': None, 'hive_destroyed': None, 'hive_regens': 0}
+             'hive': None, 'hive_destroyed': None, 'hive_regens': 0, 'heart': {}}
     for line in lines:
         if VALVE.search(line):
             facts['valves'].append(VALVE.search(line).group(1))
@@ -157,6 +160,9 @@ def shard_facts(lines):
             facts['hive'] = HIVE_SPAWNED.search(line).groups()
         elif HIVE_DESTROYED.search(line):
             facts['hive_destroyed'] = HIVE_DESTROYED.search(line).group(1)
+        elif HEART.search(line) and not OVER.search(line):
+            event, rest = HEART.search(line).groups()
+            facts['heart'].setdefault(event, rest.strip())
         elif HIVE_REGEN.search(line):
             facts['hive_regens'] = max(facts['hive_regens'], int(HIVE_REGEN.search(line).group(1)))
         elif FLINCH.search(line):
@@ -429,6 +435,14 @@ def score(shard, client):
                      'eyes: a hive about 30 m from the drop, which may look dormant (no '
                      'marker, wasps, heart or death animation)'
                      % (where, len(hits), state, shard['hive_regens'])))
+    if shard['heart']:
+        heart = shard['heart']
+        steps = '; '.join('%s %s' % (event, heart[event]) if heart[event] else event
+                          for event in ('spawned', 'capture started', 'captured',
+                                        'capture interrupted') if event in heart)
+        rows.append(('B6 heart', 'LOGS-OK' if 'captured' in heart else 'INFO',
+                     steps + ('; ended by the heart' if shard['over'] else '')
+                     + '; eyes: a heart where the hive stood; no capture bar (stand on it 10 s)'))
     if shard['flees']:
         rows.append(('B4 flee', 'LOGS-OK', 'flights %s; eyes: a losing Marine finishes its '
                      'burst (up to 2 s), runs about 4 s, then comes back' % ', '.join(

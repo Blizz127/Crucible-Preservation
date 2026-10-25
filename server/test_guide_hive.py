@@ -157,3 +157,126 @@ def math_dist2(a, b):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+HEART = shard.HEART_ENTITY_ID
+HEART_ENV = dict(ENV, CRUCIBLE_SOLO_GUIDE_HEART='1', CRUCIBLE_SOLO_HIT_RANGE='1')
+
+
+def tick_ids(messages, previous=0):
+    """The entity counters a tick's chained messages address, in order."""
+    ids = []
+    for message in messages:
+        previous, _ = shard.decode_entity_id(message.header, previous_id=previous)
+        ids.append(previous)
+    return ids
+
+
+@patch.object(shard, 'log')
+class GuideHeartTests(unittest.TestCase):
+    def killed_hive(self, env=HEART_ENV):
+        state = {'guide_hive': {'position': SPOT, 'next_heal': None, 'regens': 0}}
+        with patch.dict('os.environ', env, clear=True):
+            shard.start_solo_simulation(state)
+            state['player_position'] = (SPOT[0] - 10., SPOT[1], SPOT[2])
+            projectile = 0
+            while state['combat'].alive(HIVE):
+                projectile += 1
+                shard.observe_solo_combat(hit_on(projectile, HIVE), state)
+        return state
+
+    def test_the_slice_hash_is_the_level_librarys(self, _log):
+        # levels/april2018/commondata/stringhashlibrary.xml: Key="3871577199"
+        # Value="slices/interactive/cruciheart".
+        self.assertEqual(solo_modes.level_name_hash('slices/interactive/cruciheart'),
+                         shard.HEART_SLICE_HASH)
+
+    def test_the_spawn_message(self, _log):
+        message = shard.build_guide_heart_probe(SPOT, previous_id=6)
+        counter, offset = shard.decode_entity_id(message.header, previous_id=6)
+        self.assertEqual(counter, 7)
+        self.assertEqual(int.from_bytes(message.header[offset+1:offset+5], 'big'),
+                         shard.HEART_SLICE_HASH)
+        self.assertEqual(message.payload,
+                         shard.build_replication_record(shard.location_bits(shard.HEART_SHARED_TYPES))
+                         + shard.pack_practice_spawn_transform(SPOT))
+
+    def test_only_with_the_hive_in_hoth_guide(self, _log):
+        for env, on in ((HEART_ENV, True), (dict(HEART_ENV, CRUCIBLE_SOLO_GUIDE_HIVE='0'), False),
+                        (dict(HEART_ENV, CRUCIBLE_SOLO_MODE='alpha-hunters'), False),
+                        (dict(HEART_ENV, CRUCIBLE_SOLO_GUIDE_HEART='0'), False)):
+            with self.subTest(env=env), patch.dict('os.environ', env, clear=True):
+                self.assertEqual(shard.guide_heart_enabled(), on)
+
+    def test_the_hives_death_spawns_it_once_where_the_hive_stood(self, _log):
+        state = self.killed_hive()
+        self.assertEqual(state['guide_heart']['position'], SPOT)
+        self.assertNotIn(HEART, state['combat'].entities)      # no health: not in the arena
+        sent = []
+        with patch.dict('os.environ', HEART_ENV, clear=True):
+            for i in range(1, 40):
+                sent.append(tick_ids(shard.solo_simulation_messages(state, 50. + i * .05)))
+        self.assertEqual(sum(ids.count(7) for ids in sent), 1)   # the spawn, and nothing else
+        self.assertEqual(sent[0].count(7), 1)
+        # A reported hit on it is refused: it is not a combat entity.
+        with patch.dict('os.environ', HEART_ENV, clear=True):
+            shard.observe_solo_combat(hit_on(250, HEART), state)
+        self.assertNotIn(HEART, state['combat'].entities)
+
+    def test_ten_seconds_on_it_capture_it_and_the_match_ends_12_s_later(self, log):
+        state = self.killed_hive()
+        with patch.dict('os.environ', HEART_ENV, clear=True):
+            shard.solo_simulation_messages(state, 50.)               # the spawn
+            state['player_position'] = (SPOT[0] + 2., SPOT[1], SPOT[2])
+            now = 51.
+            shard.solo_simulation_messages(state, now)               # starts
+            state['player_position'] = (SPOT[0] + 5., SPOT[1], SPOT[2])
+            shard.solo_simulation_messages(state, now + 4.)          # left: starts again
+            state['player_position'] = (SPOT[0] + 2., SPOT[1], SPOT[2])
+            shard.solo_simulation_messages(state, now + 5.)
+            shard.solo_simulation_messages(state, now + 14.9)
+            self.assertIsNone(state['guide_heart']['captured_at'])
+            shard.solo_simulation_messages(state, now + 15.)
+            self.assertEqual(state['guide_heart']['captured_at'], now + 15.)
+            self.assertEqual(state['team_scores'], {1: 1})
+            shard.solo_simulation_messages(state, now + 26.9)
+            self.assertNotIn('match_result', state)
+            shard.solo_simulation_messages(state, now + 27.)
+            self.assertEqual(state['match_result']['winner_team'], 1)
+            self.assertEqual(state['match_result']['reason'], 'heart')
+        lines = [c.args[0].strip() for c in log.call_args_list if 'GUIDE HEART' in c.args[0]]
+        self.assertIn('GUIDE HEART capture interrupted (count 1)', lines)
+        self.assertIn('GUIDE HEART match over: winner team 1', lines)
+
+    def test_a_dead_player_does_not_capture(self, _log):
+        state = self.killed_hive()
+        state['combat'].entities[shard.PLAYER_CHARACTER_ID].health = 0.
+        with patch.dict('os.environ', HEART_ENV, clear=True):
+            shard.solo_simulation_messages(state, 50.)
+            state['player_position'] = SPOT
+            for i in range(1, 300):
+                shard.solo_simulation_messages(state, 50. + i * .1)
+        self.assertIsNone(state['guide_heart']['capture_started'])
+
+
+@patch.object(shard, 'log')
+class GuideHeartPacketTests(unittest.TestCase):
+    def test_the_split_tick_packet_carries_the_hearts_create_intact(self, _log):
+        import lz4.block
+        env = dict(HEART_ENV, CRUCIBLE_SHARD_BOOTSTRAP='practice-character',
+                   CRUCIBLE_SHARD_SPLIT_UPDATES='1')
+        state = GuideHeartTests.killed_hive(None, env)
+        state.update({'character_links_sent': True, 'clock_epoch': 100.0,
+                      'clock_last_sent': 100.0, 'seq': 10, 'received_seq': 1,
+                      'received_window': 1, 'practice_npcs_sent': True})
+        with patch.dict('os.environ', env, clear=True):
+            packets = shard.game_clock_packets(state, now=101.0)
+        raws = [lz4.block.decompress(p[1:], uncompressed_size=8192) for p in packets]
+        create = b'\x11' + shard.HEART_SLICE_HASH.to_bytes(4, 'big')
+        carrying = [raw for raw in raws if create in raw]
+        self.assertEqual(len(carrying), 1)
+        # The entity id just before it decodes to counter 7, whatever came
+        # first in that packet (RelativeIds restart per split packet).
+        self.assertTrue(any(shard.encode_entity_id(7, previous, local=False) + create
+                            in carrying[0] for previous in range(0, 8)))
+        self.assertTrue(state['guide_heart']['sent'])

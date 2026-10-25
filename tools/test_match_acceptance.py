@@ -140,7 +140,7 @@ class BotSightRowTests(unittest.TestCase):
 
     def test_the_rows_appear_only_when_used(self):
         rows = self.rows([])
-        self.assertFalse({'B0', 'B1', 'B2', 'B3', 'B4', 'B5', 'F4'} & set(rows))
+        self.assertFalse({'B0', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'F4'} & set(rows))
 
     def test_the_hive_row(self):
         rows = self.rows([
@@ -157,6 +157,20 @@ class BotSightRowTests(unittest.TestCase):
         self.assertIn('destroyed at 91.5 s', rows['B5'][2])
         # The hive is not a hunter: its kill is not A5's.
         self.assertIn('killed 01000003 (1 player hits)', rows['A5'][2])
+
+    def test_the_heart_row_and_its_match_end(self):
+        shard = [SHARD[0]] + [J % (1, 1) + line for line in (
+            'SOLO POPULATION PROBE: three Marine hunters',
+            'GUIDE HEART spawned 01000007 at (1.0, 2.0, 3.0)',
+            'GUIDE HEART capture started at 60.0 s',
+            'GUIDE HEART captured at 70.0 s; team 1 score 1',
+            'GUIDE HEART match over: winner team 1')]
+        rows = {row[0].split()[0]: row for row in score(shard_facts(shard), client_facts(CLIENT))}
+        self.assertEqual(rows['B6'][1], 'LOGS-OK')
+        self.assertIn('captured at 70.0 s; team 1 score 1', rows['B6'][2])
+        self.assertIn('ended by the heart', rows['B6'][2])
+        self.assertEqual(rows['A6'][1], 'LOGS-OK')
+        self.assertIn('winner team 1', rows['A6'][2])
 
     def test_hive_hits_do_not_fail_the_flinch_row(self):
         rows = self.rows(['HIT REACTION on: hunters the player hits flinch (component 80)',
