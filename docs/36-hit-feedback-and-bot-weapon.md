@@ -216,6 +216,19 @@ is re-run at most every 0.2 s; that interval is not authored. With the test:
 - an attack does not start unseen and is abandoned after 3 s unseen;
 - a server-resolved round whose line is blocked does no damage.
 
+An end point whose eye or aim point is under the heightfield skips the
+terrain test (`level_geometry.sight_clear`, `UNDERGROUND = 0`). On
+April2018's main walkable component, 3.7% of navmesh spots put the eye
+below the terrain:
+- 1.94% are more than 0.5 m below;
+- 1.75% are within 0.5 m below.
+
+These are caves, tunnels and building interiors whose surfaces are static
+meshes. The literal "stays above the terrain" test would hide a player
+there from every Marine and block every round, so such a spot would win
+the match. With the carve-out, Marines can see through ground there
+instead, which is the milder error.
+
 Retail ray-cast against all PhysX colliders in the AwarenessLoS group
 (`snapshots/accuracy-20260924/line-of-sight-geometry.md`). Walls, rocks
 and buildings are static meshes in `objects.pak` and are not modelled, so
@@ -272,6 +285,23 @@ Record layout:
   u8 index. 81 sends its u32 index, then each 36-byte entry.
 - Both rings share one player message per tick, at the head of the tick, so
   the player never gets two messages in a row.
+- The encoders reproduce, byte for byte, three worked examples derived
+  independently from the serializers: a first floater, a first arc, and
+  both in one message.
+
+**Lost updates.** A client that misses an update would later walk past a
+slot it never received, and replay that slot's old contents. Each ring
+therefore re-sends its newest entries, up to 8, for 0.5 s after they are
+written (`RESEND_SECONDS`, `RESEND_ENTRIES`; not authored). Re-sending a
+slot the client has already consumed is harmless, because it reads only
+slots between its cursor and LastServerIndex.
+
+**Not handled: EnableDamageFloaters.** If the player has turned damage
+floaters off in settings, the client sends `EnableDamageFloaters(false)`
+(component 36, delivery 3) every tick while the replicated FloatersEnabled
+stays true. It also stops walking its ring while it does so. The shard does
+not answer yet, so with that setting off no numbers show and the RPC
+repeats. The default setting is on.
 
 One risk is recorded but not resolved. If the client's screen-edge effects
 asset failed to load, `PlayEdgeOfScreenEffect` (`0xdacd30`) logs "Edge

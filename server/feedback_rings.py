@@ -145,13 +145,49 @@ def build_indicator_update(entries, last_index, *, previous_id=0):
     return build_ring_update(indicators=(entries, last_index), previous_id=previous_id)
 
 
-class FloaterRing:
-    """Server side of the 32-slot damage-number ring."""
+# Not authored: how long, and how many, recent entries are re-sent so that
+# one lost update cannot make the client walk past a slot it never received.
+# Re-sending a slot the client already consumed is harmless (it reads only
+# slots between its cursor and LastServerIndex).
+RESEND_SECONDS = 0.5
+RESEND_ENTRIES = 8
+
+
+class _Ring:
+    size = None
 
     def __init__(self):
         self.last_index = 0
+        self.written = 0
+        self.recent = {}           # slot -> (entry, written at)
+
+    def _write(self, entry, now):
+        self.last_index = (self.last_index + 1) % self.size
+        self.recent[self.last_index] = (entry, now)
+        self.written += 1
+
+    def take(self, now):
+        """(entries, last_index) to send this tick, or None.
+
+        Entries written in the last RESEND_SECONDS, newest RESEND_ENTRIES,
+        always including the slot LastServerIndex names.
+        """
+        fresh = sorted(((written, slot) for slot, (_, written) in self.recent.items()
+                        if now - written <= RESEND_SECONDS), reverse=True)
+        keep = {slot for _, slot in fresh[:RESEND_ENTRIES]}
+        self.recent = {slot: value for slot, value in self.recent.items() if slot in keep}
+        if self.last_index not in self.recent:
+            return None
+        return {slot: entry for slot, (entry, _) in self.recent.items()}, self.last_index
+
+
+class FloaterRing(_Ring):
+    """Server side of the 32-slot damage-number ring."""
+    size = FLOATER_SLOTS
+
+    def __init__(self):
+        super().__init__()
         self.totals = {}           # target -> (running total, time of last hit)
-        self.pending = {}          # slot -> entry written since the last flush
 
     def hit(self, target, damage, now, *, crit=False):
         total, last = self.totals.get(target, (0., None))
@@ -159,31 +195,12 @@ class FloaterRing:
             total = 0.
         total += damage
         self.totals[target] = (total, now)
-        self.last_index = (self.last_index + 1) % FLOATER_SLOTS
-        self.pending[self.last_index] = (target, total, FLAG_CRIT if crit else 0)
-
-    def take(self):
-        """(entries, last_index) written since the last take, or None."""
-        if not self.pending:
-            return None
-        taken, self.pending = (self.pending, self.last_index), {}
-        return taken
+        self._write((target, total, FLAG_CRIT if crit else 0), now)
 
 
-class IndicatorRing:
+class IndicatorRing(_Ring):
     """Server side of the 16-slot incoming-hit ring."""
+    size = INDICATOR_SLOTS
 
-    def __init__(self):
-        self.last_index = 0
-        self.pending = {}
-
-    def hit(self, damage, source_position):
-        self.last_index = (self.last_index + 1) % INDICATOR_SLOTS
-        self.pending[self.last_index] = (damage, tuple(source_position))
-
-    def take(self):
-        """(entries, last_index) written since the last take, or None."""
-        if not self.pending:
-            return None
-        taken, self.pending = (self.pending, self.last_index), {}
-        return taken
+    def hit(self, damage, source_position, now):
+        self._write((damage, tuple(source_position)), now)

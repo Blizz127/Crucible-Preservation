@@ -62,6 +62,7 @@ TRACEBACK = re.compile(r'Traceback \(most recent call last\)')
 # Marine reloads.
 FEEDBACK = re.compile(r'SOLO FEEDBACK sent rpc (\d+)/(\d+) to [0-9a-f]{8} \(count (\d+)\)')
 RELOAD = re.compile(r'HUNTER AI ([0-9a-f]{8}) reloading')
+RINGS = re.compile(r'SOLO FEEDBACK (damage numbers|hit arcs) index \d+ \(count (\d+)\)')
 JOURNAL_TIME = re.compile(r'^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)([+-]\d\d):?(\d\d)')
 
 CLIENT_TIME = re.compile(r'^\[(\d\d)-(\d\d)-(\d{4}):(\d\d):(\d\d):(\d\d)\.(\d+)-GMT\]')
@@ -71,6 +72,9 @@ MULTI_HIT = "There wasn't only one fixup hit"
 # ValidateRpcMessage 0x4bfcee0: a refused server RPC, and the variant that
 # also drops the connection (docs/36).
 DROPPED_RPC = 'Dropping RPC'
+# PlayEdgeOfScreenEffect 0xdacd30 logs this and then dereferences the null
+# asset, so it marks an imminent crash on the first incoming-hit arc.
+EDGE_ASSET_NULL = 'Edge effects asset is null'
 # HybridProjectileSystemClient drops a bad activation with a log line, e.g.
 # ValidateNetData "Network data validation failure" (docs/29 5b).
 ACTIVATION_REFUSED = re.compile(r'HybridProjectileSystemClient::\w+: .*'
@@ -80,9 +84,12 @@ ACTIVATION_REFUSED = re.compile(r'HybridProjectileSystemClient::\w+: .*'
 def shard_facts(lines):
     facts = {'population': [], 'input': 0, 'states': {}, 'fire': 0, 'hits': [],
              'refused': {}, 'over': [], 'rank': None, 'starts': [], 'tracebacks': 0,
-             'population_after_over': 0, 'feedback': {}, 'reloads': 0}
+             'population_after_over': 0, 'feedback': {}, 'reloads': 0, 'rings': {}}
     for line in lines:
-        if FEEDBACK.search(line):
+        if RINGS.search(line):
+            kind, count = RINGS.search(line).groups()
+            facts['rings'][kind] = max(facts['rings'].get(kind, 0), int(count))
+        elif FEEDBACK.search(line):
             component, rpc, count = FEEDBACK.search(line).groups()
             key = '%s/%s' % (component, rpc)
             facts['feedback'][key] = max(facts['feedback'].get(key, 0), int(count))
@@ -141,7 +148,7 @@ def client_time(line):
 def client_facts(lines):
     facts = {'connected': None, 'disconnecting': None, 'match_exit': False,
              'phases': [], 'asserts': 0, 'multi_hit': 0, 'refused_activations': 0,
-             'dropped_rpcs': 0, 'last': None}
+             'dropped_rpcs': 0, 'edge_asset_null': 0, 'last': None}
     for line in lines:
         when = client_time(line)
         if when is not None:
@@ -163,6 +170,8 @@ def client_facts(lines):
             facts['refused_activations'] += 1
         if DROPPED_RPC in line:
             facts['dropped_rpcs'] += 1
+        if EDGE_ASSET_NULL in line:
+            facts['edge_asset_null'] += 1
     return facts
 
 
@@ -266,6 +275,14 @@ def score(shard, client):
         rows.append(('F1 markers', 'FAIL' if dropped else 'LOGS-OK',
                      'sent %s; client dropped RPCs: %s; eyes: hit and kill markers'
                      % (sent or 'none', 'unknown' if dropped is None else dropped)))
+    if shard['rings'] or (client is not None and client['edge_asset_null']):
+        broken = client['edge_asset_null'] if client is not None else 0
+        counts = ', '.join('%s >=%d' % item for item in sorted(shard['rings'].items()))
+        rows.append(('F3 rings', 'FAIL' if broken else 'LOGS-OK',
+                     'wrote %s%s; a hang shows in A7 as a client log that ends while '
+                     'Connected; eyes: numbers over Marines, arcs toward the shooter'
+                     % (counts or 'none', '; client edge-effects asset null %dx' % broken
+                        if broken else '')))
     if shard['reloads']:
         rows.append(('F2 reloads', 'LOGS-OK', '%d Marine reloads; eyes: reload animation, '
                      'about 2 s without fire' % shard['reloads']))

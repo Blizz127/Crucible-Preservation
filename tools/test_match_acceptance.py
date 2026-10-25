@@ -86,5 +86,17 @@ class FeedbackRowTests(unittest.TestCase):
         self.assertEqual(statuses(shard, client)['F1'], 'FAIL')
 
 
+
+class RingRowTests(unittest.TestCase):
+    def test_ring_counts_and_the_edge_asset_crash_marker(self):
+        shard = SHARD + [J % (9, 9) + 'SOLO FEEDBACK damage numbers index 4 (count 4)',
+                         J % (9, 9) + 'SOLO FEEDBACK hit arcs index 1 (count 1)']
+        rows = {row[0].split()[0]: row for row in score(shard_facts(shard), client_facts(CLIENT))}
+        self.assertEqual(rows['F3'][1], 'LOGS-OK')
+        self.assertIn('damage numbers >=4, hit arcs >=1', rows['F3'][2])
+        client = CLIENT + [C % 9 + 'Edge effects asset is null or could not be loaded!']
+        self.assertEqual(statuses(shard, client)['F3'], 'FAIL')
+
+
 if __name__ == '__main__':
     unittest.main()

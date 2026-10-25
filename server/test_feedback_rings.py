@@ -75,14 +75,14 @@ class RingPolicyTests(unittest.TestCase):
         for hit in range(70):
             ring.hit(0x01000003, 40., hit * 1.)
             seen.append(ring.last_index)
-            ring.take()
+            self.assertEqual(ring.take(hit * 1.)[1], ring.last_index)
         self.assertEqual(seen[0], 1)
         self.assertEqual(seen[31], 0)
         self.assertEqual(max(seen), 31)
         indicators = rings.IndicatorRing()
         for hit in range(40):
-            indicators.hit(20., (0., 0., 0.))
-            indicators.take()
+            indicators.hit(20., (0., 0., 0.), hit * 1.)
+            indicators.take(hit * 1.)
             self.assertLess(indicators.last_index, 16)
 
     def test_damage_numbers_accumulate_within_the_window(self):
@@ -90,15 +90,26 @@ class RingPolicyTests(unittest.TestCase):
         for now in (0., .1, .2):
             ring.hit(0x01000003, 40., now)
         ring.hit(0x01000004, 40., .2)
-        totals = sorted(entry[:2] for entry in ring.pending.values())
-        self.assertEqual(totals, [(0x01000003, 40.), (0x01000003, 80.),
-                                  (0x01000003, 120.), (0x01000004, 40.)])
-        taken = ring.take()
-        self.assertEqual(taken[1], ring.last_index)
-        self.assertIsNone(ring.take())
+        entries, last = ring.take(.2)
+        self.assertEqual(last, 4)
+        self.assertEqual(sorted(entry[:2] for entry in entries.values()),
+                         [(0x01000003, 40.), (0x01000003, 80.),
+                          (0x01000003, 120.), (0x01000004, 40.)])
         ring.hit(0x01000003, 40., .2 + rings.FLOATER_ACCUMULATION_SECONDS)
-        self.assertEqual(ring.pending[ring.last_index][1], 40.)
+        self.assertEqual(ring.take(.5)[0][5][1], 40.)
 
+    def test_recent_entries_are_resent_for_half_a_second_then_dropped(self):
+        ring = rings.IndicatorRing()
+        ring.hit(20., (1., 2., 3.), 10.)
+        first = ring.take(10.)
+        self.assertEqual(ring.take(10.4), first)
+        self.assertIsNone(ring.take(10.6))
+        for k in range(12):
+            ring.hit(5., (0., 0., 0.), 11. + k * .01)
+        entries, last = ring.take(11.2)
+        self.assertEqual(len(entries), rings.RESEND_ENTRIES)
+        self.assertIn(last, entries)
+        self.assertEqual(sorted(entries), sorted((last - k) % 16 for k in range(8)))
 
 
 from unittest.mock import patch
@@ -134,20 +145,22 @@ class ShardRingTests(unittest.TestCase):
             state = self.start()
             shard.observe_solo_combat(player_hit(1, 0x1000003), state)
             self.assertNotIn('floater_ring', state)
-            self.assertIsNone(shard.feedback_ring_message(state))
+            self.assertIsNone(shard.feedback_ring_message(state, 1.))
 
     def test_a_player_hit_leads_the_next_tick_with_its_damage_number(self, _log):
         env = dict(ALPHA, CRUCIBLE_SOLO_DAMAGE_NUMBERS='1')
         with patch.dict('os.environ', env, clear=True):
             state = self.start()
+            state['clock_epoch'] = 9.     # session time 1.0 s
             with patch.object(shard.time, 'monotonic', return_value=10.):
                 shard.observe_solo_combat(player_hit(1, 0x1000003), state)
                 shard.observe_solo_combat(player_hit(2, 0x1000003), state)
             messages = shard.solo_simulation_messages(state, 1.)
             self.assertEqual(messages[0], rings.build_floater_update(
                 {1: (0x1000003, 40., 0), 2: (0x1000003, 80., 0)}, 2))
-            # The next tick has nothing new to say.
-            self.assertNotIn(messages[0], shard.solo_simulation_messages(state, 1.05))
+            # Re-sent for half a second against a lost update, then dropped.
+            self.assertEqual(shard.solo_simulation_messages(state, 1.4)[0], messages[0])
+            self.assertNotIn(messages[0], shard.solo_simulation_messages(state, 1.6))
 
     def test_a_hunter_round_on_the_player_draws_an_arc_from_the_shooter(self, _log):
         env = dict(ALPHA, CRUCIBLE_SOLO_HIT_DIRECTION='1')

@@ -89,6 +89,12 @@ TARGET_HEIGHT = 1.0
 # line that grazes the surface.
 STEP = 0.5
 EPSILON = 0.05
+# Not authored: how far under the terrain an end point must be to count as
+# inside geometry the terrain does not model (see sight_clear). An eye that
+# stands on open ground is about 1.1 m above it, so any eye below the
+# surface is inside a cave, tunnel or building. On April2018's walkable mesh
+# 3.7% of spots put the eye under the terrain; 1.75% of them by under 0.5 m.
+UNDERGROUND = 0.0
 
 
 def _align(offset):
@@ -233,6 +239,24 @@ def sight_line(observer_feet, target_feet):
     """The (eye, target) sight points for characters standing at the given feet."""
     return ((observer_feet[0], observer_feet[1], observer_feet[2] + EYE_HEIGHT),
             (target_feet[0], target_feet[1], target_feet[2] + TARGET_HEIGHT))
+
+
+def sight_clear(terrain, start, end, *, underground=UNDERGROUND):
+    """terrain_clear for gameplay, except that an end under the terrain is clear.
+
+    About 4% of April2018's navmesh puts a character's eye below the
+    heightfield: caves, tunnels and building interiors, where static meshes
+    the terrain model does not decode carry the walkable surface. A literal
+    terrain test would hide such a character from every bot for good, and
+    block every round at it. An end point more than `underground` metres
+    below the surface at its own x/y (any depth, by default) therefore
+    skips the terrain test.
+    """
+    for x, y, z in (start, end):
+        ground = terrain.height(x, y)
+        if ground is not None and z < ground - underground:
+            return True
+    return terrain_clear(terrain, start, end)
 
 
 def terrain_clear(terrain, start, end, *, step=STEP, epsilon=EPSILON):

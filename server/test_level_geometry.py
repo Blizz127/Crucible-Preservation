@@ -202,6 +202,21 @@ class RayTests(unittest.TestCase):
         self.assertFalse(clear(self.terrain, (2., 8., 0.5), (14., 8., 0.5)))
         self.assertFalse(clear(self.terrain, (2., 8., 0.5), (3., 8., 0.5)))
 
+    def test_gameplay_sight_skips_the_terrain_for_an_underground_end(self):
+        # Ground is 2 m at (2, 8) and (14, 8); the crest between is 6 m.
+        over = ((2., 8., 3.), (14., 8., 3.))
+        self.assertFalse(level_geometry.sight_clear(self.terrain, *over))
+        # One end 1 m under the ground (a cave or a building the terrain does
+        # not model): the terrain cannot decide, so the line is clear.
+        cave = ((2., 8., 1.), (14., 8., 3.))
+        self.assertFalse(clear(self.terrain, *cave))
+        self.assertTrue(level_geometry.sight_clear(self.terrain, *cave))
+        self.assertTrue(level_geometry.sight_clear(self.terrain, *cave[::-1]))
+        # Any depth counts by default; a tolerance keeps shallow ends literal.
+        shallow = ((2., 8., 1.6), (14., 8., 3.))
+        self.assertTrue(level_geometry.sight_clear(self.terrain, *shallow))
+        self.assertFalse(level_geometry.sight_clear(self.terrain, *shallow, underground=.5))
+
     def test_vertical_segments_use_their_3d_length(self):
         # The crest is 6 m at (8, 8); plan length is zero in both cases.
         self.assertFalse(clear(self.terrain, (8., 8., 20.), (8., 8., 3.)))

@@ -996,7 +996,7 @@ def land_hunter_hits(state, arena, now):
             if (hit.target == PLAYER_CHARACTER_ID and shooter is not None
                     and feedback_rings.hit_direction_enabled()):
                 state.setdefault('indicator_ring', feedback_rings.IndicatorRing()).hit(
-                    hit.damage, shooter.position)
+                    hit.damage, shooter.position, landing.time)
 
 
 def solo_ai_enabled():
@@ -1025,7 +1025,7 @@ def terrain_sight():
     except (OSError, ValueError) as error:
         log('      LINE OF SIGHT unavailable on %s: %s' % (level, error))
         return None
-    return lambda eye, target: level_geometry.terrain_clear(terrain, eye, target)
+    return lambda eye, target: level_geometry.sight_clear(terrain, eye, target)
 
 
 def authored_death_metadata(hunters):
@@ -1250,19 +1250,25 @@ def confirm_player_hit(state, hit, weapon):
                          shooter_feedback.build_confirm_kill_indicator())
 
 
-def feedback_ring_message(state):
+def feedback_ring_message(state, now):
     """docs/36: a builder for this tick's damage-number/hit-arc update, or None."""
     import feedback_rings
-    floaters = state['floater_ring'].take() if 'floater_ring' in state else None
-    indicators = state['indicator_ring'].take() if 'indicator_ring' in state else None
+    taken = {}
+    for key, name in (('floater_ring', 'damage numbers'), ('indicator_ring', 'hit arcs')):
+        ring = state.get(key)
+        if ring is None:
+            continue
+        taken[key] = ring.take(now)
+        # Log each time the count reaches a new power of two; several hits in
+        # one tick may step over the exact power.
+        logged = state.setdefault('ring_logged', {})
+        if ring.written.bit_length() != logged.get(key, 0):
+            logged[key] = ring.written.bit_length()
+            log('      SOLO FEEDBACK %s index %d (count %d)'
+                % (name, ring.last_index, ring.written))
+    floaters, indicators = taken.get('floater_ring'), taken.get('indicator_ring')
     if floaters is None and indicators is None:
         return None
-    counts = state.setdefault('ring_updates', {})
-    for name, taken in (('damage numbers', floaters), ('hit arcs', indicators)):
-        if taken is not None:
-            count = counts[name] = counts.get(name, 0) + len(taken[0])
-            if count & (count - 1) == 0 or len(taken[0]) > 1:
-                log('      SOLO FEEDBACK %s index %d (count %d)' % (name, taken[1], count))
     return lambda previous_id: feedback_rings.build_ring_update(
         floaters=floaters, indicators=indicators, previous_id=previous_id)
 
@@ -1305,7 +1311,7 @@ def solo_simulation_messages(state, now, *, previous_id=0):
     # docs/36: the player's damage numbers and hit arcs lead the tick, so the
     # hunters' Location messages separate them from the player's own health
     # update at the end; one entity never gets two messages in a row.
-    rings = feedback_ring_message(state)
+    rings = feedback_ring_message(state, now)
     if rings is not None:
         messages.append(rings(previous_id))
         previous_id = PLAYER_CHARACTER_ID & 0xffffff
