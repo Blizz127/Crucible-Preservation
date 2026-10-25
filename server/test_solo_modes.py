@@ -446,3 +446,24 @@ class SelectionTests(unittest.TestCase):
             with self.subTest(mode=mode.name):
                 if mode.roster_size > 1:
                     self.assertNotEqual(mode.local_team, mode.bot_team)
+
+
+class BotSlotTests(unittest.TestCase):
+    """One slot list feeds the roster, the spawns, the arena and the squad."""
+
+    def test_the_default_slots_are_the_marine_baseline(self):
+        for name in ('alpha-hunters', 'hoth-guide', 'hoth-guide-april2018', 'practice'):
+            with self.subTest(mode=name), \
+                    patch.dict('os.environ', {'CRUCIBLE_SOLO_MODE': name}, clear=True):
+                profile = solo_modes.selected()
+                slots = shard.solo_bot_slots()
+                self.assertEqual([s.entity for s in slots],
+                                 list(shard.HUNTER_BOT_IDS[:len(profile.bot_positions)]))
+                self.assertEqual([s.position for s in slots], list(profile.bot_positions))
+                self.assertTrue(all((s.hero, s.team, s.health_max) == ('marine', 2, 800.)
+                                    for s in slots))
+
+    def test_bot_hero_names_only_bots(self):
+        with patch.dict('os.environ', {'CRUCIBLE_SOLO_MODE': 'alpha-hunters'}, clear=True):
+            self.assertEqual(shard.bot_hero(0x01000003), 'marine')
+            self.assertIsNone(shard.bot_hero(shard.PLAYER_CHARACTER_ID))

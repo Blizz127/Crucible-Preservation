@@ -136,6 +136,30 @@ MARINE_SHARED_TYPES = (0, 10, 13, 18, 21, 24, 27, 44, 46, 48, 69, 79, 80,
 MARINE_HEALTH_MAX = 800.0   # observed live, live-alpha-entry.json (docs/18)
 
 
+@dataclass(frozen=True)
+class BotSlot:
+    """One solo bot. The roster, the spawns, the arena and the squad all read
+    the same slots, so the entities they describe always agree (docs/37)."""
+    entity: int
+    hero: str = 'marine'               # hero_loadout key: slice, class, primary
+    position: tuple = None
+    team: int = 2
+    health_max: float = MARINE_HEALTH_MAX
+
+
+def solo_bot_slots(profile=None):
+    """The selected profile's bots: one Marine per authored bot position, the
+    screenshot-accepted Alpha Hunters baseline (docs/18)."""
+    profile = solo_modes.selected() if profile is None else profile
+    return tuple(BotSlot(entity, 'marine', position)
+                 for entity, position in zip(HUNTER_BOT_IDS, profile.bot_positions))
+
+
+def bot_hero(entity):
+    """The hero key of the solo bot with this network id, else None."""
+    return next((slot.hero for slot in solo_bot_slots() if slot.entity == entity), None)
+
+
 def encode_varint(value):
     """LEB128, low 7 bits per byte, high bit = continuation."""
     if value < 0:
@@ -518,19 +542,20 @@ def build_single_player_roster_probe(player_name, *, spawned_character=False):
         raise ValueError('player name must be at most 127 non-NUL bytes')
     entries = []
     names = [player_name]
-    if spawned_character:
-        names += [('Hunter %d' % (i + 1)).encode()
-                  for i in range(len(solo_modes.selected().bot_positions))]
+    bots = solo_bot_slots() if spawned_character else ()
+    names += [('Hunter %d' % (i + 1)).encode() for i in range(len(bots))]
     count = len(names)
     for slot, name in enumerate(names, 1):
         identity = b'local-hunter' if slot == 1 else ('solo-hunter-%d' % slot).encode()
-        team = 1 if slot == 1 else 2
+        team = 1 if slot == 1 else bots[slot - 2].team
         entries.append(bytes([slot, len(identity)]) + identity
             + bytes([len(name)]) + name + b'\x00'
             # CharacterClass (.rdata name table 0x6c1de08; 8 is "Marine").
             # Only the local player follows CRUCIBLE_SOLO_HERO; slots 2..4 are
-            # the Marine bots. b'\x00\x00' is the Unknown class before spawn.
-            + ((hero_loadout.character_class_bytes() if slot == 1 else b'\x00\x08')
+            # the bots, each its slot's hero. b'\x00\x00' is the Unknown
+            # class before spawn.
+            + ((hero_loadout.character_class_bytes() if slot == 1
+                else hero_loadout.character_class_bytes(hero_loadout.get(bots[slot - 2].hero)))
                if spawned_character else b'\x00\x00')
             + bytes([team, team])
             # Reader 4f565d0 shares one cached byte per eight bools across
@@ -545,7 +570,8 @@ def build_single_player_roster_probe(player_name, *, spawned_character=False):
     properties = (build_replication_record(bits) + bytes([count])
                   + b''.join(entries) + ranged_uint32(count))
     if spawned_character:
-        properties += b''.join(ranged_uint32(0x01000002+i) for i in range(count))
+        properties += b''.join(ranged_uint32(entity) for entity in
+                               (PLAYER_CHARACTER_ID,) + tuple(b.entity for b in bots))
         return build_entity_message(solo_modes.selected().store_entry + solo_modes.selected().baked_counter_bias, pack_type_and_flags(ENTITY_ROLE_CLIENT_SIMULATION),
                                     payload=properties, local=True)
     return build_entity_message(
@@ -768,7 +794,8 @@ def character_links_reply(data, state):
 def build_solo_hunter_probes():
     messages = []
     previous = 0
-    positions = solo_modes.selected().bot_positions
+    bots = solo_bot_slots()
+    positions = tuple(slot.position for slot in bots)
     if positions and os.environ.get('CRUCIBLE_SOLO_PATROL') == '1':
         from hunter_patrol import Unroutable, routes
         try:
@@ -776,12 +803,12 @@ def build_solo_hunter_probes():
         except Unroutable:
             log('      HUNTER PATROL: no routes on %s; the hunters stand'
                 % solo_modes.selected().level)
-    # The three hunters stay Marine whatever CRUCIBLE_SOLO_HERO says: they are
-    # the screenshot-accepted Alpha Hunters baseline (docs/18).
-    marine = hero_loadout.get('marine')
-    for counter, position in enumerate(positions, 3):
+    # Each bot is its slot's hero whatever CRUCIBLE_SOLO_HERO says: the
+    # default slots are the screenshot-accepted Marine baseline (docs/18).
+    for slot, position in zip(bots, positions):
+        counter = slot.entity & 0xffffff
         messages.append(build_practice_character_probe(counter=counter, position=position,
-            autonomous=False, previous_id=previous, hero=marine))
+            autonomous=False, previous_id=previous, hero=hero_loadout.get(slot.hero)))
         previous = counter
     return messages
 
@@ -1103,11 +1130,11 @@ def level_sight():
                                 and not world.blocked(eye, target))
 
 
-def authored_death_metadata(hunters):
+def authored_death_metadata(bots):
     """docs/36: each killer's own on-hit tag, "Ability" plus its primary."""
     import combat
-    pairs = {entity: (combat.ABILITY_SOURCE, combat.HERO_PRIMARY_ABILITY['marine'])
-             for entity in hunters}
+    pairs = {slot.entity: (combat.ABILITY_SOURCE, combat.HERO_PRIMARY_ABILITY[slot.hero])
+             for slot in bots}
     ability = combat.HERO_PRIMARY_ABILITY.get(hero_loadout.selected().name)
     if ability is not None:
         pairs[PLAYER_CHARACTER_ID] = (combat.ABILITY_SOURCE, ability)
@@ -1141,7 +1168,7 @@ def build_solo_squad(profile):
     """
     import hunter_patrol
     try:
-        return hunter_patrol.squad(HUNTER_BOT_IDS[:len(profile.bot_positions)],
+        return hunter_patrol.squad(tuple(slot.entity for slot in solo_bot_slots(profile)),
                                    level=profile.level)
     except hunter_patrol.Unroutable:
         log('      HUNTER AI: no routes on %s; the hunters stand' % profile.level)
@@ -1154,16 +1181,16 @@ def start_solo_simulation(state):
     import practice_population
     profile = solo_modes.selected()
     if solo_combat_enabled():
-        hunters = HUNTER_BOT_IDS[:len(profile.bot_positions)]
-        killers = (authored_death_metadata(hunters)
+        bots = solo_bot_slots(profile)
+        killers = (authored_death_metadata(bots)
                    if os.environ.get('CRUCIBLE_SOLO_DEATH_EVENTS') == 'authored' else {})
         arena = combat.Combat(death_metadata=solo_death_metadata(),
                               killer_metadata=killers)
         arena.register(PLAYER_CHARACTER_ID, MARINE_SHARED_TYPES,
                        maximum=MARINE_HEALTH_MAX, team=1, autonomous=True)
-        for entity in hunters:
-            arena.register(entity, MARINE_SHARED_TYPES,
-                           maximum=MARINE_HEALTH_MAX, team=2)
+        for slot in bots:
+            arena.register(slot.entity, MARINE_SHARED_TYPES,
+                           maximum=slot.health_max, team=slot.team)
         for place in practice_population.population(profile.level):
             respawn = (combat.PRACTICE_SPITTER_RESPAWN_SECONDS if place.profile
                        else combat.PRACTICE_TARGET_RESPAWN_SECONDS)
@@ -1305,11 +1332,10 @@ def observe_solo_combat(message, state):
     if 'clock_epoch' in state:
         now = int((now - state['clock_epoch']) * 1000) / 1000.
     previous = arena.last_projectile.get(shooter)
-    # Hunters are Marines whatever CRUCIBLE_SOLO_HERO says; the player fires
-    # the selected hero's primary.
+    # The player fires the selected hero's primary; a bot its slot's hero's.
     from combat import HERO_PRIMARY, MARINE_PRIMARY
-    weapon = (HERO_PRIMARY.get(hero_loadout.selected().name, MARINE_PRIMARY)
-              if shooter == PLAYER_CHARACTER_ID else MARINE_PRIMARY)
+    weapon = HERO_PRIMARY.get(hero_loadout.selected().name if shooter == PLAYER_CHARACTER_ID
+                              else bot_hero(shooter), MARINE_PRIMARY)
     hit = arena.apply_reported_hit(shooter, projectile, reported, weapon=weapon, now=now,
                                    distance=reported_hit_range(state, shooter))
     if hit is None:
@@ -1716,9 +1742,11 @@ def solo_simulation_messages(state, now, *, previous_id=0):
             # the per-shooter cap keeps one component-115 write per entity per
             # packet. Creation times are preserved and events past their
             # authored lifetime are discarded.
+            from combat import HERO_PRIMARY, HERO_PRIMARY_INDEX
             pending = [
                 shot for shot in state.get('pending_hunter_shots', [])
-                if 0 <= now - shot.time <= MARINE_PRIMARY.lifetime_s
+                if 0 <= now - shot.time <= HERO_PRIMARY.get(
+                    bot_hero(shot.shooter), MARINE_PRIMARY).lifetime_s
                 and (active_entities is None or
                      {shot.shooter, shot.target} <= active_entities)]
             due, waiting = {}, []
@@ -1735,7 +1763,8 @@ def solo_simulation_messages(state, now, *, previous_id=0):
                                for i in range(3))
                 messages.append(build_hybrid_activation_update(
                     shot.shooter, MARINE_SHARED_TYPES, slot=slot,
-                    allowed_projectile_index=4, fire_origin=shot.origin,
+                    allowed_projectile_index=HERO_PRIMARY_INDEX.get(
+                        bot_hero(shot.shooter), 4), fire_origin=shot.origin,
                     ideal_origin=shot.origin, ideal_target_position=target,
                     relative_time_ms=int((now - shot.time) * 1000),
                     has_first_update_hit=False, deflected=False, attachment_id=0,
