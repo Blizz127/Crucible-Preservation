@@ -467,3 +467,48 @@ class BotSlotTests(unittest.TestCase):
         with patch.dict('os.environ', {'CRUCIBLE_SOLO_MODE': 'alpha-hunters'}, clear=True):
             self.assertEqual(shard.bot_hero(0x01000003), 'marine')
             self.assertIsNone(shard.bot_hero(shard.PLAYER_CHARACTER_ID))
+
+    def test_the_guide_saboteur_replaces_the_marines_in_hoth_guide_only(self):
+        for name, heroes in (('hoth-guide-april2018', ['saboteur']),
+                             ('hoth-guide', ['saboteur']),
+                             ('alpha-hunters', ['marine'] * 3)):
+            env = {'CRUCIBLE_SOLO_MODE': name, 'CRUCIBLE_SOLO_GUIDE_SABOTEUR': '1'}
+            with self.subTest(mode=name), patch.dict('os.environ', env, clear=True):
+                profile = solo_modes.selected()
+                slots = shard.solo_bot_slots()
+                self.assertEqual([s.hero for s in slots], heroes)
+                self.assertEqual((slots[0].entity, slots[0].position, slots[0].team),
+                                 (shard.HUNTER_BOT_IDS[0], profile.bot_positions[0], 2))
+
+    def test_the_saboteur_is_rostered_and_spawned_as_itself(self):
+        env = {'CRUCIBLE_SOLO_MODE': 'hoth-guide-april2018', 'CRUCIBLE_SOLO_GUIDE_SABOTEUR': '1'}
+        with patch.dict('os.environ', env, clear=True):
+            roster = shard.build_single_player_roster_probe(b'me', spawned_character=True)
+            message, = shard.build_solo_hunter_probes()
+        counter, offset = shard.decode_entity_id(message.header, previous_id=0)
+        self.assertEqual(counter, 3)
+        self.assertEqual(int.from_bytes(message.header[offset+1:offset+5], 'big'),
+                         shard.hero_loadout.get('saboteur').slice_hash)
+        # Its PlayerData: identity, name, CharacterClass 12 (Saboteur), team 2.
+        self.assertIn(b'\x0dsolo-hunter-2\x08Hunter 1\x00\x00\x0c\x02\x02', roster.payload)
+        # Two CharacterIds: the player's and the Saboteur's.
+        self.assertTrue(roster.payload.endswith(
+            shard.ranged_uint32(shard.PLAYER_CHARACTER_ID)
+            + shard.ranged_uint32(shard.HUNTER_BOT_IDS[0])))
+
+    def test_the_squad_gets_each_slots_tuning_and_start(self):
+        import hunter_ai
+        import hunter_patrol
+        env = {'CRUCIBLE_SOLO_MODE': 'hoth-guide-april2018', 'CRUCIBLE_SOLO_GUIDE_SABOTEUR': '1'}
+        with patch.dict('os.environ', env, clear=True), \
+                patch.object(hunter_patrol, 'squad', return_value='squad') as squad:
+            self.assertEqual(shard.build_solo_squad(solo_modes.selected()), 'squad')
+        self.assertEqual(squad.call_args.args[0], (shard.HUNTER_BOT_IDS[0],))
+        self.assertEqual(squad.call_args.kwargs['tunings'], (hunter_ai.SABOTEUR,))
+        # The builder starts bot i where circuit i begins: at bot point i.
+        loop = [(10., 20., 0.), (30., 40., 0.)]
+        with patch.object(hunter_patrol, 'circuits', return_value=[loop]):
+            bot, = hunter_patrol.squad((0x1000003,), mesh=object(),
+                                       tunings=(hunter_ai.SABOTEUR,)).bots
+        self.assertEqual((bot.position, bot.anchor, bot.tuning),
+                         (loop[0], loop[0], hunter_ai.SABOTEUR))

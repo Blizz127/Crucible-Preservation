@@ -147,10 +147,31 @@ class BotSlot:
     health_max: float = MARINE_HEALTH_MAX
 
 
+# The Saboteur's health, from the player-damage track's table (docs/37).
+SABOTEUR_HEALTH_MAX = 800.0
+
+
+def guide_saboteur_enabled(profile=None):
+    """CRUCIBLE_SOLO_GUIDE_SABOTEUR=1 in a HOTH_GUIDE profile (docs/37)."""
+    profile = solo_modes.selected() if profile is None else profile
+    return (os.environ.get('CRUCIBLE_SOLO_GUIDE_SABOTEUR') == '1'
+            and profile.mode_profile is solo_modes.MODES['hoth-guide']
+            and bool(profile.bot_positions))
+
+
 def solo_bot_slots(profile=None):
     """The selected profile's bots: one Marine per authored bot position, the
-    screenshot-accepted Alpha Hunters baseline (docs/18)."""
+    screenshot-accepted Alpha Hunters baseline (docs/18).
+
+    With CRUCIBLE_SOLO_GUIDE_SABOTEUR=1 a HOTH_GUIDE profile has instead its
+    one retail hostile, a Saboteur guide bot, at the first bot position.
+    Retail spawns it at the first hive's heart when the hive dies; with no
+    hives modelled, the placeholder position stands in (docs/37).
+    """
     profile = solo_modes.selected() if profile is None else profile
+    if guide_saboteur_enabled(profile):
+        return (BotSlot(HUNTER_BOT_IDS[0], 'saboteur', profile.bot_positions[0],
+                        team=profile.bot_team, health_max=SABOTEUR_HEALTH_MAX),)
     return tuple(BotSlot(entity, 'marine', position)
                  for entity, position in zip(HUNTER_BOT_IDS, profile.bot_positions))
 
@@ -1048,10 +1069,12 @@ def server_bot_damage_enabled():
 def hunter_gunnery(state):
     gunnery = state.get('hunter_gunnery')
     if gunnery is None:
-        from hunter_hits import ACCURACY_SCALE, HunterGunnery
+        from hunter_hits import ACCURACY_SCALE, GUNS, HunterGunnery
         scale = float(os.environ.get('CRUCIBLE_SOLO_BOT_ACCURACY') or ACCURACY_SCALE)
         seed = int(time.time())
-        gunnery = state['hunter_gunnery'] = HunterGunnery(seed=seed, accuracy_scale=scale)
+        gunnery = state['hunter_gunnery'] = HunterGunnery(
+            seed=seed, accuracy_scale=scale,
+            guns={slot.entity: GUNS[slot.hero] for slot in solo_bot_slots()})
         log('      HUNTER HITS server-resolved, accuracy scale %.2f, seed %d'
             % (scale, seed))
     return gunnery
@@ -1166,10 +1189,13 @@ def build_solo_squad(profile):
     standing where they spawned: an expected condition, logged in one line.
     Anything else raises, for the caller's guard.
     """
+    import hunter_ai
     import hunter_patrol
+    slots = solo_bot_slots(profile)
     try:
-        return hunter_patrol.squad(tuple(slot.entity for slot in solo_bot_slots(profile)),
-                                   level=profile.level)
+        return hunter_patrol.squad(tuple(slot.entity for slot in slots),
+                                   level=profile.level,
+                                   tunings=tuple(hunter_ai.TUNINGS[slot.hero] for slot in slots))
     except hunter_patrol.Unroutable:
         log('      HUNTER AI: no routes on %s; the hunters stand' % profile.level)
         return None
@@ -1231,7 +1257,7 @@ def start_solo_simulation(state):
                     bot.accel_model = 'config' if accel == 'config' else 'ai'
             if os.environ.get('CRUCIBLE_SOLO_BOT_CHASE_CAP') == '1':
                 for bot in state['squad'].bots:
-                    bot.pursue_cap = MARINE_DEFAULT_FORWARD_SPEED
+                    bot.pursue_cap = bot.tuning.chase_cap or None
             if os.environ.get('CRUCIBLE_SOLO_BOT_FLEE') == '1':
                 for bot in state['squad'].bots:
                     bot.flee = True
@@ -1249,6 +1275,7 @@ def start_solo_simulation(state):
                     bot.visible = sight
             # One line confirms which drop-ins took effect (match_acceptance B0).
             switches = [name for name, on in (
+                ('guide-saboteur', guide_saboteur_enabled(profile)),
                 ('reload', bot_reload_enabled()),
                 ('strafe', os.environ.get('CRUCIBLE_SOLO_BOT_STRAFE') == '1'),
                 ('turn', os.environ.get('CRUCIBLE_SOLO_BOT_TURN') == '1'),
@@ -2892,8 +2919,10 @@ def main():
                 npcs = practice_npcs_reply(st)
                 if npcs is not None:
                     sock.sendto(npcs, addr)
+                    heroes = [slot.hero for slot in solo_bot_slots()]
                     log('      SOLO POPULATION PROBE: %s' %
-                        ('three Marine hunters' if solo_modes.selected().bot_positions
+                        ('three Marine hunters' if heroes == ['marine'] * 3
+                         else 'hunters: %s' % ', '.join(heroes) if heroes
                          else 'two spitters, eight targets'))
                 send_game_clocks(sock, states, idle_reset=idle_reset)
     except KeyboardInterrupt:

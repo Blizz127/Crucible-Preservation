@@ -78,6 +78,9 @@ class Tuning:
     reload_fill: float = 0.                # seconds from reload start to refill
     reload_animation: float = 0.           # ... to the end of using_reload
     reload_duration: float = 0.            # ... until the primary may fire again
+    ammo_delay: float = None               # shot to its Ammunition -1, s; None: round_interval
+    chase_cap: float = 0.                  # the realisable forward speed, m/s; 0: none
+    patrols: bool = True                   # PatrolParams/CanPatrol: false stands
 
     def __post_init__(self):
         ordered = (self.aggro_near <= self.aggro_far <= self.deaggro
@@ -86,6 +89,8 @@ class Tuning:
                    and 0 <= self.reload_fill <= self.reload_duration
                    and 0 <= self.reload_animation <= self.reload_duration
                    and self.magazine >= 0 and self.forced_aggro_on_damage >= 0
+                   and (self.ammo_delay is None or self.ammo_delay >= 0)
+                   and self.chase_cap >= 0
                    and self.move_turn_rate >= 0
                    and self.forget_without_sight > 0
                    and self.abandon_attack_without_sight > 0
@@ -204,7 +209,60 @@ MARINE = Tuning(
     # reloads by itself at Ammunition == min: FillResource after Delay
     # 0.224 + 0.384 + 0.608 = 1.216 s, using_reload off at +0.384 = 1.6 s and
     # Reload_Active off, which the rifle loop's entry waits on, at 1.984 s.
-    magazine=24, reload_fill=1.216, reload_animation=1.6, reload_duration=1.984)
+    magazine=24, reload_fill=1.216, reload_animation=1.6, reload_duration=1.984,
+    chase_cap=5.5)
+
+
+# docs/37: HOTH_GUIDE's one hostile bot. Read from ai/guide_dummies/
+# saboteur_guide.ai (snapshots/accuracy-20260924/guide-bots-ai-full.json),
+# saboteur_default.movementconfig, and its primary and reload scripts.
+# None of it has been observed in a running game.
+SABOTEUR = Tuning(
+    source='ai/guide_dummies/saboteur_guide.ai + '
+           'assets/player/saboteur/saboteur_default.movementconfig',
+    # SpeedWander = SpeedChase = FleeingSpeed 6.5, and saboteur_default's
+    # forward speed is 6.5 too: unlike the Marine's, its chase is realisable.
+    patrol_speed=6.5, pursue_speed=6.5, chase_cap=6.5,
+    # CanPatrol false: it stands at its spawn until it has a target, and
+    # walks back there after one (its anchor).
+    patrols=False,
+    aggro_near=30.0, aggro_far=60.0, aggro_angle=math.radians(180.),
+    deaggro=60.0, forced_aggro_on_damage=10.0,
+    forget_without_sight=8.0, abandon_attack_without_sight=3.0,
+    strafe_speed=4.5, strafe_near=(1.0, 2.0), strafe_far=(20.0, 30.0),
+    strafe_duration=(1.0, 2.0), approach_stop=1.8,
+    attack_delay=0.25, range_min=0.0, range_max=30.0, range_vertical_max=20.0,
+    aggro_origin_offset_local=(0., 0., 1.), aggro_target_offset_vertical=1.0,
+    attack_angle=math.radians(90.),
+    attack_duration=2.0, min_time_between_attacks=1.2,
+    # saboteur_primary_on_fire.cdl fires one round per press, only when the
+    # FireRate resource is full, and spends 1 of it. saboteur_resources.
+    # resourcesdata refills FireRate (max 1) at 2.841/s, so one round per
+    # 0.352 s, slower than the ability's 0.256 s cooldown. Its attack
+    # selector pulses PrimaryFire: assumed at least that often.
+    round_interval=1. / 2.841,
+    patrol_near=5.0, patrol_far=15.0, patrol_anchor_limit=50.0, patrol_attempts=5,
+    patrol_ignore_current_after=50,
+    idle_durations=(10.8, 5.8, 4.67, 11.73, 9.67, 2.67), idle_extra=1.0,
+    # saboteur_default: Acceleration 0.10 s (the Marine's 0.15).
+    start_stop_acceleration=10.0, config_ramp_seconds=0.10,
+    # saboteur_guide_on_hit.cdl: the Marine's test, User_flee_time 3.0 s,
+    # then Ability3 (the grapple, not modelled) after 0.25 s. FleeParams as
+    # the Marine's; IgnoreTargetsTime 4.0 s makes the flight 4 s.
+    flee_time=3.0, flee_ignore_targets=4.0, flee_blocked_window=(0.0, 2.0),
+    flee_memory=2.5, flee_speed=6.5, flee_near=20.0, flee_far=40.0, flee_attempts=30,
+    turn_rate=math.radians(90.), move_turn_rate=math.radians(1440.),
+    # Ammunition 8 (saboteur_resources). saboteur_reload.cdl reloads by
+    # itself at 0: FillResource after 0.16 + 1.28 = 1.44 s, Reload_Active
+    # (which the primary waits on) clear at +0.512 + 0.256 = 2.208 s. The
+    # ability spends ammunition as it fires (autoResourceConsumption), so
+    # the reload starts with the last round (inferred), and using_reload
+    # is taken to clear with the script's exit at 2.208 s (inferred).
+    magazine=8, reload_fill=1.44, reload_animation=2.208, reload_duration=2.208,
+    ammo_delay=0.0)
+
+# Per hero_loadout key.
+TUNINGS = {'marine': MARINE, 'saboteur': SABOTEUR}
 
 
 @dataclass(frozen=True)
@@ -398,6 +456,11 @@ class Bot:
         for the deployed baseline. The route remains the fallback for the
         stateless patrol probe and whenever no mesh is injected.
         """
+        if not self.tuning.patrols:
+            # PatrolParams/CanPatrol false: it stands where it is.
+            self._plan, self._index = [self.position, self.position], 1
+            self._planned_at = self._planned_for = None
+            return
         if self.wander and self.anchored:
             # After that many failed attempts the from-current limit is
             # dropped, so a Marine stranded far from its ring walks back.
@@ -639,7 +702,9 @@ class Bot:
                 if self.ammo <= 0:
                     # The loop's Ammunition -1 empties the magazine 96 ms
                     # after this projectile; the reload script starts then.
-                    self.reload_started = due + self.tuning.round_interval
+                    self.reload_started = due + (self.tuning.round_interval
+                                                 if self.tuning.ammo_delay is None
+                                                 else self.tuning.ammo_delay)
         if now >= end - 1e-9:
             self.attack_started, self.attack_ended = None, end
             self.rounds_fired = 0
@@ -819,6 +884,8 @@ class Bot:
                     self.state = PATROL
                     self._patrol_plan()
             speed = self.tuning.patrol_speed
+            if self.state == PATROL and not self.tuning.patrols:
+                speed = 0.      # CanPatrol false: it stands until a target comes
             if (self.state == PATROL and self.dit_patrol_pause_range
                     and self.dit_patrol_move_range and self.rng is not None):
                 if self._dit_patrol_pause_until is not None:

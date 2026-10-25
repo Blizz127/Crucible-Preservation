@@ -166,14 +166,19 @@ def separate(positions, *, distance=SEPARATION, passes=32, mesh=None):
 
 
 def squad(entities=(0x01000003, 0x01000004, 0x01000005), tuning=None, mesh=None,
-          level=None):
-    """Build the hunter bots on their authored circuits, on the level's mesh."""
+          level=None, tunings=None):
+    """Build the hunter bots on their authored circuits, on the level's mesh.
+
+    Bot i starts on circuit i, which begins at bot point i: the slot's own
+    position. `tunings` gives each bot its hero's; `tuning` all of them.
+    """
     tuning = tuning or hunter_ai.MARINE
+    tunings = tunings or (tuning,) * len(entities)
     level = level_key(level)
     mesh = mesh if mesh is not None else navigation.installed_mesh(level)
     loops = circuits(level)
     return hunter_ai.Squad([
-        hunter_ai.Bot(entity, loops[index % len(loops)], tuning, mesh=mesh,
+        hunter_ai.Bot(entity, loops[index % len(loops)], tunings[index], mesh=mesh,
                       position=loops[index % len(loops)][0], wander=True)
         for index, entity in enumerate(entities)])
 

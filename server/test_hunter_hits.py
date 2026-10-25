@@ -67,3 +67,26 @@ class HitTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class GunTests(unittest.TestCase):
+    """Each bot fires its own hero's primary (docs/37)."""
+
+    def test_a_saboteur_bot_lands_its_own_rounds(self):
+        import combat
+        gunnery = hunter_hits.HunterGunnery(
+            seed=1, accuracy_scale=1.0, target_radius=10.,
+            guns={0x1000003: hunter_hits.SABOTEUR_GUN})
+        landing = gunnery.resolve(Shot(0x1000003, 0x1000002, 1.0,
+                                       (0., 0., 1.), (0., 1., 0.), 10.))
+        self.assertAlmostEqual(landing.time, 1.0 + 10. / 780.)
+        self.assertEqual(landing.damage,
+                         combat.immediate_damage(combat.SABOTEUR_PRIMARY, distance=10.))
+        self.assertAlmostEqual(hunter_hits.SABOTEUR_GUN.reach, 780. * 0.4)   # 312 m
+
+    def test_the_saboteurs_bloom_and_spread_are_its_own(self):
+        gun = hunter_hits.SABOTEUR_GUN
+        self.assertAlmostEqual(hunter_hits.spread_degrees(0., gun), 0.5)
+        self.assertAlmostEqual(hunter_hits.spread_degrees(1., gun), 2.0)
+        self.assertAlmostEqual(hunter_hits.bloom_increment(0.5, gun.bloom_per_shot),
+                               (0.15271739661693573 + 0.29195651412010193) / 2)

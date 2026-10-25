@@ -989,3 +989,58 @@ class InstalledMeshPursuitTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class SaboteurTests(unittest.TestCase):
+    """saboteur_guide.ai: HOTH_GUIDE's hostile guide bot (docs/37)."""
+
+    def bot(self, **kwargs):
+        mesh = WanderTests.Flat()
+        return hunter_ai.Bot(3, straight(), hunter_ai.SABOTEUR, mesh=mesh, wander=True,
+                             rng=random.Random(2), position=(0., 0., 0.), **kwargs)
+
+    def test_its_authored_values(self):
+        tuning = hunter_ai.SABOTEUR
+        self.assertEqual((tuning.pursue_speed, tuning.chase_cap, tuning.patrols),
+                         (6.5, 6.5, False))
+        self.assertEqual((tuning.aggro_near, tuning.aggro_far, tuning.deaggro), (30., 60., 60.))
+        self.assertAlmostEqual(math.degrees(tuning.aggro_angle), 180.)
+        self.assertEqual((tuning.attack_duration, tuning.min_time_between_attacks), (2., 1.2))
+        self.assertAlmostEqual(tuning.round_interval, 0.352, places=3)
+        self.assertEqual((tuning.magazine, tuning.reload_duration, tuning.ammo_delay),
+                         (8, 2.208, 0.))
+        self.assertEqual((tuning.flee_time, tuning.flee_ignore_targets, tuning.flee_speed),
+                         (3., 4., 6.5))
+        self.assertIs(hunter_ai.TUNINGS['saboteur'], tuning)
+
+    def test_it_stands_without_a_target_and_rests_never(self):
+        bot = self.bot(idle=True)
+        for i in range(1, 400):
+            step = bot.update(.05 * i)
+            self.assertEqual(step.speed, 0.)
+        self.assertEqual((bot.position, bot.rests), ((0., 0., 0.), 0))
+
+    def test_after_a_chase_it_walks_back_and_stands(self):
+        bot = self.bot()
+        player = (0., 50., 0.)
+        for i in range(1, 60):                         # acquire and chase
+            bot.update(.05 * i, 2, player)
+        self.assertGreater(bot.position[1], 5.)
+        now = 3.
+        for i in range(1, 400):                        # the player is gone
+            now += .05
+            bot.update(now)
+        self.assertLess(math.dist(bot.position, (0., 0., 0.)), .5)
+        self.assertEqual(bot.update(now + .05).speed, 0.)
+
+    def test_its_reload_starts_with_its_last_round(self):
+        bot = self.bot()
+        bot.ammo = 2
+        player = (0., 10., 0.)
+        rounds = []
+        for i in range(1, 60):
+            rounds.extend(bot.update(.05 * i, 2, player).shots)
+            if bot.reload_started is not None:
+                break
+        self.assertEqual(len(rounds), 2)
+        self.assertAlmostEqual(bot.reload_started, rounds[-1].time)

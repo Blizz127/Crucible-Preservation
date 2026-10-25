@@ -172,6 +172,19 @@ GameOver, never by leaving mid-match: leaving arms the rejoin trap
    DataStoreMatch ReplicatedHiveData, ReplicatedHarvesterData and
    TeamScores records. Until they are, score server-side only. GameOver
    with the rank already works (docs/30) and ends the match at 3 hearts.
+   - **Capture-blocked.** An objective entity's shared component set
+     cannot be derived from its slice offline. Tested against the known
+     answer: docs/24's route (slice UUIDs, then the exe's `{UUID}\0\0Name`
+     pairs, then the network schema) recovers 9 of the Marine's 33 shared
+     types. Most of its UUIDs have no name pair, and four labels contradict
+     the live capture. Like the Marine's, these entities need a live
+     capture.
+   - **Untested routes.** A name-free route through the exe (UUID literal,
+     the function using it, its vtable's type getter) could replace the
+     capture. Separately, the 71 network components attributed from the
+     live Marine capture give an exact UUID-to-type table for any slice
+     that reuses those UUIDs; its coverage of the objective slices is not
+     measured.
 6. **Guide presentation.** CrucibleVoiceScript (144) PlayDialogueLine and
    TutorialObjectives (140) RPCs (docs/26) carry the guide's voice and
    prompts.
@@ -218,6 +231,76 @@ Open questions:
 - How the server's blue-noise sampler picks a point within the ring (the
   client only has a stub that aborts).
 - Whether the mode's own code adds or limits bots beyond the scripts.
+
+## The hostile Saboteur guide bot (switch)
+
+`CRUCIBLE_SOLO_GUIDE_SABOTEUR=1` gives a HOTH_GUIDE profile (`hoth-guide`,
+`hoth-guide-april2018`) retail's one hostile bot in place of the three
+Marine placeholders: a Saboteur guide bot on team 2, at the profile's
+first bot position. Retail spawns it at the first hive's heart when that
+hive dies; with no hives modelled, the placeholder position stands in.
+Other profiles ignore the switch, and B0 lists `guide-saboteur` only where
+it took effect. One slot list (`shard_stub.solo_bot_slots`) feeds the
+roster, the spawn, the arena, the squad and the gunnery, so they agree.
+
+- **Spawned from the player slice.** Like the Marines, it uses
+  `slices/player/saboteur/saboteur_character` (hash 2391706089), not
+  `saboteur_character_dummy.dynamicslice`. `hero_loadout`'s static check
+  gives every hero's player slice the same shared roots. Retail spawned the
+  dummy; any visible difference is unknown. A Saboteur at simulation role
+  has never been seen live, and neither has a two-entry roster (the
+  player and one bot, against the mode's roster of four).
+- **Its AI** (`hunter_ai.SABOTEUR`, from `saboteur_guide.ai`):
+  - aggro 30/60 m in a 180° cone, deaggro 60 m, forced aggro 10 s;
+  - attacks of 2 s with 1.2 s between them;
+  - a chase at 6.5 m/s, its config's own forward speed, so it needs no cap;
+  - strafing as the Marine's.
+  - CanPatrol is false: it stands at its spawn until it has a target, and
+    walks back there after one.
+- **Its primary.** `saboteur_primary_on_fire.cdl` fires one round per press,
+  only while its FireRate resource is full, and spends 1. FireRate refills
+  at 2.841/s (`saboteur_resources.resourcesdata`), so one round per
+  0.352 s, slower than the ability's 0.256 s cooldown. The attack selector
+  pulses PrimaryFire, assumed at least that often.
+  - Rounds: `combat.SABOTEUR_PRIMARY` (40 down to 20 damage, 780 m/s).
+  - Spread 0.5–2.0°, with its own bloom and 0.896 s recovery
+    (`saboteur_primary.accuracy`).
+  - Magazine 8. `saboteur_reload.cdl` reloads by itself at 0: it refills
+    at 1.44 s and frees the trigger at 2.208 s. That the reload starts with
+    the last round, and that using_reload clears at 2.208 s, are inferred.
+- **Its flight**, with `CRUCIBLE_SOLO_BOT_FLEE=1`:
+  `saboteur_guide_on_hit.cdl`'s 3.0 s request against IgnoreTargetsTime
+  4.0 s. The flight lasts 4.0 s, at 6.5 m/s.
+- **Not modelled:**
+  - the grapple it holds while fleeing;
+  - the 10% jump;
+  - the aim wobble (20° pitch, 11° yaw, −8°/s, plus 5° per damage point
+    dealt);
+  - its ADS pulses, melee and BackUp (3.5 m/s);
+  - the mine and jammer, which its selector leaves unconnected anyway;
+  - the selector's other fire windows. On a draw above 0.7 with its Jammer
+    resource full, which is always (nothing spends it), it jumps, waits
+    0.5 s and pulses fire for 0.8 s: about 3 rounds where the model fires
+    6. Within 3 m it melees, then fires one held round 1.5 s in. So the
+    model overstates its rounds by roughly a sixth.
+
+  Its hit probability keeps the Marines' declared 0.25 scale, which stands
+  in for that undecoded aim. So its lethality is not anchored to retail.
+  Two presentation details wait on a live look: the shard holds
+  `using_primary1` for the whole attack, where its own script sets it per
+  press for about 96 ms; and its flinch reuses the Marine's 0.2 s
+  `flinchDelay`, which is unread for the Saboteur.
+- **How a match ends.** HOTH_GUIDE ends on score, which is not modelled, so
+  only `CRUCIBLE_SOLO_MATCH_MAX_SECONDS` ends it. Killing the Saboteur does
+  not, and neither does the player's death: a dead player lies dead, with
+  no respawn, until the timer's GameOver (rank 2). The same holds for the
+  three Marine placeholders in hoth-guide. The death event of a Saboteur
+  kill carries its own tag, "Ability" (28) and `saboteur_primary` (86).
+- **Offline check.** With every run drop-in on and a 60 s timer, the
+  harness's win, lose and deaggro scripts reach GameOver on the timer with
+  no simulation errors. In "lose" it fired 64 rounds and landed 17, 680
+  damage. Its teleport and flank scripts address the second and third bot,
+  so they cannot run against one bot.
 
 ## Per-map navigation (stage 2)
 

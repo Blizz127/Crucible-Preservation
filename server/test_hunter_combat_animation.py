@@ -137,9 +137,14 @@ class HunterCombatAnimationTests(unittest.TestCase):
                  'HUNTER AI switches: strafe accel-ai; sight terrain'),
                 ({'CRUCIBLE_SOLO_BOT_ACCEL': 'config', 'CRUCIBLE_SOLO_BOT_CHASE_CAP': '1'},
                  'HUNTER AI switches: accel-config chase-cap; sight off'),
-                ({'CRUCIBLE_SOLO_BOT_FLEE': '1'}, 'HUNTER AI switches: flee; sight off')):
+                ({'CRUCIBLE_SOLO_BOT_FLEE': '1'}, 'HUNTER AI switches: flee; sight off'),
+                # Ignored outside HOTH_GUIDE, so not confirmed there.
+                ({'CRUCIBLE_SOLO_GUIDE_SABOTEUR': '1'}, None),
+                ({'CRUCIBLE_SOLO_GUIDE_SABOTEUR': '1', 'CRUCIBLE_SOLO_MODE': 'hoth-guide-april2018'},
+                 'HUNTER AI switches: guide-saboteur; sight off')):
             squad = hunter_ai.Squad([hunter_ai.Bot(e, route, hunter_ai.MARINE) for e in BOTS])
-            env = dict(flags, CRUCIBLE_SOLO_AI='1', CRUCIBLE_SOLO_MODE='alpha-hunters')
+            env = dict(dict(CRUCIBLE_SOLO_MODE='alpha-hunters'), **flags)
+            env['CRUCIBLE_SOLO_AI'] = '1'
             with self.subTest(flags=flags), patch.dict('os.environ', env, clear=True), \
                     patch.object(hunter_patrol, 'squad', return_value=squad), \
                     patch.object(shard, 'level_sight', return_value=None), \
