@@ -27,6 +27,18 @@ class GameClockTests(unittest.TestCase):
         self.assertEqual(int.from_bytes(raw[11:15], 'big'), 12000)
         self.assertNotIn('last_processed_game_time_ms', state)
 
+    def test_tick_interval_defaults_to_50_ms_and_takes_the_retail_32(self):
+        for value, seconds in ((None, .05), ('32', .032), ('5', .016), ('500', .1),
+                               ('junk', .05)):
+            env = {} if value is None else {'CRUCIBLE_SHARD_TICK_MS': value}
+            with self.subTest(value=value), patch.dict('os.environ', env, clear=True):
+                self.assertEqual(shard.clock_interval(), seconds)
+        env = {'CRUCIBLE_SHARD_BOOTSTRAP': 'practice-character', 'CRUCIBLE_SHARD_TICK_MS': '32'}
+        with patch.dict('os.environ', env, clear=True):
+            state = self.state()
+            self.assertIsNone(shard.game_clock_reply(state, now=100.031))
+            self.assertIsNotNone(shard.game_clock_reply(state, now=100.0325))
+
     def test_not_enabled_before_character_links_or_in_prior_modes(self):
         for mode in ('', 'practice-roster', 'practice-solo'):
             with patch.dict('os.environ', {'CRUCIBLE_SHARD_BOOTSTRAP': mode}):

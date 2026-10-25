@@ -1062,6 +1062,12 @@ def start_solo_simulation(state):
             if bot_reload_enabled():
                 for bot in state['squad'].bots:
                     bot.ammo = bot.tuning.magazine or None
+            if os.environ.get('CRUCIBLE_SOLO_BOT_STRAFE') == '1':
+                for bot in state['squad'].bots:
+                    bot.strafe = True
+            if os.environ.get('CRUCIBLE_SOLO_BOT_TURN') == '1':
+                for bot in state['squad'].bots:
+                    bot.move_turn = True
             import dit_motion_policy
             pause_range, move_range = dit_motion_policy.approved_patrol_motion_ranges(
                 os.environ.get('CRUCIBLE_DIT_TRANSPORT_ROOT'))
@@ -1441,6 +1447,23 @@ def observe_practice_damage(message, state):
         (target, health[target], projectile))
 
 
+def clock_interval():
+    """Seconds between clock packets.
+
+    The default 50 ms is the accepted stall fix (docs/16). Retail's
+    net_ServerRateMs ("Server tick rate to use for network relevent
+    simulations", descriptor 0x74455c0) is a uint16 set to 32 at 0x4c9c80,
+    and the client reads it in its input timing (0xc4b25f), projectile
+    system (0xbbc285) and ClientNetworkAgent getter (0xe22ff0).
+    CRUCIBLE_SHARD_TICK_MS=32 runs the retail cadence (docs/36).
+    """
+    try:
+        milliseconds = int(os.environ.get('CRUCIBLE_SHARD_TICK_MS') or 50)
+    except ValueError:
+        milliseconds = 50
+    return min(max(milliseconds, 16), 100) / 1000.
+
+
 def game_clock_reply(state, *, now=None):
     """Advance ServerGameTimePoint at up to 20 Hz after solo startup.
 
@@ -1452,7 +1475,7 @@ def game_clock_reply(state, *, now=None):
             or not state.get('character_links_sent') or 'clock_epoch' not in state):
         return None
     now = time.monotonic() if now is None else now
-    if now - state['clock_last_sent'] < 0.05:
+    if now - state['clock_last_sent'] < clock_interval():
         return None
     elapsed_ms = int((now - state['clock_epoch']) * 1000)
     game_time_ms = 2000 + elapsed_ms
@@ -2207,7 +2230,10 @@ def main():
         log("reply mode: %s" % reply)
 
     if os.environ.get('CRUCIBLE_SHARD_BOOTSTRAP') == 'practice-character':
-        sock.settimeout(0.05)
+        # A custom tick also wakes twice per tick when no client packet
+        # arrives; the accepted default keeps its original 50 ms wake.
+        sock.settimeout(0.05 if not os.environ.get('CRUCIBLE_SHARD_TICK_MS')
+                        else clock_interval() / 2)
 
     total = 0
     # Per-connection state, keyed on the client's source port. A shard

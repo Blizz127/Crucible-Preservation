@@ -415,6 +415,105 @@ class AttackTests(unittest.TestCase):
         bot.note_damage(.05, 2)
         self.assertIsNone(bot.update(.1, 2, (0., -22., 0.)).target)
 
+    def strafer(self, target_distance, mesh=None):
+        bot = hunter_ai.Bot(3, straight(), hunter_ai.MARINE, mesh=mesh, strafe=True)
+        # Settle facing the target before measuring.
+        bot.update(.05, 2, (0., target_distance, 0.))
+        return bot
+
+    def test_a_moving_marine_steers_at_the_movement_turn_speed(self):
+        marine = hunter_ai.MARINE
+        self.assertAlmostEqual(math.degrees(marine.move_turn_rate), 1440.)
+        # Walking a 90-degree corner: the body follows within two ticks, but
+        # only with the switch; without it the 90 deg/s turn lags behind.
+        corner = ((0., 0., 0.), (0., 1., 0.), (5., 1., 0.))
+        for move_turn, reaches in ((True, True), (False, False)):
+            bot = hunter_ai.Bot(3, corner, marine, move_turn=move_turn)
+            steps = [bot.update(.05 * i) for i in range(1, 8)]
+            turned = [s for s in steps if abs(s.yaw - math.radians(90.)) < 1e-9]
+            self.assertEqual(bool(turned), reaches)
+        # Attacking a target 4 m behind it (inside AggroRadiusNear), it stands
+        # and turns in place at 90 deg/s.
+        standing = hunter_ai.Bot(3, straight(), marine, move_turn=True)
+        standing.update(.05, 2, (0., -4., 0.))
+        step = standing.update(.55, 2, (0., -4., 0.))
+        self.assertEqual((step.state, step.speed), (hunter_ai.ATTACK, 0.))
+        self.assertAlmostEqual(abs(step.yaw), math.radians(45.))
+
+    def test_strafe_influence_follows_the_authored_radii(self):
+        bot = hunter_ai.Bot(3, straight(), hunter_ai.MARINE)
+        for distance, influence in ((.5, 0.), (1., 0.), (1.5, .5), (2., 1.), (10., 1.),
+                                    (20., 1.), (25., .5), (30., 0.), (35., 0.)):
+            with self.subTest(distance=distance):
+                self.assertAlmostEqual(bot.strafe_influence(distance), influence)
+
+    def test_a_strafing_marine_moves_sideways_and_keeps_facing_the_target(self):
+        bot = self.strafer(15.)
+        start = bot.position
+        steps = [bot.update(.05 + .05 * i, 2, (0., 15., 0.)) for i in range(1, 21)]
+        self.assertEqual({s.state for s in steps}, {hunter_ai.ATTACK})
+        # Full influence at 15 m: 4.5 m/s sideways, no closing. The first
+        # strafe direction holds for U(1, 2) s, so one second is one leg,
+        # tangent to the circle round the target.
+        self.assertAlmostEqual(sum(s.speed * .05 for s in steps), 4.5, places=6)
+        self.assertGreater(abs(bot.position[0] - start[0]), 4.4)
+        self.assertAlmostEqual(math.dist(bot.position[:2], (0., 15.)), 15., delta=.05)
+        self.assertTrue(all(s.speed > 0 for s in steps))
+        aim = (0. - bot.position[0], 15. - bot.position[1])
+        self.assertLess(abs(steps[-1].yaw - hunter_ai.yaw_of(aim + (0.,))), math.radians(5.))
+
+    def test_between_20_and_30_metres_it_closes_in_while_strafing(self):
+        bot = self.strafer(25.)
+        before = math.dist(bot.position[:2], (0., 25.))
+        for i in range(1, 21):
+            bot.update(.05 + .05 * i, 2, (0., 25., 0.))
+        after = math.dist(bot.position[:2], (0., 25.))
+        self.assertLess(after, before - 1.)
+        self.assertGreater(after, 20.)
+
+    def test_a_sidestep_off_the_mesh_reverses_the_strafe(self):
+        class HalfPlane:
+            def locate(self, point, vertical_tolerance=2.0):
+                if abs(point[0]) > .3:
+                    return None
+                return 0, point
+            def path(self, start, end, step=1.):
+                return [start, end]
+            def wander_point(self, *args, **kwargs):
+                return None
+        bot = self.strafer(15., mesh=HalfPlane())
+        for i in range(1, 41):
+            bot.update(.05 + .05 * i, 2, (0., 15., 0.))
+            self.assertLessEqual(abs(bot.position[0]), .3)
+
+    def test_a_sidestep_never_climbs_or_drops_a_ledge(self):
+        class Ledge:
+            """Ground at z=0 for x <= .3, a platform at z=1.5 beyond it."""
+            def locate(self, point, vertical_tolerance=2.0):
+                surface, key = (0., 'ground') if point[0] <= .3 else (1.5, 'platform')
+                if abs(point[2] - surface) > vertical_tolerance:
+                    return None
+                return key, (point[0], point[1], surface)
+            def neighbours(self, key):
+                return ()
+            def path(self, start, end, step=1.):
+                return [start, end]
+            def wander_point(self, *args, **kwargs):
+                return None
+        bot = self.strafer(15., mesh=Ledge())
+        for i in range(1, 41):
+            bot.update(.05 + .05 * i, 2, (0., 15., 0.))
+            self.assertEqual(bot.position[2], 0.)
+            self.assertLessEqual(bot.position[0], .3)
+
+    def test_without_the_switch_an_attacking_marine_stands(self):
+        bot = hunter_ai.Bot(3, straight(), hunter_ai.MARINE)
+        bot.update(.05, 2, (0., 15., 0.))
+        start = bot.position
+        steps = [bot.update(.05 + .05 * i, 2, (0., 15., 0.)) for i in range(1, 21)]
+        self.assertEqual(bot.position, start)
+        self.assertTrue(all(s.speed == 0. for s in steps))
+
     def test_without_a_magazine_the_rifle_never_reloads(self):
         bot = hunter_ai.Bot(3, straight(), tuning(
             attack_duration=2., round_interval=.096, attack_delay=.25, magazine=24,

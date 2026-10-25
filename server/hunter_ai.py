@@ -19,6 +19,9 @@ ATTACK = 'attack'
 # (docs/21). Stabilises the PURSUE/ATTACK boundary observed flapping live.
 ATTACK_ENTRY_MARGIN = 1.0
 RETURN = 'return'
+# Not authored: the largest height change one strafe step may take. A 0.225 m
+# step (4.5 m/s at 20 Hz) on a 45-degree slope rises 0.225 m.
+STRAFE_STEP_HEIGHT = 0.5
 
 
 @dataclass(frozen=True)
@@ -48,7 +51,13 @@ class Tuning:
     repath_interval: float = 0.5
     repath_distance: float = 1.0
     turn_rate: float = math.tau            # radians/second
+    move_turn_rate: float = 0.             # radians/second while moving; 0: turn_rate
     forced_aggro_on_damage: float = 0.     # seconds; 0: damage changes nothing
+    strafe_speed: float = 0.               # metres/second; 0: no strafing
+    strafe_near: tuple = (0., 0.)          # influence 0 at [0], 1 at [1]
+    strafe_far: tuple = (0., 0.)           # influence 1 at [0], 0 at [1]
+    strafe_duration: tuple = (1., 1.)      # seconds before a new direction
+    approach_stop: float = 0.              # metres short of the target
     magazine: int = 0                      # rounds; 0: no magazine authored
     reload_fill: float = 0.                # seconds from reload start to refill
     reload_animation: float = 0.           # ... to the end of using_reload
@@ -60,7 +69,14 @@ class Tuning:
                    and 0 <= self.patrol_near <= self.patrol_far
                    and 0 <= self.reload_fill <= self.reload_duration
                    and 0 <= self.reload_animation <= self.reload_duration
-                   and self.magazine >= 0 and self.forced_aggro_on_damage >= 0)
+                   and self.magazine >= 0 and self.forced_aggro_on_damage >= 0
+                   and self.move_turn_rate >= 0
+                   and self.strafe_speed >= 0 and self.approach_stop >= 0
+                   and 0 <= self.strafe_near[0] <= self.strafe_near[1]
+                   and self.strafe_far[0] <= self.strafe_far[1]
+                   and (not self.strafe_speed
+                        or self.strafe_near[1] <= self.strafe_far[0])
+                   and 0 < self.strafe_duration[0] <= self.strafe_duration[1])
         positive = min(self.patrol_speed, self.pursue_speed, self.attack_duration,
                        self.round_interval, self.repath_interval, self.turn_rate,
                        self.aggro_angle, self.attack_angle, self.range_vertical_max,
@@ -90,6 +106,15 @@ MARINE = Tuning(
     # consider it as a possible target for this many seconds, even if it is
     # outside our aggro range."
     forced_aggro_on_damage=6.0,
+    # MovementPararams/StrafeParams (0xaba..0xbcc) and TargetApproachParams,
+    # with the retail editor tooltips (bot-authored-params.md): strafing has
+    # 0% influence at 1 m (DistanceNearMin), 100% from 2 m (DistanceNearMax)
+    # to 20 m (DistanceFarMin) and 0% again at 30 m (DistanceFarMax); speed
+    # 4.5 m/s; "strafe for at least this long before changing direction"
+    # U(1, 2) s. The approach goal radius is StopDesiredDistance 1.8 m.
+    # Attacks[0].TranslationDisallowedPeriod 0/0: firing never locks movement.
+    strafe_speed=4.5, strafe_near=(1.0, 2.0), strafe_far=(20.0, 30.0),
+    strafe_duration=(1.0, 2.0), approach_stop=1.8,
     attack_delay=0.25,                     # AttackDelayForNewTargets, 0x12a6
     range_min=0.0,                         # Attacks[0].RangeMin, 0x1339
     range_max=30.0,                        # Attacks[0].RangeMax, 0x1353
@@ -113,9 +138,11 @@ MARINE = Tuning(
     patrol_far=15.0,                       # PatrolParams/MaxDistance, 0x2dc
     patrol_anchor_limit=50.0,              # PatrolParams/MaxDistanceFromCurrent, 0x310
     patrol_attempts=5,                     # MaxAttemptsForFindingPatrolDestination, 0x2ab
-    # PassiveTurnParams/TurnInPlaceSpeed (0xc93). The movement config's own
-    # Max Turn Speed is 1440 deg/s; this is the AI's turn, which is slower.
+    # PassiveTurnParams/TurnInPlaceSpeed (0xc93) turns a standing bot. A
+    # moving one steers through its spoofed player inputs, so its body turns
+    # at marine_default.movementconfig's Max Turn Speed (0x143), 1440 deg/s.
     turn_rate=math.radians(90.),
+    move_turn_rate=math.radians(1440.),
     # assets/player/marine/marine_resources.resourcesdata: Ammunition 0..24
     # (m_max 0xf9, m_Value 0x113); marine_primary.ability costs 1 per shot,
     # taken by the rifle loop 96 ms after each CreateProjectile.
@@ -216,6 +243,10 @@ class Bot:
     ammo: int = None
     reload_started: float = None
     forced_until: float = None
+    strafe: bool = False          # opt-in: move while attacking (StrafeParams)
+    move_turn: bool = False       # opt-in: steer at tuning.move_turn_rate when moving
+    _strafe_sign: float = 0.
+    _strafe_until: float = None
     _round_anchor: float = None
     _anchor_rounds: int = 0
     _clock: float = None
@@ -418,6 +449,64 @@ class Bot:
             if due < ready:
                 self._round_anchor, self._anchor_rounds = ready, 0
 
+    def strafe_influence(self, distance):
+        """StrafeParams influence on movement, 0..1, by distance to the target."""
+        (near_in, near_out), (far_in, far_out) = (self.tuning.strafe_near,
+                                                  self.tuning.strafe_far)
+        if distance <= near_in or distance >= far_out:
+            return 0.
+        if distance < near_out:
+            return (distance - near_in) / (near_out - near_in)
+        if distance <= far_in:
+            return 1.
+        return (far_out - distance) / (far_out - far_in)
+
+    def _strafe_step(self, now, delta, aim, distance):
+        """One tick of attack movement: sideways by influence, inward by the rest.
+
+        The inward share uses patrol_speed, the Marine's non-sprint forward
+        cap, rather than the chase speed, and stops at the approach goal
+        radius. A sidestep that would leave the navigation mesh reverses
+        the strafe direction (StopWhenBlocked is False). Returns metres moved.
+        """
+        tuning = self.tuning
+        if self.rng is None:
+            self.rng = random.Random(self.entity)
+        if self._strafe_until is None or now >= self._strafe_until:
+            self._strafe_sign = self.rng.choice((-1., 1.))
+            self._strafe_until = now + self.rng.uniform(*tuning.strafe_duration)
+        plan = math.hypot(aim[0], aim[1])
+        if plan < 1e-9:
+            return 0.
+        toward = (aim[0] / plan, aim[1] / plan)
+        side = (toward[1], -toward[0])
+        influence = self.strafe_influence(distance)
+        lateral = tuning.strafe_speed * influence * delta
+        inward = min(tuning.patrol_speed * (1. - influence) * delta,
+                     max(0., plan - tuning.approach_stop))
+        here = (None if self.mesh is None
+                else self.mesh.locate(self.position, vertical_tolerance=2.0))
+        for sign in (self._strafe_sign, -self._strafe_sign):
+            candidate = (self.position[0] + side[0] * sign * lateral + toward[0] * inward,
+                         self.position[1] + side[1] * sign * lateral + toward[1] * inward,
+                         self.position[2])
+            if self.mesh is not None:
+                # A sidestep stays on the walkable surface the bot stands on:
+                # its own triangle or a linked one, within half a metre of its
+                # height, so it can neither climb nor drop a ledge.
+                found = self.mesh.locate(candidate, vertical_tolerance=STRAFE_STEP_HEIGHT)
+                if found is None:
+                    continue
+                if (here is not None and found[0] != here[0]
+                        and found[0] not in {key for key, _ in self.mesh.neighbours(here[0])}):
+                    continue
+                candidate = found[1]
+            self._strafe_sign = sign
+            moved = math.dist(self.position, candidate)
+            self.position = candidate
+            return moved
+        return 0.
+
     def reloading(self, now):
         """True inside the reload's using_reload window."""
         return (self.reload_started is not None and self.reload_started <= now
@@ -516,10 +605,18 @@ class Bot:
                 elif self.state == RETURN:
                     self.state = PATROL
                     self._patrol_plan()
+        elif (self.strafe and engaged and self.state == ATTACK and delta > 0
+              and self.tuning.strafe_speed > 0
+              and distance <= self.tuning.range_max):
+            # Facing stays on the target (heading = aim) while the feet move.
+            moved = self._strafe_step(now, delta, aim, distance)
+            self._planned_at = self._planned_for = None
 
         if heading is not None and any(heading[:2]):
-            self.yaw = turn_towards(self.yaw, yaw_of(heading),
-                                    self.tuning.turn_rate * max(delta, 0.))
+            rate = (self.tuning.move_turn_rate
+                    if self.move_turn and moved > 0 and self.tuning.move_turn_rate
+                    else self.tuning.turn_rate)
+            self.yaw = turn_towards(self.yaw, yaw_of(heading), rate * max(delta, 0.))
 
         shots = []
         if engaged:
