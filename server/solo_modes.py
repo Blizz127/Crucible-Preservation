@@ -250,7 +250,9 @@ HOTH_02_DROP_CLUSTER = (
     (1331.4970703125, 935.1290283203125, 20.0),         # 592 Player_DropPoint_09d
 )
 # The twelve SpawnNode_Guide_EnemyBot nodes, entries 33..44 (docs/23), two
-# beside each hive: the HOTH_GUIDE bot spawns. Exact float32 translations.
+# near each hive. Authored for HOTH_GUIDE, but no running script uses them:
+# the critical path spawns its bots on rings around the hive and its heart
+# (docs/37, stage 4 findings). Exact float32 translations.
 HOTH_02_GUIDE_BOT_SPAWNS = (
     (33, (754.2969970703125, 1051.093505859375, 56.45686721801758)),
     (34, (1200.2071533203125, 1203.4083251953125, 25.895103454589844)),
@@ -265,10 +267,11 @@ HOTH_02_GUIDE_BOT_SPAWNS = (
     (43, (817.1101684570312, 1051.6953125, 50.3217658996582)),
     (44, (1300.6107177734375, 1034.3909912109375, 30.026182174682617)),
 )
-# Placeholder until the critical path's SpawnGuideBot calls are read (docs/37
-# stage 4): the three guide nodes nearest the player's drop by navigation
-# path (147, 180 and 228 m). The 09b-09d drop pods are off the navigation
-# mesh, so bots could not patrol from them.
+# A presence placeholder, not the retail spawns: the three guide nodes
+# nearest the player's drop by navigation path (147, 180 and 228 m). Retail
+# spawns no bot at the start; its guide bots come minutes in, around the
+# first hive (docs/37, stage 4 findings). The 09b-09d drop pods are off the
+# navigation mesh, so bots could not patrol from them.
 HOTH_02_BOT_NODES = (44, 36, 39)
 HOTH_02 = MapProfile(
     'HotH_02', level_hash('HotH_02'), 'computed', 21510,

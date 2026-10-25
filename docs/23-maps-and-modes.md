@@ -383,7 +383,9 @@ The twelve `SpawnNode_Guide_EnemyBot` nodes, entries 33..44:
 (1259.547, 1062.133, 30.893), (997.573, 1269.808, 59.713),
 (1194.125, 1256.834, 27.507), (1223.385, 847.576, 26.346),
 (817.110, 1051.695, 50.322), (1300.611, 1034.391, 30.026).
-These are the HOTH_GUIDE bot spawns. `docs/18` recorded a
+They are authored for HOTH_GUIDE, but no running script uses them; the
+critical path spawns its bots on rings around the hive and its heart
+(docs/37, stage 4 findings). `docs/18` recorded a
 `Guide_EnemyBotSpawns` container at 11940 and the nodes at 33..44; the
 coordinates are new. They are all 100 m or more from the 09a drop cluster,
 so they are match-scale spawns, not presence-test positions. Since 25

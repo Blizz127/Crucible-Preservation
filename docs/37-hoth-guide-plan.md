@@ -29,9 +29,10 @@ each step can be played on its own.
 - **Bots:** `slices/planetaryevents/guide_hoth.dynamicslice` BotData maps
   DuelistDummy, HeroDummy, InventorDummy and SaboteurDummy to
   `<hero>_character_dummy.dynamicslice`. Each names its
-  `<hero>_guide(_dummy).ai`. `guide_criticalpath.cdl` holds the eight
-  SpawnGuideBot nodes. HotH_02 authors twelve `SpawnNode_Guide_EnemyBot`
-  nodes (entries 33–44, docs/23).
+  `<hero>_guide(_dummy).ai`. `guide_criticalpath.cdl` holds four live
+  SpawnGuideBot nodes (stage 4 findings below). HotH_02 authors twelve
+  `SpawnNode_Guide_EnemyBot` nodes (entries 33–44, docs/23), which no
+  running script uses.
 - **Creatures:** none. `hoth_guide_no_overlord.aioverlordspawndata` spawns
   no creatures. HotH_02's camps come from planetary events (creatures track).
 
@@ -119,10 +120,16 @@ GameOver, never by leaving mid-match: leaving arms the rejoin trap
    the server-resolved hit model (docs/35) and its accuracy asset. Its
    attack selector is `cdl/player/<hero>/guide/<hero>_guide_attack_selector.cdl`
    (the bot-weapon track's decoder handles the Marine's).
-4. **The roster and teams.** Start with the critical path's eight
-   SpawnGuideBot calls: which BotID, when and on which team. Then add
-   respawn per `guide_respawnparams`. RespawnComponent 120's records are
-   named (death-respawn track) but their encoding is not traced.
+4. **The roster and teams.** The critical path's four SpawnGuideBot calls
+   are read (stage 4 findings below). Each needs:
+   - its trigger, the player's first approach to a hive;
+   - its ring placement;
+   - teams: three allies, one hostile Saboteur;
+   - the allies' despawn when the hive dies.
+
+   `guide_respawnparams` concerns the player only: retail bots do not
+   respawn. RespawnComponent 120's records are named (death-respawn track),
+   but their encoding is not traced.
 5. **Objectives and score.** Sequential hives, hearts and harvesters are
    spawned objective entities. Their replication is NOT traced: the
    DataStoreMatch ReplicatedHiveData, ReplicatedHarvesterData and
@@ -134,6 +141,46 @@ GameOver, never by leaving mid-match: leaving arms the rejoin trap
 
 Stages 1–2 are small and unblock everything else. Stages 3–5 are each
 larger than the whole Alpha Hunters bot work so far.
+
+## Stage 4 findings: the critical path's bot spawns
+
+Read on 25 October from `cdl/gamemodes/guide_hoth/guide_criticalpath.cdl`.
+The full evidence, commands and scripts are in
+`snapshots/guide-spawns-20261025/`. The earlier count of eight was string
+hits: each node carries its name twice. Four more spawners in the file
+(`LocalDistributedSpawning`) have no incoming connection, so they never
+run.
+
+| Order | Node | Bot | Placed around | Ring, m (radius / inner / margin) | Team | When |
+|---|---|---|---|---|---|---|
+| 1 | `[252]` | Duelist | the hive (`User_HiveTransform`) | 25 / 20 / 2 | the player's | the player comes within 40 m of the first hive or its telegraph, +2.5 s |
+| 2 | `[580]` | Hero | the hive | 25 / 20 / 2 | the player's | +0.3 s |
+| 3 | `[7]` | Inventor | the hive | 25 / 20 / 2 | the player's | +0.3 s |
+| 4 | `[133]` | Saboteur | the first hive heart | 25 / 5 / 1 | none set; "the enemy bot" | the hive dies, the allies are despawned, +0.25 s |
+
+Read directly from the script:
+- **The allies.** They are added to the player's team, and are blacklisted
+  from targeting the player and each other. Their AI targets players and
+  hives.
+- **The Saboteur.** It targets players only. Nothing respawns a bot, and
+  the script ends after the first heart.
+- **Timing.** The first spawn comes minutes in. It needs detect mode, a
+  creature camp, a harvester capture and level 2. Only then does
+  `SpawnNodes_AIOverlord` (`[64]`) raise the hive's 45 s telegraph. The
+  GoToHive poll accepts the telegraph as well as the hive within 40 m (any
+  distance if the hive was just damaged). So the allies can arrive during
+  the telegraph: at the earliest 7.5 s after the overlord's call.
+- **The guide nodes.** No running script uses the twelve
+  `SpawnNode_Guide_EnemyBot` nodes. They lie 24–36 m from their hives, which
+  roughly matches the allies' ring.
+
+Open questions:
+- Which `Spawner_Hive` the overlord picks: every bot position follows from
+  it.
+- The Saboteur's team number.
+- How the server's blue-noise sampler picks a point within the ring (the
+  client only has a stub that aborts).
+- Whether the mode's own code adds or limits bots beyond the scripts.
 
 ## Per-map navigation (stage 2)
 
@@ -175,7 +222,11 @@ What the shipped files say (read on the devbox reference copy):
   (`tools/build_static_geometry.py HotH_02`), which has not been built.
 - **Placeholder spawns.** The HotH_02 hunters start on guide nodes 44, 36
   and 39. Those are the three nearest the player's drop by navigation path
-  (147, 180 and 228 m; `HOTH_02_BOT_NODES`). Stage 4 replaces this with
-  the critical path's SpawnGuideBot choices. Their circuit,
+  (147, 180 and 228 m; `HOTH_02_BOT_NODES`). That gives presence, not the
+  retail spawns, which differ in both time and place. Retail spawns three
+  allies on a ring around the first hive once the player comes within 40 m
+  of it or its telegraph, and
+  a hostile Saboteur near its heart when it dies (stage 4 findings). Their
+  circuit,
   44 → 36 → 39, is 784 m. Only 10 of its 813 one-metre samples lie on
   re-sculpted terrain, all by 0.6 m or less.
