@@ -3,6 +3,20 @@ import random
 from dataclasses import dataclass
 
 
+@dataclass(frozen=True)
+class Gun:
+
+    weapon: object
+    spread_min: float
+    spread_max: float
+    bloom_per_shot: tuple
+    bloom_recovery: float
+
+    @property
+    def reach(self):
+        return self.weapon.speed * self.weapon.lifetime_s
+
+
 def bloom_increment(bloom, points):
     for (x0, y0), (x1, y1) in zip(points, points[1:]):
         if bloom <= x1:
@@ -25,7 +39,7 @@ class Landing:
 class HunterGunnery:
 
     def __init__(self, *, default_gun, damage_for, accuracy_scale, seed=0,
-                 target_radius):
+                 target_radius, guns=None):
         if not 0.0 <= accuracy_scale <= 1.0:
             raise ValueError('accuracy scale must be within 0..1')
         self.rng = random.Random(seed)
@@ -33,12 +47,13 @@ class HunterGunnery:
         self.target_radius = target_radius
         self.default_gun = default_gun
         self.damage_for = damage_for
+        self.guns = dict(guns or {})
         self.bloom = {}
         self.last_shot = {}
 
     def resolve(self, shot):
 
-        gun = self.default_gun
+        gun = self.guns.get(shot.shooter, self.default_gun)
         bloom = self.bloom.get(shot.shooter, 0.0)
         last = self.last_shot.get(shot.shooter)
         if last is not None and shot.time - last >= gun.bloom_recovery:
