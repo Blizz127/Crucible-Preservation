@@ -96,6 +96,77 @@ newest as `state['player_facing']`. Nothing yet uses it on the wire. It is
 what a flinch on the player needs: the yaw is measured in the victim's frame
 (docs/36).
 
+## The rest of the frame, and the held actions (25 October)
+
+The 326-byte payload is `SendClientInput` (Serialize 0xaca2b0): three
+106-byte `InputCommand` frames at 0, 106 and 212, then `StateHash` (u32 BE)
+at +318 and `PreviousInputTime` (u32 BE) at +322. Within a frame:
+- **+0** `GameTimeMs` (u32 BE), **+4** `ClientFrameOffset` (u8), **+5**
+  `ServerFrameMultiplier` (u8, always 2 in the captures).
+- **+6..+13** `01 9e 01 01 00 00 02 0a` in every captured frame: read as an
+  EntityHierarchy wrapper (one child, entity 0x01000002, ten child inputs).
+  That reading is from the data, not a decoded serializer.
+- **From +14,** one block per component, sorted by type, each a type byte
+  then its data. The types are:
+  - 0x06 Ability
+  - 0x0a Alliance
+  - 0x19 Script
+  - 0x3d DesignerEvent
+  - 0x52 Input
+  - 0x54 Interactor
+  - 0x6e PlayerMovement, whose 12-byte transform is at +80
+  - 0x78 Respawn
+  - 0x87 TargetPoint
+  - 0x9e EntityHierarchy
+- **The Input block.** Its 0x52 byte is at +57 in frames 0 and 1 and at +56
+  in frame 2, with the Interactor's 0x54 exactly 20 bytes after it. It
+  holds:
+  - `momentaryBits`, 3 bytes;
+  - the move axes x, y, z, one byte each, 127 neutral (254 is full
+    forward in the walking capture);
+  - `cameraPosition`, 8 bytes;
+  - `cameraForward`, 4 bytes;
+  - `latentAction`, 1 byte.
+
+`momentaryBits` holds the actions held in that frame, bit i in byte i / 8
+from the least significant bit. The bit indices are the literals that
+`ActionsLibrary`'s populate routine (0x36fe370) passes, the same for every
+hero. The serializers are `InputComponent::NetworkInput::Serialize`
+(0x3262580) and `momentaryBits` (0x32734e0).
+
+| Bit | Action | Bit | Action |
+|---|---|---|---|
+| 0 | Jump | 9 | UseMedPack |
+| 1 | Ability1 | 10 | Reload |
+| 2 | Ability2 | 11 | AllianceOffer |
+| 3 | Ability3 | 12 | AllianceAccept |
+| 4 | Ability4 | 13 | AllianceReject |
+| 5 | PrimaryFire | 14 | AllianceBreak |
+| 6 | DetectMode | 15 | AccessibilityMacro |
+| 7 | Interact | 16 | UiHelp |
+| 8 | Melee | 17 | UIMap |
+
+Checked against the 5 October capture (`server/shard_udp-20261005T0245Z.log.gz`,
+not committed; the scripts are in `snapshots/input-actions-20261025/`): 369,439 input messages and 663 accepted hit reports (115/4).
+- **Fire.** 95% of the hit reports follow a frame with PrimaryFire set
+  within a second, against 3% for a random frame, and the median gap is
+  0 ms.
+- **Alliance keys.** The alliance bits toggle in the order of their default
+  digit bindings.
+- **Abilities.** Jump comes with Ability3, and Ability4 (aim) precedes
+  PrimaryFire.
+
+Interact itself is seen only once: one 20-message burst from a standing
+player. So its bit rests on the static table. One live press of the
+Interact key at an interactable would confirm it.
+
+`client_input.parse_input_actions` decodes the three frames'
+`momentaryBits` from the 326-byte shape. `parse_newest_actions` reads frame
+0's from a payload of any length: the Input block is 19 bytes, so its 0x52
+still has the Interactor's 0x54 exactly 20 bytes after it. Latent actions
+(pings, emotes, voice lines) have no bit, and the other shapes (0.8% of
+messages) are otherwise not decoded.
+
 ## Implementation
 
 `server/client_input.py` decodes exactly this shape and nothing else:

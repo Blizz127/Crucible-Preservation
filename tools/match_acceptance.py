@@ -34,6 +34,8 @@ Rows that appear only when their docs/36 switch is used:
   B4 flee       Marines that fled a losing fight
   B5 hive       HOTH_GUIDE's hive: spawned, damaged, destroyed or regenerating
   B6 heart      its heart: spawned, capture started, captured, match over
+  B7 interact   what started the captured heart: the Interact key passes, the
+                15 s proximity fallback fails (the key was not recognised)
 
 The script only reads files and uses only the standard library, so it can
 run on the game host over SSH, reading that host's journal and newest
@@ -100,6 +102,8 @@ HIVE_DESTROYED = re.compile(r'GUIDE HIVE destroyed at ([\d.]+) s')
 HIVE_REGEN = re.compile(r'GUIDE HIVE regenerating \(count (\d+)')
 HEART = re.compile(r'GUIDE HEART (spawned|capture started|captured|match over|'
                    r'capture interrupted)\b(.*)')
+INTERACT = re.compile(r'CLIENT INPUT interact pressed \(count (\d+)\)')
+RISE = re.compile(r'CLIENT INPUT action (\w+) rose \(count (\d+)\)')
 # docs/36: the Marines' networked flinch (component 80), logged at indexes
 # 1, 2, 4, ..., and the switch left without the split it needs.
 FLINCH = re.compile(r'HIT REACTION ([0-9a-f]{8}) index (\d+)')
@@ -136,7 +140,8 @@ def shard_facts(lines):
              'valves': [], 'timer': [], 'sight': None, 'sight_fallback': 0,
              'sight_broken': [], 'blocked': 0, 'rests': {}, 'flinches': {},
              'flinch_split_off': 0, 'flinch_on': 0, 'switches': None, 'flees': {},
-             'hive': None, 'hive_destroyed': None, 'hive_regens': 0, 'heart': {}}
+             'hive': None, 'hive_destroyed': None, 'hive_regens': 0, 'heart': {},
+             'interacts': 0, 'rises': {}}
     for line in lines:
         if VALVE.search(line):
             facts['valves'].append(VALVE.search(line).group(1))
@@ -160,6 +165,11 @@ def shard_facts(lines):
             facts['hive'] = HIVE_SPAWNED.search(line).groups()
         elif HIVE_DESTROYED.search(line):
             facts['hive_destroyed'] = HIVE_DESTROYED.search(line).group(1)
+        elif INTERACT.search(line):
+            facts['interacts'] = max(facts['interacts'], int(INTERACT.search(line).group(1)))
+        elif RISE.search(line):
+            name, count = RISE.search(line).groups()
+            facts['rises'][name] = max(facts['rises'].get(name, 0), int(count))
         elif HEART.search(line) and not OVER.search(line):
             event, rest = HEART.search(line).groups()
             facts['heart'].setdefault(event, rest.strip())
@@ -442,7 +452,20 @@ def score(shard, client):
                                         'capture interrupted') if event in heart)
         rows.append(('B6 heart', 'LOGS-OK' if 'captured' in heart else 'INFO',
                      steps + ('; ended by the heart' if shard['over'] else '')
-                     + '; eyes: a heart where the hive stood; no capture bar (stand on it 10 s)'))
+                     + '; Interact presses seen: >=%d' % shard['interacts']
+                     + '; eyes: a heart where the hive stood; no capture bar (press '
+                     'Interact on it, then stay 10 s)'))
+    if shard['heart'].get('captured') is not None and 'capture started' in shard['heart']:
+        trigger = shard['heart']['capture started']
+        rose = ', '.join('%s >=%d' % item for item in sorted(shard['rises'].items())) or 'none'
+        if '(interact)' in trigger:
+            rows.append(('B7 interact', 'LOGS-OK', 'the capture started on the Interact key'))
+        elif '(proximity fallback)' in trigger:
+            rows.append(('B7 interact', 'FAIL', 'the capture started on the 15 s fallback: '
+                         'Interact presses seen >=%d; action bits that rose: %s'
+                         % (shard['interacts'], rose)))
+        else:
+            rows.append(('B7 interact', 'INFO', 'proximity mode: the key was not used'))
     if shard['flees']:
         rows.append(('B4 flee', 'LOGS-OK', 'flights %s; eyes: a losing Marine finishes its '
                      'burst (up to 2 s), runs about 4 s, then comes back' % ', '.join(

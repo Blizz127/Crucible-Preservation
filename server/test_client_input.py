@@ -119,3 +119,56 @@ class FacingTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class InputActionTests(unittest.TestCase):
+    """momentaryBits in each frame's InputComponent block (docs/25)."""
+
+    def test_the_captures_hold_no_action(self):
+        self.assertEqual(client_input.parse_input_actions(MOVING), (0, 0, 0))
+        self.assertEqual(client_input.parse_input_actions(STILL), (0, 0, 0))
+
+    def test_interact_and_fire_bits(self):
+        data = bytearray(MOVING)
+        data[58] |= 0x80                       # frame 0, byte 0: Interact
+        data[106 + 58] |= 0x20                 # frame 1, byte 0: PrimaryFire
+        data[212 + 57 + 1] |= 0x02             # frame 2 (block at +56), byte 1: UseMedPack
+        actions = client_input.parse_input_actions(bytes(data))
+        self.assertEqual(actions, (client_input.ACTION_BIT['Interact'],
+                                   client_input.ACTION_BIT['PrimaryFire'],
+                                   client_input.ACTION_BIT['UseMedPack']))
+        self.assertEqual(client_input.ACTION_BIT['Interact'], 1 << 7)
+
+    def test_unknown_shapes_and_misplaced_blocks_are_refused(self):
+        with self.assertRaises(ValueError):
+            client_input.parse_input_actions(MOVING[:-1])
+        data = bytearray(MOVING)
+        data[57] = 0                           # frame 0's block marker gone
+        with self.assertRaises(ValueError):
+            client_input.parse_input_actions(bytes(data))
+
+
+class NewestActionTests(unittest.TestCase):
+    """Frame 0's momentaryBits from any payload length (docs/37)."""
+
+    def test_the_326_byte_shape(self):
+        self.assertEqual(client_input.parse_newest_actions(MOVING), 0)
+
+    def test_a_longer_interactor_block_moves_nothing_before_it(self):
+        data = bytearray(MOVING)
+        data[58] |= 0x80                                   # Interact
+        longer = bytes(data[:78]) + b'\x01\x02\x03' + bytes(data[78:])
+        self.assertEqual(client_input.parse_newest_actions(longer),
+                         client_input.ACTION_BIT['Interact'])
+        with self.assertRaises(ValueError):
+            client_input.parse_input_actions(longer)
+
+    def test_a_block_that_floats_by_a_byte(self):
+        data = bytearray(MOVING)
+        data[58] |= 0x80
+        floated = bytes(data[:20]) + b'\x00' + bytes(data[20:])
+        self.assertEqual(client_input.parse_newest_actions(floated),
+                         client_input.ACTION_BIT['Interact'])
+
+    def test_no_input_block_is_none(self):
+        self.assertIsNone(client_input.parse_newest_actions(bytes(326)))

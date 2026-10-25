@@ -206,6 +206,11 @@ HEART_SHARED_TYPES = (18, 44, 46, 69, 83, 98, 101, 145, 165)
 # cruciheart's interaction: 10.0 s within 2.9 m, one interactor at a time.
 HEART_CAPTURE_RADIUS = 2.9
 HEART_CAPTURE_SECONDS = 10.0
+# An Interact press counts for a capture start this long after its input.
+HEART_INTERACT_WINDOW = 0.5
+# Mode 1 only: in range this long with no Interact seen, the capture starts
+# anyway, logged as a fallback, so a misread key still reaches the ending.
+HEART_FALLBACK_SECONDS = 15.0
 # hoth_guide_win_condition.cdl: a team score of 1 raises MatchOverEvent 12.0 s
 # later; matchover_set_teamranks_and_endmatch_flag ranks the winners first.
 HEART_MATCH_OVER_DELAY = 12.0
@@ -248,8 +253,9 @@ def guide_hive_position(profile):
 
 
 def guide_heart_enabled(profile=None):
-    """CRUCIBLE_SOLO_GUIDE_HEART=1 where the hive can spawn (docs/37)."""
-    return (os.environ.get('CRUCIBLE_SOLO_GUIDE_HEART') == '1'
+    """CRUCIBLE_SOLO_GUIDE_HEART=1 (or =proximity) where the hive can spawn
+    (docs/37)."""
+    return (os.environ.get('CRUCIBLE_SOLO_GUIDE_HEART') in ('1', 'proximity')
             and guide_hive_enabled(profile))
 
 
@@ -266,13 +272,17 @@ def build_guide_heart_probe(position, *, previous_id=0):
 def guide_heart_messages(state, arena, now, previous_id):
     """The heart's spawn, its capture, and the retail match end (docs/37).
 
-    The spawn goes out on the first tick after the hive dies. The capture is
-    by proximity, a stand-in: retail captures with the Interact input, whose
-    place in the input stream is not decoded, so there is no capture bar.
-    The player within HEART_CAPTURE_RADIUS for HEART_CAPTURE_SECONDS, alive
-    and without leaving, captures it; leaving starts the count again. The
-    capture scores 1 for the player's team, and the match ends 12.0 s later
-    with that team the winner. Returns (messages, previous_id).
+    The spawn goes out on the first tick after the hive dies. A capture
+    starts when the living player, within HEART_CAPTURE_RADIUS, presses
+    Interact (its momentaryBits bit, docs/25), or just stands there with
+    CRUCIBLE_SOLO_GUIDE_HEART=proximity. In mode 1, HEART_FALLBACK_SECONDS
+    in range without a press also starts it, logged as a fallback. It
+    completes after HEART_CAPTURE_SECONDS in range; leaving or dying resets
+    it. Whether
+    retail needs the key held throughout is not traced, and there is no
+    capture bar. The capture scores 1 for the player's team, and the match
+    ends 12.0 s later with that team the winner. Returns (messages,
+    previous_id).
     """
     heart = state['guide_heart']
     if not heart['sent']:
@@ -294,10 +304,22 @@ def guide_heart_messages(state, arena, now, previous_id):
             and (arena is None or PLAYER_CHARACTER_ID not in arena.entities
                  or arena.alive(PLAYER_CHARACTER_ID))
             and math.dist(player, heart['position']) <= HEART_CAPTURE_RADIUS)
-    if near and heart['capture_started'] is None:
+    pressed = (state.get('player_interact_at') is not None
+               and now - state['player_interact_at'] <= HEART_INTERACT_WINDOW)
+    proximity = os.environ.get('CRUCIBLE_SOLO_GUIDE_HEART') == 'proximity'
+    if not near:
+        heart['near_since'] = None
+    elif heart.get('near_since') is None:
+        heart['near_since'] = now
+    fallback = (near and not proximity
+                and now - heart['near_since'] >= HEART_FALLBACK_SECONDS - 1e-9)
+    if near and heart['capture_started'] is None and (pressed or proximity or fallback):
         heart['capture_started'] = now
-        log('      GUIDE HEART capture started at %.1f s' % now)
-    elif near and now - heart['capture_started'] >= HEART_CAPTURE_SECONDS:
+        log('      GUIDE HEART capture started at %.1f s (%s)'
+            % (now, 'interact' if pressed else 'proximity' if proximity
+               else 'proximity fallback'))
+    elif (near and heart['capture_started'] is not None
+          and now - heart['capture_started'] >= HEART_CAPTURE_SECONDS - 1e-9):
         team = solo_modes.selected().local_team
         scores = state.setdefault('team_scores', {})
         scores[team] = scores.get(team, 0) + 1
@@ -1431,7 +1453,10 @@ def start_solo_simulation(state):
             switches = [name for name, on in (
                 ('guide-saboteur', guide_saboteur_enabled(profile)),
                 ('guide-hive', 'guide_hive' in state),
-                ('guide-heart', 'guide_hive' in state and guide_heart_enabled(profile)),
+                ('guide-heart', 'guide_hive' in state and guide_heart_enabled(profile)
+                 and os.environ.get('CRUCIBLE_SOLO_GUIDE_HEART') == '1'),
+                ('guide-heart-proximity', 'guide_hive' in state and guide_heart_enabled(profile)
+                 and os.environ.get('CRUCIBLE_SOLO_GUIDE_HEART') == 'proximity'),
                 ('reload', bot_reload_enabled()),
                 ('strafe', os.environ.get('CRUCIBLE_SOLO_BOT_STRAFE') == '1'),
                 ('turn', os.environ.get('CRUCIBLE_SOLO_BOT_TURN') == '1'),
@@ -2373,6 +2398,42 @@ def parse_projectile_result(data):
                           for i in range(2, len(data), 4))
 
 
+def observe_client_actions(data, state):
+    """The newest frame's held actions, while HOTH_GUIDE's hive is in play.
+
+    A heart capture starts on Interact (docs/37). Every action bit's rise is
+    logged per bit at counts 1, 2, 4, ..., and so is every payload size other
+    than the decoded 326 bytes, so a live run shows which bit a key sets and
+    whether pressing it changes the shape.
+    """
+    if len(data) != client_input.INPUT_SIZE:
+        sizes = state.setdefault('input_sizes', {})
+        count = sizes[len(data)] = sizes.get(len(data), 0) + 1
+        if count & (count - 1) == 0:
+            log('      CLIENT INPUT shape %d bytes (count %d)' % (len(data), count))
+    bits = client_input.parse_newest_actions(data)
+    if bits is None:
+        return
+    risen = bits & ~state.get('input_actions', 0)
+    state['input_actions'] = bits
+    rises = state.setdefault('input_action_rises', {})
+    for index, name in enumerate(client_input.ACTIONS):
+        if risen & (1 << index):
+            count = rises[name] = rises.get(name, 0) + 1
+            if count & (count - 1) == 0:
+                log('      CLIENT INPUT action %s rose (count %d)' % (name, count))
+    if bits & client_input.ACTION_BIT['Interact']:
+        now = time.monotonic()
+        if 'clock_epoch' in state:
+            now = int((now - state['clock_epoch']) * 1000) / 1000.
+        last = state.get('player_interact_at')
+        if last is None or now - last > 1.0:
+            count = state['interact_presses'] = state.get('interact_presses', 0) + 1
+            if count & (count - 1) == 0:
+                log('      CLIENT INPUT interact pressed (count %d)' % count)
+        state['player_interact_at'] = now
+
+
 def observe_client_input(message, state):
     """Track the player's live position from its own input stream (docs/25).
 
@@ -2385,6 +2446,8 @@ def observe_client_input(message, state):
         return
     if not client_input.is_input(message):
         return
+    if 'guide_hive' in state:
+        observe_client_actions(message.data, state)
     try:
         position = client_input.latest_position(message.data)
     except ValueError:

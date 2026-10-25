@@ -50,6 +50,23 @@ FIRST_POSITION = 80
 ROTATION_OFFSET = 8          # the packed rotation follows each 8-byte position
 
 
+# Each frame's InputComponent block (docs/25): its type byte 0x52, then the
+# 3-byte momentaryBits bitset (byte 0 first, least significant bit first),
+# three move axes, the camera and latentAction. The Interactor block's type
+# byte 0x54 follows 20 bytes after the 0x52, which sits at +57 in frames 0
+# and 1 and at +56 in frame 2.
+INPUT_BLOCK, INTERACTOR_BLOCK = 0x52, 0x54
+INPUT_BLOCK_OFFSETS = (57, 56)
+MOMENTARY_MASK = 0x7ffff
+# Bit indices as ActionsLibrary's populate routine (0x36fe370) passes them,
+# literally and whatever the hero: the client's ClientInputAction ids.
+ACTIONS = ('Jump', 'Ability1', 'Ability2', 'Ability3', 'Ability4', 'PrimaryFire',
+           'DetectMode', 'Interact', 'Melee', 'UseMedPack', 'Reload', 'AllianceOffer',
+           'AllianceAccept', 'AllianceReject', 'AllianceBreak', 'AccessibilityMacro',
+           'UiHelp', 'UIMap')
+ACTION_BIT = {name: 1 << index for index, name in enumerate(ACTIONS)}
+
+
 def is_input(message):
     """True for a client input RPC, whatever its shape."""
     return (message.component, message.rpc) == (INPUT_COMPONENT, INPUT_RPC)
@@ -99,3 +116,42 @@ def parse_input_facings(data):
         w, x, y, z = unpack_rotation(data[base:base + 4])
         facings.append((2 * (x * y - w * z), 1 - 2 * (x * x + z * z), 2 * (y * z + w * x)))
     return tuple(facings)
+
+
+def parse_input_actions(data):
+    """The momentaryBits of the three buffered frames, newest first: each an
+    int of ACTION_BIT masks for the actions held in that frame.
+
+    Raises ValueError on a shape this decoder has not seen, or a frame whose
+    input and interactor blocks are not where they belong.
+    """
+    if len(data) != INPUT_SIZE:
+        raise ValueError('unsupported client input size %d' % len(data))
+    actions = []
+    for k in range(FRAME_COUNT):
+        for offset in INPUT_BLOCK_OFFSETS:
+            at = FRAME_STRIDE * k + offset
+            if data[at] == INPUT_BLOCK and data[at + 20] == INTERACTOR_BLOCK:
+                actions.append(int.from_bytes(data[at + 1:at + 4], 'little') & MOMENTARY_MASK)
+                break
+        else:
+            raise ValueError('no input block in frame %d' % k)
+    return tuple(actions)
+
+
+def parse_newest_actions(data):
+    """The newest frame's momentaryBits from a payload of any length, or None.
+
+    Only the 326-byte shape is fully decoded, but a press may arrive in a
+    longer one: the Interactor block (0x54) varies in length, and blocks
+    before the Input block float by a byte or two. The Input block itself is
+    19 bytes, so its 0x52 still has the 0x54 exactly 20 bytes after it. The
+    decoded positions, +57 then +56, are tried first, then the rest of
+    +50..+70 of frame 0.
+    """
+    window = [57, 56] + [at for at in range(50, 71) if at not in (56, 57)]
+    for at in window:
+        if (at + 20 < len(data) and data[at] == INPUT_BLOCK
+                and data[at + 20] == INTERACTOR_BLOCK):
+            return int.from_bytes(data[at + 1:at + 4], 'little') & MOMENTARY_MASK
+    return None

@@ -140,7 +140,7 @@ class BotSightRowTests(unittest.TestCase):
 
     def test_the_rows_appear_only_when_used(self):
         rows = self.rows([])
-        self.assertFalse({'B0', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'F4'} & set(rows))
+        self.assertFalse({'B0', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'F4'} & set(rows))
 
     def test_the_hive_row(self):
         rows = self.rows([
@@ -171,6 +171,21 @@ class BotSightRowTests(unittest.TestCase):
         self.assertIn('ended by the heart', rows['B6'][2])
         self.assertEqual(rows['A6'][1], 'LOGS-OK')
         self.assertIn('winner team 1', rows['A6'][2])
+
+    def test_what_started_the_capture(self):
+        base = ['GUIDE HEART spawned 01000007 at (1.0, 2.0, 3.0)']
+        done = ['GUIDE HEART captured at 70.0 s; team 1 score 1']
+        for start, status in (('(interact)', 'LOGS-OK'), ('(proximity fallback)', 'FAIL'),
+                              ('(proximity)', 'INFO')):
+            with self.subTest(start=start):
+                rows = self.rows(base + ['CLIENT INPUT action Jump rose (count 2)',
+                                         'GUIDE HEART capture started at 60.0 s %s' % start]
+                                 + done)
+                self.assertEqual(rows['B7'][1], status)
+                if status == 'FAIL':
+                    self.assertIn('Jump >=2', rows['B7'][2])
+        rows = self.rows(base + ['GUIDE HEART capture started at 60.0 s (interact)'])
+        self.assertNotIn('B7', rows)                       # not captured: no verdict
 
     def test_hive_hits_do_not_fail_the_flinch_row(self):
         rows = self.rows(['HIT REACTION on: hunters the player hits flinch (component 80)',

@@ -434,12 +434,27 @@ heart ending counts for A6.
   Location, as id 0x01000007. It has no health component, so it is not in
   the arena, and a hit on it is refused. Its spawn is the only message it
   ever gets, and the first entity the shard creates mid-match.
-- **The capture, a stand-in.** Retail captures with the Interact input,
-  10.0 s within 2.9 m, one interactor at a time. The Interact input's place
-  in the client's input stream is not decoded, so the shard captures by
-  proximity instead: the living player within 2.9 m for 10.0 s without
-  leaving. There is no capture bar, because InteractorComponent's record
-  on the player's own entity is not built.
+- **The capture.** Retail captures with the Interact input, 10.0 s within
+  2.9 m, one interactor at a time.
+  - **The Interact input** is decoded: bit 7 of each input frame's
+    `momentaryBits` (docs/25). Its bit order is checked against live fire,
+    but Interact itself rests on the client's static table, with one live
+    sighting.
+  - **The rule.** A capture starts when the living player, within 2.9 m,
+    presses Interact. It completes after 10.0 s in range; leaving or dying
+    resets it. Whether retail needs the key held throughout is not traced.
+  - **Fallbacks.** If the living player stands in range for 15 s with no
+    Interact seen, the capture starts anyway, logged as "(proximity
+    fallback)", so a misread key still reaches the ending and shows itself.
+    `CRUCIBLE_SOLO_GUIDE_HEART=proximity` starts it on arrival, without the
+    key, and B0 shows that mode as `guide-heart-proximity`.
+  - **Diagnostics while the hive is in play.** Frame 0's actions are
+    decoded from payloads of any length: the Interactor block varies, and a
+    press may come in a longer shape. Every action bit's rise, and every
+    payload size other than 326 bytes, is logged at counts 1, 2, 4 and so
+    on. So a live run shows which bit the Interact key sets.
+  - **No capture bar**, because InteractorComponent's record on the
+    player's own entity is not built.
 - **The end.** The capture scores 1 for the player's team, 1. As the guide's
   win script, the match ends 12.0 s later with that team the winner: GameOver
   and rank 1, before the debug timer, which stays as the safety net.
@@ -449,6 +464,52 @@ heart ending counts for A6.
   spawned at once, and 10 s on it captured it at 29.0 s. The match ended at
   41.0 s with team 1 the winner and rank 1 published, with and without the
   Saboteur.
+
+## Respawn: scoped, not built
+
+In HOTH_GUIDE retail respawns the player; the shard leaves a dead player
+down until the timer. Read from the client on 25 October; the full verdict,
+with addresses, is in `snapshots/respawn-scope-20261025/findings.md`.
+Nothing is built, because it acts on the player's own entity, the one with the crash
+history. It goes after H1 to H1d in LIVE-PLAN, once they have run.
+
+- **The client's two RPCs** on RespawnComponent (120), both server to
+  client:
+  - **0, `RespawnWaveExpiredRPC`.** Its payload is a 12-byte packed
+    transform, like Location's. The client stores it and moves its
+    respawn state to InitiatingDrop, then Dropping. It does not teleport,
+    reset health or change the UI.
+  - **1, `RespawnDropPodLanded`.** It has no fields. The client moves to
+    Respawning, then `ProcessPlayerRespawn` (0x32e6e10) posts
+    OnPlayerRespawned and sets the state back to Alive. No client code in
+    this flow writes health.
+- **The respawn screen** keys on the roster's CharacterStatus. 5,
+  WaitingToRespawn, and 6, Respawning, give the respawn screen. 4, "Dead",
+  is a trap: it reads as eliminated. The countdown comes from
+  RespawnMatchComponent (121) wave times, and which entity carries 121 is
+  unknown.
+- **`RespawnPointPickedRPC`** (120/2) is client to server, sent only when
+  the player clicks a respawn point while the wave is in progress.
+- **The minimal candidate.**
+  - Send RPC 120/1 to the player, after the optional 120/0 with a
+    transform.
+  - Restore its health the way the arena's respawn path does.
+  - A malformed or unhandled RPC is discarded silently, so the crash
+    surface is small. One lost datagram, though, leaves the player
+    unrevived.
+  - The teleport is separate, through TeleportComponent's `TeleportedRPC`
+    (86/0); whether the Marine slice carries 86 is unproven.
+- **The alternative,** replicating RespawnComponent's six shared properties
+  (state, ack id, the tutorial flag and position), is in the role-1/role-2
+  crash class.
+- **Unknown:**
+  - whether CharacterComponent (156), with its autonomous IsAlive and
+    timers, is the real alive gate;
+  - whether the client runs its respawn system for this character at all;
+  - how to clear the death metadata the client latched;
+  - retail's order of these steps.
+
+  One retail capture would settle them; none exists.
 
 ## Per-map navigation (stage 2)
 

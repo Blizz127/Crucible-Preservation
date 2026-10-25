@@ -132,6 +132,23 @@ class GuideHiveTests(unittest.TestCase):
 
 
 class GuideHiveSwitchLineTests(unittest.TestCase):
+    def test_b0_names_the_hearts_mode(self):
+        import hunter_ai
+        import hunter_patrol
+        route = ((0., 0., 0.), (1., 0., 0.))
+        for mode, token in (('1', 'guide-heart'), ('proximity', 'guide-heart-proximity')):
+            env = dict(ENV, CRUCIBLE_SOLO_AI='1', CRUCIBLE_SOLO_GUIDE_HEART=mode)
+            state = {'guide_hive': {'position': SPOT, 'next_heal': None, 'regens': 0}}
+            squad = hunter_ai.Squad([hunter_ai.Bot(0x1000003, route, hunter_ai.MARINE)])
+            with self.subTest(mode=mode), patch.dict('os.environ', env, clear=True), \
+                    patch.object(hunter_patrol, 'squad', return_value=squad), \
+                    patch.object(shard, 'level_sight', return_value=None), \
+                    patch.object(shard, 'log') as log:
+                shard.start_solo_simulation(state)
+            lines = [c.args[0].strip() for c in log.call_args_list
+                     if 'HUNTER AI switches' in c.args[0]]
+            self.assertEqual(lines, ['HUNTER AI switches: guide-hive %s; sight off' % token])
+
     def test_b0_confirms_the_hive_only_where_it_spawned(self):
         import hunter_ai
         import hunter_patrol
@@ -229,10 +246,12 @@ class GuideHeartTests(unittest.TestCase):
             shard.solo_simulation_messages(state, 50.)               # the spawn
             state['player_position'] = (SPOT[0] + 2., SPOT[1], SPOT[2])
             now = 51.
+            state['player_interact_at'] = now
             shard.solo_simulation_messages(state, now)               # starts
             state['player_position'] = (SPOT[0] + 5., SPOT[1], SPOT[2])
             shard.solo_simulation_messages(state, now + 4.)          # left: starts again
             state['player_position'] = (SPOT[0] + 2., SPOT[1], SPOT[2])
+            state['player_interact_at'] = now + 5.
             shard.solo_simulation_messages(state, now + 5.)
             shard.solo_simulation_messages(state, now + 14.9)
             self.assertIsNone(state['guide_heart']['captured_at'])
@@ -245,6 +264,7 @@ class GuideHeartTests(unittest.TestCase):
             self.assertEqual(state['match_result']['winner_team'], 1)
             self.assertEqual(state['match_result']['reason'], 'heart')
         lines = [c.args[0].strip() for c in log.call_args_list if 'GUIDE HEART' in c.args[0]]
+        self.assertIn('GUIDE HEART capture started at 51.0 s (interact)', lines)
         self.assertIn('GUIDE HEART capture interrupted (count 1)', lines)
         self.assertIn('GUIDE HEART match over: winner team 1', lines)
 
@@ -255,8 +275,74 @@ class GuideHeartTests(unittest.TestCase):
             shard.solo_simulation_messages(state, 50.)
             state['player_position'] = SPOT
             for i in range(1, 300):
+                state['player_interact_at'] = 50. + i * .1
                 shard.solo_simulation_messages(state, 50. + i * .1)
         self.assertIsNone(state['guide_heart']['capture_started'])
+
+    def test_standing_briefly_without_interact_starts_nothing_unless_proximity(self, log):
+        for mode, started in (('1', False), ('proximity', True)):
+            env = dict(HEART_ENV, CRUCIBLE_SOLO_GUIDE_HEART=mode)
+            state = self.killed_hive(env)
+            with self.subTest(mode=mode), patch.dict('os.environ', env, clear=True):
+                shard.solo_simulation_messages(state, 50.)
+                state['player_position'] = SPOT
+                for i in range(1, 30):
+                    shard.solo_simulation_messages(state, 50. + i * .1)
+                self.assertEqual(state['guide_heart']['capture_started'] is not None, started)
+
+    def test_a_press_in_a_longer_payload_is_recorded(self, log):
+        import test_client_input
+        state = self.killed_hive()
+        data = bytearray(test_client_input.MOVING)
+        data[58] |= 0x80                                    # Interact, frame 0
+        longer = bytes(data[:78]) + b'\x01\x02' + bytes(data[78:])
+        message = shard.EntityRpc(3, shard.PLAYER_CONNECTION_ID, 172, 1, longer)
+        with patch.dict('os.environ', HEART_ENV, clear=True):
+            shard.observe_client_input(message, state)
+        self.assertIsNotNone(state.get('player_interact_at'))
+        self.assertEqual(state.get('input_unknown_shape'), 1)  # no position from it
+        lines = [c.args[0].strip() for c in log.call_args_list]
+        self.assertIn('CLIENT INPUT shape 328 bytes (count 1)', lines)
+        self.assertIn('CLIENT INPUT action Interact rose (count 1)', lines)
+
+    def test_every_bit_rise_is_logged(self, log):
+        import test_client_input
+        state = self.killed_hive()
+        with patch.dict('os.environ', HEART_ENV, clear=True):
+            for byte0 in (0x20, 0x20, 0x00, 0x20, 0x01):        # fire, held, off, fire, jump
+                data = bytearray(test_client_input.MOVING)
+                data[58] = byte0
+                shard.observe_client_input(
+                    shard.EntityRpc(3, shard.PLAYER_CONNECTION_ID, 172, 1, bytes(data)), state)
+        lines = [c.args[0].strip() for c in log.call_args_list if 'rose' in c.args[0]]
+        self.assertEqual(lines, ['CLIENT INPUT action PrimaryFire rose (count 1)',
+                                 'CLIENT INPUT action PrimaryFire rose (count 2)',
+                                 'CLIENT INPUT action Jump rose (count 1)'])
+
+    def test_in_range_15_s_without_a_press_falls_back(self, log):
+        state = self.killed_hive()
+        with patch.dict('os.environ', HEART_ENV, clear=True):
+            shard.solo_simulation_messages(state, 50.)
+            state['player_position'] = SPOT
+            for i in range(1, 151):
+                shard.solo_simulation_messages(state, 50. + i * .1)    # in range from 50.1 s
+            self.assertIsNone(state['guide_heart']['capture_started'])  # 14.9 s
+            shard.solo_simulation_messages(state, 65.1)
+            self.assertEqual(state['guide_heart']['capture_started'], 65.1)
+        lines = [c.args[0].strip() for c in log.call_args_list if 'capture started' in c.args[0]]
+        self.assertEqual(lines, ['GUIDE HEART capture started at 65.1 s (proximity fallback)'])
+
+    def test_an_interact_input_is_recorded(self, log):
+        import test_client_input
+        state = self.killed_hive()
+        data = bytearray(test_client_input.MOVING)
+        data[58] |= 0x80                                    # Interact, frame 0
+        message = shard.EntityRpc(3, shard.PLAYER_CONNECTION_ID, 172, 1, bytes(data))
+        with patch.dict('os.environ', HEART_ENV, clear=True):
+            shard.observe_client_input(message, state)
+        self.assertIsNotNone(state.get('player_interact_at'))
+        lines = [c.args[0].strip() for c in log.call_args_list]
+        self.assertIn('CLIENT INPUT interact pressed (count 1)', lines)
 
 
 @patch.object(shard, 'log')
