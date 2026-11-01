@@ -103,6 +103,7 @@ HIVE_SPAWNED = re.compile(r'GUIDE HIVE spawned ([0-9a-f]{8}) at (\([^)]*\))')
 HIVE_DESTROYED = re.compile(r'GUIDE HIVE destroyed at ([\d.]+) s')
 HIVE_REGEN = re.compile(r'GUIDE HIVE regenerating \(count (\d+)')
 HIVE_DELETED = re.compile(r'GUIDE HIVE deleted at ([\d.]+) s')
+HIVE_ACTIVATED = re.compile(r'GUIDE HIVE activated \(is_active\) at ([\d.]+) s')
 HEART = re.compile(r'GUIDE HEART (spawned|capture started|captured|match over|'
                    r'capture interrupted|deleted)\b(.*)')
 INTERACT = re.compile(r'CLIENT INPUT interact pressed \(count (\d+)\)')
@@ -147,7 +148,7 @@ def shard_facts(lines):
              'sight_broken': [], 'blocked': 0, 'rests': {}, 'flinches': {},
              'flinch_split_off': 0, 'flinch_on': 0, 'switches': None, 'flees': {},
              'hive': None, 'hive_destroyed': None, 'hive_regens': 0, 'heart': {},
-             'hive_deleted': None,
+             'hive_deleted': None, 'hive_activated': None,
              'interacts': 0, 'rises': {}, 'respawn': {}, 'respawn_acks': [],
              'hits_after_revival': 0, 'moved_after_revival': []}
     for line in lines:
@@ -188,6 +189,8 @@ def shard_facts(lines):
         elif HEART.search(line) and not OVER.search(line):
             event, rest = HEART.search(line).groups()
             facts['heart'].setdefault(event, rest.strip())
+        elif HIVE_ACTIVATED.search(line):
+            facts['hive_activated'] = HIVE_ACTIVATED.search(line).group(1)
         elif HIVE_DELETED.search(line):
             facts['hive_deleted'] = HIVE_DELETED.search(line).group(1)
         elif HIVE_REGEN.search(line):
@@ -460,10 +463,15 @@ def score(shard, client):
         state = ('destroyed at %s s' % shard['hive_destroyed'] if shard['hive_destroyed']
                  else 'lowest health %d' % min(h['health'] for h in hits) if hits
                  else 'never hit')
-        rows.append(('B5 hive', 'LOGS-OK', 'spawned at %s; %d player hits, %s; %d regenerations%s; '
-                     'eyes: a hive about 30 m from the drop, which may look dormant (no '
-                     'marker, wasps, heart or death animation)%s'
-                     % (where, len(hits), state, shard['hive_regens'],
+        # Live H1c: a hive the client never names in a projectile report takes
+        # no hit, and that is a failure of the run, not a quiet LOGS-OK.
+        rows.append(('B5 hive', 'LOGS-OK' if hits else 'FAIL',
+                     'spawned at %s; %s; %d player hits, %s; %d regenerations%s; '
+                     'eyes: a hive about 30 m from the drop that emerges from the ground '
+                     '(no marker, wasps or heart)%s'
+                     % (where, 'emerged (is_active) at %s s' % shard['hive_activated']
+                        if shard['hive_activated'] else 'is_active never sent',
+                        len(hits), state, shard['hive_regens'],
                         '; deleted at %s s' % shard['hive_deleted'] if shard['hive_deleted'] else '',
                         ', and gone about 5.5 s after its death, with no dissolve'
                         if shard['hive_deleted'] else '')))

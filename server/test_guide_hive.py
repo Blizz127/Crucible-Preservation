@@ -112,6 +112,52 @@ class GuideHiveTests(unittest.TestCase):
         self.assertEqual(set(to_hive), {shard.HIVE_SHARED_TYPES})
         self.assertNotIn(HIVE, state.get('hit_reaction', {}))
 
+    def animation_sent(self, state, times, before_each=None):
+        """The hive's animation values each tick sent, by tick time."""
+        import animation_events
+        sent = {}
+        original = animation_events.build_animation_update
+
+        def record(entity_id, shared_types, *, values, **kwargs):
+            if entity_id == HIVE:
+                self.assertEqual(tuple(shared_types), shard.HIVE_SHARED_TYPES)
+                sent.setdefault(now, []).append(dict(values))
+            return original(entity_id, shared_types, values=values, **kwargs)
+        with patch.dict('os.environ', ENV, clear=True), \
+                patch.object(animation_events, 'build_animation_update', record):
+            for now in times:
+                if before_each is not None:
+                    before_each(now)
+                shard.solo_simulation_messages(state, now)
+        return sent
+
+    def test_it_emerges_1_55_s_after_its_first_tick_once(self, _log):
+        # hive.animgraph leaves underground0 for emerge0 only on is_active.
+        state = self.start()
+        sent = self.animation_sent(state, (1.0, 2.5, 2.55, 3.0, 10.0))
+        self.assertEqual(sent, {2.55: [{'is_active': True}]})
+
+    def test_is_dead_goes_once_when_it_dies(self, _log):
+        state = self.start()
+        state['player_position'] = (SPOT[0] - 10., SPOT[1], SPOT[2])
+        projectile = [0]
+
+        def shoot(now):
+            if now >= 5. and state['combat'].alive(HIVE):
+                projectile[0] += 1
+                shard.observe_solo_combat(hit_on(projectile[0], HIVE), state)
+        times = [1.0, 2.55] + [5. + i * .1 for i in range(400)]
+        sent = self.animation_sent(state, times, before_each=shoot)
+        self.assertFalse(state['combat'].alive(HIVE))
+        values = [v for per_tick in sent.values() for v in per_tick]
+        self.assertEqual(values, [{'is_active': True}, {'is_dead': True}])
+
+    def test_a_hive_killed_before_it_emerged_gets_both_at_once(self, _log):
+        state = self.start()
+        state['combat'].entities[HIVE].health = 0.
+        sent = self.animation_sent(state, (1.0, 1.1))
+        self.assertEqual(sent, {1.0: [{'is_active': True, 'is_dead': True}]})
+
     def test_it_regenerates_after_19_5_s_without_a_hit(self, _log):
         state = self.start(dict(ENV, CRUCIBLE_SOLO_HIT_RANGE='1'))
         state['player_position'] = (SPOT[0] - 10., SPOT[1], SPOT[2])

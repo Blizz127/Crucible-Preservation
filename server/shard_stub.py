@@ -197,6 +197,9 @@ HIVE_REGEN_AFTER = 19.5
 HIVE_REGEN_STEP = 100.0
 HIVE_REGEN_INTERVAL = 1.0
 HIVE_DROP_DISTANCE = 30.0       # the placeholder spot's distance from the drop
+# hive_onspawnactive.cdl: OnSpawn, 0.05 s, mesh visible, 0.5 s, the damage
+# field, the hive bookkeeping, 1.0 s, then AnimationParameter is_active.
+HIVE_ACTIVATE_SECONDS = 1.55
 
 
 # docs/37: the hive's heart, behind CRUCIBLE_SOLO_GUIDE_HEART=1 with the hive.
@@ -1928,6 +1931,35 @@ def solo_match_rank(state):
     return rank
 
 
+def guide_hive_animation(state, arena, now):
+    """The hive's AnimationParameter values due this tick, else {}.
+
+    Live H1c (docs/37): with only its Location sent, the client never put the
+    hive in a projectile report. hive.animgraph enters underground0
+    (inground_idle_anim) and leaves it for emerge0 (spawn_anim) only when
+    is_active is 1, so the hive stayed in its in-ground pose.
+    hive_onspawnactive.cdl sets is_active about 1.55 s after the spawn, and
+    hive_deathdespawn.cdl sets is_dead at death (base -> death_m). Each value
+    is sent once; nothing goes to a deleted hive.
+    """
+    hive = state['guide_hive']
+    if hive.get('deleted'):
+        return {}
+    if hive.get('activate_at') is None:
+        hive['activate_at'] = now + HIVE_ACTIVATE_SECONDS
+    values = {}
+    dead = not arena.alive(HIVE_ENTITY_ID)
+    if not hive.get('activated') and (dead or now >= hive['activate_at'] - 1e-9):
+        hive['activated'] = True
+        values['is_active'] = True
+        log('      GUIDE HIVE activated (is_active) at %.1f s' % now)
+    if dead and not hive.get('dead_sent'):
+        hive['dead_sent'] = True
+        values['is_dead'] = True
+        log('      GUIDE HIVE is_dead sent at %.1f s' % now)
+    return values
+
+
 def regenerate_guide_hive(state, arena, now):
     """hive_outofcombatregen.cdl: +100 health a second, 19.5 s after a hit."""
     hive = state['guide_hive']
@@ -1976,6 +2008,12 @@ def solo_simulation_messages(state, now, *, previous_id=0):
             hive['deleted'] = True
             log('      GUIDE HIVE deleted at %.1f s' % now)
             messages.append(build_entity_delete(HIVE_ENTITY_ID, previous_id=previous_id))
+            previous_id = HIVE_ENTITY_ID & 0xffffff
+        animation = guide_hive_animation(state, arena, now)
+        if animation:
+            from animation_events import build_animation_update
+            messages.append(build_animation_update(
+                HIVE_ENTITY_ID, HIVE_SHARED_TYPES, values=animation, previous_id=previous_id))
             previous_id = HIVE_ENTITY_ID & 0xffffff
     if 'guide_heart' in state:
         heart, previous_id = guide_heart_messages(state, arena, now, previous_id)

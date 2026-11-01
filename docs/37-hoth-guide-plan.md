@@ -645,3 +645,94 @@ What the shipped files say (read on the devbox reference copy):
   circuit,
   44 → 36 → 39, is 784 m. Only 10 of its 813 one-metre samples lie on
   re-sculpted terrain, all by 0.6 m or less.
+
+## Live H1c: the client never reports hits on the hive (fix built, NOT RUN live)
+
+On 2026-10-26, run H1c (322de6f, drop-ins `zz-h1-hoth-guide`, `h1c-guide-hive`,
+`h1c0-bots-never-hit`) spawned the hive. It rendered with 0 network asserts.
+The owner shot it, but every ClientProjectileResult
+(component 115 / RPC 4) named only the shooter 01000002, never 01000006. The
+shard refused each one ("no live enemy"), so the hive took 0 damage. The
+shard's hit gate is not the cause, because the client never put the hive's id
+in the report. Every live player hit to date names a Marine (01000003/4) or a
+level-placed practice target (FE00004B, docs/17); none names a shard-spawned
+non-character. `harness/drive_hive.py` writes the hive's id into its scripted
+reports itself, so its offline kills say nothing about this.
+
+Static trace, against build 5685572:
+- **Sender.** `0xbc3e40` serializes ClientProjectileResult from a list of up
+  to 8 entity ids. Its only caller is in
+  `HybridProjectileCommonSystemGameplayCommon::UpdateEntity` (`0x329f930`,
+  call at `0x32a0b66`). That caller passes the projectile's id byte (+0x30)
+  and its list of previously hit entities (+0x60).
+- **Hit query.** `ProjectileUtils::Update` (`0x3220840`) sweeps dynamic and
+  static bodies; each hit record is 0x80 bytes with the entity id at +0x40.
+  A hash-set step (`0x32230c0`) drops entities this projectile has already
+  hit.
+- **TargetFilter.** In `ProcessDynamicHits` (`0x321b6ee`..`0x321b725`) the
+  client computes a relationship with `0x31fe070` and checks it against the
+  asset's TargetFilter (ProjectileInfo +0xd2; enum Enemies 0, All 1,
+  MyPetsOnly 2, AlliesOnly 3). Enemies keeps a hit only when the relationship
+  is 0, All keeps every hit, MyPetsOnly needs 3, and AlliesOnly needs 2 or 4.
+  A rejected hit has its entity id zeroed, so the hit never names an entity.
+  The relationship function returns 0 when either id is invalid, and 1 for
+  self. It returns 2 (ally) when the target, or the target's owner, is in the
+  shooter's AllianceComponent allied-controller list (`0x31fd980`), or when
+  the shooter's controller id is the target or its owner. Otherwise 3 or 4
+  under an ownable flag, else 0. The Saboteur primary is TargetFilter
+  Enemies.
+  - The hive has no AllianceComponent (10) or OwnableComponent (69); the
+    Marines have both. On this reading the hive should get 0 and pass, so
+    this filter is probably not the gate (inferred, not verified).
+- **Differences still open:**
+  - The Marine's EntityFlags include `AbilityTargetable`; the hive's are
+    only `AffectedByDeath...` and `CombatTarget`.
+  - The projectile asset has `NetworkAllHits = 0` and
+    `NetworkCloseTargetHitInfo = 1`.
+  - The physics, hit-volume and character settings match the Marine's.
+- **Ruled out by a reported entity.** RoboDummy (practicearena entry 73 =
+  FE00004B, which the client did report) has the hive's exact flags
+  (`AffectedByDeathFog`, `CombatTarget`; no `AbilityTargetable`). It has no
+  Alliance or Ownable component either, and the same physics and hit-volume
+  components. So neither the flags nor the alliance filter separates the hive.
+- **The cause (static, strong; not yet seen live).** `hive.animgraph`'s
+  `alive0` state machine enters `underground0`, which loops
+  `inground_idle_anim`. It leaves only on `is_active == 1`, for `emerge0`
+  (`spawn_anim`), then `idle0` (`active_idle_anim`). The slice defaults
+  `is_active` to false. The shard sent the hive only its Location, so the
+  client held it in its in-ground pose, and its animated hit volumes with it.
+  In retail, `hive_onspawnactive.cdl` sets `AnimationParameterComponent.is_active`
+  about 1.55 s after the spawn (0.05 s, mesh visible, 0.5 s, the damage
+  field and bookkeeping, 1.0 s). `hive_deathdespawn.cdl` sets `is_dead` at
+  death; `base` plays `death_m` on it.
+- **The fix (behind `CRUCIBLE_SOLO_GUIDE_HIVE`).** The shard sends the
+  hive one AnimationParameter update with `is_active` 1.55 s after its first
+  tick, and one with `is_dead` when it dies (both together if it dies first).
+  It uses `animation_events.build_animation_update` (type 13, record 13 /
+  record 4). That is the encoder the Marines' animation uses live, but
+  `is_active` (record 13) has never been on the wire before. The log lines
+  are "GUIDE HIVE activated (is_active)" and "GUIDE HIVE is_dead sent";
+  `match_acceptance` B5 reports the first. B5 now FAILs when the player never
+  hit the hive (H1c scored LOGS-OK with 0 hits).
+- **Checked offline.** Unit tests cover the timing, the single sends, death
+  before emergence, and that every hive message uses the hive's types. With
+  no drop-ins, the harness's win, lose, deaggro, teleport and flank scenarios
+  are byte-identical to 322de6f. In the harness hive scenario it activated at
+  1.6 s and died at 40.5 s. In the heart + despawn scenario: died 14.2 s,
+  heart, hive deleted 19.7 s, match won on the heart at 56.1 s; every delete
+  was still alone in its packet with nothing after it. The harness writes the
+  hive's id into its reports, so none of this shows that the client now hits
+  the hive. Only a live H1c rerun can show that.
+- **Expected live (H1c rerun):** about 1.5 s after the drop the hive
+  emerges from the ground (`spawn_anim`). Shots on it then show "SOLO
+  COMBAT player hit target=01000006" lines, and B5 passes.
+- **If the rerun disagrees:**
+  - If the client logs "Failed to deserialize" or an assert for 01000006
+    about 1.5 s in, suspect record 13's position in the encoder first.
+  - If it never visibly emerges, the update was not applied.
+  - If it emerges but still takes no hits, the pose theory is wrong. Next:
+    - the insertion site of the projectile's hit list (+0x60 in
+      `0x329f930`'s projectile, before `0x32a0b66`);
+    - the fallback: resolve the player's hits on the hive on the shard
+      from the ClientProjectileResult stream and the input frame's aim, as
+      retail's server would have.

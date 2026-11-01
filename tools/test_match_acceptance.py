@@ -161,6 +161,10 @@ class BotSightRowTests(unittest.TestCase):
                           'GUIDE HIVE destroyed at 91.5 s', 'GUIDE HIVE deleted at 97.0 s'])
         self.assertIn('destroyed at 91.5 s; 0 regenerations; deleted at 97.0 s', rows['B5'][2])
         self.assertIn('gone about 5.5 s after its death, with no dissolve', rows['B5'][2])
+        rows = self.rows(['GUIDE HIVE spawned 01000006 at (1.0, 2.0, 3.0)',
+                          'GUIDE HIVE activated (is_active) at 3.6 s'])
+        self.assertEqual(rows['B5'][1], 'FAIL')
+        self.assertIn('emerged (is_active) at 3.6 s; 0 player hits, never hit', rows['B5'][2])
         # The hive is not a hunter: its kill is not A5's.
         self.assertIn('killed 01000003 (1 player hits)', rows['A5'][2])
 
