@@ -20,6 +20,7 @@ MENU = 'menu'
 DECLARED_ENV = 'CRUCIBLE_ACTIVE_HERO_FILE'
 _declared = {}
 _declared_file = {}
+_pinned = {}
 
 
 def names():
@@ -76,5 +77,11 @@ def declared():
 def selected():
     value = os.environ.get(ENV)
     if (value or '').strip().lower() == MENU:
-        return get(declared() or DEFAULT_HERO)
+        return get(_pinned.get('name') or declared() or DEFAULT_HERO)
     return get(value or DEFAULT_HERO)
+
+
+def pin():
+    _pinned.pop('name', None)
+    if (os.environ.get(ENV) or '').strip().lower() == MENU:
+        _pinned['name'] = selected().name
