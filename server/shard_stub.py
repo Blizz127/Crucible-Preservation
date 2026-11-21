@@ -19,6 +19,10 @@ def encode_varint(value):
             return bytes(out)
 
 
+def play_seconds(state, now):
+    return now - state.setdefault('play_started_at', now)
+
+
 def guarded(state, where, function, *args, **kwargs):
     try:
         return function(*args, **kwargs)
