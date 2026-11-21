@@ -91,3 +91,16 @@ class Squad:
 
     def shots(self, steps):
         return [shot for step in steps for shot in step.shots]
+
+
+class TargetSquad(Squad):
+
+    def __init__(self, bots, target, target_position):
+        super().__init__(bots)
+        self.target, self.target_position = target, tuple(target_position)
+
+    def update(self, now, target=None, target_position=None, *, active_entities=None):
+        gone = active_entities is not None and self.target not in active_entities
+        return super().update(now, None if gone else self.target,
+                              None if gone else self.target_position,
+                              active_entities=active_entities)
