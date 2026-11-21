@@ -1,16 +1,19 @@
 """HTTP request dispatcher with an application-supplied route table."""
 
 import json
+import threading
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse
 
 
 ROUTERS = []
+_REQUEST = threading.local()
 
 
 class Handler(BaseHTTPRequestHandler):
     def _route(self, body):
         parsed = urlparse(self.path)
+        _REQUEST.query = parsed.query
         parts = parsed.path.strip('/').split('/', 1)
         if len(parts) != 2:
             return None
