@@ -11,6 +11,7 @@ This repository collects original code and design notes from the Crucible Reviva
 
 - [Routing across a triangle mesh](docs/21-hunter-ai.md)
 - [Shared match state](docs/52-multiplayer-plan.md)
+- [Testing a match from two participants](docs/53-scripted-client.md)
 
 ## Patrol motion
 
