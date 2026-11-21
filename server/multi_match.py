@@ -21,6 +21,11 @@ class Player:
 class Snapshot:
     steps: int
     positions: dict
+    facings: dict = dataclasses.field(default_factory=dict)
+    velocities: dict = dataclasses.field(default_factory=dict)
+    transforms: dict = dataclasses.field(default_factory=dict)
+    movement: dict = dataclasses.field(default_factory=dict)
+    at: float = None
 
 def viewer_messages(match, viewer, messages, *, message_id):
     multi = viewer.state['multi']
