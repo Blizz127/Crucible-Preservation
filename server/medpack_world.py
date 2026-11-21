@@ -70,17 +70,19 @@ class World:
                 self._queue(node, position, 'set %d' % self.sets_done)
             events.append(('set', (self.sets_done, when, len(chosen), len(free))))
 
-    def _nearest_live(self, player):
+    def _nearest_live(self, player, selected=None):
         best = None
         for pack in self.packs.values():
             if pack.state != 'live':
+                continue
+            if selected is not None and selected != pack.entity:
                 continue
             distance = math.dist(player, pack.position)
             if distance <= self.rules.interaction_radius and (best is None or distance < best[0]):
                 best = (distance, pack)
         return None if best is None else best[1]
 
-    def _pickup(self, now, player, alive, pressed, at_maximum, events):
+    def _pickup(self, now, player, alive, pressed, at_maximum, events, selected=None):
         pack = self.collecting
         if pack is not None:
             in_range = (alive and player is not None
@@ -106,6 +108,11 @@ class World:
         if not (alive and player is not None and pressed):
             return
         near = self._nearest_live(player)
+        if selected is not None:
+            near = self._nearest_live(player, selected)
+            self.start_rule = 'target'
+        else:
+            self.start_rule = 'key'
         if near is None:
             return
         if at_maximum:
@@ -118,11 +125,11 @@ class World:
         self.collecting = near
         events.append(('started', near))
 
-    def tick(self, now, *, player, alive, pressed, at_maximum, play=None):
+    def tick(self, now, *, player, alive, pressed, at_maximum, play=None, selected=None):
         """Use play time for scheduling and now for pickup and ID lifetimes."""
         events = []
         self._schedule(now if play is None else play, events)
-        self._pickup(now, player, alive, pressed, at_maximum, events)
+        self._pickup(now, player, alive, pressed, at_maximum, events, selected)
         deleting = [pack for pack in self.packs.values()
                     if pack.state == 'taken' and now >= pack.delete_at][:self.rules.max_deletes_per_tick]
         for pack in deleting:
