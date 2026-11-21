@@ -2,6 +2,7 @@
 
 import logging
 import os
+import time
 
 
 def encode_varint(value):
@@ -35,6 +36,13 @@ def match_max_seconds():
     except ValueError:
         return None
     return value if 0 < value < float('inf') else None
+
+
+def session_seconds(state):
+    now = time.monotonic()
+    if 'clock_epoch' in state:
+        now = int((now - state['clock_epoch']) * 1000) / 1000.0
+    return now
 
 
 def group_unique(items, key):
