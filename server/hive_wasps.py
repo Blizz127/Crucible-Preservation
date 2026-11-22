@@ -52,7 +52,10 @@ def _turn(current, wanted, limit):
     side = _sub(wanted, _scale(current, dot))
     length = math.sqrt(sum(s * s for s in side))
     if length < 1e-9:
-        return current
+
+        x, y, z = current
+        side = (-y, x, 0.) if math.hypot(x, y) > 1e-9 else (z, 0., -x)
+        length = math.hypot(*side)
     side = _scale(side, 1.0 / length)
     return _unit(_add(_scale(current, math.cos(limit)), _scale(side, math.sin(limit))))
 
