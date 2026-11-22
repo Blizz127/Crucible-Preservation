@@ -35,6 +35,13 @@ class Shot:
     ideal_origin: tuple
     target: tuple
 
+@dataclass
+class Respawn:
+    transform: bytes
+    next_at: float
+    wave_sent: bool = False
+    landed_sends: int = 0
+
 def viewer_messages(match, viewer, messages, *, message_id):
     multi = viewer.state['multi']
     own = {viewer.connection_id, viewer.character_id}
