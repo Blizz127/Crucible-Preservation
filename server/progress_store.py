@@ -1,5 +1,6 @@
 """Durable local progression storage and finished-match bookkeeping."""
 import copy
+from dataclasses import dataclass
 import fcntl
 import json
 import math
@@ -18,6 +19,7 @@ VERSION = 1
 SPOOL_NAME = 'spool.jsonl'
 APPLIED_NAME = 'applied.jsonl'    # who each match was credited to, first time
 LOCK_WAIT_SECONDS = 2.0
+SPOOL_RETRY_SECONDS = 1.0
 
 # ---------------------------------------------------------------------------
 # Project-authored experience rules.
@@ -566,20 +568,10 @@ def _result_of(winner_team, team):
     return 'win' if winner_team == team else 'loss'
 
 
-def _shard_tick(state, log_line, participants, mode):
-    match = state.get('match')
+def _match_lines(state, match, result, participants, mode):
     if match is not None:
-        result = getattr(match, 'result', None)
-        if result is None or getattr(match, 'progress_spooled', False):
-            return
-        match.progress_spooled = True
         if str(result.get('reason', '')).startswith('the other player never arrived'):
-            return          # multi_match.check_wait: the match was never played
-    else:
-        result = state.get('match_result')
-        if result is None or state.get('progress_spooled'):
-            return
-        state['progress_spooled'] = True
+            return []       # multi_match.check_wait: the match was never played
     players = list(participants)
     # The shard counts no kills. It counts the player's deaths only for the
     # respawn countdown, which is behind its own switch.
@@ -594,15 +586,47 @@ def _shard_tick(state, log_line, participants, mode):
                   'kills': None, 'players': len(players),
                   'deaths': deaths, 'time': time.time()}
         lines.append(json.dumps(record, separators=(',', ':')) + '\n')
-    if not lines:
+    return lines
+
+
+@dataclass
+class _PendingSpool:
+    path: str
+    lines: list
+    next_line: int = 0
+    retry_at: float = 0.0
+
+
+def _shard_tick(state, log_line, participants, mode):
+    match = state.get('match')
+    # Both viewers tick the same Match on the shard's single event loop.
+    owner = state if match is None else vars(match)
+    if owner.get('progress_spooled'):
         return
-    path = os.path.join(directory(), SPOOL_NAME)
+    result = state.get('match_result') if match is None else getattr(match, 'result', None)
+    if result is None:
+        return
+    pending = owner.get('progress_pending')
+    if pending is None:
+        lines = _match_lines(state, match, result, participants, mode)
+        if not lines:
+            owner['progress_spooled'] = True
+            return
+        pending = owner['progress_pending'] = _PendingSpool(
+            os.path.join(directory(), SPOOL_NAME), lines)
+    elif time.monotonic() < pending.retry_at:
+        return
     try:
-        os.makedirs(directory(), exist_ok=True)
-        for line in lines:
-            append_line(path, line)       # the whole line, after a newline if the tail is damaged
+        os.makedirs(os.path.dirname(pending.path), exist_ok=True)
+        while pending.next_line < len(pending.lines):
+            append_line(pending.path, pending.lines[pending.next_line])
+            pending.next_line += 1
     except OSError as error:
-        log('cannot append to the spool %s: %s; the match is not recorded' % (path, error),
-            key=('spool-write', path))
+        pending.retry_at = time.monotonic() + SPOOL_RETRY_SECONDS
+        log('cannot append to the spool %s: %s; will retry while the match is active'
+            % (pending.path, error), key=('spool-write', pending.path))
         return
-    log_line('      PROGRESS: %d finished-match line(s) handed to %s' % (len(lines), path))
+    owner['progress_spooled'] = True
+    del owner['progress_pending']
+    log_line('      PROGRESS: %d finished-match line(s) handed to %s'
+             % (len(pending.lines), pending.path))
