@@ -562,8 +562,9 @@ def shard_tick(state, log_line=None, *, participants, mode=""):
         log('the shard hand-off failed: %r' % (error,), key='shard-hand-off')
 
 
-def _result_of(winner_team, team):
-    if not winner_team:
+def _result_of(result, team):
+    winner_team = result.get('winner_team')
+    if result.get('is_draw', not winner_team):
         return 'draw'
     return 'win' if winner_team == team else 'loss'
 
@@ -580,7 +581,7 @@ def _match_lines(state, match, result, participants, mode):
     lines = []
     for user, hunter, team in players:
         record = {'id': '%s-%d' % (match_id, user), 'user_id': user, 'hunter': hunter,
-                  'mode': mode, 'result': _result_of(result.get('winner_team'), team),
+                  'mode': mode, 'result': _result_of(result, team),
                   'reason': result.get('reason', ''),
                   'duration': round(float(result.get('at_seconds') or 0), 3),
                   'kills': None, 'players': len(players),

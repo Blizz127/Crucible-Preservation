@@ -49,12 +49,12 @@ def session_seconds(state):
     return now
 
 
-def group_unique(items, key):
+def group_unique(items, key, *, preserve_order=False):
     """Distribute items so each group has distinct keys."""
     groups = []
     for item in items:
         identity = key(item)
-        for group, seen in groups:
+        for group, seen in groups[-1:] if preserve_order else groups:
             if identity not in seen:
                 break
         else:
