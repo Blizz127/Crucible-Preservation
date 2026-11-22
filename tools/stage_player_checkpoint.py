@@ -39,13 +39,19 @@ def checkpoint_files(archive):
     if not all(isinstance(h, str) and re.fullmatch('[a-f0-9]{64}', h)
                for h in expected.values()):
         raise ValueError('invalid checkpoint file digest')
+    progress_backup = manifest.get('kind') == 'crucible-progress'
+    if progress_backup and any(PurePosixPath(name).parent != PurePosixPath('progress')
+                               or name == 'progress/.lock' for name in expected):
+        raise ValueError('invalid progression store inventory')
     expected['manifest.json'] = hashlib.sha256(manifest_bytes).hexdigest()
-    return members, expected
+    return members, expected, progress_backup
 
 
-def verify_staged(directory, expected):
+def verify_staged(directory, expected, progress_backup):
     if directory.is_symlink() or not directory.is_dir():
         raise ValueError('staging destination is not a directory')
+    if progress_backup and not (directory / 'progress').is_dir():
+        raise ValueError('staged progression directory is missing')
     found = set()
     for entry in directory.rglob('*'):
         name = entry.relative_to(directory).as_posix()
@@ -71,24 +77,26 @@ def stage(source, expected_sha256, staging_root):
             raise ValueError('archive differs from the source backup receipt')
         stream.seek(0)
         with tarfile.open(fileobj=stream, mode='r:gz') as archive:
-            members, expected = checkpoint_files(archive)
+            members, expected, progress_backup = checkpoint_files(archive)
             staging_root.mkdir(mode=0o700, parents=True, exist_ok=True)
             target = staging_root / ('checkpoint-' + expected_sha256)
             with (staging_root / '.checkpoint-stage.lock').open('a') as lock:
                 fcntl.flock(lock, fcntl.LOCK_EX)
                 if target.exists() or target.is_symlink():
-                    verify_staged(target, expected)
+                    verify_staged(target, expected, progress_backup)
                     return target
                 with tempfile.TemporaryDirectory(dir=staging_root) as temp:
                     draft = Path(temp) / 'data'
                     draft.mkdir(mode=0o700)
+                    if progress_backup:
+                        (draft / 'progress').mkdir(mode=0o700)
                     for name, member in members.items():
                         path = draft / name
                         path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
                         with archive.extractfile(member) as payload, path.open('xb') as out:
                             path.chmod(0o600)
                             shutil.copyfileobj(payload, out)
-                    verify_staged(draft, expected)
+                    verify_staged(draft, expected, progress_backup)
                     draft.rename(target)
                 return target
 
