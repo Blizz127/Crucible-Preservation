@@ -68,7 +68,7 @@ def group_unique(items, key, *, preserve_order=False):
 def respawn_step(state, alive, now, *, delay, fall_time, resend_interval, sends):
     """Advance the local timer and return the transition for the caller to dispatch."""
     stage = state.get("stage")
-    if stage is None and not alive:
+    if stage in (None, "landed") and not alive:
         state.update(stage="dead", died_at=now)
         return "dead"
     if stage == "dead" and now >= state["died_at"] + delay:
