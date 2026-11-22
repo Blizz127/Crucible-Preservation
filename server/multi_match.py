@@ -27,6 +27,14 @@ class Snapshot:
     movement: dict = dataclasses.field(default_factory=dict)
     at: float = None
 
+@dataclass
+class Shot:
+    serial: int
+    time: float
+    fire_origin: tuple
+    ideal_origin: tuple
+    target: tuple
+
 def viewer_messages(match, viewer, messages, *, message_id):
     multi = viewer.state['multi']
     own = {viewer.connection_id, viewer.character_id}
