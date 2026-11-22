@@ -40,6 +40,7 @@ class HitResult:
 @dataclass
 class Combat:
     entities: dict = field(default_factory=dict)
+    outgoing: dict = field(default_factory=dict)
 
     def register(self, entity_id, shared_types, *, maximum, team, local=False,
                  health=None, respawn_seconds=None, telegraph_seconds=0.0,
@@ -70,6 +71,10 @@ class Combat:
             return None
         return None
 
+    def _outgoing(self, attacker, damage):
+        scale = self.outgoing.get(attacker)
+        return damage if scale is None else damage * scale
+
     def apply_damage(self, attacker, target, damage, *, now=None):
         now = time.monotonic() if now is None else now
         source = self.entities.get(attacker)
@@ -79,6 +84,7 @@ class Combat:
             return None
         if type(damage) not in (int, float) or not 0 < damage < float('inf'):
             raise ValueError('damage must be a positive finite number')
+        damage = self._outgoing(attacker, damage)
         entity.health = max(0.0, entity.health - damage)
         entity.dirty = True
         killed = not entity.alive
