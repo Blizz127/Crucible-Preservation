@@ -215,7 +215,8 @@ def append_line(path, line):
     A short write is continued until the whole line is down. If an earlier
     writer left a damaged tail (the file does not end with a newline: a full
     disk, a crash), a newline is written first, in the same write, so the new
-    line is never glued to it; the reader skips the damaged line."""
+    line is never glued to it; the reader skips the damaged line. Return only
+    after the file and its directory entry have been synced."""
     data = line.encode('utf-8')
     descriptor = os.open(path, os.O_RDWR | os.O_APPEND | os.O_CREAT, 0o644)
     try:
@@ -228,8 +229,14 @@ def append_line(path, line):
             if written <= 0:
                 raise OSError('a write returned %d' % written)
             view = view[written:]
+        os.fsync(descriptor)
     finally:
         os.close(descriptor)
+    parent = os.open(os.path.dirname(path) or '.', os.O_RDONLY | os.O_DIRECTORY)
+    try:
+        os.fsync(parent)
+    finally:
+        os.close(parent)
 
 
 class Store:
@@ -590,12 +597,23 @@ def _match_lines(state, match, result, participants, mode):
     return lines
 
 
-@dataclass
+@dataclass(eq=False)
 class _PendingSpool:
     path: str
     lines: list
     next_line: int = 0
     retry_at: float = 0.0
+
+
+# Only the uncommitted records and their stable IDs outlive a disconnected
+# peer. The arena and the player's network state can be released normally.
+_PENDING_WRITES = set()
+
+
+def retry_pending_writes(log_line):
+    """Service outstanding awards on the shard loop, even with no peers."""
+    for pending in tuple(_PENDING_WRITES):
+        _write_pending(pending, log_line)
 
 
 def _shard_tick(state, log_line, participants, mode):
@@ -615,7 +633,15 @@ def _shard_tick(state, log_line, participants, mode):
             return
         pending = owner['progress_pending'] = _PendingSpool(
             os.path.join(directory(), SPOOL_NAME), lines)
-    elif time.monotonic() < pending.retry_at:
+    if pending.next_line < len(pending.lines):
+        _write_pending(pending, log_line)
+    if pending.next_line == len(pending.lines):
+        owner['progress_spooled'] = True
+        del owner['progress_pending']
+
+
+def _write_pending(pending, log_line):
+    if time.monotonic() < pending.retry_at:
         return
     try:
         os.makedirs(os.path.dirname(pending.path), exist_ok=True)
@@ -624,10 +650,10 @@ def _shard_tick(state, log_line, participants, mode):
             pending.next_line += 1
     except OSError as error:
         pending.retry_at = time.monotonic() + SPOOL_RETRY_SECONDS
-        log('cannot append to the spool %s: %s; will retry while the match is active'
+        _PENDING_WRITES.add(pending)
+        log('cannot append to the spool %s: %s; the shard will retry'
             % (pending.path, error), key=('spool-write', pending.path))
         return
-    owner['progress_spooled'] = True
-    del owner['progress_pending']
+    _PENDING_WRITES.discard(pending)
     log_line('      PROGRESS: %d finished-match line(s) handed to %s'
              % (len(pending.lines), pending.path))
