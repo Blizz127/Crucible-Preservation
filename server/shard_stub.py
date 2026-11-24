@@ -85,3 +85,16 @@ def respawn_step(state, alive, now, *, delay, fall_time, resend_interval, sends)
             state["sends"] += 1
             return "landed"
     return None
+
+
+def roster_class(spawned, *, pregame_enabled, first_phase, team_info_phase,
+                 selected_class, empty_class=None):
+    """Resolve the local roster class using caller-supplied phase and selection."""
+    if spawned:
+        return selected_class()
+    if pregame_enabled and first_phase() == team_info_phase:
+        try:
+            return selected_class()
+        except ValueError:
+            return empty_class
+    return empty_class
