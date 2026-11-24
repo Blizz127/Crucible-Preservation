@@ -43,3 +43,15 @@ def _heartbeat_step(now, hv, *, heartbeat_seconds, pay):
         for letter, unit in hv['units'].items():
             if unit['status'] == 'owned' and unit['owned_at'] <= beat + 1e-9:
                 pay(letter, beat)
+
+
+def capture_progress(hv, stations, last_target, *, entity_for, capture_seconds):
+    completed = None
+    for station in stations:
+        unit = hv['units'][station.letter]
+        entity = entity_for(station)
+        if unit['status'] == 'capturing':
+            return entity, unit['capture_started'] + capture_seconds, None
+        if entity == last_target and unit['status'] == 'owned':
+            completed = (0, None, entity)
+    return completed
