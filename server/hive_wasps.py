@@ -60,10 +60,18 @@ def _turn(current, wanted, limit):
     return _unit(_add(_scale(current, math.cos(limit)), _scale(side, math.sin(limit))))
 
 
-def _segment_distance(a, b, point):
+def _contact_fraction(start, travel, centre, radius):
 
-    ab = _sub(b, a)
-    length2 = sum(c * c for c in ab)
-    t = 0.0 if length2 < 1e-12 else max(0.0, min(1.0, sum(
-        x * y for x, y in zip(_sub(point, a), ab)) / length2))
-    return math.dist(_add(a, _scale(ab, t)), point)
+    offset = _sub(start, centre)
+    outside = sum(x * x for x in offset) - radius * radius
+    if outside <= 0.0:
+        return 0.0
+    approach = sum(x * dx for x, dx in zip(offset, travel))
+    if approach >= 0.0:
+        return None
+    length2 = sum(dx * dx for dx in travel)
+    discriminant = approach * approach - length2 * outside
+    if discriminant < 0.0:
+        return None
+    entry = outside / (-approach + math.sqrt(discriminant))
+    return entry if entry <= 1.0 else None
