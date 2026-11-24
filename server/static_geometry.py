@@ -72,6 +72,26 @@ class MeshTree:
                 stack.append(right)
         return closest
 
+    def swept_triangles(self, start, end, padding):
+        low = tuple(min(a, b) - r for a, b, r in zip(start, end, padding))
+        high = tuple(max(a, b) + r for a, b, r in zip(start, end, padding))
+        stack = [0]
+        while stack:
+            lo, hi, left, right, first, count = self.nodes[stack.pop()]
+            if not _overlap(low, high, lo, hi):
+                continue
+            if left < 0:
+                for index in self.order[first:first + count]:
+                    yield self.triangles[index]
+            else:
+                stack.extend((left, right))
+
+
+def _overlap(lo, hi, other_lo, other_hi):
+    return (lo[0] <= other_hi[0] and other_lo[0] <= hi[0]
+            and lo[1] <= other_hi[1] and other_lo[1] <= hi[1]
+            and lo[2] <= other_hi[2] and other_lo[2] <= hi[2])
+
 
 def _slab(origin, inverse, lo, hi):
     near, far = 0., 1.
@@ -115,6 +135,76 @@ def _triangle_fraction(origin, direction, a, b, c, epsilon=1e-12):
     return t if 0. <= t <= 1. else None
 
 
+def _sub(a, b):
+    return (a[0]-b[0], a[1]-b[1], a[2]-b[2])
+
+
+def _dot(a, b):
+    return a[0]*b[0] + a[1]*b[1] + a[2]*b[2]
+
+
+def _cross(a, b):
+    return (a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0])
+
+
+def _at(start, move, t):
+    return (start[0]+move[0]*t, start[1]+move[1]*t, start[2]+move[2]*t)
+
+
+def _sphere_entry(offset, move, radius):
+    outside = _dot(offset, offset) - radius*radius
+    if outside <= 0:
+        return 0.0
+    approach = _dot(offset, move)
+    if approach >= 0:
+        return None
+    discriminant = approach*approach - _dot(move, move)*outside
+    if discriminant < 0:
+        return None
+    t = outside / (-approach + math.sqrt(discriminant))
+    return t if t <= 1 else None
+
+
+def sphere_triangle_contact(start, move, radius, a, b, c):
+    normal = _cross(_sub(b, a), _sub(c, a))
+    normal_length = math.sqrt(_dot(normal, normal))
+    if not normal_length:
+        return None
+    normal = tuple(n/normal_length for n in normal)
+    height = _dot(_sub(start, a), normal)
+    rise = _dot(move, normal)
+    end_height = height + rise
+    if max(height, end_height) < 0 or min(height, end_height) > radius:
+        return None
+
+
+    if height > radius:
+        t = (radius - height) / rise
+    elif height < -radius:
+        t = (-radius - height) / rise
+    else:
+        t = 0.0
+    centre = _at(start, move, t)
+    edges = ((a, b), (b, c), (c, a))
+    if all(_dot(_cross(_sub(q, p), _sub(centre, p)), normal) >= 0 for p, q in edges):
+        return t if height + t * rise >= 0 else None
+    first = None
+    for p, q in edges:
+        edge, offset = _sub(q, p), _sub(start, p)
+        edge2 = _dot(edge, edge)
+        along = _dot(offset, edge)/edge2
+        speed = _dot(move, edge)/edge2
+
+        side = _sphere_entry(_at(offset, edge, -along), _at(move, edge, -speed), radius)
+        if side is not None and not 0 <= along + side*speed <= 1:
+            side = None
+        for contact in (side, _sphere_entry(offset, move, radius)):
+            if contact is not None and (first is None or contact < first):
+                first = contact
+
+    return first if first is not None and height + first * rise >= 0 else None
+
+
 def _invert(matrix):
     c0, c1, c2, t = matrix[0:3], matrix[3:6], matrix[6:9], matrix[9:12]
     m = ((c0[0], c1[0], c2[0]), (c0[1], c1[1], c2[1]), (c0[2], c1[2], c2[2]))
@@ -146,6 +236,7 @@ class World:
         self.level = level
         self.trees = [MeshTree(v, t) for v, t in meshes]
         self.instances = []
+        self.sweep_transforms = []
         self.grid = {}
         for mesh, layer, matrix in instances:
             inverse = _invert(matrix)
@@ -159,6 +250,11 @@ class World:
                    tuple(max(c[i] for c in corners) for i in range(3)))
             number = len(self.instances)
             self.instances.append((tree, layer, inverse, box))
+
+
+            row_norms = tuple(math.hypot(inverse[i], inverse[i+3], inverse[i+6]) for i in range(3))
+            mirrored = _dot(_cross(matrix[:3], matrix[3:6]), matrix[6:9]) < 0
+            self.sweep_transforms.append((matrix, row_norms, mirrored))
             for gx in range(int(box[0][0] // CELL), int(box[1][0] // CELL) + 1):
                 for gy in range(int(box[0][1] // CELL), int(box[1][1] // CELL) + 1):
                     self.grid.setdefault((gx, gy), []).append(number)
@@ -207,5 +303,39 @@ class World:
                 if any_hit:
                     return hit
                 if closest is None or hit < closest:
+                    closest = hit
+        return closest
+
+    def first_sphere_hit(self, start, end, radius, mask):
+        if not math.isfinite(radius) or radius < 0:
+            raise ValueError('invalid projectile radius')
+        if radius == 0:
+            return self.first_hit(start, end, mask)
+        move = _sub(end, start)
+        low = tuple(min(a, b) - radius for a, b in zip(start, end))
+        high = tuple(max(a, b) + radius for a, b in zip(start, end))
+
+
+        candidates = set()
+        for gx in range(math.floor(low[0]/CELL), math.floor(high[0]/CELL) + 1):
+            for gy in range(math.floor(low[1]/CELL), math.floor(high[1]/CELL) + 1):
+                candidates.update(self.grid.get((gx, gy), ()))
+        closest = None
+        for number in candidates:
+            tree, layer, inverse, (lo, hi) = self.instances[number]
+            if not (mask >> layer) & 1 or not _overlap(low, high, lo, hi):
+                continue
+            matrix, row_norms, mirrored = self.sweep_transforms[number]
+            padding = tuple(radius * norm for norm in row_norms)
+            for a, b, c in tree.swept_triangles(_apply(inverse, start), _apply(inverse, end), padding):
+
+
+                if mirrored:
+                    b, c = c, b
+                hit = sphere_triangle_contact(start, move, radius, _apply(matrix, a),
+                                              _apply(matrix, b), _apply(matrix, c))
+                if hit == 0:
+                    return 0.0
+                if hit is not None and (closest is None or hit < closest):
                     closest = hit
         return closest
