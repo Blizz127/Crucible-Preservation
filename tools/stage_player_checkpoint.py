@@ -52,12 +52,18 @@ def verify_staged(directory, expected, progress_backup):
         raise ValueError('staging destination is not a directory')
     if progress_backup and not (directory / 'progress').is_dir():
         raise ValueError('staged progression directory is missing')
+    expected_dirs = {parent.as_posix() for name in expected
+                     for parent in PurePosixPath(name).parents if parent.parts}
+    if progress_backup:
+        expected_dirs.add('progress')  # A valid empty store still has a root.
     found = set()
     for entry in directory.rglob('*'):
         name = entry.relative_to(directory).as_posix()
         if entry.is_symlink():
             raise ValueError('unexpected symbolic link: ' + name)
         if entry.is_dir():
+            if name not in expected_dirs:
+                raise ValueError('unexpected directory in staged checkpoint: ' + name)
             continue
         if name not in expected or not entry.is_file():
             raise ValueError('unexpected file in staging directory: ' + name)

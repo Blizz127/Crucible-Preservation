@@ -19,11 +19,17 @@ class PlayerCheckpointTests(unittest.TestCase):
         self.name = 'state/active-hero.json'
         self.hero = b'{"character":"saboteur"}'
 
-    def write_snapshot(self, checksum=None):
-        checksum = checksum or hashlib.sha256(self.hero).hexdigest()
-        manifest = json.dumps({'sha256': {self.name: checksum}}).encode()
+    def write_snapshot(self, checksum=None, *, files=None, kind=None):
+        if files is None:
+            files = {self.name: self.hero}
+        hashes = {name: hashlib.sha256(data).hexdigest() for name, data in files.items()}
+        if checksum is not None:
+            hashes[self.name] = checksum
+        manifest = {'sha256': hashes}
+        if kind is not None:
+            manifest['kind'] = kind
         with tarfile.open(self.archive, 'w:gz') as archive:
-            for name, data in [('manifest.json', manifest), (self.name, self.hero)]:
+            for name, data in [('manifest.json', json.dumps(manifest).encode()), *files.items()]:
                 info = tarfile.TarInfo(name)
                 info.size = len(data)
                 archive.addfile(info, io.BytesIO(data))
@@ -50,6 +56,33 @@ class PlayerCheckpointTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'differs'):
             stage(self.archive, hash_value, self.stage_root)
         self.assertEqual(file.read_bytes(), b'updated')
+
+    def test_nested_legacy_files_and_empty_checkpoint_roots(self):
+        for kind, files in ((None, {'state/players/fixture.json': self.hero}),
+                            (None, {}), ('crucible-progress', {})):
+            with self.subTest(kind=kind, files=files):
+                receipt = self.write_snapshot(files=files, kind=kind)
+                result = stage(self.archive, receipt, self.stage_root)
+                self.assertEqual(stage(self.archive, receipt, self.stage_root), result)
+                self.assertEqual((result / 'progress').is_dir(), kind == 'crucible-progress')
+                for name, data in files.items():
+                    self.assertEqual((result / name).read_bytes(), data)
+                extra = result / 'abandoned-import'
+                extra.mkdir()
+                with self.assertRaisesRegex(ValueError, 'unexpected directory.*abandoned-import'):
+                    stage(self.archive, receipt, self.stage_root)
+                self.assertTrue(extra.is_dir())
+
+    def test_unexpected_progress_lock_directory_refuses_retry_and_preserves_save(self):
+        receipt = self.write_snapshot(files={'progress/fixture.json': self.hero},
+                                      kind='crucible-progress')
+        result = stage(self.archive, receipt, self.stage_root)
+        lock_dir = result / 'progress' / '.lock'
+        lock_dir.mkdir()
+        with self.assertRaisesRegex(ValueError, r'unexpected directory.*progress/\.lock'):
+            stage(self.archive, receipt, self.stage_root)
+        self.assertTrue(lock_dir.is_dir())
+        self.assertEqual((result / 'progress' / 'fixture.json').read_bytes(), self.hero)
 
     def test_receipt_and_member_hash_failures_do_not_install_a_checkpoint(self):
         hash_value = self.write_snapshot(checksum='0' * 64)
