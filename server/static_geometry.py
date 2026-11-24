@@ -47,9 +47,13 @@ class MeshTree:
         return node
 
     def blocks(self, origin, direction):
+        return self.first_hit(origin, direction, any_hit=True) is not None
+
+    def first_hit(self, origin, direction, *, any_hit=False):
         if not self.nodes:
-            return False
+            return None
         inverse = tuple(1. / d if d else math.inf for d in direction)
+        closest = None
         stack = [0]
         while stack:
             lo, hi, left, right, first, count = self.nodes[stack.pop()]
@@ -57,12 +61,16 @@ class MeshTree:
                 continue
             if left < 0:
                 for index in self.order[first:first + count]:
-                    if _triangle(origin, direction, *self.triangles[index]):
-                        return True
+                    hit = _triangle_fraction(origin, direction, *self.triangles[index])
+                    if hit is not None:
+                        if any_hit:
+                            return hit
+                        if closest is None or hit < closest:
+                            closest = hit
             else:
                 stack.append(left)
                 stack.append(right)
-        return False
+        return closest
 
 
 def _slab(origin, inverse, lo, hi):
@@ -85,7 +93,7 @@ def _slab(origin, inverse, lo, hi):
     return True
 
 
-def _triangle(origin, direction, a, b, c, epsilon=1e-12):
+def _triangle_fraction(origin, direction, a, b, c, epsilon=1e-12):
     e1 = (b[0] - a[0], b[1] - a[1], b[2] - a[2])
     e2 = (c[0] - a[0], c[1] - a[1], c[2] - a[2])
     p = (direction[1] * e2[2] - direction[2] * e2[1],
@@ -93,18 +101,18 @@ def _triangle(origin, direction, a, b, c, epsilon=1e-12):
          direction[0] * e2[1] - direction[1] * e2[0])
     det = e1[0] * p[0] + e1[1] * p[1] + e1[2] * p[2]
     if det < epsilon:
-        return False
+        return None
     inv = 1. / det
     s = (origin[0] - a[0], origin[1] - a[1], origin[2] - a[2])
     u = (s[0] * p[0] + s[1] * p[1] + s[2] * p[2]) * inv
     if u < 0. or u > 1.:
-        return False
+        return None
     q = (s[1] * e1[2] - s[2] * e1[1], s[2] * e1[0] - s[0] * e1[2], s[0] * e1[1] - s[1] * e1[0])
     v = (direction[0] * q[0] + direction[1] * q[1] + direction[2] * q[2]) * inv
     if v < 0. or u + v > 1.:
-        return False
+        return None
     t = (e2[0] * q[0] + e2[1] * q[1] + e2[2] * q[2]) * inv
-    return 0. <= t <= 1.
+    return t if 0. <= t <= 1. else None
 
 
 def _invert(matrix):
@@ -181,6 +189,10 @@ class World:
                 gy += step_y
 
     def blocked(self, start, end, mask):
+        return self.first_hit(start, end, mask, any_hit=True) is not None
+
+    def first_hit(self, start, end, mask, *, any_hit=False):
+        closest = None
         direction = tuple(end[i] - start[i] for i in range(3))
         inverse_direction = tuple(1. / d if d else math.inf for d in direction)
         for number in self._candidates(start, end):
@@ -189,6 +201,11 @@ class World:
                 continue
             origin = _apply(inverse, start)
             local_end = _apply(inverse, end)
-            if tree.blocks(origin, tuple(local_end[i] - origin[i] for i in range(3))):
-                return True
-        return False
+            local_direction = tuple(local_end[i] - origin[i] for i in range(3))
+            hit = tree.first_hit(origin, local_direction, any_hit=any_hit)
+            if hit is not None:
+                if any_hit:
+                    return hit
+                if closest is None or hit < closest:
+                    closest = hit
+        return closest
