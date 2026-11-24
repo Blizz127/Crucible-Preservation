@@ -19,6 +19,7 @@ class CombatEntity:
     dirty: bool = False
     killer_id: int = None
     autonomous: bool = False
+    life: int = 0
 
     def __post_init__(self):
         if self.health is None:
@@ -84,7 +85,9 @@ class Combat:
             return None
         if type(damage) not in (int, float) or not 0 < damage < float('inf'):
             raise ValueError('damage must be a positive finite number')
-        damage = self._outgoing(attacker, damage)
+        return self._debit_health(entity, self._outgoing(attacker, damage), attacker, now)
+
+    def _debit_health(self, entity, damage, attacker, now):
         entity.health = max(0.0, entity.health - damage)
         entity.dirty = True
         killed = not entity.alive
@@ -106,6 +109,7 @@ class Combat:
         return gained
 
     def _die(self, entity, now):
+        entity.life += 1
         if entity.respawn_seconds is not None:
             entity.respawn_at = (now + entity.respawn_seconds
                                  + entity.telegraph_seconds)
