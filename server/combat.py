@@ -20,6 +20,7 @@ class CombatEntity:
     killer_id: int = None
     autonomous: bool = False
     life: int = 0
+    owner_damage_received: float = 0.0
 
     def __post_init__(self):
         if self.health is None:
@@ -88,7 +89,11 @@ class Combat:
         return self._debit_health(entity, self._outgoing(attacker, damage), attacker, now)
 
     def _debit_health(self, entity, damage, attacker, now):
+        previous_health = entity.health
         entity.health = max(0.0, entity.health - damage)
+        source = self.entities.get(attacker)
+        if source is not None and source.autonomous:
+            entity.owner_damage_received += previous_health - entity.health
         entity.dirty = True
         killed = not entity.alive
         if killed:
